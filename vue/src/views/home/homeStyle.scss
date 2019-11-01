@@ -1,0 +1,30 @@
+.xs-format {
+  width: 100% !important;
+  margin-left: 0 !important;
+}
+
+.sm-format,
+.md-format,
+.lg-format,
+.xl-format {
+  width: 60%;
+  margin-left: 20%;
+}
+
+#homePage {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+
+  .login-box {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    top: 100px;
+    margin: auto;
+    box-shadow: 4px 4px 4px 4px rgb(189, 189, 189);;
+    border-radius: 4px;
+  }
+
+}
