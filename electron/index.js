@@ -25,7 +25,7 @@ function startServer(port) {
   logger.info(`Launching server with jar ${server} at port ${port}...`);
 
   serverProcess = require('child_process')
-    .spawn('java', [ '-jar', server, `--server.port=${port}`]);
+    .spawn('java', ['-jar', server, `--server.port=${port}`]);
 
   serverProcess.stdout.on('data', logger.server);
 
@@ -40,7 +40,7 @@ function startServer(port) {
 function stopServer() {
   logger.info('Stopping server...')
   axios.post(`${baseUrl}/actuator/shutdown`, null, {
-    headers: {'Content-Type': 'application/json'}
+    headers: { 'Content-Type': 'application/json' }
   })
     .then(() => logger.info('Server stopped'))
     .catch(error => {
@@ -65,11 +65,21 @@ function stopServer() {
 
 function createSplash() {
   const splash = new BrowserWindow({ width: 400, height: 300, frame: false });
-  splash.loadURL(url.format({
-    pathname: path.join(__dirname, 'splash.html'),
-    protocol: 'file:',
-    slashes: true
-  }));
+
+  try {
+    logger.info(`Accede xd`);
+    splash.loadFile('./vue/dist/index.html')
+  } catch (error) {
+    splash = null;
+    logger.info(`error: ${error}`);
+  }
+
+  // splash.loadURL(url.format({
+  //   pathname: path.join(__dirname, 'splash.html'),
+  //   protocol: 'file:',
+  //   slashes: true
+  // }));
+
   return splash
 }
 
@@ -80,8 +90,11 @@ function createWindow(callback) {
     show: false, // hide until ready-to-show
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
+      // nodeIntegration: true
     }
   });
+
+  // mainWindow.loadFile('index.html')
 
   loadHomePage();
 
@@ -103,53 +116,24 @@ function createWindow(callback) {
 }
 
 function loadHomePage() {
-  logger.info(`Loading home page at ${baseUrl}`);
+  logger.info(`logHomePage: Loading home page at ${baseUrl}`);
   // check server health and switch to main page
+
+  mainWindow.loadURL(`${baseUrl}?_=${Date.now()}`)
   checkCount = 0;
-  setTimeout(function cycle() {
-    axios.get(`${baseUrl}/actuator/health`)
-      .then(() => mainWindow.loadURL(`${baseUrl}?_=${Date.now()}`))
-      .catch(e => {
-        if (e.code === 'ECONNREFUSED') {
-          if (checkCount < MAX_CHECK_COUNT) {
-            checkCount++;
-            setTimeout(cycle, 1000);
-          } else {
-            dialog.showErrorBox('Server timeout',
-              `UI does not receive server response for ${MAX_CHECK_COUNT} seconds.`);
-            app.quit()
-          }
-        } else {
-          logger.error(e)
-          dialog.showErrorBox('Server error', 'UI receives an error from server.');
-          app.quit()
-        }
-      });
-  }, 200);
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', function () {
+  baseUrl = `http://localhost:9000`;
+  
   logger.info('###################################################')
-  logger.info('#               Application Starting              #')
+  logger.info('#  Application Starting              #')
   logger.info('###################################################')
-
-  if (isDev) {
-    // Assume the webpack dev server is up at port 9000
-    baseUrl = `http://localhost:9000`;
-    createWindow();
-  } else {
-    // Create window first to show splash before starting server
-    const splash = createSplash();
-
-    // Start server at an available port (prefer 8080)
-    findPort(8080, function(err, port) {
-      startServer(port);
-      createWindow(() => splash.close());
-    });
-  }
+  
+  createWindow();
 });
 
 // Quit when all windows are closed.
