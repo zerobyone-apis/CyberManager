@@ -4,10 +4,23 @@
       <h4 class="font-title">Acceda para utilizar CyberManager</h4>
 
       <div class="login-fields">
-        <v-text-field v-model="signInData.username" class="field" label="Usuario"></v-text-field>
-        <v-text-field v-model="signInData.password" class="field" label="Contraseña"></v-text-field>
+        <v-text-field
+          v-model="signInData.username.value"
+          :error="v.get('username') != ''"
+          :error-messages="v.get('username')"
+          class="field"
+          label="Usuario"
+        ></v-text-field>
+
+        <v-text-field
+          v-model="signInData.password.value"
+          :error="v.get('password') != ''"
+          :error-messages="v.get('password')"
+          class="field"
+          label="Contraseña"
+        ></v-text-field>
       </div>
-      <p class="font-error">{{ signInErrors }}</p>
+
       <div class="login-footer">
         <v-btn @click="login()" class="button">Acceder</v-btn>
       </div>
@@ -29,10 +42,6 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-
-
-
-
     </div>
   </div>
 </template>
