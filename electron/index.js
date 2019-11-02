@@ -18,71 +18,6 @@ let mainWindow;
 let serverProcess;
 let baseUrl;
 
-function startServer(port) {
-  logger.info(`Starting server at port ${port}`)
-
-  const server = `${path.join(app.getAppPath(), '..', '..', JAR)}`;
-  logger.info(`Launching server with jar ${server} at port ${port}...`);
-
-  serverProcess = require('child_process')
-    .spawn('java', ['-jar', server, `--server.port=${port}`]);
-
-  serverProcess.stdout.on('data', logger.server);
-
-  if (serverProcess.pid) {
-    baseUrl = `http://localhost:${port}`;
-    logger.info("Server PID: " + serverProcess.pid);
-  } else {
-    logger.error("Failed to launch server process.")
-  }
-}
-
-function stopServer() {
-  logger.info('Stopping server...')
-  axios.post(`${baseUrl}/actuator/shutdown`, null, {
-    headers: { 'Content-Type': 'application/json' }
-  })
-    .then(() => logger.info('Server stopped'))
-    .catch(error => {
-      logger.error('Failed to stop the server gracefully.', error)
-      if (serverProcess) {
-        logger.info(`Killing server process ${serverProcess.pid}`);
-        const kill = require('tree-kill');
-        kill(serverProcess.pid, 'SIGTERM', function (err) {
-          logger.info('Server process killed');
-          serverProcess = null;
-          baseUrl = null;
-          app.quit(); // quit again
-        });
-      }
-    })
-    .finally(() => {
-      serverProcess = null;
-      baseUrl = null;
-      app.quit(); // quit again
-    })
-}
-
-function createSplash() {
-  const splash = new BrowserWindow({ width: 400, height: 300, frame: false });
-
-  try {
-    logger.info(`Accede xd`);
-    splash.loadFile('./vue/dist/index.html')
-  } catch (error) {
-    splash = null;
-    logger.info(`error: ${error}`);
-  }
-
-  // splash.loadURL(url.format({
-  //   pathname: path.join(__dirname, 'splash.html'),
-  //   protocol: 'file:',
-  //   slashes: true
-  // }));
-
-  return splash
-}
-
 function createWindow(callback) {
   mainWindow = new BrowserWindow({
     width: 800,
@@ -94,12 +29,12 @@ function createWindow(callback) {
     }
   });
 
-  // mainWindow.loadFile('index.html')
+function stopServer() {
+  logger.info('Stopping server...')
+  app.quit(); // quit again
+}
 
   loadHomePage();
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
 
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
@@ -128,11 +63,11 @@ function loadHomePage() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function () {
   baseUrl = `http://localhost:9000`;
-  
+
   logger.info('###################################################')
   logger.info('#  Application Starting              #')
   logger.info('###################################################')
-  
+
   createWindow();
 });
 
