@@ -1,18 +1,26 @@
 //GLOBAL FONTS
 
 .font-title {
-    font-family: titling-gothic-fb-extended,sans-serif;
-    color: rgb(110, 110, 110);
-    font-weight: 300;
-    text-transform: none;
-    // box-shadow: 4px, 3px #ffffff4f;
-    text-shadow: 2px 2px 2px #b6b6b665;
+  font-family: titling-gothic-fb-extended, sans-serif;
+  color: rgb(110, 110, 110);
+  font-weight: 300;
+  text-transform: none;
+  // box-shadow: 4px, 3px #ffffff4f;
+  text-shadow: 2px 2px 2px #b6b6b665;
 }
 
 .font-text {
-    font-family: 'Inter beta',sans-serif;
-    color: #303030d5;
-    font-weight: 300;
-    text-transform: none;
-    box-shadow: 1px, 3px #ffffff4f;
+  font-family: "Inter beta", sans-serif;
+  color: #303030d5;
+  font-weight: 300;
+  text-transform: none;
+  box-shadow: 1px, 3px #ffffff4f;
+}
+
+.font-error {
+  font-family: "Inter beta", sans-serif;
+  color: #ff7a7ad5;
+  font-weight: 300;
+  text-transform: none;
+  box-shadow: 1px, 3px #ffffff4f;
 }
