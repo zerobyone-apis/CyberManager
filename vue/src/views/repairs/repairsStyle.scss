@@ -1,0 +1,102 @@
+.xs-format {
+  width: 100% !important;
+  margin-left: 0 !important;
+}
+
+.sm-format,
+.md-format,
+.lg-format,
+.xl-format {
+  width: 60%;
+  margin-left: 20%;
+}
+
+#repairsPage {
+  position: absolute;
+  height: calc(100%-60px);
+  width: 100%;
+  top: 60px;  
+  background-color: rgb(255, 255, 255);
+  // border-top-style: inset;
+
+  .identify-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    top: 20px;
+    display: flex;
+
+    .service-number {
+      position: relative;
+      width: 150px;
+      margin-left: 20px;
+    }
+    .client-name {
+      position: relative;
+      width: 300px;
+      margin-left: 20px;
+    }
+    .article-name {
+      position: relative;
+      width: 300px;
+      margin-left: 20px;
+    }
+  }
+
+  .diagnosis-box {
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .garanty-box {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .technical-box {
+    position: relative;
+    width: 300px;
+    margin-left: 20px;
+  }
+
+  .content-box {
+    position: relative;
+    width: 300px;
+    display: flex;
+
+    .dates-box {
+      position: relative;
+      width: 300px;
+      margin-left: 20px;
+
+      .repair-date {
+        position: relative;
+        width: 300px;
+        display: flex;
+      }
+      .deliver-date {
+        position: relative;
+        width: 300px;
+        display: flex;
+      }
+    }
+
+    .others-box {
+      position: relative;
+      margin-left: 20px;
+      display: flexbox;
+      border-style: solid;
+      border-width: 1px;
+      border-color: rgba(172, 172, 172, 0.719);
+      border-radius: 4px;
+      padding: 20px;
+
+      .v-input__control {
+        height: 20px;
+      }
+    }
+  }
+}
