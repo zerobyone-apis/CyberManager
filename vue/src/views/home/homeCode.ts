@@ -41,6 +41,12 @@ export default class HomeCode extends vue {
   async login() {
     if(this.v.validateFields(this.signInData)) {
       // make the fetch
+      let userData = {
+        id: 1, // change this = response.value.id
+        username: this.signInData.username.value,
+      }
+      this['$store'].commit('userInfo', userData)
+      this["$router"].push('/Repairs');
     }
   }
 }

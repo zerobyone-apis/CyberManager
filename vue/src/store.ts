@@ -17,7 +17,6 @@ export const store = new Vuex.Store({
     },
     userInfo: {
       id: undefined,
-      token: undefined,
       username: undefined,
     },
   },

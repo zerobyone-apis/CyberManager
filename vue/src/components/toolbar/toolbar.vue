@@ -13,7 +13,7 @@
 
     <!-- LOGO  -->
     <v-toolbar-title @click.stop="pageRouter('/')">
-      Art Experience
+      CyberManager
       <!-- <img class="logo" src="@/assets/logo.png" @click.stop="pageRouter('/')" alt="Avatar" /> -->
     </v-toolbar-title>
 
@@ -26,8 +26,7 @@
         class="toolbar-button"
         v-for="(item, index) in filteredConf"
         :key="index"
-        :href="item.href"
-        v-if="item.toolbar"
+        :v-if="item.toolbar"
         @click="pageRouter(item.route)"
       >
         <v-icon>{{ item.icon }}</v-icon>
@@ -35,7 +34,7 @@
       </v-btn>
     </v-toolbar-items>
 
-    <div class="right-box">
+    <div class="right-box" v-if="false">
       <v-btn
         outlined
         @click.native.stop="reservationDialog = true"

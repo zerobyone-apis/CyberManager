@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <Toolbar class="toolbar-app-fixed" v-if="false"></Toolbar>
+    <Toolbar class="toolbar-app-fixed"></Toolbar>
    <back-to-top>
      <v-btn fab text small class="green">
        <v-icon>keyboard_arrow_up</v-icon>
