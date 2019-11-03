@@ -20,8 +20,8 @@ let baseUrl;
 
 function createWindow(callback) {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 950,
+    height: 850,
     show: false, // hide until ready-to-show
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
