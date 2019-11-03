@@ -1,0 +1,94 @@
+.xs-format {
+  width: 100% !important;
+  margin-left: 0 !important;
+}
+
+.sm-format,
+.md-format,
+.lg-format,
+.xl-format {
+  width: 60%;
+  margin-left: 20%;
+}
+
+#identificationPage {
+  position: absolute;
+  height: calc(100%-60px);
+  width: 100%;
+  top: 60px;
+  background-color: rgb(255, 255, 255);
+  // border-top-style: inset;
+  // display: flex;
+
+  .identify-box {
+    position: relative;
+    width: 380px;
+    // height: 50px;
+    // top: 20px;
+    padding: 20px;
+
+    .identify {
+      display: flex;
+
+      .service-number {
+        position: relative;
+        width: 200px;
+        // margin-left: 20px;
+      }
+      .reception-date {
+        position: relative;
+        width: 300px;
+        margin-left: 20px;
+      }
+    }
+
+    .client-fields-box {
+      border-style: solid;
+      border-width: 1px;
+      border-color: rgba(172, 172, 172, 0.719);
+      border-radius: 4px;
+      padding-top: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .article-fields-box {
+      margin-top: 20px;
+      border-style: solid;
+      border-width: 1px;
+      border-color: rgba(172, 172, 172, 0.719);
+      border-radius: 4px;
+      padding-top: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+
+  .orders-box {
+    position: absolute;
+    top: 20px;
+    left: 380px;
+    width: calc(100% - 400px)!important;
+    height: 60%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(172, 172, 172, 0.719);
+    border-radius: 4px;
+  }
+
+  .notes-box {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    
+    .damage {
+      width: 45%;
+      height: 50px;
+      margin: auto;
+    }
+    .notes {
+      width: 45%;
+      height: 50px;
+      margin: auto;
+    }
+  }
+}
