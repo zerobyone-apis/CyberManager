@@ -34,19 +34,21 @@
       </v-btn>
     </v-toolbar-items>
 
-    <div class="right-box" v-if="false">
-      <v-btn
+    <div class="right-box">
+      <v-btn outlined fab small color="green" text>
+        <v-icon>people</v-icon>
+      </v-btn>
+      <p>{{ $store.getters.getUsername }}</p>
+      <!-- <v-btn
         outlined
         @click.native.stop="reservationDialog = true"
         class="toolbar-button-reservation"
         :class="{'reservation-mobile' : $vuetify.breakpoint.name == 'xs'}"
-      >RESERVAR</v-btn>
+      >RESERVAR</v-btn>-->
     </div>
 
     <!-- dialogs -->
-    <reservation-dialog v-model="reservationDialog">
-    </reservation-dialog>
-
+    <reservation-dialog v-model="reservationDialog"></reservation-dialog>
   </v-toolbar>
 </template>
 

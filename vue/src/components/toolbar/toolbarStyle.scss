@@ -51,9 +51,9 @@
 
   .right-box {
     float: right;
-    display: block;
     margin-left: 40px;
     float: left;
+    display: flex;
 
     .toolbar-button-reservation {
       font-size: 10px;
