@@ -10,23 +10,32 @@ export default class HomeCode extends vue {
   private fieldsError = {};
 
   private signInData: any = {
+    formName: 'signInData',
     username: {
       value: '',
-      error: '',
       required: true,
     },
     password: {
       value: '',
-      error: '',
       required: true,
     },
   }
   private signInErrors = '';
 
   private signUpData: any = {
-    username: '',
-    email: '',
-    password: ''
+    formName: 'signUpData',
+    username: {
+      value: '',
+      required: true,
+    },
+    password: {
+      value: '',
+      required: true,
+    },
+    password2: {
+      value: '',
+      required: true,
+    },
   }
   private signUpErrors = '';
 
@@ -36,17 +45,52 @@ export default class HomeCode extends vue {
   }
 
   async register() {
+    if (this.v.validateFields(this.signUpData)) {
+      if (this.signUpData.password.value == this.signUpData.password2.value) {
+        try {
+          let response = {
+            value: true,
+            statusCode: 200,
+          }
+          if (response.value) {
+            let userData = {
+              id: 1, // change this = response.value.id
+              username: this.signUpData.username.value,
+            }
+            this['$store'].commit('userInfo', userData)
+            this["$router"].push('/Identification');
+          } else {
+            this.signUpErrors = 'Error ';
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      } else {
+        this.signUpErrors = 'Las contraseñas no coinciden';
+      }
+    }
   }
 
   async login() {
-    if(this.v.validateFields(this.signInData)) {
-      // make the fetch
-      let userData = {
-        id: 1, // change this = response.value.id
-        username: this.signInData.username.value,
+    if (this.v.validateFields(this.signInData)) {
+      try {
+        let response = {
+          value: true,
+          statusCode: 200,
+        }
+        if (response.value) {
+          let userData = {
+            id: 1, // change this = response.value.id
+            username: this.signInData.username.value,
+          }
+          this['$store'].commit('userInfo', userData)
+          this["$router"].push('/Identification');
+        } else {
+          this.signInErrors = 'Usuario o la contraseña no son correctas';
+        }
+      } catch (error) {
+        console.log(error)
       }
-      this['$store'].commit('userInfo', userData)
-      this["$router"].push('/Repairs');
     }
   }
 }
