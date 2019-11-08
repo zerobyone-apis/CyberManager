@@ -29,34 +29,19 @@ export default class IndentificationCode extends vue {
     other: false,
   }
 
-  // private data: any = new PageData();
-  // private v: Validation = new Validation();
-  // private fieldsError = {};
+  private headerOrders = [
+    { text: 'Nro', value: 'id'},
+    { text: 'Cliente', value: 'clientName'},
+    { text: "Acciones", value: 'action' }
+  ]
 
-  // private signInData: any = {
-  //   username: {
-  //     value: '',
-  //     error: '',
-  //     required: true,
-  //   },
-  //   password: {
-  //     value: '',
-  //     error: '',
-  //     required: true,
-  //   },
-  // }
-  // private signInErrors = '';
+  private orders = [
+    { id: 1, clientName: 'Damian' }
+  ]
 
-  // private signUpData: any = {
-  //   username: '',
-  //   email: '',
-  //   password: ''
-  // }
-  // private signUpErrors = '';
-
-  // private dialogs: any = {
-  //   signIn: false,
-  //   signUp: false
-  // }
-
+  private editOrder(item: any) {
+  }
+  
+  private deleteOrder(item: any) {
+  }
 }

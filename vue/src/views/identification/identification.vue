@@ -24,7 +24,37 @@
       </div>
     </div>
 
-    <div class="orders-box"></div>
+    <div class="orders-box">
+      <v-data-table
+        :height="'100%'"
+        :v-model="orders"
+        :headers="headerOrders"
+        :items="orders"
+        :items-per-page="5"
+        single-select
+        item-key="name"
+        show-select
+        class="elevation-1"
+      >
+        <template v-slot:top>
+          <div class="header-table">
+            <v-btn outlined>Nuevo</v-btn>
+          </div>
+        </template>
+        <template v-slot:item.action="{ item }">
+          <v-icon class="mr-3" @click="editOrder(item)">edit</v-icon>
+          <v-icon @click="deleteOrder(item)">delete</v-icon>
+        </template>
+      </v-data-table>
+      
+
+      <div class="footer-box">
+        <v-btn class="btn-footer" small outlined>
+          GUARDAR
+          <v-icon>save</v-icon>
+        </v-btn>
+      </div>
+    </div>
 
     <div class="notes-box">
       <div class="damage">
