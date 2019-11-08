@@ -2,21 +2,22 @@ export default class Validation {
 
   private fieldsFail = [];
 
-  validateFields(fields: any) {
+  validateFields(forms: any[]) {
     this.fieldsFail = [];
-
     let noErrors = true;
-    Object.keys(fields).forEach((field: any) => {
-      if (fields[field].value == '' && fields[field].required == true) {
-        noErrors = false;
-        let fieldError = {
-          name: field,
-          form: fields.formName,
-          error: 'campo requerido'
+    forms.forEach(fields => {
+      Object.keys(fields).forEach((field: any) => {
+        if (fields[field].value == '' && fields[field].required == true) {
+          noErrors = false;
+          let fieldError = {
+            name: field,
+            form: fields.formName,
+            error: 'campo requerido'
+          }
+          console.log(fieldError)
+          this.fieldsFail.push(fieldError);
         }
-        console.log(fieldError)
-        this.fieldsFail.push(fieldError);
-      }
+      });
     });
     return noErrors;
   }

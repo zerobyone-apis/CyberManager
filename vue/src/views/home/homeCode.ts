@@ -45,7 +45,7 @@ export default class HomeCode extends vue {
   }
 
   async register() {
-    if (this.v.validateFields(this.signUpData)) {
+    if (this.v.validateFields([this.signUpData])) {
       if (this.signUpData.password.value == this.signUpData.password2.value) {
         try {
           let response = {
@@ -72,7 +72,7 @@ export default class HomeCode extends vue {
   }
 
   async login() {
-    if (this.v.validateFields(this.signInData)) {
+    if (this.v.validateFields([this.signInData])) {
       try {
         let response = {
           value: true,
