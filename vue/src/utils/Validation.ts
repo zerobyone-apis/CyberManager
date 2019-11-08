@@ -11,18 +11,24 @@ export default class Validation {
         noErrors = false;
         let fieldError = {
           name: field,
+          form: fields.formName,
           error: 'campo requerido'
         }
+        console.log(fieldError)
         this.fieldsFail.push(fieldError);
       }
     });
     return noErrors;
   }
 
-  get(nameField: string) {
+  get(nameField: string) { // formName.field
     let errorString = '';
+
+    const formName = nameField.split('.')[0];
+    const fieldName = nameField.split('.')[1];
+
     this.fieldsFail.forEach(field => {
-      if (field.name == nameField) {
+      if (field.form == formName && field.name == fieldName) {
         errorString = field.error;
       }
     });
