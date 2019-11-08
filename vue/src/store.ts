@@ -33,6 +33,7 @@ export const store = new Vuex.Store({
   },
   getters: {
     userInfo: state => state.userInfo,
+    getUsername: state => state.userInfo.username,
     userLogged: state => state.userInfo.id ? undefined : false,
     drawerLeft: state => state.drawerLeft,
     accessDialog: state => state.dialogs.access
