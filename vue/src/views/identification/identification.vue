@@ -6,7 +6,7 @@
           <v-text-field
             outlined 
             dense 
-            v-model="serviceNumber" 
+            v-model="orderData.serviceNumber.value" 
             label="Orden de servicio"
           ></v-text-field>
         </div>
@@ -14,7 +14,7 @@
           <v-text-field 
             outlined 
             dense 
-            v-model="reception.date" 
+            v-model="orderData.receptionDate.value" 
             label="Fecha de recepcion"
           ></v-text-field>
         </div>
@@ -86,14 +86,14 @@
     <div class="orders-box">
       <v-data-table
         :height="'100%'"
-        :v-model="orders"
+        v-model="orders"
         :headers="headerOrders"
         :items="orders"
         :items-per-page="5"
-        single-select
         item-key="name"
         show-select
-        class="elevation-1"
+        single-select
+        class="orders-table elevation-1"
       >
         <template v-slot:top>
           <div class="header-table">
@@ -101,7 +101,7 @@
           </div>
         </template>
         <template v-slot:item.action="{ item }">
-          <v-icon class="mr-3" @click="editOrder(item)">edit</v-icon>
+          <v-icon :color="selectedOrder ? 'green' : 'grey'" class="mr-3" @click="editOrder(item)">edit</v-icon>
           <v-icon @click="deleteOrder(item)">delete</v-icon>
         </template>
       </v-data-table>
@@ -116,10 +116,24 @@
 
     <div class="notes-box">
       <div class="damage">
-        <v-textarea outlined dense name="input-7-1" label="Daño reportado" value></v-textarea>
+        <v-textarea 
+          v-model="orderData.damage.value"
+          outlined 
+          dense 
+          name="input-7-1" 
+          label="Daño reportado" 
+          value
+        ></v-textarea>
       </div>
       <div class="notes">
-        <v-textarea outlined dense name="input-7-1" label="Notas" value></v-textarea>
+        <v-textarea 
+          v-model="orderData.notes.value"
+          outlined 
+          dense 
+          name="input-7-1" 
+          label="Notas" 
+          value
+        ></v-textarea>
       </div>
     </div>
   </div>

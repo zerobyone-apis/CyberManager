@@ -67,7 +67,7 @@
     position: absolute;
     top: 20px;
     left: 380px;
-    width: calc(100% - 400px)!important;
+    width: calc(100% - 400px) !important;
     height: 60%;
     // border-style: solid;
     // border-width: 1px;
@@ -77,6 +77,16 @@
     .header-table {
       right: 0px;
       float: right;
+    }
+
+    .orders-table {
+      .text-start {
+        .checkbox-marked {
+          background-color: red;
+          width: 10px;
+          height: 10px;
+        }
+      }
     }
 
     .footer-box {
@@ -99,7 +109,7 @@
     width: 100%;
     height: 100px;
     display: flex;
-    
+
     .damage {
       width: 45%;
       height: 50px;
