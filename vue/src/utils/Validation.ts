@@ -14,7 +14,6 @@ export default class Validation {
             form: fields.formName,
             error: 'campo requerido'
           }
-          console.log(fieldError)
           this.fieldsFail.push(fieldError);
         }
       });
@@ -34,5 +33,19 @@ export default class Validation {
       }
     });
     return errorString;
+  }
+
+  clearObject(object: any) {
+    try {
+      Object.keys(object).forEach((key: any) => {
+        if (key != 'formName') {
+          object[key].value = '';
+        }
+      })
+      return object;
+    } catch (error) {
+      console.error(error)
+      return {};
+    }
   }
 }
