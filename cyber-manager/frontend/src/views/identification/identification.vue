@@ -107,6 +107,11 @@
       </v-data-table>
       
       <div class="footer-box">
+        <!-- DELETE THIS BUTTON (IS TEST)  -->
+        <v-btn @click="generatePdf()">
+          generar pdf
+        </v-btn>
+
         <v-btn @click="saveOrder()" class="btn-footer" small outlined>
           GUARDAR
           <v-icon>save</v-icon>

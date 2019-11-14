@@ -2,6 +2,7 @@ import User from "../../models/User";
 import PageData from '../../data/PageData';
 import Validation from "../../utils/Validation";
 import vue from 'vue';
+import InputPdf from '../../utils/pdfDocuments/InputPDF';
 
 export default class IndentificationCode extends vue {
   private v: Validation = new Validation();
@@ -137,5 +138,10 @@ export default class IndentificationCode extends vue {
   }
 
   private deleteOrder(item: any) {
+  }
+
+  private generatePdf() {
+    let inputPdf: InputPdf = new InputPdf();
+    inputPdf.generateDoc();
   }
 }
