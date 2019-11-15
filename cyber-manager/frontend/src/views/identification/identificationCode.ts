@@ -11,7 +11,7 @@ export default class IndentificationCode extends vue {
     date: ''
   }
 
-  private orderData = {
+  private orderData: any = {
     formName: 'orderData',
     serviceNumber: {
       value: 2
@@ -27,7 +27,7 @@ export default class IndentificationCode extends vue {
     },
   }
 
-  private clientData = {
+  private clientData: any = {
     formName: 'clientData',
     id: {
       value: 0,
@@ -47,7 +47,7 @@ export default class IndentificationCode extends vue {
     },
   }
 
-  private articleData = {
+  private articleData: any = {
     formName: 'articleData',
     id: {
       value: 0,
@@ -71,7 +71,7 @@ export default class IndentificationCode extends vue {
     },
   }
 
-  private others = {
+  private others: any = {
     repair: false,
     pay: false,
     deliver: false,
@@ -142,6 +142,29 @@ export default class IndentificationCode extends vue {
 
   private generatePdf() {
     let inputPdf: InputPdf = new InputPdf();
-    inputPdf.generateDoc();
+    let data = {
+      enterprise: {
+        name: 'CyberPunk',
+        location: 'Enrique Rodo 2344',
+        phone: '093 333 443',
+        web: 'www.coso.com',
+      },
+      order: {
+        number: 123232,
+        date: '12/12/20 12:23',
+        problem: 'Pantalla rota, cambio de vidrio y carcasa',
+        notes: 'pide agregarle vidrio gorilla glass 2334'
+      },
+      client: {
+        name: 'Damian Rodriguez',
+        phone: '099 999 999'
+      },
+      article: {
+        name: 'celular',
+        brand: 'Alcatel',
+        model: 'P344'
+      }
+    }
+    inputPdf.generateDoc(data);
   }
 }

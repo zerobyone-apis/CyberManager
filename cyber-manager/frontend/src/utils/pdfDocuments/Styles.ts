@@ -46,25 +46,31 @@ export default class Styles {
 
   // methods of draw
 
-  writeSmallText(text: string, pos: { x: number, y: number } | string, doc: jsPDF) {
-    doc.setFontSize(this.config.smallText.size);
-    this.write(text, pos, doc);
-    this.positionText.y += this.config.smallText.bottomSpace;
+  writeText(text: string, fontSize: number, pos: { x: number, y: number } | string, doc: jsPDF, inline?: boolean | undefined) {
+    doc.setFontSize(fontSize);
+    if (!inline) {
+      this.positionText.y += fontSize + 5;
+    }
+    this.write(text, pos, doc, false);
   }
 
-  writeText(text: string, pos: { x: number, y: number } | string, doc: jsPDF) {
-    doc.setFontSize(this.config.text.size);
-    this.write(text, pos, doc);
-    this.positionText.y += this.config.text.bottomSpace;
+  writeRectText(text: string, fontSize: number, pos: { x: number, y: number } | string, doc: jsPDF, inline?: boolean | undefined) {
+    doc.setFontSize(fontSize);
+    if (!inline) {
+      this.positionText.y += fontSize + 5;
+    }
+    // doc.setFillColor( 213, 213, 213 );
+    this.write(text, pos, doc, true);
   }
 
-  writeTitle(text: string, pos: { x: number, y: number } | string, doc: jsPDF) {
-    doc.setFontSize(this.config.title.size);
-    this.write(text, pos, doc);
-    this.positionText.y += this.config.title.bottomSpace;
+  drawLine(fontSize: number, doc: jsPDF) {
+    doc.setFontSize(fontSize);
+    // doc.setFillColor( 213, 213, 213 );
+    this.positionText.y += 15;
+    doc.rect(this.marginsText.width, this.positionText.y, (this.pageSize.width-this.pageSize.exededWidth-this.marginsText.width*2), 0.5) //Fill and Border
   }
 
-  write(text: string, pos: { x: number, y: number } | string, doc: jsPDF) {
+  write(text: string, pos: { x: number, y: number } | string, doc: jsPDF, rect?: boolean | undefined) {
     if (typeof (pos) == 'string') {
       let coo = {
         x: -1,
@@ -77,10 +83,10 @@ export default class Styles {
           break;
         case 'center':
           let widthText = doc.getTextWidth(text);
-          coo.x = ((this.pageSize.width-this.pageSize.exededWidth) - widthText) / 2;
+          coo.x = ((this.pageSize.width - this.pageSize.exededWidth) - widthText) / 2;
           break;
         case 'right':
-          coo.x = ((this.pageSize.width-this.pageSize.exededWidth) - this.marginsText.width) - doc.getTextWidth(text);
+          coo.x = ((this.pageSize.width - this.pageSize.exededWidth) - this.marginsText.width) - doc.getTextWidth(text);
           break;
         default:
           //default = left
@@ -89,8 +95,14 @@ export default class Styles {
       }
       coo.y = this.positionText.y;
       doc.text(text, coo.x, coo.y);
+      if (rect) {
+        doc.rect(coo.x-1, (coo.y-doc.getLineHeight()+3), doc.getTextWidth(text)+2, doc.getLineHeight()-2) //Fill and Border
+      }
     } else {
       doc.text(text, pos.x, pos.y);
+      if (rect) {
+        doc.rect(pos.x-1, (pos.y-doc.getLineHeight()+3), doc.getTextWidth(text)+2, doc.getLineHeight()-2) //Fill and Border
+      }
     }
   }
 }

@@ -3,59 +3,40 @@ import jsPDF from 'jspdf';
 import Styles from './Styles';
 
 export default class InputPdf extends Styles {
-
-  private data = {
-    enterprise: {
-      name: 'CyberPunk',
-      location: 'Enrique Rodo 2344',
-      phone: '093 333 443',
-      web: 'www.coso.com',
-    },
-    order: {
-      number: 123232,
-      date: '12/12/20 12:23',
-      problem: 'Pantalla rota, cambio de vidrio y carcasa',
-      notes: 'pide agregarle vidrio gorilla glass 2334'
-    },
-    client: {
-      name: 'Damian Rodriguez',
-      phone: '099 999 999'
-    },
-    article: {
-      name: 'celular',
-      brand: 'Alcatel',
-      model: 'P344'
-    }
-  }
-
-
-  generateDoc() {
+  
+  generateDoc(data: any) {
     this.init(30, 30);
     let doc = new jsPDF("p", "px", [this.pageSize.width, this.pageSize.heigth]);
-    this.writeTitle(this.data.enterprise.name, 'center', doc);
+    this.writeText(data.enterprise.name, 14, 'center', doc);
 
-    this.writeSmallText(this.data.enterprise.location, 'center', doc);
-    this.writeSmallText(this.data.enterprise.phone, 'center', doc);
-    this.writeSmallText(this.data.enterprise.web, 'center', doc);
+    this.writeText(data.enterprise.location, 10, 'center', doc);
+    this.writeText(data.enterprise.phone, 10, 'center', doc);
+    this.writeText(data.enterprise.web, 10, 'center', doc);
 
-    this.writeText('Numero de Ordern: '+this.data.order.number, 'left', doc);
-    this.writeText('Fecha: ' + this.data.order.date, 'left', doc);
-    
-    this.writeText('Nombre del cliente: ' + this.data.client.name, 'left', doc);
-    this.writeText('Telefono: ' + this.data.client.phone, 'right', doc);
-    
-    this.writeText('Articulo: ' + this.data.article.name, 'left', doc);
-    this.writeText('Modelo: ' + this.data.article.model, 'right', doc);
+    this.writeRectText('Numero de Ordern: ' + data.order.number, 12, 'left', doc)
+    this.writeText('Fecha: ' + data.order.date, 12, 'left', doc);
 
-    this.writeText('Marca: ' + this.data.article.brand, 'left', doc);
+    this.writeText('', 14, 'center', doc); // space
+    this.writeText('Nombre del cliente: ' + data.client.name, 12, 'left', doc);
+    this.writeText('Telefono: ' + data.client.phone, 12, 'right', doc, true);
     
-    this.writeText('Falla: ' + this.data.order.problem, 'left', doc);
-    
-    this.writeText('Observaciones: ' + this.data.order.notes, 'left', doc);
-    
-    // this.writeText('Observaciones: sdsadsad' + this.data.order.notes, 'left', doc);
-    doc.text('Observaciones: sdsadsad', 400, 300, 0, -90)
+    this.drawLine(0.5, doc);
 
+    this.writeText('Articulo: ' + data.article.name, 12, 'left', doc);
+    this.writeText('Modelo: ' + data.article.model, 12, 'right', doc, true);
+    this.writeText('Marca: ' + data.article.brand, 12, 'center', doc, true);
+
+    this.drawLine(0.5, doc);
+    this.writeText('Falla: ', 12, 'left', doc);
+    this.writeText(data.order.problem, 12, 'left', doc);
+    this.writeText('', 14, 'center', doc); // space
+    
+    this.writeText('Observaciones: ', 12, 'left', doc);
+    this.writeText(data.order.notes, 12, 'left', doc);
+
+    this.writeText('', 20, 'center', doc); // space
+    this.writeText('Firma del cliente:________________________________ ', 12, 'right', doc);
+    
     doc.save('a4 xd.pdf');
   }
 }
