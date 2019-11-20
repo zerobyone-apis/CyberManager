@@ -3,39 +3,29 @@
   "version": "1.0.0",
   "main": "dist/src/app",
   "scripts": {
-    "dev": "tsc -p tsconfig.json && node src/app.js",
-    "tsc": "tsc",
+    "dev": "nodemon src/index.ts --exec ts-node",
+    "build": "tsc",
     "serve": "concurrently \"tsc -w\" \"nodemon ./dist/src/app.js\""
   },
   "repository": "",
   "license": "MIT",
   "dependencies": {
-    "@hapi/joi": "^15.0.3",
     "@types/express": "^4.16.1",
+    "@types/mysql2": "github:types/mysql2",
     "@types/node": "^12.0.7",
     "bcryptjs": "^2.4.3",
-    "cassandra-driver": "^4.1.0",
-    "chalk": "^2.4.2",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.16.4",
-    "express-graphql": "^0.9.0",
-    "express-joi-validation": "^0.3.0",
-    "graphql": "^14.5.8",
-    "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.17.1",
     "mysql2": "^1.7.0",
-    "node": "^12.2.0",
-    "sequelize": "^5.21.1",
-    "socket.io": "^2.3.0",
-    "typescript": "^3.4.5"
+    "node": "^12.2.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.6",
-    "@types/dotenv": "^6.1.1",
-    "@types/socket.io": "^2.1.4",
+    "@types/dotenv": "^8.2.0",
     "concurrently": "^5.0.0",
-    "nodemon": "^1.19.3"
+    "express": "^4.17.1",
+    "nodemon": "^1.19.4",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2"
   }
 }

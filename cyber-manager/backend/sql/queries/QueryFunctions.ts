@@ -1,6 +1,6 @@
-import MysqlConnection from "../../sql/connection/MysqlConnection";
-import ResultObject from "../models/ResultObject";
-import Logger from "../utils/Logger";
+import MysqlConnection from "../connection/MysqlConnection";
+import ResultObject from "../../models/ResultObject";
+import Logger from "../../utils/Logger";
 import { fail } from "assert";
 
 export default class QueryFunctions {

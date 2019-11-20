@@ -1,24 +1,36 @@
-import http from 'http';
-import MysqlConnection from './connection/MysqlConnection';
-import Routes from './routes';
-import Logger from './utils/Logger';
-import Express, { Application } from 'express';
+import Express, { Application } from "express";
+import morgan from "morgan";
 
-import { config } from 'dotenv';
-config(); // load the .env variables
+//Routes
+import IndexRoutes from "./routes/routes";
+import routes from "./routes/user.routes";
+export class App {
+  private app: Application;
 
-const app: Application = Express();
-const server = http.createServer(app);
+  constructor(private port: number | string) {
+    this.app = Express();
+    this.settings();
+    this.middlewares();
+    this.routes();
+  }
 
-async function init() {
-  app.use(Express.json());
-  app.use(Express.urlencoded({ extended: true }));
-  app.use('/api', Routes);
-  try {
-    MysqlConnection.connect(server);
-  } catch (ex) {
-    Logger.fatal('Error in App -' + ex);
+  //Settings and Middlewares
+  settings() {
+    this.app.set("port", this.port || process.env.PORT || 3000);
+  }
+  middlewares() {
+    this.app.use(morgan("dev"));
+    this.app.use(Express.json());
+  }
+
+  routes() {
+    this.app.use(IndexRoutes);
+    this.app.use("/post", routes);
+  }
+
+  //Functions
+  async listen() {
+    await this.app.listen(this.app.get("port"));
+    console.log(`Server on port ${this.app.get("port")}`);
   }
 }
-
-init();
