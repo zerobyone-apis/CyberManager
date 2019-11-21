@@ -1,40 +1,62 @@
 export default class Validation {
 
-  private fieldsFail = [];
+  private fieldsFail: any = [];
 
-  validateFields(forms: any[]) {
+  validateFields(object: any, fieldsArrays: any[]) {
     this.fieldsFail = [];
     let noErrors = true;
-    forms.forEach(fields => {
-      Object.keys(fields).forEach((field: any) => {
-        if (fields[field].value == '' && fields[field].required == true) {
-          noErrors = false;
-          let fieldError = {
-            name: field,
-            form: fields.formName,
-            error: 'campo requerido'
-          }
-          this.fieldsFail.push(fieldError);
+
+    fieldsArrays.forEach((fieldArray: { objectName: string, fields: string[][] }) => {
+      fieldArray.fields.forEach((field: string[]) => {
+        switch (field[1]) {
+          case 'string':
+            if (object[field[0]] == '') {
+              noErrors = false;
+              let fieldError = {
+                name: field[0],
+                form: fieldArray.objectName,
+                error: 'el campo es requerido'
+              }
+              this.fieldsFail.push(fieldError);
+            }
+            break;
+          case 'number':
+            if (Number(object[field[0]]) === NaN) {
+              noErrors = false;
+              let fieldError = {
+                name: field[0],
+                form: fieldArray.objectName,
+                error: 'el campo solo debe contener numeros'
+              }
+              this.fieldsFail.push(fieldError);
+            }
+            break;
         }
       });
     });
+    // console.log(this.fieldsFail)
     return noErrors;
   }
 
-  get(nameField: string) { // formName.field
+  // get the error of the field, if not have errors return ''
+  get(route: string) { // 'objectName.field'
     let errorString = '';
+    const objectName = route.split('.')[0];
+    const fieldName = route.split('.')[1];
 
-    const formName = nameField.split('.')[0];
-    const fieldName = nameField.split('.')[1];
-
-    this.fieldsFail.forEach(field => {
-      if (field.form == formName && field.name == fieldName) {
+    this.fieldsFail.forEach((field: any) => {
+      if (field.form == objectName && field.name == fieldName) {
         errorString = field.error;
       }
     });
     return errorString;
   }
 
+  clearFails() {
+    this.fieldsFail = [];
+  }
+
+  // return object clean
   clearObject(object: any) {
     try {
       Object.keys(object).forEach((key: any) => {
@@ -44,8 +66,7 @@ export default class Validation {
       })
       return object;
     } catch (error) {
-      console.error(error)
-      return {};
+      return object;
     }
   }
 }
