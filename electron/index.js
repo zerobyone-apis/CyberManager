@@ -12,13 +12,13 @@ let baseUrl;
 
 function createWindow(callback) {
   mainWindow = new BrowserWindow({
-    width: 950,
-    height: 850,
+    width: 1000,
+    height: 950,
     show: false, // hide until ready-to-show
-    webPreferences: {
-      preload: path.join(__dirname, "preload.js")
-      // nodeIntegration: true
-    }
+    // webPreferences: {
+    //   preload: path.join(__dirname, "preload.js")
+    //   // nodeIntegration: true
+    // }
   });
 
   function stopServer() {
