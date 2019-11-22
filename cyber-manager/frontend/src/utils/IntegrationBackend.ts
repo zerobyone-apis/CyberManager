@@ -7,7 +7,7 @@ export default class IntegrationBackend {
     this.axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
     const config = {
       method: method,
-      url: this.baseUrl,
+      url: this.baseUrl + (route == undefined ? '' : route),
       data: {
         data // This is the body part
       },
@@ -19,5 +19,3 @@ export default class IntegrationBackend {
     return res.data;
   }
 }
-
-
