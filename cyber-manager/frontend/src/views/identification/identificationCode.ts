@@ -1,74 +1,44 @@
-import User from "../../models/User";
-import PageData from '../../data/PageData';
-import Validation from "../../utils/Validation";
 import vue from 'vue';
+import Validation from "../../utils/Validation";
 import InputPdf from '../../utils/pdfDocuments/InputPDF';
 
+// Models
+import Order from "@/models/Order";
+import OrderList from "@/models/OrderList";
+
+
 export default class IndentificationCode extends vue {
+
+  // my litte class of validation
   private v: Validation = new Validation();
 
-  private reception = {
-    date: ''
+  // interactionsMode is used for change the state of the buttons
+  private interactionsMode = {
+    order: 0 // 0 = add / 1 = save
   }
 
-  private orderData: any = {
-    formName: 'orderData',
-    serviceNumber: {
-      value: 2
-    },
-    receptionDate: {
-      value: ''
-    },
-    damage: {
-      value: ''
-    },
-    notes: {
-      value: ''
-    },
-  }
+  private newOrder: Order = new Order();
+  private orders: OrderList = new OrderList();
+  private selectedOrder: number = -1; // index in orders
 
-  private clientData: any = {
-    formName: 'clientData',
-    id: {
-      value: 0,
-      required: false,
-    },
-    name: {
-      value: '',
-      required: true,
-    },
-    location: {
-      value: '',
-      required: true,
-    },
-    phone: {
-      value: '',
-      required: true,
-    },
-  }
-
-  private articleData: any = {
-    formName: 'articleData',
-    id: {
-      value: 0,
-      required: false,
-    },
-    name: {
-      value: '',
-      required: true,
-    },
-    brand: {
-      value: '',
-      required: true,
-    }, // marca
-    model: {
-      value: '',
-      required: true,
-    },
-    serial: {
-      value: '',
-      required: true,
-    },
+  // vars used for validation into the newOrder
+  // [ field-name, type: string, int ]
+  private clientFields: any = {
+    objectName: 'newOrder',
+    fields: [
+      ['clientName', 'string'],
+      ['clientPhone', 'string']
+    ]
+  };
+  private articleFields: any = {
+    objectName: 'newOrder',
+    fields: [
+      ['article', 'string'],
+      ['brand', 'string'],
+      ['model', 'string'],
+      // ['failReported', 'string'], not required
+      // ['observations', 'string']
+    ]
   }
 
   private others: any = {
@@ -80,64 +50,78 @@ export default class IndentificationCode extends vue {
 
   private headerOrders = [
     { text: 'Nro', value: 'id' },
-    { text: 'Cliente', value: 'client.name' },
+    { text: 'Cliente', value: '_clientName' },
     { text: "Acciones", value: 'action' }
   ]
 
-  private orders = [
-    {
-      id: 1,
-      receptionDate: '12/02/20',
-      damage: 'rotura de pantalla y cambio de vidrio',
-      notes: 'cambio de vidrio a glass 2',
-      client: {
-        id: 1,
-        name: 'Damian',
-        location: 'Rincon 1207',
-        phone: '099 232 343',
-      },
-      article: {
-        id: 1,
-        name: 'Celular',
-        brand: 'Motorola',
-        model: 'c112',
-        serial: '655444534232'
-      },
-    }
-  ];
+  // Methods
+  private addNewOrder() {
+    if (this.v.validateFields(this.newOrder, [this.clientFields, this.articleFields])) {
+      let order: Order = new Order();
+      order.clientName = this.newOrder.clientName;
+      order.clientPhone = this.newOrder.clientPhone;
+      order.article = this.newOrder.article;
+      order.model = this.newOrder.model;
+      order.brand = this.newOrder.brand;
+      order.failReported = this.newOrder.failReported;
+      order.observations = this.newOrder.observations;
 
-  private selectedOrder: boolean = false;
-
-  private newOrder() {
-  }
-
-  private saveOrder() {
-    if (this.v.validateFields([this.clientData, this.articleData])) {
-      // clear all fields
-      Object.assign(this.clientData, this.v.clearObject(this.clientData));
-      Object.assign(this.articleData, this.v.clearObject(this.articleData));
-      Object.assign(this.orderData, this.v.clearObject(this.orderData));
-      this.selectedOrder = false;
+      // Integration Backend POST orders send()
+      const response: any = { statusCode: 200, value: { id: 1 } }
+      if (response.statusCode == 200) {
+        order.id = response.value.id;
+        this.orders.add(order);
+        //clear fields
+        Object.assign(this.newOrder, new Order());
+      }
     }
   }
 
-  private editOrder(item: any) {
-    this.selectedOrder = true;
-    Object.keys(item.client).forEach(key => {
-      this.clientData[key].value = item.client[key];
-    });
-    Object.keys(item.article).forEach(key => {
-      // console.log(key)
-      this.articleData[key].value = item.article[key];
-    });
-
-    this.orderData.serviceNumber.value = item.id;
-    this.orderData.damage.value = item.damage;
-    this.orderData.receptionDate.value = item.receptionDate;
-    this.orderData.notes.value = item.notes;
+  private editNewOrder(item: any) {
+    Object.assign(this.newOrder, item);
+    this.selectedOrder = this.orders.getArray().indexOf(item);
+    this.interactionsMode.order = 1; // save mode
   }
 
   private deleteOrder(item: any) {
+    if (confirm('Seguro que desea eliminar la orden seleccionada?')) {
+      // Integration Backend DELETE order send()
+      const response: any = { statusCode: 200, value: { id: 1 } }
+      if (response.statusCode == 200) {
+        this.orders.remove(this.selectedOrder);
+      }
+    }
+  }
+
+  private saveOrder() {
+    if (this.v.validateFields(this.newOrder, [this.clientFields, this.articleFields])) {
+      // Integration Backend POST orders send()
+      const response: any = { statusCode: 200, value: { id: 1 } }
+      if (response.statusCode == 200) {
+        let order: Order = this.orders.get(this.selectedOrder);
+        Object.assign(order, this.newOrder);
+        this.orders.set(this.selectedOrder, order);
+        Object.assign(this.newOrder, new Order());
+        this.selectedOrder = -1;
+        this.interactionsMode.order = 0; // mode new 
+      }
+    }
+  }
+
+  private cancelSaveOrder() {
+    if (confirm('Seguro que desea cancelar?')) {
+      Object.assign(this.newOrder, new Order());
+      this.selectedOrder = -1;
+      this.interactionsMode.order = 0; // mode new 
+    }
+  }
+
+  private changeColorToEdit(item: any) {
+    if(this.selectedOrder == this.orders.getArray().indexOf(item)) {
+      return 'green';
+    }else{
+      return 'grey';
+    }
   }
 
   private generatePdf() {

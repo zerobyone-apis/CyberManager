@@ -1,5 +1,11 @@
 <template v-cloak>
-  <v-toolbar id="toolbar" fixed light height="65px" v-if="!$store.getters.drawerLeft">
+  <v-toolbar 
+    v-if="!$store.getters.drawerLeft"
+    id="toolbar" 
+    fixed 
+    light 
+    height="65px">
+
     <!-- LEFT MENU - BUTTON  -->
     <v-btn
       class="left-menu-btn d-flex d-sm-none"
@@ -26,6 +32,7 @@
         class="toolbar-button"
         v-for="(item, index) in filteredConf"
         :key="index"
+        :disabled="$store.getters.selectedOrder != -1"
         :v-if="item.toolbar"
         @click="pageRouter(item.route)"
       >

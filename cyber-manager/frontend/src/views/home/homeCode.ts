@@ -1,96 +1,79 @@
-import XComponent from "../../components/XComponent";
-import User from "../../models/User";
-import PageData from '../../data/PageData';
-import Validation from "../../utils/Validation";
 import vue from 'vue';
+import Validation from "../../utils/Validation";
+
+// Models
+import User from '@/models/usuario';
+
 
 export default class HomeCode extends vue {
-  private data: any = new PageData();
+
+  // my litte class of validation
   private v: Validation = new Validation();
-  private fieldsError = {};
 
-  private signInData: any = {
-    formName: 'signInData',
-    username: {
-      value: '',
-      required: true,
-    },
-    password: {
-      value: '',
-      required: true,
-    },
-  }
-  private signInErrors = '';
+  private newUser = {
+    username: '',
+    password: '',
+    password2: '',
+  };
 
-  private signUpData: any = {
-    formName: 'signUpData',
-    username: {
-      value: '',
-      required: true,
-    },
-    password: {
-      value: '',
-      required: true,
-    },
-    password2: {
-      value: '',
-      required: true,
-    },
-  }
-  private signUpErrors = '';
+  // vars used for validation into the user
+  // [ field-name, type: string, int ]
+  private userFields: any = {
+    objectName: 'newUser',
+    fields: [
+      ['username', 'string'],
+      ['password', 'string']
+    ]
+  };
 
-  private dialogs: any = {
-    signIn: false,
-    signUp: false
-  }
+  // control step visible in the stepper
+  private wizard = 1;
 
-  async register() {
-    if (this.v.validateFields([this.signUpData])) {
-      if (this.signUpData.password.value == this.signUpData.password2.value) {
-        try {
-          let response = {
-            value: true,
-            statusCode: 200,
+  async signUp() {
+    if (this.v.validateFields(this.newUser, [this.userFields])) {
+      if (this.newUser.password == this.newUser.password2) {
+        // Integration Backend POST user send()
+        const response: any = { statusCode: 200, value: { id: 1 } }
+        if (response.statusCode == 200) {
+          let userData = {
+            id: response.value.id, // change this = response.value.id
+            username: this.newUser.username,
           }
-          if (response.value) {
-            let userData = {
-              id: 1, // change this = response.value.id
-              username: this.signUpData.username.value,
-            }
-            this['$store'].commit('userInfo', userData)
-            this["$router"].push('/Identification');
-          } else {
-            this.signUpErrors = 'Error ';
-          }
-        } catch (error) {
-          console.log(error)
+          // save in the store the user data
+          this['$store'].commit('userInfo', userData)
+          // goto Identification page
+          this["$router"].push('/Identification');
         }
       } else {
-        this.signUpErrors = 'Las contraseñas no coinciden';
+        alert('Las contraseñas no coinciden');
       }
     }
   }
 
-  async login() {
-    if (this.v.validateFields([this.signInData])) {
-      try {
-        let response = {
-          value: true,
-          statusCode: 200,
-        }
-        if (response.value) {
+  async signIn() {
+    if (this.v.validateFields(this.newUser, [this.userFields])) {
+      // Integration Backend POST orders send()
+      const response: any = { statusCode: 200, value: { id: 1 } }
+      switch (response.statusCode) {
+        case 200:
           let userData = {
-            id: 1, // change this = response.value.id
-            username: this.signInData.username.value,
+            id: response.value.id, // change this = response.value.id
+            username: this.newUser.username,
           }
+          // save in the store the user data
           this['$store'].commit('userInfo', userData)
+          // goto Identification page
           this["$router"].push('/Identification');
-        } else {
-          this.signInErrors = 'Usuario o la contraseña no son correctas';
-        }
-      } catch (error) {
-        console.log(error)
+          break;
+        case 401:
+            alert('El usuario o la contraseña no son correctas');
+          break;
       }
     }
+  }
+
+  private goToSignUp() {
+    this.v.clearFails();
+    this.wizard = 2;
   }
 }

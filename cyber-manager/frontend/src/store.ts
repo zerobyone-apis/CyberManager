@@ -19,6 +19,9 @@ export const store = new Vuex.Store({
       id: undefined,
       username: undefined,
     },
+    selectedOrder: {
+       id: -1,
+    }
   },
   mutations: {
     drawerLeft(state, value) {
@@ -29,6 +32,9 @@ export const store = new Vuex.Store({
     },
     accessDialog(state, value) {
       state.dialogs.access = value;
+    },
+    selectedOrder(state, value) {
+      state.selectedOrder.id = value.id;
     }
   },
   getters: {
@@ -36,7 +42,8 @@ export const store = new Vuex.Store({
     getUsername: state => state.userInfo.username,
     userLogged: state => state.userInfo.id ? undefined : false,
     drawerLeft: state => state.drawerLeft,
-    accessDialog: state => state.dialogs.access
+    accessDialog: state => state.dialogs.access,
+    orderSelected: state => state.selectedOrder.id,
   },
   plugins: [vuexLocal.plugin]
 });

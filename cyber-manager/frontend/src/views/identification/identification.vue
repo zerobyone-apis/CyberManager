@@ -3,140 +3,144 @@
     <div class="identify-box">
       <div class="identify">
         <div class="service-number">
-          <v-text-field
-            outlined 
-            dense 
-            v-model="orderData.serviceNumber.value" 
-            label="Orden de servicio"
-          ></v-text-field>
+          <v-text-field readonly outlined dense v-model="newOrder.id" label="Orden de servicio"></v-text-field>
         </div>
         <div class="reception-date">
-          <v-text-field 
-            outlined 
-            dense 
-            v-model="orderData.receptionDate.value" 
-            label="Fecha de recepcion"
-          ></v-text-field>
+          <v-text-field readonly outlined dense v-model="newOrder.startDate" label="recepcion"></v-text-field>
         </div>
       </div>
 
       <div class="client-fields-box">
+        <p class="font-title">Datos del cliente</p>
         <v-text-field
-          :error="v.get('clientData.name') != ''"
-          :error-messages="v.get('clientData.name')"    
-          outlined 
-          dense 
-          v-model="clientData.name.value" 
+          :error="v.get('newOrder.clientName') != ''"
+          :error-messages="v.get('newOrder.clientName')"
+          outlined
+          dense
+          v-model="newOrder.clientName"
           label="Nombre del cliente"
         ></v-text-field>
-        <v-text-field 
-          :error="v.get('clientData.location') != ''"
-          :error-messages="v.get('clientData.location')"    
-          outlined 
-          dense 
-          v-model="clientData.location.value" 
-          label="Direccion"
-        ></v-text-field>
-        <v-text-field 
-          :error="v.get('clientData.phone') != ''"
-          :error-messages="v.get('clientData.phone')"    
-          outlined 
-          dense 
-          v-model="clientData.phone.value" 
+        <v-text-field
+          :error="v.get('newOrder.clientPhone') != ''"
+          :error-messages="v.get('newOrder.clientPhone')"
+          outlined
+          dense
+          v-model="newOrder.clientPhone"
           label="Telefono"
         ></v-text-field>
       </div>
 
       <div class="article-fields-box">
+        <p class="font-title">Datos del articulo</p>
         <v-text-field
-          :error="v.get('articleData.name') != ''"
-          :error-messages="v.get('articleData.name')"     
-          outlined 
-          dense 
-          v-model="articleData.name.value" 
+          :error="v.get('newOrder.article') != ''"
+          :error-messages="v.get('newOrder.article')"
+          outlined
+          dense
+          v-model="newOrder.article"
           label="Articulo"
         ></v-text-field>
-        <v-text-field 
-          :error="v.get('articleData.brand') != ''"
-          :error-messages="v.get('articleData.brand')"     
-          outlined 
-          dense 
-          v-model="articleData.brand.value" 
+        <v-text-field
+          :error="v.get('newOrder.brand') != ''"
+          :error-messages="v.get('newOrder.brand')"
+          outlined
+          dense
+          v-model="newOrder.brand"
           label="Marca"
         ></v-text-field>
-        <v-text-field 
-          :error="v.get('articleData.model') != ''"
-          :error-messages="v.get('articleData.model')"  
-          outlined 
-          dense 
-          v-model="articleData.model.value" 
+        <v-text-field
+          :error="v.get('newOrder.model') != ''"
+          :error-messages="v.get('newOrder.model')"
+          outlined
+          dense
+          v-model="newOrder.model"
           label="Modelo"
-        ></v-text-field>
-        <v-text-field 
-          :error="v.get('articleData.serial') != ''"
-          :error-messages="v.get('articleData.serial')"  
-          outlined 
-          dense 
-          v-model="articleData.serial.value" 
-          label="Nro de serie"
         ></v-text-field>
       </div>
     </div>
 
+    <!-- TABLE OF ORDERS -->
     <div class="orders-box">
       <v-data-table
         :height="'100%'"
-        v-model="orders"
+        :v-model="orders.getArray()"
         :headers="headerOrders"
-        :items="orders"
-        :items-per-page="5"
-        item-key="name"
+        :items="orders.getArray()"
+        :items-per-page="8"
+        item-key="id"
         show-select
         single-select
-        class="orders-table elevation-1"
+        class="orders-table elevation-0"
       >
-        <template v-slot:top>
-          <div class="header-table">
-            <v-btn @click="newOrder()" outlined>Nuevo</v-btn>
-          </div>
-        </template>
         <template v-slot:item.action="{ item }">
-          <v-icon :color="selectedOrder ? 'green' : 'grey'" class="mr-3" @click="editOrder(item)">edit</v-icon>
-          <v-icon @click="deleteOrder(item)">delete</v-icon>
+          <!-- button edit item in orders table -->
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon
+                v-on="on"
+                :color="changeColorToEdit(item)"
+                class="mr-3"
+                @click="editNewOrder(item)"
+              >edit</v-icon>
+            </template>
+            <span>Editar orden</span>
+          </v-tooltip>
+          <!-- button delete selected order  -->
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <v-icon color="red" v-on="on" @click="deleteOrder(item)">delete</v-icon>
+            </template>
+            <span>Borrar orden</span>
+          </v-tooltip>
         </template>
       </v-data-table>
-      
+
       <div class="footer-box">
         <!-- DELETE THIS BUTTON (IS TEST)  -->
-        <v-btn @click="generatePdf()">
-          generar pdf
-        </v-btn>
+        <v-btn v-if="false" @click="generatePdf()">generar pdf</v-btn>
 
-        <v-btn @click="saveOrder()" class="btn-footer" small outlined>
-          GUARDAR
-          <v-icon>save</v-icon>
+        <!-- buttons new, save, cancel a order  -->
+        <v-btn
+          v-if="interactionsMode.order == 0"
+          @click="addNewOrder()"
+          color="green"
+          class="btn-footer"
+          small
+        >
+          Nuevo
+          <v-icon>add</v-icon>
         </v-btn>
+        <div v-if="interactionsMode.order == 1">
+          <v-btn @click="saveOrder()" class="btn-footer" small outlined>
+            GUARDAR
+            <v-icon>save</v-icon>
+          </v-btn>
+          <v-btn @click="cancelSaveOrder()" small outlined>
+            Cancelar
+            <v-icon>cancel</v-icon>
+          </v-btn>
+        </div>
       </div>
     </div>
 
     <div class="notes-box">
       <div class="damage">
-        <v-textarea 
-          v-model="orderData.damage.value"
-          outlined 
-          dense 
-          name="input-7-1" 
-          label="Daño reportado" 
+        <v-textarea
+          v-model="newOrder.failReported"
+          outlined
+          dense
+          name="input-7-1"
+          label="Daño reportado"
           value
         ></v-textarea>
       </div>
       <div class="notes">
-        <v-textarea 
-          v-model="orderData.notes.value"
-          outlined 
-          dense 
-          name="input-7-1" 
-          label="Notas" 
+        <v-textarea
+          v-model="newOrder.observations"
+          outlined
+          dense
+          name="input-7-1"
+          label="Notas"
           value
         ></v-textarea>
       </div>
