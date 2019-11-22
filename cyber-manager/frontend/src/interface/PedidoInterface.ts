@@ -1,16 +1,16 @@
 export interface PedidoInterface {
-  idOrden: string | number;
-  fechaIngreso: Date | string;
+  idOrden: number;
+  fechaIngreso: string;
   nombreCliente: string;
-  telCliente: number;
+  telCliente: string;
   articulo: string | undefined;
   modelo?: string | undefined;
   marca?: string | undefined;
   fallReportada: string;
   observaciones: string;
   isCanceled: boolean | number;
-  fechaReparacion: Date | string;
-  fechaEntrega: Date | string;
+  fechaReparacion: string;
+  fechaEntrega: string;
   reparacion: string;
   precio: number;
 }
