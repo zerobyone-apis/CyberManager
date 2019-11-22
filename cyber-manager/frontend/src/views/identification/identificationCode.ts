@@ -23,6 +23,9 @@ export default class IndentificationCode extends vue {
     order: 0 // 0 = add / 1 = save
   }
 
+  // Control activity of the buttons of the main actions
+  private disabledButtons: boolean = false;
+
   private newOrder: Order = new Order();
   private orders: OrderList = new OrderList();
   private selectedOrder: number = -1; // index in orders
@@ -78,6 +81,7 @@ export default class IndentificationCode extends vue {
 
   private async addNewOrder() {
     if (this.v.validateFields(this.newOrder, [this.clientFields, this.articleFields])) {
+      this.disabledButtons = true; // DISABLED BUTTONS
       let order: Order = new Order();
       order.clientName = this.newOrder.clientName;
       order.clientPhone = this.newOrder.clientPhone;
@@ -117,6 +121,7 @@ export default class IndentificationCode extends vue {
       } catch (error) {
         console.error(error);
       }
+      this.disabledButtons = false; // DISABLED BUTTONS
     }
   }
 
@@ -130,6 +135,7 @@ export default class IndentificationCode extends vue {
 
   private async deleteOrder(item: any) {
     if (confirm('Seguro que desea eliminar la orden seleccionada?')) {
+      this.disabledButtons = true; // DISABLED BUTTONS
       try {
         // Integration Backend DELETE order send()
         const response: any = await this.backend.send('delete', undefined, `/pedido/${ item['_id'] }`);
@@ -139,12 +145,13 @@ export default class IndentificationCode extends vue {
       } catch (error) {
         console.error(error)
       }
+      this.disabledButtons = false; // DISABLED BUTTONS
     }
   }
 
   private async saveOrder() {
     if (this.v.validateFields(this.newOrder, [this.clientFields, this.articleFields])) {
-
+      this.disabledButtons = true; // DISABLED BUTTONS
       let orderData: PedidoInterface = {
         nombreCliente: this.newOrder.clientName,
         idOrden: this.newOrder.id,
@@ -175,6 +182,7 @@ export default class IndentificationCode extends vue {
       } catch (error) {
         console.error(error);
       }
+      this.disabledButtons = false; // DISABLED BUTTONS
     }
   }
 

@@ -107,6 +107,7 @@
         <v-btn
           v-if="interactionsMode.order == 0"
           @click="addNewOrder()"
+          :disabled="disabledButtons"
           color="green"
           class="btn-footer"
           small
@@ -117,7 +118,8 @@
         <div v-if="interactionsMode.order == 1">
           
           <v-btn 
-            @click="saveOrder()" 
+            @click="saveOrder()"
+            :disabled="disabledButtons" 
             class="btn-footer" 
             small 
             outlined>
@@ -127,6 +129,7 @@
           
           <v-btn 
             @click="cancelSaveOrder()" 
+            :disabled="disabledButtons"
             small 
             outlined>
             Cancelar
