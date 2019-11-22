@@ -58,8 +58,11 @@ export async function updatePedido(req: Request, res: Response) {
       fechaReparacion,
       reparacion,
       precio
-    }: PedidoInterface = req.body;
+    }: PedidoInterface = req.body.data;
     const id = parseInt(req.params.id);
+    
+    // console.log(req.body)
+    
     const conn = await connect();
     const updated = await conn.query(query.pedido.update, [
       nombreCliente,
@@ -96,6 +99,7 @@ export async function cancelPedido(req: Request, res: Response) {
 }
 
 export async function deletePedido(req: Request, res: Response) {
+  console.log(req.params)
   try {
     const conn = await connect();
     const id = parseInt(req.params.id);

@@ -25,7 +25,7 @@ export class App {
   }
 
   routes() {
-    this.app.use(pedido);
+    this.app.use('/pedido', pedido);
     this.app.use("/user", routes);
   }
 
