@@ -2,7 +2,7 @@ import Express, { Application } from "express";
 import morgan from "morgan";
 
 //Routes
-import IndexRoutes from "./routes/pedido.routes";
+import pedido from "./routes/pedido.routes";
 import routes from "./routes/user.routes";
 export class App {
   private app: Application;
@@ -23,8 +23,8 @@ export class App {
   }
 
   routes() {
-    this.app.use(IndexRoutes);
-    this.app.use("/post", routes);
+    this.app.use(pedido);
+    this.app.use("/user", routes);
   }
 
   //Functions

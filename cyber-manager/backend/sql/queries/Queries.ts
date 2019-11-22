@@ -2,27 +2,23 @@ export default class Queries {
   private queries: Record<string, any> = {
     // event
     user: {
-      getAll: "SELECT * FROM pedido",
-      getId: "SELECT * FROM users u WHERE id = $1",
+      getAll: "SELECT * FROM usuario",
+      getId: "SELECT * FROM usuario WHERE idUser = ?",
       create: "INSERT INTO usuario SET ?",
       update:
-        "UPDATE usuario SET username = $1 , passwd = $2 , cargo = $3 , isAdmin = $4 , updateOn = $5 WHERE id = $3",
-      delete: "DELETE FROM usuario WHERE id = $1"
+        "UPDATE usuario SET username = ? , passwd = ? , cargo = ? , isAdmin = ? , updateOn = ? WHERE idUser = ?",
+      delete: "DELETE FROM usuario WHERE idUser = ?"
     },
 
     // joinEvent
     pedido: {
-      add:
-        "INSERT INTO organize.joinevent(idUser, idEvent, idType) VALUES(?,?,?);",
-      setUserType:
-        "UPDATE organize.joinevent SET idType=? WHERE idEvent=? and idUser=?;",
-      save:
-        "UPDATE organize.event SET name=?, location=?, start=?, end=?, description=?, guestsNumber=? WHERE id=?;",
-      delete: "DELETE FROM organize.joinevent WHERE idEvent=?;",
-      getJoinUsers:
-        "SELECT id, username, email FROM organize.usersystem u, joinevent j where u.id = j.idUser and j.idEvent = ? and j.idType = ?;",
-      getJoinEvents:
-        "SELECT e.* FROM organize.event e, joinevent j WHERE e.id = j.idEvent AND j.idUser = ? and j.idType = ?;"
+      getAll: "SELECT * FROM pedido",
+      getId: "SELECT * FROM pedido WHERE idOrden = ?",
+      create: "INSERT INTO pedido SET ?",
+      update:
+        "UPDATE pedido SET nombreCliente = ?, telCliente = ?, articulo = ?, modelo = ?, marca = ? , fallReportada = ?, observaciones = ?, isCanceled = ?, fechaReparacion = ?, reparacion = ? , precio = ? WHERE idOrder = ?",
+      delete: "DELETE FROM pedido WHERE idOrder = ?",
+      cancel: "UPDATE pedido SET isCanceled = ? WHERE idOrder = ?"
     },
 
     // option

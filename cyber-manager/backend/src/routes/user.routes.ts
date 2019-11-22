@@ -10,14 +10,14 @@ import {
 const router = Router();
 
 router
-  .route("/user")
+  .route("/")
   .get(getUsers)
-  .post(createUser)
-  .put(updateUser);
+  .post(createUser);
 
 router
-  .route("/user/:id")
+  .route("/:id")
   .get(findUserByID)
+  .put(updateUser)
   .delete(deleteUser);
 
 export default router;
