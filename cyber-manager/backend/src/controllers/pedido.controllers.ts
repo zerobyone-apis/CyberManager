@@ -5,10 +5,35 @@ import Queries from "../../sql/queries/Queries";
 const queryM = new Queries();
 const query = queryM.getQuery();
 
-export async function getPedidos(
-  req: Request,
-  res: Response
-): Promise<Response> {
+export async function createPedido(req: Request, res: Response) {
+  try {
+    // cambie esta linea .data para que funcione el paso de datos desde el frontend
+    // ver utils/IntegrationBackend - linea 11 
+    const newPedido: PedidoInterface = req.body.data;
+    const conn = await connect();
+    const created = await conn.query(query.pedido.create, [newPedido]);
+    return res.status(201).json(created);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json("Error creando pedido.");
+  }
+}
+
+export async function findByID(req: Request, res: Response) {
+  try {
+    const id = parseInt(req.params.id);
+    const conn = await connect();
+    const user = await conn.query(query.pedido.getId, [id]);
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(404)
+      .json(`Error buscando pedido con el id: ${req.params.id} `);
+  }
+}
+
+export async function getPedidos(req: Request, res: Response): Promise<Response> {
   try {
     const conn = await connect();
     const pedidos = await conn.query(query.pedido.getAll);
@@ -16,18 +41,6 @@ export async function getPedidos(
   } catch (error) {
     console.log(error);
     return res.status(404).json("Error obteniendo los Pedidos.");
-  }
-}
-
-export async function createPedido(req: Request, res: Response) {
-  try {
-    const newPedido: PedidoInterface = req.body;
-    const conn = await connect();
-    const created = await conn.query(query.pedido.create, [newPedido]);
-    return res.status(201).json(created);
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json("Error creando pedido.");
   }
 }
 
@@ -68,6 +81,7 @@ export async function updatePedido(req: Request, res: Response) {
     return res.status(400).json(`Error actualizando este pedido: ${req.body}`);
   }
 }
+
 export async function cancelPedido(req: Request, res: Response) {
   try {
     const { isCanceled }: PedidoInterface = req.body;
@@ -92,19 +106,5 @@ export async function deletePedido(req: Request, res: Response) {
   } catch (error) {
     console.log(error);
     return res.status(400).json("Error creando usuario.");
-  }
-}
-
-export async function findByID(req: Request, res: Response) {
-  try {
-    const id = parseInt(req.params.id);
-    const conn = await connect();
-    const user = await conn.query(query.pedido.getId, [id]);
-    return res.status(200).json(user);
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(404)
-      .json(`Error buscando pedido con el id: ${req.params.id} `);
   }
 }

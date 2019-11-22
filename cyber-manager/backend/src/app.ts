@@ -1,6 +1,7 @@
 import Express, { Application } from "express";
 import morgan from "morgan";
 
+let cors = require("cors");
 //Routes
 import pedido from "./routes/pedido.routes";
 import routes from "./routes/user.routes";
@@ -9,6 +10,7 @@ export class App {
 
   constructor(private port: number | string) {
     this.app = Express();
+    this.app.use(cors());
     this.settings();
     this.middlewares();
     this.routes();
