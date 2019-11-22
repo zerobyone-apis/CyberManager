@@ -163,5 +163,9 @@ import AddDialog from "../../components/dialogs/addDialog/addDialog.vue";
     AddDialog
   }
 })
-export default class Repairs extends IndentificationCode {}
+export default class Repairs extends IndentificationCode {
+  created() {
+    this.init();
+  }
+}
 </script>

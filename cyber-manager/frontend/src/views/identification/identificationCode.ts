@@ -1,6 +1,8 @@
 import vue from 'vue';
 import Validation from "../../utils/Validation";
 import InputPdf from '../../utils/pdfDocuments/InputPDF';
+import IntegrationBackend from '../../utils/IntegrationBackend';
+import { PedidoInterface } from '../../interface/PedidoInterface';
 
 // Models
 import Order from "@/models/Order";
@@ -8,6 +10,9 @@ import OrderList from "@/models/OrderList";
 
 
 export default class IndentificationCode extends vue {
+
+  // Integration Backend
+  private backend: IntegrationBackend = new IntegrationBackend();
 
   // my litte class of validation
   private v: Validation = new Validation();
@@ -36,8 +41,6 @@ export default class IndentificationCode extends vue {
       ['article', 'string'],
       ['brand', 'string'],
       ['model', 'string'],
-      // ['failReported', 'string'], not required
-      // ['observations', 'string']
     ]
   }
 
@@ -55,7 +58,24 @@ export default class IndentificationCode extends vue {
   ]
 
   // Methods
-  private addNewOrder() {
+  async init() {
+    let response = await this.backend.send('get');
+    response.forEach((item: PedidoInterface) => {
+      let order: Order = new Order();
+      order.id = item.idOrden;
+      order.clientName = item.nombreCliente;
+      order.clientPhone = item.telCliente;
+      order.article = item.articulo || '';
+      order.brand = item.marca || '';
+      order.model = item.modelo || '';
+      order.failReported = item.fallReportada;
+      order.observations = item.observaciones;
+      order.startDate = item.fechaIngreso;
+      this.orders.add(order);
+    });
+  }
+
+  private async addNewOrder() {
     if (this.v.validateFields(this.newOrder, [this.clientFields, this.articleFields])) {
       let order: Order = new Order();
       order.clientName = this.newOrder.clientName;
@@ -66,8 +86,26 @@ export default class IndentificationCode extends vue {
       order.failReported = this.newOrder.failReported;
       order.observations = this.newOrder.observations;
 
+      let orderData: PedidoInterface = {
+        idOrden: 0,
+        nombreCliente: order.clientName,
+        telCliente: order.clientPhone,
+        articulo: order.article,
+        marca: order.brand,
+        modelo: order.model,
+        fallReportada: order.failReported,
+        observaciones: order.observations,
+        fechaIngreso: '2019-11-24 22:12:10',// order.startDate,
+        isCanceled: false,
+        fechaEntrega: '2019-11-24 22:12:10',
+        fechaReparacion: '2019-11-24 22:12:10',
+        precio: 100,
+        reparacion: ''
+      }
+
       // Integration Backend POST orders send()
-      const response: any = { statusCode: 200, value: { id: 1 } }
+      const response: any = await this.backend.send('post', orderData);
+
       if (response.statusCode == 200) {
         order.id = response.value.id;
         this.orders.add(order);
@@ -117,9 +155,9 @@ export default class IndentificationCode extends vue {
   }
 
   private changeColorToEdit(item: any) {
-    if(this.selectedOrder == this.orders.getArray().indexOf(item)) {
+    if (this.selectedOrder == this.orders.getArray().indexOf(item)) {
       return 'green';
-    }else{
+    } else {
       return 'grey';
     }
   }
