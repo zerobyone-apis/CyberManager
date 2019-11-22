@@ -128,9 +128,11 @@ export default class IndentificationCode extends vue {
   private async deleteOrder(item: any) {
     if (confirm('Seguro que desea eliminar la orden seleccionada?')) {
       // Integration Backend DELETE order send()
-      const response: any = await this.backend.send('delete', undefined, ':id='+item['_id']);
-      if (response.statusCode == 200) {
+      try {
+        const response: any = await this.backend.send('delete', undefined, item['_id']);
         this.orders.remove(this.selectedOrder);
+      } catch (error) {
+        console.error(error)
       }
     }
   }
