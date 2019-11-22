@@ -1,6 +1,6 @@
 export default class IntegrationBackend {
 
-  private baseUrl = "http://localhost:3000/";
+  private baseUrl = "http://localhost:3000";
   private axios = require('axios');
 
   async send(method: string, data?: any, route?: string) {

@@ -97,7 +97,11 @@
 
       <div class="footer-box">
         <!-- DELETE THIS BUTTON (IS TEST)  -->
-        <v-btn v-if="false" @click="generatePdf()">generar pdf</v-btn>
+        <v-btn 
+          v-if="false" 
+          @click="generatePdf()">
+          generar pdf
+        </v-btn>
 
         <!-- buttons new, save, cancel a order  -->
         <v-btn
@@ -111,14 +115,24 @@
           <v-icon>add</v-icon>
         </v-btn>
         <div v-if="interactionsMode.order == 1">
-          <v-btn @click="saveOrder()" class="btn-footer" small outlined>
+          
+          <v-btn 
+            @click="saveOrder()" 
+            class="btn-footer" 
+            small 
+            outlined>
             GUARDAR
             <v-icon>save</v-icon>
           </v-btn>
-          <v-btn @click="cancelSaveOrder()" small outlined>
+          
+          <v-btn 
+            @click="cancelSaveOrder()" 
+            small 
+            outlined>
             Cancelar
             <v-icon>cancel</v-icon>
           </v-btn>
+
         </div>
       </div>
     </div>

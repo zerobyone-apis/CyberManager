@@ -60,7 +60,7 @@ export default class IndentificationCode extends vue {
 
   // Methods
   async init() {
-    let response = await this.backend.send('get');
+    let response: PedidoInterface[] = await this.backend.send('get', undefined, '/pedido');
     response.forEach((item: PedidoInterface) => {
       let order: Order = new Order();
       order.id = item.idOrden;
@@ -106,7 +106,9 @@ export default class IndentificationCode extends vue {
 
       // Integration Backend POST orders send()
       try {
-        const response: any = await this.backend.send('post', orderData);
+        const response: any = await this.backend.send('post', orderData, '/pedido');
+        console.log(response)
+
         order.id = response[0].insertId;
         console.log(order.id)
         this.orders.add(order);
@@ -122,14 +124,17 @@ export default class IndentificationCode extends vue {
     Object.assign(this.newOrder, item);
     // this.newOrder.startDate = new Datetime().getDate()
     this.selectedOrder = this.orders.getArray().indexOf(item);
+    this.v.clearFails();
     this.interactionsMode.order = 1; // save mode
   }
 
   private async deleteOrder(item: any) {
     if (confirm('Seguro que desea eliminar la orden seleccionada?')) {
-      // Integration Backend DELETE order send()
       try {
-        const response: any = await this.backend.send('delete', undefined, item['_id']);
+        // Integration Backend DELETE order send()
+        const response: any = await this.backend.send('delete', undefined, `/pedido/${ item['_id'] }`);
+        console.log(response)
+
         this.orders.remove(this.selectedOrder);
       } catch (error) {
         console.error(error)
@@ -137,17 +142,38 @@ export default class IndentificationCode extends vue {
     }
   }
 
-  private saveOrder() {
+  private async saveOrder() {
     if (this.v.validateFields(this.newOrder, [this.clientFields, this.articleFields])) {
-      // Integration Backend POST orders send()
-      const response: any = { statusCode: 200, value: { id: 1 } }
-      if (response.statusCode == 200) {
+
+      let orderData: PedidoInterface = {
+        nombreCliente: this.newOrder.clientName,
+        idOrden: this.newOrder.id,
+        telCliente: this.newOrder.clientPhone,
+        articulo: this.newOrder.article,
+        marca: this.newOrder.brand,
+        modelo: this.newOrder.model,
+        fallReportada: this.newOrder.failReported,
+        observaciones: this.newOrder.observations,
+        fechaIngreso: this.newOrder.startDate,
+        isCanceled: false,
+        fechaEntrega: new Datetime().now(),
+        fechaReparacion: new Datetime().now(),
+        precio: 100,
+        reparacion: ''
+      }
+      try {
+        // Integration Backend PUT orders send()
+        const response: any = await this.backend.send('put', orderData, `/pedido/${ orderData.idOrden }` );
+        console.log(response)
+
         let order: Order = this.orders.get(this.selectedOrder);
         Object.assign(order, this.newOrder);
         this.orders.set(this.selectedOrder, order);
         Object.assign(this.newOrder, new Order());
         this.selectedOrder = -1;
-        this.interactionsMode.order = 0; // mode new 
+        this.interactionsMode.order = 0; // mode new
+      } catch (error) {
+        console.error(error);
       }
     }
   }
@@ -155,6 +181,7 @@ export default class IndentificationCode extends vue {
   private cancelSaveOrder() {
     if (confirm('Seguro que desea cancelar?')) {
       Object.assign(this.newOrder, new Order());
+      this.v.clearFails();
       this.selectedOrder = -1;
       this.interactionsMode.order = 0; // mode new 
     }
