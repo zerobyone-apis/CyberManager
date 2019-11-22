@@ -3,6 +3,7 @@ import Validation from "../../utils/Validation";
 import InputPdf from '../../utils/pdfDocuments/InputPDF';
 import IntegrationBackend from '../../utils/IntegrationBackend';
 import { PedidoInterface } from '../../interface/PedidoInterface';
+import Datetime from '../../utils/TimeFunctions';
 
 // Models
 import Order from "@/models/Order";
@@ -95,22 +96,24 @@ export default class IndentificationCode extends vue {
         modelo: order.model,
         fallReportada: order.failReported,
         observaciones: order.observations,
-        fechaIngreso: '2019-11-24 22:12:10',// order.startDate,
+        fechaIngreso: new Datetime().now(),
         isCanceled: false,
-        fechaEntrega: '2019-11-24 22:12:10',
-        fechaReparacion: '2019-11-24 22:12:10',
+        fechaEntrega: new Datetime().now(),
+        fechaReparacion: new Datetime().now(),
         precio: 100,
         reparacion: ''
       }
 
       // Integration Backend POST orders send()
-      const response: any = await this.backend.send('post', orderData);
-
-      if (response.statusCode == 200) {
-        order.id = response.value.id;
+      try {
+        const response: any = await this.backend.send('post', orderData);
+        order.id = response[0].insertId;
+        console.log(order.id)
         this.orders.add(order);
         //clear fields
         Object.assign(this.newOrder, new Order());
+      } catch (error) {
+        console.error(error);
       }
     }
   }

@@ -1,3 +1,5 @@
+import Datetime from '@/utils/TimeFunctions';
+
 export default class Order {
   private _id: number;
   private _startDate: string;
@@ -11,7 +13,7 @@ export default class Order {
 
   constructor() {
     this._id = 0;
-    this._startDate = new Date().toLocaleDateString();    
+    this._startDate = new Datetime().getDate();    
     this._clientName = '';
     this._clientPhone = '';
     this._article = '';
