@@ -120,14 +120,15 @@ export default class IndentificationCode extends vue {
 
   private editNewOrder(item: any) {
     Object.assign(this.newOrder, item);
+    // this.newOrder.startDate = new Datetime().getDate()
     this.selectedOrder = this.orders.getArray().indexOf(item);
     this.interactionsMode.order = 1; // save mode
   }
 
-  private deleteOrder(item: any) {
+  private async deleteOrder(item: any) {
     if (confirm('Seguro que desea eliminar la orden seleccionada?')) {
       // Integration Backend DELETE order send()
-      const response: any = { statusCode: 200, value: { id: 1 } }
+      const response: any = await this.backend.send('delete', undefined, ':id='+item['_id']);
       if (response.statusCode == 200) {
         this.orders.remove(this.selectedOrder);
       }
