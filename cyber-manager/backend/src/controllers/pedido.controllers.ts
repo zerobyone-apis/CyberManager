@@ -1,39 +1,52 @@
 import { Request, Response } from "express";
 import { connect } from "../../sql/connection/MysqlConnection";
-import { User } from "../interface/UserInterface";
-import Queries from "../../sql/queries/Queries";
-const queryM = new Queries();
-const query = queryM.getQuery();
+import { PedidoInterface } from "../interface/PedidoInterface";
+import query from "../../sql/queries/Queries";
 
-export async function getUsers(req: Request, res: Response): Promise<Response> {
+export async function getPedidos(
+  req: Request,
+  res: Response
+): Promise<Response> {
   try {
     const conn = await connect();
-    const users = await conn.query(query.user.getAll);
-    return res.status(200).json(users[0]);
+    const pedidos = await conn.query("SELECT * FROM pedido");
+    return res.status(200).json(pedidos[0]);
   } catch (error) {
     console.log(error);
-    return res.status(404).json("Error obteniendo los Usuarios.");
+    return res.status(404).json("Error obteniendo los Pedidos.");
   }
 }
 
-export async function createUser(req: Request, res: Response) {
+export async function createPedido(req: Request, res: Response) {
   try {
-    const newUser: User = req.body;
+    const newPedido: PedidoInterface = req.body;
     const conn = await connect();
-    const created = await conn.query("INSERT INTO usuario SET ?", [newUser]);
+    const created = await conn.query("INSERT INTO pedido SET ?", [newPedido]);
     return res.status(201).json(created);
   } catch (error) {
     console.log(error);
-    return res.status(400).json("Error creando usuario.");
+    return res.status(400).json("Error creando pedido.");
   }
 }
 
-export async function updateUser(req: Request, res: Response) {
+export async function updatePedido(req: Request, res: Response) {
   try {
-    const { username, passwd, cargo, isAdmin }: User = req.body;
+    const {
+      nombreCliente,
+      telCliente,
+      articulo,
+      modelo,
+      marca,
+      fallReportada,
+      observaciones,
+      isCanceled,
+      fechaReparacion,
+      reparacion,
+      precio
+    }: PedidoInterface = req.body;
     const conn = await connect();
     const updated = await conn.query(
-      "UPDATE usuario SET username = $1 , passwd = $2 , cargo = $3 , isAdmin = $4 , updateOn = $5 WHERE id = $3",
+      "UPDATE usuario SET nombreCliente = $1, telCliente = $2, articulo = $3, modelo = $4, marca = $5 , nombreCliente = $1, telCliente = $2, articulo = $3, modelo = $4, marca = $5 WHERE id = $3",
       [username, passwd, cargo, isAdmin, Date.now()]
     );
     return res.status(200).json(updated);

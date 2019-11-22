@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { indexHome } from "../controllers/index.controllers";
+import { indexHome } from "../controllers/pedido.controllers";
 const router = Router();
 
 router
   .route("/")
   .get(indexHome)
-  .post((req, res) => res.json({ message: "Test Post" }));
+  .post();
 
 export default router;

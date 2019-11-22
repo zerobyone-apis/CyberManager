@@ -2,7 +2,7 @@ import Express, { Application } from "express";
 import morgan from "morgan";
 
 //Routes
-import IndexRoutes from "./routes/routes";
+import IndexRoutes from "./routes/pedido.routes";
 import routes from "./routes/user.routes";
 export class App {
   private app: Application;
@@ -13,7 +13,6 @@ export class App {
     this.middlewares();
     this.routes();
   }
-
   //Settings and Middlewares
   settings() {
     this.app.set("port", this.port || process.env.PORT || 3000);
