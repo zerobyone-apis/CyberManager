@@ -16,9 +16,9 @@ export default class Queries {
       getId: "SELECT * FROM pedido WHERE idOrden = ?",
       create: "INSERT INTO pedido SET ?",
       update:
-        "UPDATE pedido SET nombreCliente = ?, telCliente = ?, articulo = ?, modelo = ?, marca = ? , fallReportada = ?, observaciones = ?, isCanceled = ?, fechaReparacion = ?, reparacion = ? , precio = ? WHERE idOrder = ?",
-      delete: "DELETE FROM pedido WHERE idOrder = ?",
-      cancel: "UPDATE pedido SET isCanceled = ? WHERE idOrder = ?"
+        "UPDATE pedido SET nombreCliente = ?, telCliente = ?, articulo = ?, modelo = ?, marca = ? , fallReportada = ?, observaciones = ?, isCanceled = ?, fechaReparacion = ?, reparacion = ? , precio = ? WHERE idOrden = ?",
+      delete: "DELETE FROM pedido WHERE idOrden = ?",
+      cancel: "UPDATE pedido SET isCanceled = ? WHERE idOrden = ?"
     },
 
     // option
