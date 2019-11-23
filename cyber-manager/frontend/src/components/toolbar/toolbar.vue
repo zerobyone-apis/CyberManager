@@ -1,11 +1,5 @@
 <template v-cloak>
-  <v-toolbar 
-    v-if="!$store.getters.drawerLeft"
-    id="toolbar" 
-    fixed 
-    light 
-    height="65px">
-
+  <v-toolbar v-if="$store.getters.userLogged" id="toolbar" fixed light height="65px">
     <!-- LEFT MENU - BUTTON  -->
     <v-btn
       class="left-menu-btn d-flex d-sm-none"
@@ -18,7 +12,7 @@
     </v-btn>
 
     <!-- LOGO  -->
-    <v-toolbar-title @click.stop="pageRouter('/')">
+    <v-toolbar-title>
       CyberManager
       <!-- <img class="logo" src="@/assets/logo.png" @click.stop="pageRouter('/')" alt="Avatar" /> -->
     </v-toolbar-title>
@@ -42,20 +36,22 @@
     </v-toolbar-items>
 
     <div class="right-box">
-      <v-btn outlined fab small color="green" text>
-        <v-icon>people</v-icon>
-      </v-btn>
-      <p>{{ $store.getters.getUsername }}</p>
-      <!-- <v-btn
-        outlined
-        @click.native.stop="reservationDialog = true"
-        class="toolbar-button-reservation"
-        :class="{'reservation-mobile' : $vuetify.breakpoint.name == 'xs'}"
-      >RESERVAR</v-btn>-->
-    </div>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" class="user-btn" outlined small color="green" text>
+            {{ $store.getters.getUsername }}
+            <v-icon>dehaze</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="closeSesion()">
+            <v-list-item-title>Cerrar sesion</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
-    <!-- dialogs -->
-    <reservation-dialog v-model="reservationDialog"></reservation-dialog>
+      <!-- <p class="user-name"></p> -->
+    </div>
   </v-toolbar>
 </template>
 
@@ -64,14 +60,9 @@ import Vuetify from "vuetify/lib";
 import ToolbarCode from "./toolbarCode";
 import "./toolbarStyle.scss";
 import { Watch, Component } from "vue-property-decorator";
-import AddDialog from "../../components/dialogs/addDialog/addDialog.vue";
-import ReservationDialog from "../dialogs/ReservationDialog/ReservationDialog.vue";
 
 @Component({
-  components: {
-    AddDialog,
-    ReservationDialog
-  }
+  components: {}
 })
 export default class Toolbar extends ToolbarCode {}
 </script>

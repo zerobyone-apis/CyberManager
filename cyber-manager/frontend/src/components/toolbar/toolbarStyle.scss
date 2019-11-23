@@ -55,16 +55,9 @@
     float: left;
     display: flex;
 
-    .toolbar-button-reservation {
-      font-size: 10px;
-      text-transform: none;
-    }
-    .reservation-mobile {
-      border-radius: 20px;
-      background-color: rgb(77, 77, 77)!important;
-      color: rgb(255, 255, 255);
-      border-style: solid;
-      border-color: rgb(151, 151, 151);
+    .user-name {
+      padding-top: 5px;
+      margin-left: 5px;
     }
   }
 
