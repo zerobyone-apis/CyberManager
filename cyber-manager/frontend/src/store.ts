@@ -16,12 +16,12 @@ export const store = new Vuex.Store({
       access: false //login & signUp
     },
     userInfo: {
-      id: undefined,
-      username: undefined,
-      charge: undefined
+      id: -1,
+      username: '',
+      charge: ''
     },
     selectedOrder: {
-       id: -1,
+      id: -1,
     }
   },
   mutations: {
@@ -36,12 +36,19 @@ export const store = new Vuex.Store({
     },
     selectedOrder(state, value) {
       state.selectedOrder.id = value.id;
+    },
+    clearUserInfo(state) {
+      state.userInfo = {
+        id: -1,
+        username: '',
+        charge: ''
+      }
     }
   },
   getters: {
     userInfo: state => state.userInfo,
     getUsername: state => state.userInfo.username,
-    userLogged: state => state.userInfo.id ? undefined : false,
+    userLogged: state => state.userInfo.id == -1 ? false : true,
     drawerLeft: state => state.drawerLeft,
     accessDialog: state => state.dialogs.access,
     orderSelected: state => state.selectedOrder.id,
