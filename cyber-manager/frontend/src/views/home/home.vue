@@ -8,6 +8,15 @@
             <div class="box-access login-fields">
               <h4 class="font-title">Acceda para utilizar CyberManager</h4>
 
+              <v-select
+                v-model="newUser.charge"
+                :items="charges"
+                :error="v.get('newUser.charge') != ''"
+                :error-messages="v.get('newUser.charge')"
+                label="Cargo"
+                outlined
+              ></v-select>
+
               <v-text-field
                 v-model="newUser.username"
                 :error="v.get('newUser.username') != ''"
@@ -44,7 +53,6 @@
           <div class="box-access register-box">
             <div class="login-fields">
               <h4 class="font-title">Registrese Aqui</h4>
-
               <v-text-field
                 v-model="newUser.username"
                 :error="v.get('newUser.username') != ''"
@@ -52,6 +60,15 @@
                 class="field"
                 label="Usuario"
               ></v-text-field>
+
+              <v-select
+                v-model="newUser.charge"
+                :items="charges"
+                :error="v.get('newUser.charge') != ''"
+                :error-messages="v.get('newUser.charge')"
+                label="Cargo"
+                outlined
+              ></v-select>
 
               <v-text-field
                 v-model="newUser.password"
@@ -73,6 +90,10 @@
             </div>
             <!-- <p class="font-error font-text">{{ signUpErrors }}</p> -->
             <div class="login-footer">
+              <v-btn small @click="wizard=1" class="mr-3">
+                <v-icon>arrow_back</v-icon>
+                Volver
+              </v-btn>
               <v-btn @click="signUp()" class="button">Registrarse</v-btn>
             </div>
           </div>
