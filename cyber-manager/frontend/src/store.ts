@@ -18,6 +18,7 @@ export const store = new Vuex.Store({
     userInfo: {
       id: undefined,
       username: undefined,
+      charge: undefined
     },
     selectedOrder: {
        id: -1,
