@@ -3,48 +3,45 @@
     <v-stepper v-model="wizard" class="stepper">
       <v-stepper-items>
         <v-stepper-content step="1">
-          <!-- SIGN IN  -->
-          <div class="login-box">
-            <div class="box-access login-fields">
-              <h4 class="font-title">Acceda para utilizar CyberManager</h4>
+          <!-- SIGN IN -->
+          <div class="box-access">
+            <h4 class="font-title title">Acceda para utilizar CyberManager</h4>
+            <v-select
+              v-model="newUser.charge"
+              :items="charges"
+              :error="v.get('newUser.charge') != ''"
+              :error-messages="v.get('newUser.charge')"
+              label="Cargo"
+              outlined
+            ></v-select>
 
-              <v-select
-                v-model="newUser.charge"
-                :items="charges"
-                :error="v.get('newUser.charge') != ''"
-                :error-messages="v.get('newUser.charge')"
-                label="Cargo"
-                outlined
-              ></v-select>
+            <v-text-field
+              v-model="newUser.username"
+              :error="v.get('newUser.username') != ''"
+              :error-messages="v.get('newUser.username')"
+              class="field"
+              label="Usuario"
+            ></v-text-field>
+            <v-text-field
+              v-model="newUser.password"
+              :error="v.get('newUser.password') != ''"
+              :error-messages="v.get('newUser.password')"
+              class="field"
+              type="password"
+              label="Contraseña"
+            ></v-text-field>
 
-              <v-text-field
-                v-model="newUser.username"
-                :error="v.get('newUser.username') != ''"
-                :error-messages="v.get('newUser.username')"
-                class="field"
-                label="Usuario"
-              ></v-text-field>
-              <v-text-field
-                v-model="newUser.password"
-                :error="v.get('newUser.password') != ''"
-                :error-messages="v.get('newUser.password')"
-                class="field"
-                type="password"
-                label="Contraseña"
-              ></v-text-field>
-            </div>
-            <!--<p class="font-error font-text">{{ signInErrors }}</p> -->
-            <div class="login-footer">
+            <div class="footer">
               <v-btn @click="signIn()" class="button">Acceder</v-btn>
             </div>
-          </div>
 
-          <div class="signup-button">
-            <p>No tiene cuenta? Registrese aqui</p>
-            <v-btn @click="goToSignUp()">
-              Registrase Aqui
-              <v-icon>people</v-icon>
-            </v-btn>
+            <div class="signup-button">
+              <p>No tiene cuenta? Registrese aqui</p>
+              <v-btn @click="goToStep(2)">
+                Registrase Aqui
+                <v-icon>people</v-icon>
+              </v-btn>
+            </div>
           </div>
         </v-stepper-content>
 
@@ -52,14 +49,7 @@
           <!-- SIGN UP -->
           <div class="box-access register-box">
             <div class="login-fields">
-              <h4 class="font-title">Registrese Aqui</h4>
-              <v-text-field
-                v-model="newUser.username"
-                :error="v.get('newUser.username') != ''"
-                :error-messages="v.get('newUser.username')"
-                class="field"
-                label="Usuario"
-              ></v-text-field>
+              <h4 class="font-title title">Registrese Aqui</h4>
 
               <v-select
                 v-model="newUser.charge"
@@ -69,6 +59,14 @@
                 label="Cargo"
                 outlined
               ></v-select>
+
+              <v-text-field
+                v-model="newUser.username"
+                :error="v.get('newUser.username') != ''"
+                :error-messages="v.get('newUser.username')"
+                class="field"
+                label="Usuario"
+              ></v-text-field>
 
               <v-text-field
                 v-model="newUser.password"
@@ -89,10 +87,9 @@
               ></v-text-field>
             </div>
             <!-- <p class="font-error font-text">{{ signUpErrors }}</p> -->
-            <div class="login-footer">
-              <v-btn small @click="wizard=1" class="mr-3">
-                <v-icon>arrow_back</v-icon>
-                Volver
+            <div class="footer">
+              <v-btn small @click="goToStep(1)" class="mr-3">
+                <v-icon>arrow_back</v-icon>Volver
               </v-btn>
               <v-btn @click="signUp()" class="button">Registrarse</v-btn>
             </div>

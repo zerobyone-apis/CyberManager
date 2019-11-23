@@ -92,9 +92,8 @@ export default class HomeCode extends vue {
     }
   }
 
-
-  private goToSignUp() {
+  private goToStep(index: number) {
     this.v.clearFails();
-    this.wizard = 2;
+    this.wizard = index;
   }
 }

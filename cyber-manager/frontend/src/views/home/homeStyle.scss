@@ -22,34 +22,48 @@
     position: relative;
     width: 100%;
     height: 100%;
+    // background-color: gray;
 
-    .login-box {
-      // height: max-content;
-      height: 500px;
-      padding: 20px;
+    .v-stepper__items {
+      height: 100% !important;
+      .v-stepper__content {
+        height: 100% !important;
+        .v-stepper__wrapper {
+          height: 100% !important;  
+        }
+      }
     }
-    .register-box {
-      // height: max-content;
-      height: 500px;
-    }
-  }
-
-  .signup-button {
-    padding-top: 40px;
   }
 
   .box-access {
+    border-style: solid;
+    border-color: rgb(163, 163, 163);
+    border-width: 2px;
+    border-radius: 5px;
+    
     position: relative;
     width: 400px;
-    height: 300px;
     top: 100px;
-    margin: auto;
     padding: 30px;
-    text-align: center;
+    padding-top: 30px;
+    margin: auto;
     border-radius: 4px;
-  }
-  .login-box {
-  }
-  .register-box {
+
+    .title {
+      margin: 20px;
+    }
+
+    .footer {
+      position: relative;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .signup-button {
+      position: relative;
+      width: 100%;
+      height: 60px;
+      margin-top: 40px;
+    }
   }
 }
