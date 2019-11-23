@@ -46,8 +46,10 @@ export default class HomeCode extends vue {
         }
         try {
           // Integration Backend POST user send()
-          const response: any = await this.backend.send('post', userData, `/user`);
+          // const response: any = await this.backend.send('post', userData, `/user`);
+          const response = [{ insertId: 1 }];
           console.log(response);
+          
           let user = {
             id: response[0].insertId,
             username: userData.username,
@@ -75,8 +77,10 @@ export default class HomeCode extends vue {
       }
       try {
         // Integration Backend POST user send()
-        const response: any = await this.backend.send('post', userData, '/user/signin');
+        // const response: any = await this.backend.send('post', userData, '/user/signin');
+        const response = [{ insertId: 1 }];
         console.log(response);
+        
         let user = {
           id: response[0].insertId,
           username: userData.username,

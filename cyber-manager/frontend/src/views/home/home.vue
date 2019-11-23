@@ -108,11 +108,9 @@ import "./homeStyle.scss";
 import "../../styles/fonts.scss";
 //components
 import { Component } from "vue-property-decorator";
-import AddDialog from "../../components/dialogs/addDialog/addDialog.vue";
 
 @Component({
   components: {
-    AddDialog
   }
 })
 export default class Home extends HomeCode {}
