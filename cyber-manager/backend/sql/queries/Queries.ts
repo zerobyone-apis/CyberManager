@@ -4,12 +4,13 @@ export default class Queries {
     user: {
       getAll: "SELECT * FROM usuario",
       getId: "SELECT * FROM usuario WHERE idUser = ?",
-      create: "INSERT INTO usuario SET ?",
+      create: "INSERT INTO usuario(username, passwd, cargo, isAdmin, createOn) values(?,?,?,?,?)",
       update:
         "UPDATE usuario SET username = ? , passwd = ? , cargo = ? , isAdmin = ? , updateOn = ? WHERE idUser = ?",
-      delete: "DELETE FROM usuario WHERE idUser = ?"
+      delete: "DELETE FROM usuario WHERE idUser = ?",
+      signIn: "SELECT * FROM usuario where username = ? and passwd = ? and cargo = ?",
     },
-
+    
     // joinEvent
     pedido: {
       getAll: "SELECT * FROM pedido",

@@ -4,7 +4,8 @@ import {
   createUser,
   findUserByID,
   updateUser,
-  deleteUser
+  deleteUser,
+  signIn
 } from "../controllers/user.controllers";
 
 const router = Router();
@@ -19,5 +20,9 @@ router
   .get(findUserByID)
   .put(updateUser)
   .delete(deleteUser);
+
+router
+  .route("/signin")
+  .post(signIn);
 
 export default router;
