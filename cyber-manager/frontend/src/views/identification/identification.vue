@@ -173,11 +173,9 @@ import "./identificationStyle.scss";
 import "../../styles/fonts.scss";
 //components
 import { Component } from "vue-property-decorator";
-import AddDialog from "../../components/dialogs/addDialog/addDialog.vue";
 
 @Component({
   components: {
-    AddDialog
   }
 })
 export default class Repairs extends IndentificationCode {

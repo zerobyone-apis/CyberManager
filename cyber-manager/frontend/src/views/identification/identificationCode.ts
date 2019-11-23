@@ -114,7 +114,6 @@ export default class IndentificationCode extends vue {
         console.log(response)
 
         order.id = response[0].insertId;
-        console.log(order.id)
         this.orders.add(order);
         //clear fields
         Object.assign(this.newOrder, new Order());
@@ -127,7 +126,6 @@ export default class IndentificationCode extends vue {
 
   private editNewOrder(item: any) {
     Object.assign(this.newOrder, item);
-    // this.newOrder.startDate = new Datetime().getDate()
     this.selectedOrder = this.orders.getArray().indexOf(item);
     this.v.clearFails();
     this.interactionsMode.order = 1; // save mode
@@ -140,7 +138,7 @@ export default class IndentificationCode extends vue {
         // Integration Backend DELETE order send()
         const response: any = await this.backend.send('delete', undefined, `/pedido/${ item['_id'] }`);
         console.log(response)
-
+        this.selectedOrder = this.orders.getArray().indexOf(item);
         this.orders.remove(this.selectedOrder);
       } catch (error) {
         console.error(error)
