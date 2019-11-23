@@ -29,7 +29,6 @@ export default class HomeCode extends vue {
     fields: [
       ['username', 'string'],
       ['password', 'string'],
-      ['password2', 'string'],
       ['charge', 'string']
     ]
   };
@@ -72,6 +71,7 @@ export default class HomeCode extends vue {
       let userData = {
         username: this.newUser.username,
         passwd: this.newUser.password,
+        cargo: this.newUser.charge
       }
       try {
         // Integration Backend POST user send()
