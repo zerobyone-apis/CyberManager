@@ -132,18 +132,31 @@ export default class IndentificationCode extends vue {
   }
 
   private async deleteOrder(item: any) {
+    this.selectedOrder = this.orders.getArray().indexOf(item);
     if (confirm('Seguro que desea eliminar la orden seleccionada?')) {
       this.disabledButtons = true; // DISABLED BUTTONS
       try {
         // Integration Backend DELETE order send()
         const response: any = await this.backend.send('delete', undefined, `/pedido/${ item['_id'] }`);
         console.log(response)
-        this.selectedOrder = this.orders.getArray().indexOf(item);
         this.orders.remove(this.selectedOrder);
+        this.selectedOrder = -1;
+        //clear fields
+        // Object.assign(this.newOrder, new Order());
+        // this.interactionsMode.order = 0; // add
       } catch (error) {
         console.error(error)
       }
       this.disabledButtons = false; // DISABLED BUTTONS
+    }
+  }
+
+  private changeColorToEdit(item: any) {
+    //if (this.selectedOrder == this.orders.getArray().indexOf(item)) {
+    if((this.interactionsMode.order == 1) && (this.selectedOrder == this.orders.getArray().indexOf(item))) {
+    return 'green';
+    } else {
+      return 'grey';
     }
   }
 
@@ -190,14 +203,6 @@ export default class IndentificationCode extends vue {
       this.v.clearFails();
       this.selectedOrder = -1;
       this.interactionsMode.order = 0; // mode new 
-    }
-  }
-
-  private changeColorToEdit(item: any) {
-    if (this.selectedOrder == this.orders.getArray().indexOf(item)) {
-      return 'green';
-    } else {
-      return 'grey';
     }
   }
 

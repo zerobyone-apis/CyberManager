@@ -74,34 +74,27 @@
       >
         <template v-slot:item.action="{ item }">
           <!-- button edit item in orders table -->
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon
-                v-on="on"
-                :color="changeColorToEdit(item)"
-                class="mr-3"
-                @click="editNewOrder(item)"
-              >edit</v-icon>
-            </template>
-            <span>Editar orden</span>
-          </v-tooltip>
+          {{ interactionsMode.order }}
+          <v-icon
+            :disabled="interactionsMode.order == 1"
+            class="mr-3"
+            @click="editNewOrder(item)"
+          >edit</v-icon>
+
           <!-- button delete selected order  -->
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-              <v-icon color="red" v-on="on" @click="deleteOrder(item)">delete</v-icon>
-            </template>
-            <span>Borrar orden</span>
-          </v-tooltip>
+          <!-- :color="changeColorToEdit(item)" -->
+          <v-icon 
+            :disabled="(interactionsMode.order == 1) && (selectedOrder != orders.getArray().indexOf(item))"
+            @click="deleteOrder(item)"
+          >delete</v-icon>
+
         </template>
+        <span>Borrar orden</span>
       </v-data-table>
 
       <div class="footer-box">
         <!-- DELETE THIS BUTTON (IS TEST)  -->
-        <v-btn 
-          v-if="false" 
-          @click="generatePdf()">
-          generar pdf
-        </v-btn>
+        <v-btn v-if="false" @click="generatePdf()">generar pdf</v-btn>
 
         <!-- buttons new, save, cancel a order  -->
         <v-btn
@@ -116,26 +109,15 @@
           <v-icon>add</v-icon>
         </v-btn>
         <div v-if="interactionsMode.order == 1">
-          
-          <v-btn 
-            @click="saveOrder()"
-            :disabled="disabledButtons" 
-            class="btn-footer" 
-            small 
-            outlined>
+          <v-btn @click="saveOrder()" :disabled="disabledButtons" class="btn-footer" small outlined>
             GUARDAR
             <v-icon>save</v-icon>
           </v-btn>
-          
-          <v-btn 
-            @click="cancelSaveOrder()" 
-            :disabled="disabledButtons"
-            small 
-            outlined>
+
+          <v-btn @click="cancelSaveOrder()" :disabled="disabledButtons" small outlined>
             Cancelar
             <v-icon>cancel</v-icon>
           </v-btn>
-
         </div>
       </div>
     </div>
@@ -175,8 +157,7 @@ import "../../styles/fonts.scss";
 import { Component } from "vue-property-decorator";
 
 @Component({
-  components: {
-  }
+  components: {}
 })
 export default class Repairs extends IndentificationCode {
   created() {
