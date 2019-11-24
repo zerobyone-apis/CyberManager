@@ -1,46 +1,26 @@
 <template v-cloak>
-  <v-toolbar v-if="$store.getters.userLogged" id="toolbar" fixed light height="65px">
-    <!-- LEFT MENU - BUTTON  -->
-    <v-btn
-      class="left-menu-btn d-flex d-sm-none"
-      @click="$store.commit('drawerLeft', true)"
-      fab
-      text
-      small
-    >
-      <v-icon>menu</v-icon>
-    </v-btn>
-
+  <v-toolbar dark v-if="$store.getters.userLogged" id="toolbar" fixed light height="65px">
     <!-- LOGO  -->
-    <v-toolbar-title>
+    <v-toolbar-title class="title">
       CyberManager
       <!-- <img class="logo" src="@/assets/logo.png" @click.stop="pageRouter('/')" alt="Avatar" /> -->
     </v-toolbar-title>
 
     <div class="flex-grow-1"></div>
 
-    <v-toolbar-items class="toolbar-items hidden-xs-only">
-      <v-btn
-        text
-        small
-        class="toolbar-button"
-        v-for="(item, index) in filteredConf"
-        :key="index"
-        :disabled="$store.getters.selectedOrder != -1"
-        :v-if="item.toolbar"
-        @click="pageRouter(item.route)"
-      >
-        <v-icon>{{ item.icon }}</v-icon>
-        <span>{{ item.name }}</span>
-      </v-btn>
-    </v-toolbar-items>
+<!--  { name: "Identificacion", icon: "people", href: "/", route: "/Identification", toolbar: true },
+      { name: "Reparacion", icon: "settings", href: "/", route: "/Repairs", toolbar: true },
+      { name: "Entrada", icon: "input", href: "/", route: "/Repairs", toolbar: true },
+      { name: "Salida", icon: "send", href: "/", route: "/Repairs", toolbar: true }, -->
+
+
 
     <div class="right-box">
       <v-menu offset-y>
         <template v-slot:activator="{ on }">
-          <v-btn v-on="on" class="user-btn" outlined small color="green" text>
+          <v-btn v-on="on" class="user-btn" small color="green" outlined text>
+            <v-icon>people</v-icon>
             {{ $store.getters.getUsername }}
-            <v-icon>dehaze</v-icon>
           </v-btn>
         </template>
         <v-list>

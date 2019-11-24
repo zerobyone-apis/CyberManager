@@ -25,6 +25,10 @@
     width: 100%;
   }
 
+  .title {
+    font-size: 40px;
+  }
+
   .logo {
     cursor: pointer;
     width: 120px;
@@ -55,9 +59,8 @@
     float: left;
     display: flex;
 
-    .user-name {
-      padding-top: 5px;
-      margin-left: 5px;
+    .user-btn {
+      
     }
   }
 
