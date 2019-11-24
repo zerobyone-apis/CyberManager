@@ -56,6 +56,51 @@
           v-model="newOrder.model"
           label="Modelo"
         ></v-text-field>
+        <v-textarea
+          v-model="newOrder.failReported"
+          outlined
+          dense
+          name="input-7-1"
+          label="Daño reportado"
+          value
+        ></v-textarea>
+        <v-textarea
+          v-model="newOrder.observations"
+          outlined
+          dense
+          name="input-7-1"
+          label="Notas"
+          value
+        ></v-textarea>
+      </div>
+
+      <div class="footer-box">
+        <!-- DELETE THIS BUTTON (IS TEST)  -->
+        <v-btn v-if="false" @click="generatePdf()">generar pdf</v-btn>
+
+        <!-- buttons new, save, cancel a order  -->
+        <v-btn
+          v-if="interactionsMode.order == 0"
+          @click="addNewOrder()"
+          :disabled="disabledButtons"
+          color="green"
+          class="btn-footer"
+          small
+        >
+          Crear Nueva Orden
+          <v-icon>add</v-icon>
+        </v-btn>
+        <div v-if="interactionsMode.order == 1">
+          <v-btn @click="saveOrder()" :disabled="disabledButtons" class="btn-footer" small outlined>
+            GUARDAR
+            <v-icon>save</v-icon>
+          </v-btn>
+
+          <v-btn @click="cancelSaveOrder()" :disabled="disabledButtons" small outlined>
+            Cancelar
+            <v-icon>cancel</v-icon>
+          </v-btn>
+        </div>
       </div>
     </div>
 
@@ -83,67 +128,16 @@
 
           <!-- button delete selected order  -->
           <!-- :color="changeColorToEdit(item)" -->
-          <v-icon 
+          <v-icon
             :disabled="(interactionsMode.order == 1) && (selectedOrder != orders.getArray().indexOf(item))"
             @click="deleteOrder(item)"
           >delete</v-icon>
-
         </template>
         <span>Borrar orden</span>
       </v-data-table>
-
-      <div class="footer-box">
-        <!-- DELETE THIS BUTTON (IS TEST)  -->
-        <v-btn v-if="false" @click="generatePdf()">generar pdf</v-btn>
-
-        <!-- buttons new, save, cancel a order  -->
-        <v-btn
-          v-if="interactionsMode.order == 0"
-          @click="addNewOrder()"
-          :disabled="disabledButtons"
-          color="green"
-          class="btn-footer"
-          small
-        >
-          Nuevo
-          <v-icon>add</v-icon>
-        </v-btn>
-        <div v-if="interactionsMode.order == 1">
-          <v-btn @click="saveOrder()" :disabled="disabledButtons" class="btn-footer" small outlined>
-            GUARDAR
-            <v-icon>save</v-icon>
-          </v-btn>
-
-          <v-btn @click="cancelSaveOrder()" :disabled="disabledButtons" small outlined>
-            Cancelar
-            <v-icon>cancel</v-icon>
-          </v-btn>
-        </div>
-      </div>
+      <!-- footer box table  -->
     </div>
 
-    <div class="notes-box">
-      <div class="damage">
-        <v-textarea
-          v-model="newOrder.failReported"
-          outlined
-          dense
-          name="input-7-1"
-          label="Daño reportado"
-          value
-        ></v-textarea>
-      </div>
-      <div class="notes">
-        <v-textarea
-          v-model="newOrder.observations"
-          outlined
-          dense
-          name="input-7-1"
-          label="Notas"
-          value
-        ></v-textarea>
-      </div>
-    </div>
   </div>
 </template>
 
