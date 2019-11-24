@@ -9,8 +9,9 @@ import Datetime from '../../utils/TimeFunctions';
 import Order from "@/models/Order";
 import OrderList from "@/models/OrderList";
 
-
 export default class IndentificationCode extends vue {
+
+  private wizard = 1;
 
   // Integration Backend
   private backend: IntegrationBackend = new IntegrationBackend();
@@ -60,6 +61,17 @@ export default class IndentificationCode extends vue {
     { text: 'Cliente', value: '_clientName' },
     { text: "Acciones", value: 'action' }
   ]
+
+
+  //cosss a quitar porque son de reparacion
+  private serviceNumber: number = 1;
+  private client = {
+    name: ''
+  }
+  private article = {
+    name: ''
+  }
+  //
 
   // Methods
   async init() {
@@ -129,6 +141,10 @@ export default class IndentificationCode extends vue {
     this.selectedOrder = this.orders.getArray().indexOf(item);
     this.v.clearFails();
     this.interactionsMode.order = 1; // save mode
+    // save in the store the selected order - this active the buttons of the toolbar
+    console.log(this.$store.getters.selectedOrder)
+    this.$store.commit('selectedOrder', {id: this.selectedOrder, data: item});
+    console.log(this.$store.getters.selectedOrder)
   }
 
   private async deleteOrder(item: any) {
@@ -206,7 +222,7 @@ export default class IndentificationCode extends vue {
     }
   }
 
-  private generatePdf() {
+  private generateInputPdf() {
     let inputPdf: InputPdf = new InputPdf();
     let data = {
       enterprise: {
@@ -216,19 +232,19 @@ export default class IndentificationCode extends vue {
         web: 'www.coso.com',
       },
       order: {
-        number: 123232,
-        date: '12/12/20 12:23',
-        problem: 'Pantalla rota, cambio de vidrio y carcasa',
-        notes: 'pide agregarle vidrio gorilla glass 2334'
+        number: this.newOrder.id,
+        date: this.newOrder.startDate,
+        problem: this.newOrder.failReported,
+        notes: this.newOrder.observations
       },
       client: {
-        name: 'Damian Rodriguez',
-        phone: '099 999 999'
+        name: this.newOrder.clientName,
+        phone: this.newOrder.clientPhone
       },
       article: {
-        name: 'celular',
-        brand: 'Alcatel',
-        model: 'P344'
+        name: this.newOrder.article,
+        brand: this.newOrder.brand,
+        model: this.newOrder.model
       }
     }
     inputPdf.generateDoc(data);
