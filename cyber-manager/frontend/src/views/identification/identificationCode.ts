@@ -87,6 +87,13 @@ export default class IndentificationCode extends vue {
       order.failReported = item.fallReportada;
       order.observations = item.observaciones;
       order.startDate = item.fechaIngreso;
+      
+      order.isCancelled = Boolean(item.isCanceled);
+      order.repairDate = item.fechaReparacion;
+      order.deliveryDate = item.fechaEntrega;
+      order.reparation = item.reparacion;
+      order.price = item.precio;
+      
       this.orders.add(order);
     });
   }
@@ -114,6 +121,7 @@ export default class IndentificationCode extends vue {
         observaciones: order.observations,
         fechaIngreso: new Datetime().now(),
         isCanceled: false,
+        //change the below code
         fechaEntrega: new Datetime().now(),
         fechaReparacion: new Datetime().now(),
         precio: 100,
@@ -141,10 +149,7 @@ export default class IndentificationCode extends vue {
     this.selectedOrder = this.orders.getArray().indexOf(item);
     this.v.clearFails();
     this.interactionsMode.order = 1; // save mode
-    // save in the store the selected order - this active the buttons of the toolbar
-    console.log(this.$store.getters.selectedOrder)
-    this.$store.commit('selectedOrder', {id: this.selectedOrder, data: item});
-    console.log(this.$store.getters.selectedOrder)
+    // save in the store the selected order - this active the buttons of the toolbar)
   }
 
   private async deleteOrder(item: any) {
