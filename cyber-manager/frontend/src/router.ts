@@ -11,11 +11,6 @@ export default new Router({
       component: () => import('./views/home/home.vue')
     },
     {
-      path: '/Repairs',
-      name: 'Repairs',
-      component: () => import('./views/repairs/repairs.vue')
-    },
-    {
       path: '/Identification',
       name: 'Identification',
       component: () => import('./views/identification/identification.vue')
