@@ -1,17 +1,19 @@
 export default class Queries {
   private queries: Record<string, any> = {
-    // event
+    // Usuarios
     user: {
       getAll: "SELECT * FROM usuario",
       getId: "SELECT * FROM usuario WHERE idUser = ?",
-      create: "INSERT INTO usuario(username, passwd, cargo, isAdmin, createOn) values(?,?,?,?,?)",
+      create:
+        "INSERT INTO usuario(username, passwd, cargo, isAdmin, createOn) values(?,?,?,?,?)",
       update:
         "UPDATE usuario SET username = ? , passwd = ? , cargo = ? , isAdmin = ? , updateOn = ? WHERE idUser = ?",
       delete: "DELETE FROM usuario WHERE idUser = ?",
-      signIn: "SELECT * FROM usuario where username = ? and passwd = ? and cargo = ?",
+      signIn:
+        "SELECT * FROM usuario where username = ? and passwd = ? and cargo = ?"
     },
-    
-    // joinEvent
+
+    // Pedidos
     pedido: {
       getAll: "SELECT * FROM pedido",
       getId: "SELECT * FROM pedido WHERE idOrden = ?",
@@ -22,7 +24,7 @@ export default class Queries {
       cancel: "UPDATE pedido SET isCanceled = ? WHERE idOrden = ?"
     },
 
-    // option
+    // Empresa
     empresa: {
       add:
         "INSERT INTO organize.option(idUser, idQuestion, name, cost) VALUES(?,?,?,?);",

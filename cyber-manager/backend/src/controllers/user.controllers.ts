@@ -18,26 +18,23 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
 }
 
 export async function createUser(req: Request, res: Response) {
-  console.log('create user')
+  console.log("create user");
   try {
     const newUser: User = req.body.data;
     const conn = await connect();
-    const created = await conn.query(query.user.create,
-      [
-        newUser.username,
-        newUser.passwd,
-        newUser.cargo,
-        newUser.isAdmin,
-        newUser.createOn
-      ]
-    );
+    const created = await conn.query(query.user.create, [
+      newUser.username,
+      newUser.passwd,
+      newUser.cargo,
+      newUser.isAdmin,
+      newUser.createOn
+    ]);
     return res.status(201).json(created);
   } catch (error) {
     console.log(error);
     return res.status(400).json("Error creando usuario.");
   }
 }
-
 
 export async function updateUser(req: Request, res: Response) {
   try {
@@ -61,7 +58,9 @@ export async function updateUser(req: Request, res: Response) {
   } catch (error) {
     console.log(error);
     console.log(Date.now());
-    return res.status(400).json(`Error actualizando este usuario: ${req.body.data}`);
+    return res
+      .status(400)
+      .json(`Error actualizando este usuario: ${req.body.data}`);
   }
 }
 
@@ -94,23 +93,25 @@ export async function findUserByID(req: Request, res: Response) {
   }
 }
 
+/** Tengo mis dudas respecto a esto bro!  **/
 export async function signIn(req: Request, res: Response) {
-  console.log('accede sign in')
+  console.log("Accede sign in");
   console.log(req.body.data);
   try {
     const newUser: User = req.body.data;
     const conn = await connect();
-    const user = await conn.query(query.user.signIn,
-      [
-        newUser.username,
-        newUser.passwd
-      ]
-    );
+    const user = await conn.query(query.user.signIn, [
+      newUser.username,
+      newUser.passwd,
+      newUser.cargo
+    ]);
     return res.status(200).json(user[0]);
   } catch (error) {
     console.log(error);
     return res
       .status(404)
-      .json(`Error buscando usuario con el id: ${req.params.id} `);
+      .json(
+        `Error Ingresando usuario porfavor asegurese de que esta ingresando bien los datos.`
+      );
   }
 }
