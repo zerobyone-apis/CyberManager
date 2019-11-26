@@ -1,1 +1,5 @@
-organize-backend
+
+ - Command to RUN BACKEND:
+  
+  Start:
+    - npm run dev.
