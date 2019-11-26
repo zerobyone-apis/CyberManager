@@ -8,10 +8,10 @@ export default class Empresa {
   private celular: number | undefined;
   private fax: number | undefined;
   private direccion: string | undefined;
-  private garantia: string;
-  private primerMsjRecibo: string;
-  private segundoMsjRecibo: string;
-  private urlLogo: string;
+  private garantia: string | undefined;
+  private primerMsjRecibo: string | undefined;
+  private segundoMsjRecibo: string | undefined;
+  private urlLogo: string | undefined;
   private ultimaActualizacion: Date | string | undefined;
   private username: string;
 
@@ -80,28 +80,28 @@ export default class Empresa {
     this.direccion = value;
   }
 
-  get getGarantia(): string {
+  get getGarantia(): string | undefined {
     return this.garantia;
   }
   set setGarantia(value: string) {
     this.garantia = value;
   }
 
-  get getPrimerMsjRecibo(): string {
+  get getPrimerMsjRecibo(): string | undefined {
     return this.primerMsjRecibo;
   }
   set setPrimerMsjRecibo(value: string) {
     this.primerMsjRecibo = value;
   }
 
-  get getSegundoMsjRecibo(): string {
+  get getSegundoMsjRecibo(): string | undefined {
     return this.segundoMsjRecibo;
   }
   set setSegundoMsjRecibo(value: string) {
     this.segundoMsjRecibo = value;
   }
 
-  get getUrlLogo(): string {
+  get getUrlLogo(): string | undefined {
     return this.urlLogo;
   }
   set setUrlLogo(value: string) {
