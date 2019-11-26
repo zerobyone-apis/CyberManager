@@ -1,5 +1,4 @@
-
- - Command to RUN BACKEND:
+Command to RUN BACKEND:
   
   Start:
     - npm run dev.
