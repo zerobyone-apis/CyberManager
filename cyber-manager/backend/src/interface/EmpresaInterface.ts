@@ -7,9 +7,9 @@ export interface EmpresaInterface {
   celular?: number;
   fax?: number;
   direccion?: string;
-  garantia: string;
-  primerMsjRecibo: string;
-  segundoMsjRecibo: string;
-  urlLogo: string;
+  garantia?: string;
+  primerMsjRecibo?: string;
+  segundoMsjRecibo?: string;
+  urlLogo?: string;
   ultimaActualizacion?: Date | string;
 }

@@ -7,8 +7,6 @@ const query = queryM.getQuery();
 
 export async function createPedido(req: Request, res: Response) {
   try {
-    // cambie esta linea .data para que funcione el paso de datos desde el frontend
-    // ver utils/IntegrationBackend - linea 11 
     const newPedido: PedidoInterface = req.body.data;
     const conn = await connect();
     const created = await conn.query(query.pedido.create, [newPedido]);
@@ -33,7 +31,10 @@ export async function findByID(req: Request, res: Response) {
   }
 }
 
-export async function getPedidos(req: Request, res: Response): Promise<Response> {
+export async function getPedidos(
+  req: Request,
+  res: Response
+): Promise<Response> {
   try {
     const conn = await connect();
     const pedidos = await conn.query(query.pedido.getAll);
@@ -60,9 +61,9 @@ export async function updatePedido(req: Request, res: Response) {
       precio
     }: PedidoInterface = req.body.data;
     const id = parseInt(req.params.id);
-    
+
     // console.log(req.body)
-    
+
     const conn = await connect();
     const updated = await conn.query(query.pedido.update, [
       nombreCliente,
@@ -99,7 +100,7 @@ export async function cancelPedido(req: Request, res: Response) {
 }
 
 export async function deletePedido(req: Request, res: Response) {
-  console.log(req.params)
+  console.log(req.params);
   try {
     const conn = await connect();
     const id = parseInt(req.params.id);

@@ -17,7 +17,7 @@ export default class Queries {
     pedido: {
       getAll: "SELECT * FROM pedido",
       getId: "SELECT * FROM pedido WHERE idOrden = ?",
-      create: "INSERT INTO pedido SET ?",
+      create: "INSERT INTO empresa SET ?",
       update:
         "UPDATE pedido SET nombreCliente = ?, telCliente = ?, articulo = ?, modelo = ?, marca = ? , fallReportada = ?, observaciones = ?, isCanceled = ?, fechaReparacion = ?, reparacion = ? , precio = ? WHERE idOrden = ?",
       delete: "DELETE FROM pedido WHERE idOrden = ?",
@@ -26,20 +26,14 @@ export default class Queries {
 
     // Empresa
     empresa: {
-      add:
-        "INSERT INTO organize.option(idUser, idQuestion, name, cost) VALUES(?,?,?,?);",
-      link:
-        "INSERT INTO organize.questionnaire_option(idQuestionnaire, idOption) VALUES(?,?);",
-      save:
-        "UPDATE organize.option SET name=?, cost=?, idUser=?, idQuestion=? WHERE id=?;",
-      delete: "DELETE FROM organize.option WHERE id=?;",
-      deleteRelation:
-        "DELETE FROM organize.questionnaire-option WHERE idOption=?;",
-      getByIdUser: "SELECT * FROM organize.option where idUser = ?;",
-      getIdByIdQuestionnaire:
-        "SELECT idOption FROM organize.questionnaire_option where idQuestionnaire = ?;",
+      getAll: "SELECT * FROM empresa",
       getId:
-        "SELECT id FROM organize.option o where o.idUser = ? AND o.idQuestion = ? AND o.name = ?;"
+        "select e.* from usuario u inner join empresa e on (u.username = e.username) where u.idUser = ? and u.cargo LIKE '%supervisor%'",
+      create:
+        "INSERT INTO empresa (fechaCreacion,nombre,telefono,celular,fax,direccion,garantia,primerMsjRecibo,segundoMsjRecibo,urlLogo,ultimaActualizacion,username) values(?,?,?,?,?,?,?,?,?,?,?,?)",
+      update:
+        "UPDATE empresa SET nombre = ?, telefono = ?, celular = ?, fax = ? , direccion = ?, garantia = ?, primerMsjRecibo = ?, segundoMsjRecibo = ?, urlLogo = ?, ultimaActualizacion = ?, username = ? WHERE idEmpresa = ?",
+      delete: "DELETE FROM empresa WHERE idEmpresa = ?"
     }
   };
 

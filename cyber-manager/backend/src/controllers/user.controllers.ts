@@ -93,10 +93,7 @@ export async function findUserByID(req: Request, res: Response) {
   }
 }
 
-/** Tengo mis dudas respecto a esto bro!  **/
 export async function signIn(req: Request, res: Response) {
-  console.log("Accede sign in");
-  console.log(req.body.data);
   try {
     const newUser: User = req.body.data;
     const conn = await connect();

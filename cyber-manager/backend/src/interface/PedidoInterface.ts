@@ -7,10 +7,10 @@ export interface PedidoInterface {
   modelo?: string | undefined;
   marca?: string | undefined;
   fallReportada: string;
-  observaciones: string;
+  observaciones?: string;
   isCanceled: boolean | number;
-  fechaReparacion: Date | string;
-  fechaEntrega: Date | string;
-  reparacion: string;
-  precio: number;
+  fechaReparacion?: Date | string;
+  fechaEntrega?: Date | string;
+  reparacion?: string;
+  precio?: number;
 }

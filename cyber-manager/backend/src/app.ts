@@ -2,7 +2,8 @@ import Express, { Application } from "express";
 import morgan from "morgan";
 
 let cors = require("cors");
-//Routes
+//Import Routes
+import empresa from "./routes/empresa.routes";
 import pedido from "./routes/pedido.routes";
 import routes from "./routes/user.routes";
 export class App {
@@ -15,17 +16,22 @@ export class App {
     this.middlewares();
     this.routes();
   }
-  //Settings and Middlewares
+
+  //Settings
   settings() {
     this.app.set("port", this.port || process.env.PORT || 3000);
   }
+
+  //Middlewares
   middlewares() {
     this.app.use(morgan("dev"));
     this.app.use(Express.json());
   }
 
+  //Routes
   routes() {
-    this.app.use('/pedido', pedido);
+    this.app.use("/empresa", empresa);
+    this.app.use("/pedido", pedido);
     this.app.use("/user", routes);
   }
 
