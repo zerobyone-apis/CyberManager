@@ -1,17 +1,3 @@
-# Electron-Vue-Spring
-
-> An opionated desktop application with web front-end and Java backend.
-
-In some cases, you may like to use Java backend for an Electron desktop app. The reasons could be you have some legacy Java codes that you want to reuse, or you want to have the same codes run on Cloud as well as on desktop.
-
-This project has two sub projects:
-
-1. `vue`: a Vue.js application as the front-end, based on the HelloWorld project created using Vue CLI 3. You may also replace this project with a React or Angular project with similar design.
-2. `spring`: a Spring Boot application as the backend, based on a Maven project created by [Spring Initializer](https://start.spring.io/) with Web dependency.
-
-Both Windows and Mac OS are supported.
-
-> NOTE: This project uses your system Java to run the spring web app. If you prefer to bundle JRE into the app, configure the `extraFiles` of Electron Builder to copy it when making the installer.
 
 ## Build Setup
 
@@ -31,36 +17,33 @@ npm run build
 ```
 
 ## Development Setup
-
-During development, you may work on front-end and backend separately with independent tools, such as using Visual Studio Code for front-end and IntelliJ for backend. Note that the front-end `vue` project has its own `package.json` so it can be built independently.
-
-* To run backend, import the Maven project into your favorite Java IDE and launch from there. The embedded Tomcat server will be running on port `8080`.
-* To run front-end, run `npm run serve` in `vue` folder. The webpack dev server will be running on port `9000` with hot reload. It is configured to proxy `actuator/health` and `api` URL to port `8080`.
-* To run the Electron part, run `npm run start` in root folder. The Electron app loads the home page at `http://localhost:9000`, therefore you should run both backend and front-end first.
+* To run backend, just run `npm run dev` in `backend` folder. And will be start on port `3000`.
+* To run front-end, run `yarn serve` in `vue` folder. The webpack dev server will be running on port `9000` 
+The Electron app loads the home page at `http://localhost:9000`, therefore you should run both backend and front-end first.
 
 ## How it works
 
 The main idea is to use Electron as a browser, and the front-end and backend of the app work as a web app. It might not be a common design, but is helpful in some cases.
 
-The backend is a typical Spring Boot app, serving API to the front-end. The front-end is a typical Vue app, consuming API from the backend. 
+The backend is a typical Node.js app, serving API to the front-end. The front-end is a typical Vue app, consuming API from the backend. 
 
 ### Build process
 
 When building the final desktop app installer:
 
-1. Front-end is built first. The final artifacts, including `index.html` and JavaScript files, are copied into `spring/src/main/resources/public` folder. 
-2. Backend is built second. It creates a web app with the front-end artifacts created above and an executable jar.
+1. Front-end is built first. The final artifacts, including `index.html` and JavaScript files, are copied into `dist` folder. 
+2. Backend is built second. It creates a web app with the front-en. Build folder.
 3. Electron installer is built last. It includes the web app created above in the bundle and creates an executable installer.
 
-However, both `vue` sub project and `spring` sub project are free of Electron and can be built independently without building the Electron part. This allows them to be deployed online, instead of packaged into Electron app.
+However, both `vue` sub project and `node` sub project are free of Electron and can be built independently without building the Electron part. This allows them to be deployed online, instead of packaged into Electron app.
 
 ### Launch process
 
 When launching the Electron app:
 
 1. Electron app detects an available port and starts the backend server with Node `child_process` at the specified port. The PID of the server process is kept to potentially kill the process before quiting the app.
-2. Electron app then displays a splash window, at the same time pings the `actuator/health` URL of the backend server.
-3. Once the `actuator/health` ping returns OK (the web app is up), Electron app closes the splash window and open a new window to load the home page of the web app.
+2. Electron app then displays a splash window, at the same time pings the `hello/health` URL of the backend server.
+3. Once the `hello/health` ping returns OK (the web app is up), Electron app closes the splash window and open a new window to load the home page of the web app.
 
 > The Electron app starts the backend server only in production build. During development, you will need to manually start the webpack-dev-server as mentioned earlier.
 
@@ -90,7 +73,6 @@ The log messages from Electron, Vue and Spring apps are consolidated into the [e
 
 In the Vue app, the electron logger is wrapped by the `log` property of `window.interop` object. During launch, this `log` is set as `Vue.prototype.$log` and `Vue.$log` in `main.js`. Calling `vm.$log.info(...)` or `Vue.$log.info(...)` will send the log messages (after attaching a prefix to identify it is from UI) to electron logger. Other logging level works in the same way.
 
-In the Spring app, `logback-spring.xml` configuration sends the log to console, which is the standard output received by the Electron app. The logback message pattern put the log level (`INFO`, `DEBUG`, etc.) at the begining of the message so that Electron app checks and calls the corresponding function (`info`, `debug`, etc.) on the electron logger.
 
 ## License
 
