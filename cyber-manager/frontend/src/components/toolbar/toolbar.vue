@@ -1,5 +1,5 @@
 <template v-cloak>
-  <v-toolbar dark v-if="$store.getters.userLogged" id="toolbar" fixed light height="65px">
+  <v-toolbar flat dark v-if="$store.getters.userLogged" id="toolbar" fixed light height="50px">
     <!-- LOGO  -->
     <v-toolbar-title class="title">
       CyberManager
