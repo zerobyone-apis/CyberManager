@@ -23,14 +23,14 @@
           text
           small
           class="toolbar-button"
-          :disabled="selectedOrder == -1 || wizard == 2"
+          :disabled="selectedOrder == -1 || wizard != 1"
           @click="generateInputPdf()"
         >
           <v-icon>input</v-icon>
           <span>Entrada</span>
         </v-btn>
 
-        <v-btn text small class="toolbar-button" :disabled="wizard == 1" @click>
+        <v-btn text small class="toolbar-button" :disabled="wizard != 2 " @click>
           <v-icon>send</v-icon>
           <span>Salida</span>
         </v-btn>
@@ -311,10 +311,10 @@
                   class="custom-field"
                 ></v-text-field>
 
-                <v-text-field v-model="enterprise.location" label="Direccion" class="custom-field"></v-text-field>
-                <v-text-field v-model="newOrder.id" label="Telefono" class="custom-field"></v-text-field>
-                <v-text-field v-model="newOrder.id" label="Email" class="custom-field"></v-text-field>
-                <v-text-field v-model="newOrder.id" label="Pagina web" class="custom-field"></v-text-field>
+                <v-text-field v-model="enterprise.direccion" label="Direccion" class="custom-field"></v-text-field>
+                <v-text-field v-model="enterprise.telefono" label="Telefono" class="custom-field"></v-text-field>
+                <v-text-field v-model="enterprise.celular" label="Celular" class="custom-field"></v-text-field>
+                <v-text-field v-model="enterprise.email" label="Email" class="custom-field"></v-text-field>
               </div>
               <div class="image-box">
                 <v-text-field
@@ -326,12 +326,13 @@
               </div>
             </div>
             <div class="pdf-fields">
+              <v-text-field v-model="enterprise.garantia" label="Garantia en las facturas" class="custom-field"></v-text-field>
               <v-text-field label="Anotacion en el pie del reporte de entrada" class="custom-field"></v-text-field>
               <v-text-field label="Anotacion en el pie del reporte de salida" class="custom-field"></v-text-field>
             </div>
             <div class="footer">
               <v-btn
-                @click="saveOrder()"
+                @click=""
                 :disabled="disabledButtons"
                 class="btn-footer"
                 color="green"
@@ -342,7 +343,7 @@
                 <v-icon>save</v-icon>
               </v-btn>
 
-              <v-btn @click="cancelSaveOrder()" :disabled="disabledButtons" color="grey" dark small>
+              <v-btn @click="" :disabled="disabledButtons" color="grey" dark small>
                 Cancelar
                 <v-icon>cancel</v-icon>
               </v-btn>

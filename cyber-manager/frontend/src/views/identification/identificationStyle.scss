@@ -232,13 +232,14 @@
       .image-box {
         position: relative;
         padding: 20px;
-        width: calc( 100% - 330px );
+        width: calc(100% - 330px);
         height: 200px;
         text-align: center;
         // background-color: red;
       }
     }
     .pdf-fields {
+      padding: 20px;
     }
     .footer {
       text-align: center;

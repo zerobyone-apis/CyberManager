@@ -33,7 +33,7 @@ export default class IndentificationCode extends vue {
   private orders: OrderList = new OrderList();
   private selectedOrder: number = -1; // index in orders
 
-  private enterprise: any = {};
+  private enterprise: Empresa = new Empresa();
 
   // vars used for validation into the newOrder
   // [ field-name, type: string, int ]

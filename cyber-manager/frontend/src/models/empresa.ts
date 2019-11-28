@@ -15,20 +15,21 @@ export default class Empresa {
   private ultimaActualizacion: Date | string | undefined;
   private username: string;
 
-  constructor(empresa: EmpresaInterface) {
-    this.idEmpresa = empresa.idEmpresa;
-    this.fechaCreacion = empresa.fechaCreacion;
-    this.nombre = empresa.nombre;
-    this.telefono = empresa.telefono;
-    this.celular = empresa.celular;
-    this.fax = empresa.fax;
-    this.direccion = empresa.direccion;
-    this.garantia = empresa.garantia;
-    this.primerMsjRecibo = empresa.primerMsjRecibo;
-    this.segundoMsjRecibo = empresa.segundoMsjRecibo;
-    this.urlLogo = empresa.urlLogo;
-    this.ultimaActualizacion = empresa.ultimaActualizacion;
-    this.username = empresa.username;
+  constructor() {
+    this.idEmpresa = -1;
+    this.username = '';
+    this.fechaCreacion = '';
+    this.nombre = '';
+    this.telefono = 0;
+    this.celular = 0;
+    this.fax = 0;
+    this.direccion = '';
+    this.garantia = '';
+    this.primerMsjRecibo = '';
+    this.segundoMsjRecibo = '';
+    this.urlLogo = '';
+    this.ultimaActualizacion = '';
+
   }
 
   get getIdEmpresa(): string | number {
