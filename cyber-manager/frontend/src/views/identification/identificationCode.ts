@@ -8,6 +8,8 @@ import Datetime from '../../utils/TimeFunctions';
 // Models
 import Order from "@/models/Order";
 import OrderList from "@/models/OrderList";
+import Empresa from '@/models/empresa';
+import { Watch } from 'vue-property-decorator';
 
 export default class IndentificationCode extends vue {
 
@@ -30,6 +32,8 @@ export default class IndentificationCode extends vue {
   private newOrder: Order = new Order();
   private orders: OrderList = new OrderList();
   private selectedOrder: number = -1; // index in orders
+
+  private enterprise: any = {};
 
   // vars used for validation into the newOrder
   // [ field-name, type: string, int ]
@@ -87,13 +91,13 @@ export default class IndentificationCode extends vue {
       order.failReported = item.fallReportada;
       order.observations = item.observaciones;
       order.startDate = item.fechaIngreso;
-      
+
       order.isCancelled = Boolean(item.isCanceled);
       order.repairDate = item.fechaReparacion;
       order.deliveryDate = item.fechaEntrega;
       order.reparation = item.reparacion;
       order.price = item.precio;
-      
+
       this.orders.add(order);
     });
   }
@@ -158,7 +162,7 @@ export default class IndentificationCode extends vue {
       this.disabledButtons = true; // DISABLED BUTTONS
       try {
         // Integration Backend DELETE order send()
-        const response: any = await this.backend.send('delete', undefined, `/pedido/${ item['_id'] }`);
+        const response: any = await this.backend.send('delete', undefined, `/pedido/${item['_id']}`);
         console.log(response)
         this.orders.remove(this.selectedOrder);
         this.selectedOrder = -1;
@@ -174,8 +178,8 @@ export default class IndentificationCode extends vue {
 
   private changeColorToEdit(item: any) {
     //if (this.selectedOrder == this.orders.getArray().indexOf(item)) {
-    if((this.interactionsMode.order == 1) && (this.selectedOrder == this.orders.getArray().indexOf(item))) {
-    return 'green';
+    if ((this.interactionsMode.order == 1) && (this.selectedOrder == this.orders.getArray().indexOf(item))) {
+      return 'green';
     } else {
       return 'grey';
     }
@@ -202,7 +206,7 @@ export default class IndentificationCode extends vue {
       }
       try {
         // Integration Backend PUT orders send()
-        const response: any = await this.backend.send('put', orderData, `/pedido/${ orderData.idOrden }` );
+        const response: any = await this.backend.send('put', orderData, `/pedido/${orderData.idOrden}`);
         console.log(response)
 
         let order: Order = this.orders.get(this.selectedOrder);

@@ -30,15 +30,20 @@
           <span>Entrada</span>
         </v-btn>
 
+        <v-btn text small class="toolbar-button" :disabled="wizard == 1" @click>
+          <v-icon>send</v-icon>
+          <span>Salida</span>
+        </v-btn>
+
         <v-btn
+          v-if="$store.getters.getCharge == 'Supervisor'"
+          @click="wizard = 3"
           text
           small
           class="toolbar-button"
-          :disabled="wizard == 1"
-          @click="pageRouter('/Repairs')"
         >
-          <v-icon>send</v-icon>
-          <span>Salida</span>
+          <v-icon>home</v-icon>
+          <span>Empresa</span>
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
@@ -290,6 +295,57 @@
                   <v-btn @click small color="green" dark>fecha</v-btn>
                 </div>
               </div>
+            </div>
+          </div>
+        </v-stepper-content>
+
+        <!-- enterprise frame -->
+        <v-stepper-content step="3">
+          <div class="enterprisePage">
+            <div class="info-box">
+              <div class="info-fields">
+                <h3 class="font-title pl-2">Datos generales de la empresa</h3>
+                <v-text-field
+                  v-model="enterprise.name"
+                  label="Nombre de la empresa"
+                  class="custom-field"
+                ></v-text-field>
+
+                <v-text-field v-model="enterprise.location" label="Direccion" class="custom-field"></v-text-field>
+                <v-text-field v-model="newOrder.id" label="Telefono" class="custom-field"></v-text-field>
+                <v-text-field v-model="newOrder.id" label="Email" class="custom-field"></v-text-field>
+                <v-text-field v-model="newOrder.id" label="Pagina web" class="custom-field"></v-text-field>
+              </div>
+              <div class="image-box">
+                <v-text-field
+                  v-model="enterprise.urlLogo"
+                  label="Url del logo"
+                  class="custom-field"
+                ></v-text-field>
+                <img :src="enterprise.urlLogo" height="300" v-if="enterprise.urlLogo" />
+              </div>
+            </div>
+            <div class="pdf-fields">
+              <v-text-field label="Anotacion en el pie del reporte de entrada" class="custom-field"></v-text-field>
+              <v-text-field label="Anotacion en el pie del reporte de salida" class="custom-field"></v-text-field>
+            </div>
+            <div class="footer">
+              <v-btn
+                @click="saveOrder()"
+                :disabled="disabledButtons"
+                class="btn-footer"
+                color="green"
+                dark
+                small
+              >
+                GUARDAR
+                <v-icon>save</v-icon>
+              </v-btn>
+
+              <v-btn @click="cancelSaveOrder()" :disabled="disabledButtons" color="grey" dark small>
+                Cancelar
+                <v-icon>cancel</v-icon>
+              </v-btn>
             </div>
           </div>
         </v-stepper-content>

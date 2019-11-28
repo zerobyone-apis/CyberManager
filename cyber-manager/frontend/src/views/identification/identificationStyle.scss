@@ -21,20 +21,19 @@
 
   .mini-toolbar {
     .v-btn {
-      
       text-transform: none !important;
     }
     .v-icon {
       color: rgb(202, 255, 222);
       margin-right: 10px;
     }
-    
   }
 
   .stepper {
     box-shadow: none !important;
   }
 
+  // step 1
   .identificationPage {
     // background-color: rgb(196, 196, 196);
 
@@ -136,7 +135,7 @@
       }
     }
   }
-
+  // step 2
   .repairPage {
     .identify-box {
       position: relative;
@@ -216,6 +215,35 @@
         .v-input__control {
           height: 20px;
         }
+      }
+    }
+  }
+  // step 3
+  .enterprisePage {
+    .info-box {
+      display: flex;
+      .info-fields {
+        position: relative;
+        width: 330px;
+        padding: 20px;
+        // max-width: 100px
+        // height: 200px;
+      }
+      .image-box {
+        position: relative;
+        padding: 20px;
+        width: calc( 100% - 330px );
+        height: 200px;
+        text-align: center;
+        // background-color: red;
+      }
+    }
+    .pdf-fields {
+    }
+    .footer {
+      text-align: center;
+      .btn-footer {
+        margin: 20px;
       }
     }
   }
