@@ -35,6 +35,7 @@ export const store = new Vuex.Store({
   getters: {
     userInfo: state => state.userInfo,
     getUsername: state => state.userInfo.username,
+    getCharge: state => state.userInfo.charge,
     userLogged: state => state.userInfo.id == -1 ? false : true,
   },
   plugins: [vuexLocal.plugin]

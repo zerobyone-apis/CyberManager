@@ -87,7 +87,7 @@ export default class HomeCode extends vue {
           charge: userData.cargo
         }
         // save in the store the user data
-        this['$store'].commit('userInfo', userData)
+        this['$store'].commit('userInfo', user)
         // goto Identification page
         this["$router"].push('/Identification');
       } catch (error) {
