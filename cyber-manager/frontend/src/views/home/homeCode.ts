@@ -3,7 +3,7 @@ import Validation from "../../utils/Validation";
 import IntegrationBackend from '../../utils/IntegrationBackend';
 
 // Models
-import User from '@/models/usuario';
+import User from '@/models/Usuario';
 
 export default class HomeCode extends vue {
 

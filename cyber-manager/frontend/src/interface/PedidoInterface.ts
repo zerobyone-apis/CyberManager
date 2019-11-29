@@ -1,7 +1,7 @@
 export interface PedidoInterface {
   idOrden: number;
   fechaIngreso: string;
-  nombreCliente: string;
+  nombreCliente: string | undefined;
   telCliente: string;
   articulo: string | undefined;
   modelo?: string | undefined;

@@ -55,6 +55,7 @@ export async function updateEmpresa(req: Request, res: Response) {
   try {
     //Compadre. coloquele el .data que si le pego desde postman, no encuentra el objeto de todas formas
     //lo subire en este formato req.body.data  -> PDT: si ves alguno que le falta ponele
+    // ok bro n.n
     const updateEmp: EmpresaInterface = req.body.data;
     const conn = await connect();
     const id = parseInt(req.params.id);

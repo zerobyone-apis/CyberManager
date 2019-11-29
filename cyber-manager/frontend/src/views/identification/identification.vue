@@ -12,7 +12,7 @@
           text
           small
           class="toolbar-button"
-          :disabled="selectedOrder == -1"
+          :disabled="selectedPedido == -1"
           @click="wizard = 2"
         >
           <v-icon>settings</v-icon>
@@ -23,7 +23,7 @@
           text
           small
           class="toolbar-button"
-          :disabled="selectedOrder == -1 || wizard != 1"
+          :disabled="selectedPedido == -1 || wizard != 1"
           @click="generateInputPdf()"
         >
           <v-icon>input</v-icon>
@@ -59,7 +59,7 @@
                 <div class="service-number">
                   <v-text-field
                     readonly
-                    v-model="newOrder.id"
+                    v-model="newPedido.idOrden"
                     label="Orden de servicio"
                     class="custom-field"
                   ></v-text-field>
@@ -67,7 +67,7 @@
                 <div class="reception-date">
                   <v-text-field
                     readonly
-                    v-model="newOrder.startDate"
+                    v-model="newPedido.startDate"
                     label="recepcion"
                     class="custom-field"
                   ></v-text-field>
@@ -77,20 +77,20 @@
               <div class="client-fields-box">
                 <!-- <h4 class="font-title">Datos del cliente</h4> -->
                 <v-text-field
-                  :error="v.get('newOrder.clientName') != ''"
-                  :error-messages="v.get('newOrder.clientName')"
+                  :error="v.get('newPedido.clientName') != ''"
+                  :error-messages="v.get('newPedido.clientName')"
                   outlined
                   dense
-                  v-model="newOrder.clientName"
+                  v-model="newPedido.clientName"
                   label="Nombre del cliente"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('newOrder.clientPhone') != ''"
-                  :error-messages="v.get('newOrder.clientPhone')"
+                  :error="v.get('newPedido.clientPhone') != ''"
+                  :error-messages="v.get('newPedido.clientPhone')"
                   outlined
                   dense
-                  v-model="newOrder.clientPhone"
+                  v-model="newPedido.clientPhone"
                   label="Telefono"
                   class="custom-field"
                 ></v-text-field>
@@ -98,29 +98,29 @@
 
               <div class="article-fields-box">
                 <v-text-field
-                  :error="v.get('newOrder.article') != ''"
-                  :error-messages="v.get('newOrder.article')"
+                  :error="v.get('newPedido.article') != ''"
+                  :error-messages="v.get('newPedido.article')"
                   outlined
                   dense
-                  v-model="newOrder.article"
+                  v-model="newPedido.article"
                   label="Articulo"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('newOrder.brand') != ''"
-                  :error-messages="v.get('newOrder.brand')"
+                  :error="v.get('newPedido.brand') != ''"
+                  :error-messages="v.get('newPedido.brand')"
                   outlined
                   dense
-                  v-model="newOrder.brand"
+                  v-model="newPedido.brand"
                   label="Marca"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('newOrder.model') != ''"
-                  :error-messages="v.get('newOrder.model')"
+                  :error="v.get('newPedido.model') != ''"
+                  :error-messages="v.get('newPedido.model')"
                   outlined
                   dense
-                  v-model="newOrder.model"
+                  v-model="newPedido.model"
                   label="Modelo"
                   class="custom-field"
                 ></v-text-field>
@@ -128,14 +128,14 @@
                 <!-- TEXT AREA  -->
 
                 <v-textarea
-                  v-model="newOrder.failReported"
+                  v-model="newPedido.failReported"
                   height="40"
                   label="Daño reportado"
                   value
                   class="custom-text-area"
                 ></v-textarea>
                 <v-textarea
-                  v-model="newOrder.observations"
+                  v-model="newPedido.observations"
                   height="40"
                   label="Notas"
                   value
@@ -150,7 +150,7 @@
                 <!-- buttons new, save, cancel a order  -->
                 <v-btn
                   v-if="interactionsMode.order == 0"
-                  @click="addNewOrder()"
+                  @click="addnewPedido()"
                   :disabled="disabledButtons"
                   color="green"
                   dark
@@ -207,13 +207,13 @@
                   <v-icon
                     :disabled="interactionsMode.order == 1"
                     class="mr-3"
-                    @click="editNewOrder(item)"
+                    @click="editnewPedido(item)"
                   >edit</v-icon>
 
                   <!-- button delete selected order  -->
                   <!-- :color="changeColorToEdit(item)" -->
                   <v-icon
-                    :disabled="(interactionsMode.order == 1) && (selectedOrder != orders.getArray().indexOf(item))"
+                    :disabled="(interactionsMode.order == 1) && (selectedPedido != orders.getArray().indexOf(item))"
                     @click="deleteOrder(item)"
                   >delete</v-icon>
                 </template>
@@ -230,7 +230,7 @@
             <div class="identify-box">
               <div class="service-number">
                 <v-text-field
-                  v-model="newOrder.id"
+                  v-model="newPedido.id"
                   readonly
                   label="Orden de servicio"
                   class="custom-field"
@@ -238,7 +238,7 @@
               </div>
               <div class="client-name">
                 <v-text-field
-                  v-model="newOrder.clientName"
+                  v-model="newPedido.clientName"
                   readonly
                   label="Cliente"
                   class="custom-field"
@@ -246,7 +246,7 @@
               </div>
               <div class="article-name">
                 <v-text-field
-                  v-model="newOrder.article"
+                  v-model="newPedido.article"
                   readonly
                   label="Articulo"
                   class="custom-field"
@@ -279,11 +279,11 @@
               <div class="dates-box">
                 <div class="repair-date">
                   <time-field
-                    v-model="newOrder.reparation"
-                    @time="(time)=> { newOrder.reparation = time }"
+                    v-model="newPedido.reparation"
+                    @time="(time)=> { newPedido.reparation = time }"
                     type="date"
-                    :error="v.get('newOrder.reparation') != ''"
-                    :errorMessage="v.get('newOrder.reparation')"
+                    :error="v.get('newPedido.reparation') != ''"
+                    :errorMessage="v.get('newPedido.reparation')"
                     label="Fecha de recepcion"
                     lang="es"
                   ></time-field>
@@ -326,13 +326,17 @@
               </div>
             </div>
             <div class="pdf-fields">
-              <v-text-field v-model="enterprise.garantia" label="Garantia en las facturas" class="custom-field"></v-text-field>
+              <v-text-field
+                v-model="enterprise.garantia"
+                label="Garantia en las facturas"
+                class="custom-field"
+              ></v-text-field>
               <v-text-field label="Anotacion en el pie del reporte de entrada" class="custom-field"></v-text-field>
               <v-text-field label="Anotacion en el pie del reporte de salida" class="custom-field"></v-text-field>
             </div>
             <div class="footer">
               <v-btn
-                @click=""
+                @click="saveEnterpriseInfo()"
                 :disabled="disabledButtons"
                 class="btn-footer"
                 color="green"
@@ -343,7 +347,7 @@
                 <v-icon>save</v-icon>
               </v-btn>
 
-              <v-btn @click="" :disabled="disabledButtons" color="grey" dark small>
+              <v-btn @click :disabled="disabledButtons" color="grey" dark small>
                 Cancelar
                 <v-icon>cancel</v-icon>
               </v-btn>
@@ -352,6 +356,7 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
+
   </div>
 </template>
 

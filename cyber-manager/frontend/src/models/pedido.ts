@@ -1,22 +1,22 @@
 import { PedidoInterface } from "../interface/PedidoInterface";
 
 export default class Pedido {
-  private idOrden: string | number;
-  private fechaIngreso: string | Date;
+  private idOrden: number;
+  private fechaIngreso: string;
   private nombreCliente: string | undefined;
-  private telCliente: number;
+  private telCliente: string;
   private articulo: string | undefined;
   private modelo: string | undefined;
   private marca: string | undefined;
   private fallReportada: string;
   private observaciones: string;
   private isCanceled: boolean | number;
-  private fechaReparacion: string | Date;
-  private fechaEntrega: string | Date;
+  private fechaReparacion: string;
+  private fechaEntrega: string;
   private reparacion: string;
   private precio: number;
 
-  constructor(pedido: PedidoInterface) {
+  constructor(pedido?: PedidoInterface | any) {
     this.idOrden = pedido.idOrden;
     this.fechaIngreso = pedido.fechaIngreso;
     this.nombreCliente = pedido.nombreCliente;
@@ -33,7 +33,27 @@ export default class Pedido {
     this.precio = pedido.precio;
   }
 
-  get getIdOrden(): string | number {
+  getData() {
+    let data: PedidoInterface = {
+      idOrden: this.idOrden,
+      fechaIngreso: this.fechaIngreso,
+      nombreCliente: this.nombreCliente,
+      telCliente: this.telCliente,
+      articulo: this.articulo,
+      modelo: this.modelo,
+      marca: this.marca,
+      fallReportada: this.fallReportada,
+      observaciones: this.observaciones,
+      isCanceled: this.isCanceled,
+      fechaReparacion: this.fechaReparacion,
+      fechaEntrega: this.fechaEntrega,
+      reparacion: this.reparacion,
+      precio: this.precio,
+    }
+    return data;
+  }
+
+  get getIdOrden(): number {
     return this.idOrden;
   }
   set setIdOrden(value: number) {
@@ -54,10 +74,10 @@ export default class Pedido {
     this.nombreCliente = value;
   }
 
-  get getTelCliente(): number {
+  get getTelCliente(): string {
     return this.telCliente;
   }
-  set setTelCliente(value: number) {
+  set setTelCliente(value: string) {
     this.telCliente = value;
   }
 

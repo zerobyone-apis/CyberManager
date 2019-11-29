@@ -35,6 +35,24 @@ export default class Order {
     this._price = 0;
   }
 
+        // let order: Order = new Order();
+      // order.id = item.idOrden;
+      // order.clientName = item.nombreCliente;
+      // order.clientPhone = item.telCliente;
+      // order.article = item.articulo || '';
+      // order.brand = item.marca || '';
+      // order.model = item.modelo || '';
+      // order.failReported = item.fallReportada;
+      // order.observations = item.observaciones;
+      // order.startDate = item.fechaIngreso;
+
+      // order.isCancelled = Boolean(item.isCanceled);
+      // order.repairDate = item.fechaReparacion;
+      // order.deliveryDate = item.fechaEntrega;
+      // order.reparation = item.reparacion;
+      // order.price = item.precio;
+      
+
   get id(): number {
     return this._id;
   }

@@ -14,9 +14,9 @@ router
   .post(createEmpresa);
 
 router
-  .route("/:id")
+  .route("/:id") 
   .get(findEmpresaByUserID)
-  .put(updateEmpresa)
+  .put(updateEmpresa) 
   .delete(deleteEmpresa);
 
 export default router;

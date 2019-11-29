@@ -54,6 +54,14 @@ export default class Styles {
     this.write(text, pos, doc, false);
   }
 
+  //       this.writeImg(enterprise.getUrlLogo, 100, 100, 'center', doc);
+  writeImg(url: string, width: number, height: number, doc: jsPDF) {
+    let img = new Image();
+    // img.setAttribute
+    // doc.addImage
+  }
+
+
   writeRectText(text: string, fontSize: number, pos: { x: number, y: number } | string, doc: jsPDF, inline?: boolean | undefined) {
     doc.setFontSize(fontSize);
     if (!inline) {
