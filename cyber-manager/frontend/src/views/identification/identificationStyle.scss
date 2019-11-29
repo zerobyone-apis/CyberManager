@@ -36,6 +36,7 @@
   // step 1
   .identificationPage {
     // background-color: rgb(196, 196, 196);
+    // display: flex;
 
     .identify-box {
       position: relative;
@@ -90,12 +91,13 @@
       }
     }
 
-    .orders-box {
+    .pedidos-box {
       position: absolute;
       width: calc(100% - 380px) !important;
       height: 100%;
       top: 25px;
       left: 380px;
+      // margin-left: 20px;
       border-radius: 20px;
 
       .header-table {
@@ -103,7 +105,7 @@
         float: right;
       }
 
-      .orders-table {
+      .pedidos-table {
         // background-color: rgb(202, 255, 222);
         border-radius: 20px;
         height: 100%;

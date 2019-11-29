@@ -16,21 +16,8 @@ export default class Pedido {
   private reparacion: string;
   private precio: number;
 
-  constructor(pedido?: PedidoInterface | any) {
-    this.idOrden = pedido.idOrden;
-    this.fechaIngreso = pedido.fechaIngreso;
-    this.nombreCliente = pedido.nombreCliente;
-    this.telCliente = pedido.telCliente;
-    this.articulo = pedido.articulo;
-    this.modelo = pedido.modelo;
-    this.marca = pedido.marca;
-    this.fallReportada = pedido.fallReportada;
-    this.observaciones = pedido.observaciones;
-    this.isCanceled = pedido.isCanceled;
-    this.fechaReparacion = pedido.fechaReparacion;
-    this.fechaEntrega = pedido.fechaEntrega;
-    this.reparacion = pedido.reparacion;
-    this.precio = pedido.precio;
+  constructor(init?: Partial<PedidoInterface>) {
+    Object.assign(this, init);
   }
 
   getData() {

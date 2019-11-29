@@ -59,7 +59,7 @@
                 <div class="service-number">
                   <v-text-field
                     readonly
-                    v-model="newPedido.idOrden"
+                    v-model="newPedido.getIdOrden"
                     label="Orden de servicio"
                     class="custom-field"
                   ></v-text-field>
@@ -67,7 +67,7 @@
                 <div class="reception-date">
                   <v-text-field
                     readonly
-                    v-model="newPedido.startDate"
+                    v-model="newPedido.getFechaIngreso"
                     label="recepcion"
                     class="custom-field"
                   ></v-text-field>
@@ -77,65 +77,64 @@
               <div class="client-fields-box">
                 <!-- <h4 class="font-title">Datos del cliente</h4> -->
                 <v-text-field
-                  :error="v.get('newPedido.clientName') != ''"
-                  :error-messages="v.get('newPedido.clientName')"
+                  :error="v.get('newPedido.getNombreCliente') != ''"
+                  :error-messages="v.get('newPedido.getNombreCliente')"
                   outlined
                   dense
-                  v-model="newPedido.clientName"
+                  v-model="newPedido.getNombreCliente"
                   label="Nombre del cliente"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('newPedido.clientPhone') != ''"
-                  :error-messages="v.get('newPedido.clientPhone')"
+                  :error="v.get('newPedido.getTelCliente') != ''"
+                  :error-messages="v.get('newPedido.getTelCliente')"
                   outlined
                   dense
-                  v-model="newPedido.clientPhone"
+                  v-model="newPedido.getTelCliente"
                   label="Telefono"
                   class="custom-field"
                 ></v-text-field>
               </div>
 
-              <div class="article-fields-box">
+              <div class="getArticulo-fields-box">
                 <v-text-field
-                  :error="v.get('newPedido.article') != ''"
-                  :error-messages="v.get('newPedido.article')"
+                  :error="v.get('newPedido.getArticulo') != ''"
+                  :error-messages="v.get('newPedido.getArticulo')"
                   outlined
                   dense
-                  v-model="newPedido.article"
+                  v-model="newPedido.getArticulo"
                   label="Articulo"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('newPedido.brand') != ''"
-                  :error-messages="v.get('newPedido.brand')"
+                  :error="v.get('newPedido.getMarca') != ''"
+                  :error-messages="v.get('newPedido.getMarca')"
                   outlined
                   dense
-                  v-model="newPedido.brand"
+                  v-model="newPedido.getMarca"
                   label="Marca"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('newPedido.model') != ''"
-                  :error-messages="v.get('newPedido.model')"
+                  :error="v.get('newPedido.getModelo') != ''"
+                  :error-messages="v.get('newPedido.getModelo')"
                   outlined
                   dense
-                  v-model="newPedido.model"
+                  v-model="newPedido.getModelo"
                   label="Modelo"
                   class="custom-field"
                 ></v-text-field>
 
                 <!-- TEXT AREA  -->
-
                 <v-textarea
-                  v-model="newPedido.failReported"
+                  v-model="newPedido.getFallReportada"
                   height="40"
                   label="Daño reportado"
                   value
                   class="custom-text-area"
                 ></v-textarea>
                 <v-textarea
-                  v-model="newPedido.observations"
+                  v-model="newPedido.getObservaciones"
                   height="40"
                   label="Notas"
                   value
@@ -187,33 +186,33 @@
               </div>
             </div>
 
-            <!-- TABLE OF ORDERS -->
-            <div class="orders-box">
+            <!-- TABLE OF pedidos -->
+            <div class="pedidos-box">
               <h3 class="font-title">Lista de Ordenes</h3>
               <v-data-table
                 :height="'100%'"
-                :v-model="orders.getArray()"
-                :headers="headerOrders"
-                :items="orders.getArray()"
+                :v-model="pedidos.getArray()"
+                :headers="headerPedido"
+                :items="pedidos.getArray()"
                 :items-per-page="8"
-                item-key="id"
+                item-key="idOrden"
                 show-select
                 single-select
-                class="orders-table elevation-0"
+                class="pedidos-table elevation-0"
               >
                 <template v-slot:item.action="{ item }">
-                  <!-- button edit item in orders table -->
+                  <!-- button edit item in pedidos table -->
                   {{ interactionsMode.order }}
                   <v-icon
                     :disabled="interactionsMode.order == 1"
                     class="mr-3"
-                    @click="editnewPedido(item)"
+                    @click="editNewOrder(item)"
                   >edit</v-icon>
 
                   <!-- button delete selected order  -->
                   <!-- :color="changeColorToEdit(item)" -->
                   <v-icon
-                    :disabled="(interactionsMode.order == 1) && (selectedPedido != orders.getArray().indexOf(item))"
+                    :disabled="(interactionsMode.order == 1) && (selectedPedido != pedidos.getArray().indexOf(item))"
                     @click="deleteOrder(item)"
                   >delete</v-icon>
                 </template>
@@ -223,14 +222,13 @@
             </div>
           </div>
         </v-stepper-content>
-
         <!-- reparation frame -->
         <v-stepper-content step="2">
           <div class="repairPage">
             <div class="identify-box">
               <div class="service-number">
                 <v-text-field
-                  v-model="newPedido.id"
+                  v-model="newPedido.getIdOrden"
                   readonly
                   label="Orden de servicio"
                   class="custom-field"
@@ -238,15 +236,15 @@
               </div>
               <div class="client-name">
                 <v-text-field
-                  v-model="newPedido.clientName"
+                  v-model="newPedido.getNombreCliente"
                   readonly
                   label="Cliente"
                   class="custom-field"
                 ></v-text-field>
               </div>
-              <div class="article-name">
+              <div class="getArticulo-name">
                 <v-text-field
-                  v-model="newPedido.article"
+                  v-model="newPedido.getArticulo"
                   readonly
                   label="Articulo"
                   class="custom-field"
@@ -356,7 +354,6 @@
         </v-stepper-content>
       </v-stepper-items>
     </v-stepper>
-
   </div>
 </template>
 
@@ -375,7 +372,7 @@ import { Component } from "vue-property-decorator";
     TimeField
   }
 })
-export default class Repairs extends IndentificationCode {
+export default class Indentificacion extends IndentificationCode {
   created() {
     this.init();
   }

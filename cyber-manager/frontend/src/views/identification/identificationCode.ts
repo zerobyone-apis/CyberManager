@@ -14,7 +14,7 @@ import { EmpresaInterface } from '@/interface/EmpresaInterface';
 
 export default class IndentificationCode extends vue {
 
-  private wizard = 1;
+  public wizard = 1;
 
   // Integration Backend
   private backend: IntegrationBackend = new IntegrationBackend();
@@ -33,7 +33,7 @@ export default class IndentificationCode extends vue {
   private newPedido: Pedido = new Pedido();
   private pedidos: PedidoList = new PedidoList();
   private selectedPedido: number = -1; // index in orders
-
+  
   private enterprise: Empresa = new Empresa();
 
   // vars used for validation into the newOrder
@@ -61,7 +61,7 @@ export default class IndentificationCode extends vue {
     other: false,
   }
 
-  private headerPedidos = [
+  private headerPedido = [
     { text: 'Nro', value: 'idOrden' },
     { text: 'Cliente', value: 'nombreCliente' },
     { text: "Acciones", value: 'action' }
@@ -69,6 +69,7 @@ export default class IndentificationCode extends vue {
 
   // Methods
   async init() {
+    console.log('accede init')
     let responseOrders: PedidoInterface[] = await this.backend.send('get', undefined, '/pedido');
     responseOrders.forEach((pedidoInterface: PedidoInterface) => {
       this.pedidos.add(new Pedido(pedidoInterface));
@@ -93,8 +94,8 @@ export default class IndentificationCode extends vue {
   }
 
   private editNewOrder(pedido: Pedido) {
-    Object.assign(this.newPedido, pedido);
-    this.selectedPedido = this.pedidos.getArray().indexOf(this.newPedido);
+    Object.assign(this.newPedido, pedido); // show data
+    this.selectedPedido = this.pedidos.getArray().indexOf(pedido);
     this.v.clearFails();
     this.interactionsMode.order = 1; // save mode
     // save in the store the selected order - this active the buttons of the toolbar)
@@ -145,7 +146,7 @@ export default class IndentificationCode extends vue {
         this.selectedPedido = -1;
         this.interactionsMode.order = 0; // mode new
       } catch (error) {
-        console.error(error);
+        console.error('Error 149'+error);
       }
       this.disabledButtons = false; // DISABLED BUTTONS
     }
@@ -153,7 +154,8 @@ export default class IndentificationCode extends vue {
 
   private cancelSaveOrder() {
     if (confirm('Seguro que desea cancelar?')) {
-      Object.assign(this.newPedido, new Pedido());
+      this.newPedido = new Pedido();
+      // Object.assign(this.newPedido, new Pedido());
       this.v.clearFails();
       this.selectedPedido = -1;
       this.interactionsMode.order = 0; // mode new 

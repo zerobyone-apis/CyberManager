@@ -15,24 +15,12 @@ export default class Empresa {
   private ultimaActualizacion: string;
   private username: string;
 
-  constructor() {
-    this.idEmpresa = -1;
-    this.username = 'jorge';
-    this.fechaCreacion = '2010-10-11';
-    this.nombre = 'CyberPunk';
-    this.telefono = '22299999';
-    this.celular = '09899999';
-    this.fax = 0;
-    this.direccion = 'Luis Alberto de Herrera 2332';
-    this.garantia = 'La garantia de este producto es de 3 meses';
-    this.primerMsjRecibo = '';
-    this.segundoMsjRecibo = '';
-    this.urlLogo = '';
-    this.ultimaActualizacion = '';
+  constructor(init?: Partial<EmpresaInterface>) {
+    Object.assign(this, init);
   }
 
   getData() {
-    return {
+    let data: EmpresaInterface = {
       idEmpresa: this.idEmpresa,
       username: this.username,
       fechaCreacion: this.fechaCreacion,
@@ -47,6 +35,7 @@ export default class Empresa {
       urlLogo: this.urlLogo,
       ultimaActualizacion: this.ultimaActualizacion,
     }
+    return data;
   }
 
   get getIdEmpresa(): number {
@@ -70,17 +59,17 @@ export default class Empresa {
     this.nombre = value;
   }
 
-  get getTelefono(): number {
+  get getTelefono(): string {
     return this.telefono;
   }
-  set setTelefono(value: number) {
+  set setTelefono(value: string) {
     this.telefono = value;
   }
 
-  get getCelular(): number {
+  get getCelular(): string {
     return this.celular;
   }
-  set setCelular(value: number) {
+  set setCelular(value: string) {
     this.celular = value;
   }
 

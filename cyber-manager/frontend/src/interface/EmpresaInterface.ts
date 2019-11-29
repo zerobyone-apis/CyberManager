@@ -1,15 +1,15 @@
 export interface EmpresaInterface {
-  idEmpresa: string | number;
-  fechaCreacion: Date | string;
+  idEmpresa: number;
+  fechaCreacion: string;
   username: string;
   nombre: string;
-  telefono?: number;
-  celular?: number;
+  telefono: string;
+  celular: string;
   fax?: number;
   direccion?: string;
   garantia: string;
   primerMsjRecibo: string;
   segundoMsjRecibo: string;
   urlLogo: string;
-  ultimaActualizacion?: Date | string;
+  ultimaActualizacion?: string;
 }
