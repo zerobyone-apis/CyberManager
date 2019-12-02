@@ -1,10 +1,15 @@
-import { Request, Response } from "express";
-import { connect } from "../../sql/connection/MysqlConnection";
-import { User } from "../interface/UserInterface";
-import Queries from "../../sql/queries/Queries";
+import { Request, Response } from 'express';
+import { connect } from '../../sql/connection/MysqlConnection';
+import { UserInterface } from '../interface/UserInterface';
+import Queries from '../../sql/queries/Queries';
+import DateTime from '../utils/DateTime';
+
+// Settings
+let datetime: DateTime = new DateTime();
 const queryM = new Queries();
 const query = queryM.getQuery();
 
+//Exports functions
 export async function getUsers(req: Request, res: Response): Promise<Response> {
   try {
     const conn = await connect();
@@ -13,45 +18,41 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
     return res.status(200).json(users[0]);
   } catch (error) {
     console.log(error);
-    return res.status(404).json("Error obteniendo los Usuarios.");
+    return res.status(404).json('Error obteniendo los Usuarios.');
   }
 }
 
 export async function createUser(req: Request, res: Response) {
-  console.log("create user");
+  console.log('create user');
   try {
-    const newUser: User = req.body.data;
+    const newUser: UserInterface = req.body.data;
     const conn = await connect();
     const created = await conn.query(query.user.create, [
       newUser.username,
       newUser.passwd,
       newUser.cargo,
       newUser.isAdmin,
-      newUser.createOn
+      datetime.now()
     ]);
     return res.status(201).json(created);
   } catch (error) {
     console.log(error);
-    return res.status(400).json("Error creando usuario.");
+    return res.status(400).json('Error creando usuario.');
   }
 }
 
 export async function updateUser(req: Request, res: Response) {
   try {
-    const { username, passwd, cargo, isAdmin }: User = req.body.data;
+    const { username, passwd, cargo, isAdmin }: UserInterface = req.body.data;
     const conn = await connect();
     const id = parseInt(req.params.id);
-
-    let parts = new Date().toLocaleDateString().split("/");
-    let orderFecha = parts[2] + "-" + parts[1] + "-" + parts[0];
-    let hora = new Date().toLocaleTimeString();
 
     const updated = await conn.query(query.user.update, [
       username,
       passwd,
       cargo,
       isAdmin,
-      orderFecha + " " + hora,
+      datetime.now(),
       id
     ]);
     return res.status(200).json(updated);
@@ -74,7 +75,7 @@ export async function deleteUser(req: Request, res: Response) {
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).json("Error creando usuario.");
+    return res.status(400).json('Error creando usuario.');
   }
 }
 
@@ -95,7 +96,8 @@ export async function findUserByID(req: Request, res: Response) {
 
 export async function signIn(req: Request, res: Response) {
   try {
-    const newUser: User = req.body.data;
+    console.log('Body Object -> ', req.body.data);
+    const newUser: UserInterface = req.body.data;
     const conn = await connect();
     const user = await conn.query(query.user.signIn, [
       newUser.username,

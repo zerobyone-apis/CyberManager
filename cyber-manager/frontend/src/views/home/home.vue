@@ -7,25 +7,25 @@
           <div class="box-access">
             <h4 class="font-title title">Acceda para utilizar CyberManager</h4>
             <v-select
-              v-model="newUser.charge"
+              v-model="user.cargo"
               :items="charges"
-              :error="v.get('newUser.charge') != ''"
-              :error-messages="v.get('newUser.charge')"
+              :error="v.get('user.cargo') != ''"
+              :error-messages="v.get('user.cargo')"
               label="Cargo"
               outlined
             ></v-select>
 
             <v-text-field
-              v-model="newUser.username"
-              :error="v.get('newUser.username') != ''"
-              :error-messages="v.get('newUser.username')"
+              v-model="user.username"
+              :error="v.get('user.username') != ''"
+              :error-messages="v.get('user.username')"
               class="field"
               label="Usuario"
             ></v-text-field>
             <v-text-field
-              v-model="newUser.password"
-              :error="v.get('newUser.password') != ''"
-              :error-messages="v.get('newUser.password')"
+              v-model="user.passwd"
+              :error="v.get('user.passwd') != ''"
+              :error-messages="v.get('user.passwd')"
               class="field"
               type="password"
               label="Contraseña"
@@ -52,35 +52,35 @@
               <h4 class="font-title title">Registrese Aqui</h4>
 
               <v-select
-                v-model="newUser.charge"
+                v-model="createUser.cargo"
                 :items="charges"
-                :error="v.get('newUser.charge') != ''"
-                :error-messages="v.get('newUser.charge')"
+                :error="v.get('createUser.cargo') != ''"
+                :error-messages="v.get('createUser.cargo')"
                 label="Cargo"
                 outlined
               ></v-select>
 
               <v-text-field
-                v-model="newUser.username"
-                :error="v.get('newUser.username') != ''"
-                :error-messages="v.get('newUser.username')"
+                v-model="createUser.username"
+                :error="v.get('createUser.username') != ''"
+                :error-messages="v.get('createUser.username')"
                 class="field"
                 label="Usuario"
               ></v-text-field>
 
               <v-text-field
-                v-model="newUser.password"
-                :error="v.get('newUser.password') != ''"
-                :error-messages="v.get('newUser.password')"
+                v-model="createUser.passwd"
+                :error="v.get('createUser.passwd') != ''"
+                :error-messages="v.get('createUser.passwd')"
                 class="field"
                 label="Contraseña"
                 type="password"
               ></v-text-field>
 
               <v-text-field
-                v-model="newUser.password2"
-                :error="v.get('newUser.password2') != ''"
-                :error-messages="v.get('newUser.password2')"
+                v-model="createUser.passwd2"
+                :error="v.get('createUser.passwd2') != ''"
+                :error-messages="v.get('createUser.passwd2')"
                 class="field"
                 label="Repita contraseña"
                 type="password"
@@ -102,16 +102,15 @@
 
 <script lang="ts">
 //code
-import HomeCode from "./homeCode";
+import HomeCode from './homeCode';
 //style
-import "./homeStyle.scss";
-import "../../styles/fonts.scss";
+import './homeStyle.scss';
+import '../../styles/fonts.scss';
 //components
-import { Component } from "vue-property-decorator";
+import { Component } from 'vue-property-decorator';
 
 @Component({
-  components: {
-  }
+  components: {}
 })
 export default class Home extends HomeCode {}
 </script>

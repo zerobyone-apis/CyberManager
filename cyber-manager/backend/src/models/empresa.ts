@@ -1,124 +1,132 @@
-import { EmpresaInterface } from "../interface/EmpresaInterface";
+import { EmpresaInterface } from '../interface/EmpresaInterface';
 
-export default class Empresa {
-  private idEmpresa: string | number;
-  private fechaCreacion: Date | string;
-  private nombre: string;
-  private telefono: number | undefined;
-  private celular: number | undefined;
-  private fax: number | undefined;
-  private direccion: string | undefined;
-  private garantia: string | undefined;
-  private primerMsjRecibo: string | undefined;
-  private segundoMsjRecibo: string | undefined;
-  private urlLogo: string | undefined;
-  private ultimaActualizacion: Date | string | undefined;
-  private username: string;
+export default class Empresa implements EmpresaInterface {
+  private _idEmpresa: string | number | undefined;
+  private _fechaCreacion: Date | string;
+  private _nombre: string;
+  private _telefono: number | undefined;
+  private _celular: number | undefined;
+  private _fax: number | undefined;
+  private _direccion: string;
+  private _garantia: string;
+  private _primerMsjRecibo: string | undefined;
+  private _segundoMsjRecibo: string | undefined;
+  private _urlLogo: string | undefined;
+  private _ultimaActualizacion: Date | string | undefined;
+  private _username: string;
+  private _email: string | undefined;
 
-  constructor(empresa: EmpresaInterface) {
-    this.idEmpresa = empresa.idEmpresa;
-    this.fechaCreacion = empresa.fechaCreacion;
-    this.nombre = empresa.nombre;
-    this.telefono = empresa.telefono;
-    this.celular = empresa.celular;
-    this.fax = empresa.fax;
-    this.direccion = empresa.direccion;
-    this.garantia = empresa.garantia;
-    this.primerMsjRecibo = empresa.primerMsjRecibo;
-    this.segundoMsjRecibo = empresa.segundoMsjRecibo;
-    this.urlLogo = empresa.urlLogo;
-    this.ultimaActualizacion = empresa.ultimaActualizacion;
-    this.username = empresa.username;
-  }
-
-  get getIdEmpresa(): string | number {
-    return this.idEmpresa;
-  }
-  set setIdEmpresa(value: number) {
-    this.idEmpresa = value;
+  constructor() {
+    this._idEmpresa = this.idEmpresa;
+    this._fechaCreacion = this.fechaCreacion;
+    this._nombre = this.nombre;
+    this._telefono = this.telefono;
+    this._celular = this.celular;
+    this._fax = this.fax;
+    this._direccion = this.direccion;
+    this._garantia = this.garantia;
+    this._primerMsjRecibo = this.primerMsjRecibo;
+    this._segundoMsjRecibo = this.segundoMsjRecibo;
+    this._urlLogo = this.urlLogo;
+    this._ultimaActualizacion = this.ultimaActualizacion;
+    this._username = this.username;
+    this._email = this.email;
   }
 
-  get getFechaCreacion(): Date | string {
-    return this.fechaCreacion;
+  get idEmpresa(): string | number | undefined {
+    return this._idEmpresa;
   }
-  set setFechaCreacion(value: string) {
-    this.fechaCreacion = value;
-  }
-
-  get getNombre(): string {
-    return this.nombre;
-  }
-  set setNombre(value: string) {
-    this.nombre = value;
+  set idEmpresa(value: number | string | undefined) {
+    this._idEmpresa = value;
   }
 
-  get getTelefono(): number | undefined {
-    return this.telefono;
+  get fechaCreacion(): Date | string {
+    return this._fechaCreacion;
   }
-  set setTelefono(value: number) {
-    this.telefono = value;
-  }
-
-  get getCelular(): number | undefined {
-    return this.celular;
-  }
-  set setCelular(value: number) {
-    this.celular = value;
+  set fechaCreacion(value: string | Date) {
+    this._fechaCreacion = value;
   }
 
-  get getFax(): number | undefined {
-    return this.fax;
+  get nombre(): string {
+    return this._nombre;
   }
-  set setFax(value: number) {
-    this.fax = value;
-  }
-
-  get getDireccion(): string | undefined {
-    return this.direccion;
-  }
-  set setDireccion(value: string) {
-    this.direccion = value;
+  set nombre(value: string) {
+    this._nombre = value;
   }
 
-  get getGarantia(): string | undefined {
-    return this.garantia;
+  get telefono(): number | undefined {
+    return this._telefono;
   }
-  set setGarantia(value: string) {
-    this.garantia = value;
-  }
-
-  get getPrimerMsjRecibo(): string | undefined {
-    return this.primerMsjRecibo;
-  }
-  set setPrimerMsjRecibo(value: string) {
-    this.primerMsjRecibo = value;
+  set telefono(value: number | undefined) {
+    this._telefono = value;
   }
 
-  get getSegundoMsjRecibo(): string | undefined {
-    return this.segundoMsjRecibo;
+  get celular(): number | undefined {
+    return this._celular;
   }
-  set setSegundoMsjRecibo(value: string) {
-    this.segundoMsjRecibo = value;
-  }
-
-  get getUrlLogo(): string | undefined {
-    return this.urlLogo;
-  }
-  set setUrlLogo(value: string) {
-    this.urlLogo = value;
+  set celular(value: number | undefined) {
+    this._celular = value;
   }
 
-  get getUltimaActualizacion(): Date | string | undefined {
-    return this.ultimaActualizacion;
+  get fax(): number | undefined {
+    return this._fax;
   }
-  set setUltimaActualizacion(value: string) {
-    this.ultimaActualizacion = value;
+  set fax(value: number | undefined) {
+    this._fax = value;
   }
 
-  get getUsername(): string {
-    return this.username;
+  get direccion(): string {
+    return this._direccion;
   }
-  set setUsername(value: string) {
-    this.username = value;
+  set direccion(value: string) {
+    this._direccion = value;
+  }
+
+  get garantia(): string {
+    return this._garantia;
+  }
+  set garantia(value: string) {
+    this._garantia = value;
+  }
+
+  get primerMsjRecibo(): string | undefined {
+    return this._primerMsjRecibo;
+  }
+  set primerMsjRecibo(value: string | undefined) {
+    this._primerMsjRecibo = value;
+  }
+
+  get segundoMsjRecibo(): string | undefined {
+    return this._segundoMsjRecibo;
+  }
+  set segundoMsjRecibo(value: string | undefined) {
+    this._segundoMsjRecibo = value;
+  }
+
+  get urlLogo(): string | undefined {
+    return this._urlLogo;
+  }
+  set urlLogo(value: string | undefined) {
+    this._urlLogo = value;
+  }
+
+  get ultimaActualizacion(): Date | string | undefined {
+    return this._ultimaActualizacion;
+  }
+  set ultimaActualizacion(value: string | Date | undefined) {
+    this._ultimaActualizacion = value;
+  }
+
+  get username(): string {
+    return this._username;
+  }
+  set username(value: string) {
+    this._username = value;
+  }
+  get email(): string | undefined {
+    return this._email;
+  }
+  set email(value: string | undefined) {
+    this._email = value;
   }
 }

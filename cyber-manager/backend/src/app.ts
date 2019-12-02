@@ -1,11 +1,11 @@
-import Express, { Application } from "express";
-import morgan from "morgan";
+import Express, { Application } from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
 
-let cors = require("cors");
 //Import Routes
-import empresa from "./routes/empresa.routes";
-import pedido from "./routes/pedido.routes";
-import routes from "./routes/user.routes";
+import empresa from './routes/empresa.routes';
+import pedido from './routes/pedido.routes';
+import routes from './routes/user.routes';
 export class App {
   private app: Application;
 
@@ -19,25 +19,25 @@ export class App {
 
   //Settings
   settings() {
-    this.app.set("port", this.port || process.env.PORT || 3000);
+    this.app.set('port', this.port || process.env.PORT || 3000);
   }
 
   //Middlewares
   middlewares() {
-    this.app.use(morgan("dev"));
+    this.app.use(morgan('dev'));
     this.app.use(Express.json());
   }
 
   //Routes
   routes() {
-    this.app.use("/empresa", empresa);
-    this.app.use("/pedido", pedido);
-    this.app.use("/user", routes);
+    this.app.use('/empresa', empresa);
+    this.app.use('/pedido', pedido);
+    this.app.use('/user', routes);
   }
 
   //Functions
   async listen() {
-    await this.app.listen(this.app.get("port"));
-    console.log(`Server on port ${this.app.get("port")}`);
+    await this.app.listen(this.app.get('port'));
+    console.log(`Server on port ${this.app.get('port')}`);
   }
 }

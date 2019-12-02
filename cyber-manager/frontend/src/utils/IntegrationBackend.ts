@@ -1,6 +1,5 @@
 export default class IntegrationBackend {
-
-  private baseUrl = "http://localhost:3000";
+  private baseUrl = 'http://localhost:3000';
   private axios = require('axios');
 
   async send(method: string, data?: any, route?: string) {
@@ -12,9 +11,9 @@ export default class IntegrationBackend {
         data // This is the body part
       },
       headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
+        'Content-Type': 'application/json;charset=UTF-8'
       }
-    }
+    };
     let res = await this.axios(config);
     return res.data;
   }

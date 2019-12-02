@@ -1,7 +1,6 @@
 import Pedido from './pedido';
-import { PedidoInterface } from '@/interface/PedidoInterface';
-export default class PedidoList {
 
+export default class PedidoList {
   private _pedidos: Pedido[];
 
   constructor() {

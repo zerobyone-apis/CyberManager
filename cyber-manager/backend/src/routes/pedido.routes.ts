@@ -5,7 +5,8 @@ import {
   findByID,
   deletePedido,
   updatePedido,
-  cancelPedido
+  cancelPedido,
+  changeStatus
 } from "../controllers/pedido.controllers";
 const router = Router();
 
@@ -19,6 +20,8 @@ router
   .get(findByID)
   .put(updatePedido)
   .delete(deletePedido);
+
+router.route("/status/:id").put(changeStatus);
 
 router.route("/cancel/:id").put(cancelPedido);
 

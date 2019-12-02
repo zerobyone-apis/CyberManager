@@ -1,22 +1,22 @@
-import { Router } from "express";
+import { Router } from 'express';
 import {
   getEmpresas,
   createEmpresa,
   updateEmpresa,
   deleteEmpresa,
   findEmpresaByUserID
-} from "../controllers/empresa.controllers";
+} from '../controllers/empresa.controllers';
 const router = Router();
 
 router
-  .route("/")
+  .route('/')
   .get(getEmpresas)
   .post(createEmpresa);
 
 router
-  .route("/:id") 
+  .route('/:id')
   .get(findEmpresaByUserID)
-  .put(updateEmpresa) 
+  .put(updateEmpresa)
   .delete(deleteEmpresa);
 
 export default router;

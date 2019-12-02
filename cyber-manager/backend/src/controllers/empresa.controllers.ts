@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import { connect } from "../../sql/connection/MysqlConnection";
-import { EmpresaInterface } from "../interface/EmpresaInterface";
-import Queries from "../../sql/queries/Queries";
-import DateTime from "../utils/DateTIme";
+import { Request, Response } from 'express';
+import { connect } from '../../sql/connection/MysqlConnection';
+import { EmpresaInterface } from '../interface/EmpresaInterface';
+import Queries from '../../sql/queries/Queries';
+import DateTime from '../utils/DateTime';
 const queryM = new Queries();
 const query = queryM.getQuery();
 
@@ -16,15 +16,13 @@ export async function getEmpresas(
     return res.status(200).json(empresas[0]);
   } catch (error) {
     console.log(error);
-    return res.status(404).json("Error obteniendo las Empresas.");
+    return res.status(404).json('Error obteniendo las Empresas.');
   }
 }
 
 export async function createEmpresa(req: Request, res: Response) {
   const datetime = new DateTime();
   try {
-    //Compadre. coloquele el .data que si le pego desde postman, no encuentra el objeto de todas formas
-    //lo subire en este formato req.body.data  -> PDT: si ves alguno que le falta ponele
     const newEmpresa: EmpresaInterface = req.body.data;
     const conn = await connect();
     const created = await conn.query(query.empresa.create, [
@@ -42,7 +40,7 @@ export async function createEmpresa(req: Request, res: Response) {
       newEmpresa.username
     ]);
     return res.status(201).json({
-      message: "Empresa creada satisfactoriamente!!",
+      message: 'Empresa creada satisfactoriamente!!',
       object: created
     });
   } catch (error) {
@@ -53,9 +51,6 @@ export async function createEmpresa(req: Request, res: Response) {
 
 export async function updateEmpresa(req: Request, res: Response) {
   try {
-    //Compadre. coloquele el .data que si le pego desde postman, no encuentra el objeto de todas formas
-    //lo subire en este formato req.body.data  -> PDT: si ves alguno que le falta ponele
-    // ok bro n.n
     const updateEmp: EmpresaInterface = req.body.data;
     const conn = await connect();
     const id = parseInt(req.params.id);
@@ -76,7 +71,7 @@ export async function updateEmpresa(req: Request, res: Response) {
       id
     ]);
     return res.status(200).json({
-      message: "Empresa actualizada satisfactoriamente!!",
+      message: 'Empresa actualizada satisfactoriamente!!',
       object: updated
     });
   } catch (error) {

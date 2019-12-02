@@ -1,19 +1,22 @@
-import { Request, Response } from "express";
-import { connect } from "../../sql/connection/MysqlConnection";
-import { PedidoInterface } from "../interface/PedidoInterface";
-import Queries from "../../sql/queries/Queries";
+import { Request, Response, response } from 'express';
+import { connect } from '../../sql/connection/MysqlConnection';
+import { PedidoInterface } from '../interface/PedidoInterface';
+import Queries from '../../sql/queries/Queries';
+import { QueryError } from 'mysql';
+import { Resolver } from 'dns';
 const queryM = new Queries();
 const query = queryM.getQuery();
 
 export async function createPedido(req: Request, res: Response) {
   try {
     const newPedido: PedidoInterface = req.body.data;
+    console.log('NewPeidod -> ', newPedido);
     const conn = await connect();
     const created = await conn.query(query.pedido.create, [newPedido]);
     return res.status(201).json(created);
   } catch (error) {
     console.log(error);
-    return res.status(400).json("Error creando pedido.");
+    return res.status(400).json('Error creando pedido.');
   }
 }
 
@@ -41,11 +44,12 @@ export async function getPedidos(
     return res.status(200).json(pedidos[0]);
   } catch (error) {
     console.log(error);
-    return res.status(404).json("Error obteniendo los Pedidos.");
+    return res.status(404).json('Error obteniendo los Pedidos.');
   }
 }
 
 export async function updatePedido(req: Request, res: Response) {
+  console.log('data: ', req.body.data);
   try {
     const {
       nombreCliente,
@@ -58,12 +62,13 @@ export async function updatePedido(req: Request, res: Response) {
       isCanceled,
       fechaReparacion,
       reparacion,
-      precio
+      precio,
+      status
     }: PedidoInterface = req.body.data;
+
     const id = parseInt(req.params.id);
 
     // console.log(req.body)
-
     const conn = await connect();
     const updated = await conn.query(query.pedido.update, [
       nombreCliente,
@@ -99,6 +104,35 @@ export async function cancelPedido(req: Request, res: Response) {
   }
 }
 
+export async function changeStatus(req: Request, res: Response) {
+  try {
+    const { status } = req.body;
+    const id = parseInt(req.params.id);
+    const conn = await connect();
+    const result = conn.query(query.pedido.setStatus, [status, id]);
+
+    return res.status(200).json({
+      message: 'Estado cambiado exitosamente.',
+      body: {
+        pedido: {
+          status,
+          object: result
+        }
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      message: 'Error cambiando de estado este pedido error: ->' + `${error}`,
+      body: {
+        pedido: {
+          error
+        }
+      }
+    });
+  }
+}
+
 export async function deletePedido(req: Request, res: Response) {
   console.log(req.params);
   try {
@@ -110,6 +144,6 @@ export async function deletePedido(req: Request, res: Response) {
     });
   } catch (error) {
     console.log(error);
-    return res.status(400).json("Error creando usuario.");
+    return res.status(400).json('Error creando usuario.');
   }
 }
