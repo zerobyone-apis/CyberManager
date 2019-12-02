@@ -149,9 +149,6 @@
               </div>
 
               <div class="footer-box">
-                <!-- DELETE THIS BUTTON (IS TEST)  -->
-                <v-btn v-if="false" @click="generatePdf()">generar pdf</v-btn>
-
                 <!-- buttons new, save, cancel a order  -->
                 <v-btn
                   v-if="interactionsMode.order == 0"
@@ -214,16 +211,14 @@
                     class="mr-3"
                     @click="editNewOrder(item)"
                     :color="changeColorToEdit(item)"
-                    >edit</v-icon
-                  >
+                  >edit</v-icon>
                   <v-icon
                     :disabled="
                       interactionsMode.order == 1 &&
                         selectedPedido != pedidos.getArray().indexOf(item)
                     "
                     @click="deleteOrder(item)"
-                    >delete</v-icon
-                  >
+                  >delete</v-icon>
                 </template>
                 <span>Borrar orden</span>
               </v-data-table>
@@ -273,52 +268,22 @@
             </div>
 
             <div class="garanty-box">
-              <v-text-field
-                v-model="reparacionPedido.garantia"
-                outlined
-                dense
-                label="Garantia"
-              ></v-text-field>
+              <v-text-field v-model="reparacionPedido.garantia" outlined dense label="Garantia"></v-text-field>
             </div>
 
             <div class="technical-box">
-              <v-text-field
-                v-model="reparacionPedido.tecnico"
-                outlined
-                dense
-                label="Tecnico"
-              ></v-text-field>
+              <v-text-field v-model="reparacionPedido.tecnico" outlined dense label="Tecnico"></v-text-field>
               <!-- <v-select></v-select> -->
             </div>
 
             <div class="content-box">
               <div class="status-box">
                 <p>Status Pedido</p>
-                <v-switch
-                  v-model="status.recibido"
-                  inset
-                  label="Recibido"
-                ></v-switch>
-                <v-switch
-                  v-model="status.reparandose"
-                  inset
-                  label="En Reparacion"
-                ></v-switch>
-                <v-switch
-                  v-model="status.confirmando_pago"
-                  inset
-                  label="Confirmando Pago"
-                ></v-switch>
-                <v-switch
-                  v-model="status.en_talleres"
-                  inset
-                  label="En Taller"
-                ></v-switch>
-                <v-switch
-                  v-model="status.entregado"
-                  inset
-                  label="Entregado"
-                ></v-switch>
+                <v-switch v-model="status.recibido" inset label="Recibido"></v-switch>
+                <v-switch v-model="status.reparandose" inset label="En Reparacion"></v-switch>
+                <v-switch v-model="status.confirmando_pago" inset label="Confirmando Pago"></v-switch>
+                <v-switch v-model="status.en_talleres" inset label="En Taller"></v-switch>
+                <v-switch v-model="status.entregado" inset label="Entregado"></v-switch>
               </div>
 
               <div class="dates-box">
@@ -357,6 +322,24 @@
                 </div>
               </div>
             </div>
+            <div class="footer">
+              <v-btn
+                @click="saveEnterpriseInfo()"
+                :disabled="disabledButtons"
+                class="btn-footer"
+                color="green"
+                dark
+                small
+              >
+                GUARDAR
+                <v-icon>save</v-icon>
+              </v-btn>
+
+              <v-btn @click :disabled="disabledButtons" color="grey" dark small>
+                Cancelar
+                <v-icon>cancel</v-icon>
+              </v-btn>
+            </div>
           </div>
         </v-stepper-content>
 
@@ -372,26 +355,10 @@
                   class="custom-field"
                 ></v-text-field>
 
-                <v-text-field
-                  v-model="enterprise.direccion"
-                  label="Direccion"
-                  class="custom-field"
-                ></v-text-field>
-                <v-text-field
-                  v-model="enterprise.telefono"
-                  label="Telefono"
-                  class="custom-field"
-                ></v-text-field>
-                <v-text-field
-                  v-model="enterprise.celular"
-                  label="Celular"
-                  class="custom-field"
-                ></v-text-field>
-                <v-text-field
-                  v-model="enterprise.email"
-                  label="Email"
-                  class="custom-field"
-                ></v-text-field>
+                <v-text-field v-model="enterprise.direccion" label="Direccion" class="custom-field"></v-text-field>
+                <v-text-field v-model="enterprise.telefono" label="Telefono" class="custom-field"></v-text-field>
+                <v-text-field v-model="enterprise.celular" label="Celular" class="custom-field"></v-text-field>
+                <v-text-field v-model="enterprise.email" label="Email" class="custom-field"></v-text-field>
               </div>
               <div class="image-box">
                 <v-text-field
@@ -399,12 +366,7 @@
                   label="Url del logo"
                   class="custom-field"
                 ></v-text-field>
-                <img
-                  :src="enterprise.urlLogo"
-                  height="60"
-                  widht="250"
-                  v-if="enterprise.urlLogo"
-                />
+                <img :src="enterprise.urlLogo" height="60" widht="250" v-if="enterprise.urlLogo" />
               </div>
             </div>
             <div class="pdf-fields">
@@ -451,13 +413,13 @@
 
 <script lang="ts">
 // code
-import IndentificationCode from './identificationCode';
+import IndentificationCode from "./identificationCode";
 // style
-import './identificationStyle.scss';
-import '../../styles/fonts.scss';
-import TimeField from '../../components/TimeField/TimeField.vue';
+import "./identificationStyle.scss";
+import "../../styles/fonts.scss";
+import TimeField from "../../components/TimeField/TimeField.vue";
 // components
-import { Component } from 'vue-property-decorator';
+import { Component } from "vue-property-decorator";
 
 @Component({
   components: {
