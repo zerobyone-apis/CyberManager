@@ -28,12 +28,6 @@ export default class HomeCode extends vue {
     isAdmin: '' //if supervisor true
   });
 
-  //Si el cargo no esta vacio y no es Empleado entonces es Admin.
-  private isAdmin() {
-    this.user.isAdmin =
-      this.user.cargo != 'Empleado' && this.user.cargo != '' ? true : false;
-  }
-
   //Register usuario
   public createUser = {
     username: '',
@@ -59,9 +53,14 @@ export default class HomeCode extends vue {
   // control step visible in the stepper
   private wizard = 1;
 
+  //Si el cargo no esta vacio y no es Empleado entonces es Admin.
+  private isAdmin() {
+    this.user.isAdmin =
+      this.user.cargo != 'Empleado' && this.user.cargo != '' ? true : false;
+  }
+
   async signUp() {
     this.isAdmin();
-    console.log(this.createUser);
     if (this.v.validateFields(this.createUser, [this.userFields])) {
       try {
         const userFiltered: {
@@ -73,9 +72,9 @@ export default class HomeCode extends vue {
         userFiltered.succes == true
           ? userFiltered
           : (err: Error) => {
-              console.error(err.message);
-              throw new Error(err.message);
-            };
+            console.error(err.message);
+            throw new Error(err.message);
+          };
 
         console.log(`user filtered -> ${userFiltered}`);
 
@@ -115,26 +114,24 @@ export default class HomeCode extends vue {
           cargo: this.user.cargo,
           isAdmin: this.user.isAdmin
         };
+
         // Integration Backend POST user send()
-        const response: any = await this.backend.send(
+        let response: any = await this.backend.send(
           'post',
           userData,
           '/user/signin'
         );
-
-        console.log('Respuesta de Usuario', response);
-
-        //User Store info.
-        let user = {
-          idUser: response[0].idUser,
-          username: userData.username,
-          charge: userData.cargo,
-          isAdmin: userData.isAdmin
-        };
-        // save in the store the user data
-        this['$store'].commit('userInfo', user);
-        // goto Identification page
-        this['$router'].push('/Identification');
+          //User Store info.
+          let user = {
+            idUser: response[0].idUser,
+            username: userData.username,
+            charge: userData.cargo,
+            isAdmin: userData.isAdmin
+          };
+          // save in the store the user data
+          this['$store'].commit('userInfo', user);
+          // goto Identification page
+          this['$router'].push('/Identification');        
       } catch (error) {
         console.error('error causado por -> ', error);
         alert('El usuario o la contraseña no son correctas');

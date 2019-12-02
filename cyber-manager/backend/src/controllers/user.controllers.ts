@@ -23,7 +23,7 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
 }
 
 export async function createUser(req: Request, res: Response) {
-  console.log('create user');
+  console.log('date is ', datetime.now())
   try {
     const newUser: UserInterface = req.body.data;
     const conn = await connect();
@@ -104,7 +104,12 @@ export async function signIn(req: Request, res: Response) {
       newUser.passwd,
       newUser.cargo
     ]);
-    return res.status(200).json(user[0]);
+    console.log('val',typeof(user[0]))
+    if (user[0] != []) {
+      return res.status(200).json(user[0]);
+    } else {
+      return res.status(401).json(`El usuario no esta registrado, verifique usuario y contraseña`);
+    }
   } catch (error) {
     console.log(error);
     return res
