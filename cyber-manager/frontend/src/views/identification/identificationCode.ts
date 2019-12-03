@@ -142,6 +142,14 @@ export default class IndentificationCode extends vue {
       }
 
       allPedidos.forEach((pedidoInterface: PedidoInterface) => {
+
+        let fechaIngreso: any = pedidoInterface.fechaIngreso;
+        pedidoInterface.fechaIngreso = this.datetime.normalize(fechaIngreso);
+
+
+        // date: 12-12-2020 11:30
+
+
         this.pedidos.add(
           Object.assign(new Pedido(this.newPedido), pedidoInterface)
         );
@@ -287,13 +295,18 @@ export default class IndentificationCode extends vue {
           fallReportada: this.newPedido.fallReportada,
           observaciones: this.newPedido.observaciones,
           isCanceled: false,
-          fechaReparacion: this.datetime.convert(
+
+          // verifico si ingreso algo en fecha de reparacion
+          fechaReparacion: (this.newPedido.fechaReparacion == '') ? this.datetime.convert(
             this.datetime.getDate(),
             '00:00:00'
-          ),
+          ) : this.newPedido.fechaReparacion,
+          
           reparacion: '',
           precio: 0.0
-          /* DEBERIA IR STATUS -> Mañana lo hare.*/
+          /* DEBERIA IR STATUS -> Mañana lo hare.*/ 
+          // tienen que ir todos los atributos de reparacion tambien asi no se hace otro metodo para
+          // salvar los datos.
         };
         const response: any = await this.backend.send(
           'put',
@@ -398,7 +411,7 @@ export default class IndentificationCode extends vue {
               - Primer MSJ Recibo 
               - Segundo MSJ Recibo 
           Que no estan en el PDF y Ajustar los margenes para que no se salgan del A4*/
-      inputPdf.generateDoc(this.enterprise, new Pedido(this.newPedido), this.dataImg);
+      inputPdf.generateDoc(this.enterprise, new Pedido(this.newPedido));
     } catch (error) {
       console.error('Error generatedDoc -> ', error);
     }
@@ -424,11 +437,12 @@ export default class IndentificationCode extends vue {
   };
 
   private uploadImage(e: any) {
+    console.log(e)
     const image = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = e => {
-      let data: any = e.target; 
+      let data: any = e.target;
       this.enterprise.urlLogo = data['result'];
     };
   }

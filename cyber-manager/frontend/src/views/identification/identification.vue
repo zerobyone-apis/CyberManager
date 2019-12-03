@@ -205,7 +205,6 @@
               >
                 <template v-slot:item.action="{ item }">
                   <!-- button edit item in pedidos table -->
-                  {{ interactionsMode.order }}
                   <v-icon
                     :disabled="interactionsMode.order == 1"
                     class="mr-3"
@@ -301,7 +300,8 @@
                     label="Fecha de reparacion"
                     lang="es"
                   ></time-field>
-                  <v-btn @click small color="green" dark>fecha</v-btn>
+
+                  <v-btn @click="newPedido.reparacion = datetime.now()" small color="green" dark>fecha</v-btn>
                 </div>
 
                 <div class="deliver-date">
@@ -318,13 +318,14 @@
                     label="Fecha de Entrega"
                     lang="es"
                   ></time-field>
-                  <v-btn @click small color="green" dark>fecha</v-btn>
+
+                  <v-btn @click="newPedido.fechaEntrega = datetime.now()" small color="green" dark>fecha</v-btn>
                 </div>
               </div>
             </div>
             <div class="footer">
               <v-btn
-                @click="saveEnterpriseInfo()"
+                @click="saveOrder()"
                 :disabled="disabledButtons"
                 class="btn-footer"
                 color="green"
