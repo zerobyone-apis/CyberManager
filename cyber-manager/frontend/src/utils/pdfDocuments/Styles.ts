@@ -44,7 +44,13 @@ export default class Styles {
     this.marginsText.heigth = marginY;
   }
 
+
   // methods of draw
+  insertImage(img: string, width: number, height: number, doc: jsPDF) {
+    let cooX = ((this.pageSize.width - this.pageSize.exededWidth) - width) / 2;
+    doc.addImage(img, 'jpg',cooX, this.positionText.y, width, height);
+    this.positionText.y += height + 5;
+  }
 
   writeText(text: string, fontSize: number, pos: { x: number, y: number } | string, doc: jsPDF, inline?: boolean | undefined) {
     doc.setFontSize(fontSize);
@@ -103,12 +109,12 @@ export default class Styles {
       }
       coo.y = this.positionText.y;
       doc.text(text, coo.x, coo.y);
-      if (rect) {
-        doc.rect(coo.x-1, (coo.y-doc.getLineHeight()+3), doc.getTextWidth(text)+2, doc.getLineHeight()-2) //Fill and Border
+      if (rect) { // draw a rectangle in the text
+        doc.rect(coo.x-1, (coo.y-doc.getLineHeight()+3), doc.getTextWidth(text)+2, doc.getLineHeight()-2)
       }
     } else {
       doc.text(text, pos.x, pos.y);
-      if (rect) {
+      if (rect) { // draw a rectangle in the text
         doc.rect(pos.x-1, (pos.y-doc.getLineHeight()+3), doc.getTextWidth(text)+2, doc.getLineHeight()-2) //Fill and Border
       }
     }
