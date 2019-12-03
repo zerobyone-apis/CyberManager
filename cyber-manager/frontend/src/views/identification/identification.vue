@@ -360,14 +360,12 @@
                 <v-text-field v-model="enterprise.celular" label="Celular" class="custom-field"></v-text-field>
                 <v-text-field v-model="enterprise.email" label="Email" class="custom-field"></v-text-field>
               </div>
+
               <div class="image-box">
-                <v-text-field
-                  v-model="enterprise.urlLogo"
-                  label="Url del logo"
-                  class="custom-field"
-                ></v-text-field>
-                <img :src="enterprise.urlLogo" height="60" widht="250" v-if="enterprise.urlLogo" />
+                <input type="file" accept="image/*" @change="uploadImage($event)">
+                <img :src="enterprise.urlLogo" alt="" width=200 height="200">
               </div>
+            
             </div>
             <div class="pdf-fields">
               <v-text-field
@@ -398,8 +396,7 @@
                 GUARDAR
                 <v-icon>save</v-icon>
               </v-btn>
-
-              <v-btn @click :disabled="disabledButtons" color="grey" dark small>
+              <v-btn @click="getEnterpriseInfo()" :disabled="disabledButtons" color="grey" dark small>
                 Cancelar
                 <v-icon>cancel</v-icon>
               </v-btn>

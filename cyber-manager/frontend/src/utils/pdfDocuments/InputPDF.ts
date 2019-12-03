@@ -5,9 +5,11 @@ import Pedido from '../../../../backend/src/models/pedido';
 import Empresa from '../../../../backend/src/models/empresa';
 
 export default class InputPdf extends Styles {
-  generateDoc(enterprise: Empresa, order: Pedido) {
+  generateDoc(enterprise: Empresa, order: Pedido, img: any) {
     this.init(30, 30);
     let doc = new jsPDF('p', 'px', [this.pageSize.width, this.pageSize.heigth]);
+    
+    doc.addImage(img,'jpg',100, 100, 500, 500)
     for (let i = 0; i < 2; i++) {
       // this.writeImg(enterprise.getUrlLogo, 100, 100, 'center', doc);
 

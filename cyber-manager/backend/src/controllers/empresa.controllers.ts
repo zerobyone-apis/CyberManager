@@ -67,7 +67,7 @@ export async function updateEmpresa(req: Request, res: Response) {
       updateEmp.segundoMsjRecibo,
       updateEmp.urlLogo,
       datetime.now(),
-      updateEmp.username,
+      // updateEmp.username, no va
       id
     ]);
     return res.status(200).json({
@@ -101,14 +101,15 @@ export async function deleteEmpresa(req: Request, res: Response) {
 }
 
 export async function findEmpresaByUserID(req: Request, res: Response) {
+  console.log('accede find empresa by user id')
+  console.log(parseInt(req.params.id))
   try {
-    //Only Admins pueden crear obtener y borrar empresas.
-    //Si el usuario tiene mas de una empresa linkeada o creada,
-    //este metodo retornara un arreglo con las empresas asociadas a ese username
+    // Only Admins pueden crear obtener y borrar empresas.
+    // Si el usuario tiene mas de una empresa linkeada o creada,
+    // este metodo retornara un arreglo con las empresas asociadas a ese username
     const id = parseInt(req.params.id);
     const conn = await connect();
     const empresa = await conn.query(query.empresa.getId, [id]);
-    console.log(empresa);
     return res.status(200).json(empresa[0]);
   } catch (error) {
     console.log(error);

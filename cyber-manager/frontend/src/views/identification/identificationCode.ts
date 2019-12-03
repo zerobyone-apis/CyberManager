@@ -138,6 +138,7 @@ export default class IndentificationCode extends vue {
       //First reconect if response is empty.
       if (!allPedidos.length) {
         setTimeout(this.getAllPedidos, 5000);
+        // this.getAllPedidos;
       }
 
       allPedidos.forEach((pedidoInterface: PedidoInterface) => {
@@ -153,6 +154,7 @@ export default class IndentificationCode extends vue {
       if (error.state === 404 || error) {
         console.log(`Disparando el setTimeout por falla -> ${error.message}`);
         setTimeout(this.getAllPedidos, 5000);
+        // this.getAllPedidos;
       }
     }
   }
@@ -328,10 +330,21 @@ export default class IndentificationCode extends vue {
   //Enterprise Saved info,
   private async saveEnterpriseInfo() {
     try {
+      let data = {
+        nombre: this.enterprise.nombre,
+        direccion: this.enterprise.direccion,
+        celular: this.enterprise.celular,
+        email: this.enterprise.email,
+        garantia: this.enterprise.garantia,
+        urlLogo: this.enterprise.urlLogo,
+        telefono: this.enterprise.telefono,
+        primerMsjRecibo: this.enterprise.primerMsjRecibo,
+        segundoMsjRecibo: this.enterprise.segundoMsjRecibo
+      }
       // Integration Backend PUT orders send()
       const response: any = await this.backend.send(
         'put',
-        this.enterprise,
+        data,
         `/empresa/${this.enterprise.idEmpresa}`
       );
       console.log(response);
@@ -353,6 +366,8 @@ export default class IndentificationCode extends vue {
         undefined,
         `/empresa/${userInfo.idUser}`
       );
+      console.log('route: ', `/empresa/${userInfo.idUser}`)
+      console.log('response get Enterprise', response)
 
       let empresaInfo = {
         idEmpresa: response[0].idEmpresa,
@@ -383,7 +398,7 @@ export default class IndentificationCode extends vue {
               - Primer MSJ Recibo 
               - Segundo MSJ Recibo 
           Que no estan en el PDF y Ajustar los margenes para que no se salgan del A4*/
-      inputPdf.generateDoc(this.enterprise, new Pedido(this.newPedido));
+      inputPdf.generateDoc(this.enterprise, new Pedido(this.newPedido), this.dataImg);
     } catch (error) {
       console.error('Error generatedDoc -> ', error);
     }
@@ -407,4 +422,14 @@ export default class IndentificationCode extends vue {
     precio: '',
     status: ''
   };
+
+  private uploadImage(e: any) {
+    const image = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(image);
+    reader.onload = e => {
+      let data: any = e.target; 
+      this.enterprise.urlLogo = data['result'];
+    };
+  }
 }

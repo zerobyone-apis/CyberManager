@@ -49,7 +49,6 @@ export async function getPedidos(
 }
 
 export async function updatePedido(req: Request, res: Response) {
-  console.log('data: ', req.body.data);
   try {
     const {
       nombreCliente,
@@ -67,8 +66,6 @@ export async function updatePedido(req: Request, res: Response) {
     }: PedidoInterface = req.body.data;
 
     const id = parseInt(req.params.id);
-
-    // console.log(req.body)
     const conn = await connect();
     const updated = await conn.query(query.pedido.update, [
       nombreCliente,
@@ -134,7 +131,6 @@ export async function changeStatus(req: Request, res: Response) {
 }
 
 export async function deletePedido(req: Request, res: Response) {
-  console.log(req.params);
   try {
     const conn = await connect();
     const id = parseInt(req.params.id);
