@@ -1,25 +1,39 @@
 export default class Datetime {
   convert(date: string, hour?: string) {
-    // deprecated
-    // let d = date.split('/');
-    // let orderDate = d[2] + '-' + d[1] + '-' + d[0];
     let orderDate = date;
     let h = (hour == undefined ? '' : hour);
     return orderDate + (h == '' ? '' : ' ' + h);
   }
 
-  now() {
-    return this.convert(
-      new Date().toLocaleDateString(),
-      new Date().toLocaleTimeString()
-    );
+  now(datetime?: string) {
+    if(datetime) {
+      return this.getDate(datetime) +' '+ this.getHour(datetime);
+    }else{
+      return this.convert(
+        new Date().toLocaleDateString(),
+        new Date().toLocaleTimeString()
+      );
+    }
   }
 
-  getDate() {
-    return new Date().toLocaleDateString();
+  normalize(datetime: string) { // datetime: 2019-11-26T03:00:00.000Z
+    let partDate = datetime.split('T')[0].split('-');
+    return partDate[2]+'-'+partDate[1]+'-'+partDate[0]+' '+ this.getHour(datetime)
   }
 
-  getHour() {
-    return new Date().toLocaleTimeString();
+  getDate(datetime?: string) { // datetime: 2019-11-26T03:00:00.000Z
+    if (datetime) {
+      return datetime.split('T')[0];
+    } else {
+      return new Date().toLocaleDateString();
+    }
+  }
+
+  getHour(datetime?: string) { // datetime: 2019-11-26T03:00:00.000Z
+    if (datetime) {
+      return datetime.split('T')[1].split('.')[0];
+    } else {
+      return new Date().toLocaleTimeString();
+    }
   }
 }
