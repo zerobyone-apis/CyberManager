@@ -27,13 +27,13 @@ export default class Queries {
 
     // Empresa
     empresa: {
-      getAll: 'SELECT * FROM empresa',
+      getAll: 'SELECT username, idEmpresa FROM empresa',
       getId:
-        "select e.* from usuario u inner join empresa e on (u.username = e.username) where u.idUser = ? and u.cargo LIKE '%supervisor%'",
+        "select e.* from empresa e, usuario u where u.idUser = ? and e.username = u.username",
       create:
         'INSERT INTO empresa (fechaCreacion,nombre,telefono,celular,fax,direccion,garantia,primerMsjRecibo,segundoMsjRecibo,urlLogo,ultimaActualizacion,username) values(?,?,?,?,?,?,?,?,?,?,?,?)',
       update:
-        'UPDATE empresa SET nombre = ?, telefono = ?, celular = ?, fax = ? , direccion = ?, garantia = ?, primerMsjRecibo = ?, segundoMsjRecibo = ?, urlLogo = ?, ultimaActualizacion = ?, username = ? WHERE idEmpresa = ?',
+        'UPDATE empresa SET nombre = ?, telefono = ?, celular = ?, fax = ? , direccion = ?, garantia = ?, primerMsjRecibo = ?, segundoMsjRecibo = ?, urlLogo = ?, ultimaActualizacion = ? WHERE idEmpresa = ?',
       delete: 'DELETE FROM empresa WHERE idEmpresa = ?'
     }
   };
