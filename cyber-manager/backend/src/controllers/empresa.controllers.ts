@@ -1,122 +1,105 @@
 import { Request, Response } from 'express';
-import { connect } from '../../sql/connection/MysqlConnection';
+import MysqlConnection from '../../sql/connection/MysqlConnection';
 import { EmpresaInterface } from '../interface/EmpresaInterface';
-import Queries from '../../sql/queries/Queries';
 import DateTime from '../utils/DateTime';
-const queryM = new Queries();
-const query = queryM.getQuery();
+import QueryFunctions from '../../sql/connection/QueryFunctions';
+import Queries from '../../sql/queries/Queries';
+import ResultObject from '../models/ResultObject';
+// Settings
+let datetime: DateTime = new DateTime();
+let queryFunctions: QueryFunctions = new QueryFunctions();
+let queries: Queries = new Queries();
 
 export async function getEmpresas(
   req: Request,
   res: Response
-): Promise<Response> {
-  try {
-    const conn = await connect();
-    const empresas = await conn.query(query.empresa.getAll);
-    return res.status(200).json(empresas[0]);
-  } catch (error) {
-    console.log(error);
-    return res.status(404).json('Error obteniendo las Empresas.');
+) {
+  let result = await queryFunctions.get(queries.getQuery('empresa', 'getAll'), []);
+  if (result.statusCode == 200) {
+    return res.status(200).json(result.value[0]); // only return one
+  } else {
+    console.log(`Error obteniendo todas las empresas`)
+    return res.status(result.statusCode).json(result.value);
   }
 }
 
 export async function createEmpresa(req: Request, res: Response) {
   const datetime = new DateTime();
-  try {
-    const newEmpresa: EmpresaInterface = req.body.data;
-    const conn = await connect();
-    const created = await conn.query(query.empresa.create, [
-      datetime.now(),
-      newEmpresa.nombre,
-      newEmpresa.telefono,
-      newEmpresa.celular,
-      newEmpresa.fax,
-      newEmpresa.direccion,
-      newEmpresa.garantia,
-      newEmpresa.primerMsjRecibo,
-      newEmpresa.segundoMsjRecibo,
-      newEmpresa.urlLogo,
-      datetime.now(),
-      newEmpresa.username
-    ]);
-    return res.status(201).json({
-      message: 'Empresa creada satisfactoriamente!!',
-      object: created
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json(`Error creando empresa. -> ${error}`);
+  const newEmpresa: EmpresaInterface = req.body.data;
+  let queryParams = [
+    datetime.now(),
+    newEmpresa.nombre,
+    newEmpresa.telefono,
+    newEmpresa.celular,
+    newEmpresa.fax,
+    newEmpresa.direccion,
+    newEmpresa.garantia,
+    newEmpresa.primerMsjRecibo,
+    newEmpresa.segundoMsjRecibo,
+    newEmpresa.urlLogo,
+    datetime.now(),
+    newEmpresa.username
+  ];
+
+  let result = await queryFunctions.action(queries.getQuery('empresa', 'create'), queryParams);
+  if (result.statusCode == 200) {
+    return res.status(200).json('Empresa creada satisfactoriamente!!');
+  } else {
+    console.log(`Error creando empresa`)
+    return res.status(result.statusCode).json(result.value);
   }
 }
 
 export async function updateEmpresa(req: Request, res: Response) {
-  try {
-    const updateEmp: EmpresaInterface = req.body.data;
-    const conn = await connect();
-    const id = parseInt(req.params.id);
-    const datetime = new DateTime();
+  const updateEmp: EmpresaInterface = req.body.data;
+  const id = parseInt(req.params.id);
+  const datetime = new DateTime();
 
-    const updated = await conn.query(query.empresa.update, [
-      updateEmp.nombre,
-      updateEmp.telefono,
-      updateEmp.celular,
-      updateEmp.fax,
-      updateEmp.direccion,
-      updateEmp.garantia,
-      updateEmp.primerMsjRecibo,
-      updateEmp.segundoMsjRecibo,
-      updateEmp.urlLogo,
-      datetime.now(),
-      // updateEmp.username, no va
-      id
-    ]);
-    return res.status(200).json({
-      message: 'Empresa actualizada satisfactoriamente!!',
-      object: updated
-    });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(400)
-      .json(`Error actualizando esta empresa: -> ${req.body.data}`);
+  let queryParams = [
+    updateEmp.nombre,
+    updateEmp.telefono,
+    updateEmp.celular,
+    updateEmp.fax,
+    updateEmp.direccion,
+    updateEmp.garantia,
+    updateEmp.primerMsjRecibo,
+    updateEmp.segundoMsjRecibo,
+    updateEmp.urlLogo,
+    datetime.now(),
+    id
+  ]
+
+  let result = await queryFunctions.action(queries.getQuery('empresa', 'update'), queryParams);
+  if (result.statusCode == 200) {
+    return res.status(200).json('Empresa guardada satisfactoriamente!!');
+  } else {
+    console.log(`Error guardando empresa`)
+    return res.status(result.statusCode).json(result.value);
   }
 }
 
 export async function deleteEmpresa(req: Request, res: Response) {
-  try {
-    const conn = await connect();
-    const id = parseInt(req.params.id);
-    await conn.query(query.empresa.delete, [id]);
-    return res.status(200).json({
-      message: `Empresa eliminada exitosamente con el id: -> ${id}`
-    });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(400)
-      .json(
-        `Error eliminando empresa con el id -> ${req.params.id}, el error fue -> ${error}`
-      );
+  const id = parseInt(req.params.id);
+  let result = await queryFunctions.action(queries.getQuery('empresa', 'delete'), [id]);
+  if (result.statusCode == 200) {
+    return res.status(200).json(`Empresa eliminada exitosamente con el id: -> ${id}`);
+  } else {
+    console.log(`Error eliminando empresa`)
+    return res.status(result.statusCode).json(result.value);
   }
 }
 
 export async function findEmpresaByUserID(req: Request, res: Response) {
-  console.log('accede find empresa by user id')
-  console.log(parseInt(req.params.id))
-  try {
-    // Only Admins pueden crear obtener y borrar empresas.
-    // Si el usuario tiene mas de una empresa linkeada o creada,
-    // este metodo retornara un arreglo con las empresas asociadas a ese username
-    const id = parseInt(req.params.id);
-    const conn = await connect();
-    const empresa = await conn.query(query.empresa.getId, [id]);
-    return res.status(200).json(empresa[0]);
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(404)
-      .json(
-        `Error buscando empresa asociada a este ID: ${req.params.id} el error -> ${error}`
-      );
+  // Only Admins pueden crear obtener y borrar empresas.
+  // Si el usuario tiene mas de una empresa linkeada o creada,
+  // este metodo retornara un arreglo con las empresas asociadas a ese username
+  const id = parseInt(req.params.id);
+
+  let result = await queryFunctions.get(queries.getQuery('empresa', 'getId'), [id]);
+  if (result.statusCode == 200) {
+    return res.status(200).json(result.value[0]); // return only one
+  } else {
+    console.log(`Error obteniendo empresa por id`)
+    return res.status(result.statusCode).json(result.value);
   }
 }

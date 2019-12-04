@@ -1,6 +1,9 @@
 import Express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import http from 'http';
+
+import MysqlConnection from '../sql/connection/MysqlConnection';
 
 //Import Routes
 import empresa from './routes/empresa.routes';
@@ -12,6 +15,8 @@ export class App {
   constructor(private port: number | string) {
     this.app = Express();
     this.app.use(cors());
+    const server = http.createServer(this.app);
+    MysqlConnection.connect();
     this.settings();
     this.middlewares();
     this.routes();

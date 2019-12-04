@@ -1,4 +1,9 @@
 export default class Queries {
+
+  private table: string = '';
+  private action: string = '';
+  private query: string = '';
+
   private queries: Record<string, any> = {
     // Usuarios
     user: {
@@ -15,6 +20,7 @@ export default class Queries {
 
     // Pedidos
     pedido: {
+      getNew: 'SELECT id from pedido where nombreCliente = ? and fechaIngreso = ? and articulo = ?',
       getAll: 'SELECT * FROM pedido',
       getId: 'SELECT * FROM pedido WHERE idOrden = ?',
       create: 'INSERT INTO pedido SET ?',
@@ -38,7 +44,23 @@ export default class Queries {
     }
   };
 
-  public getQuery() {
-    return this.queries;
+  constructor() {
+    this.table = '';
+    this.action = '';
+    this.query = '';
+  }
+
+  public getQuery(tableName: string, actionQuery: string) {
+    console.log('query: ' + this.queries[tableName][actionQuery])
+    try {
+      return {
+        table: tableName,
+        action: actionQuery,
+        query: this.queries[tableName][actionQuery],
+      };
+    } catch (error) {
+      console.log('Error in getQuery :' + error)
+      return null;
+    }
   }
 }

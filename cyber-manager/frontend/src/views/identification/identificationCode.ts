@@ -191,8 +191,13 @@ export default class IndentificationCode extends vue {
         };
 
         const response: any = await this.backend.send('post', data, '/pedido');
+        console.log('add pedido' ,response)
         let createdPedido: Pedido = new Pedido(data);
-        createdPedido.idOrden = response[0].insertId;
+
+
+        // Aca tengo que obtener el id del pedido creado
+
+        createdPedido.idOrden = response.id;
         this.pedidos.add(createdPedido);
 
         //clear fields pedidos UI
@@ -374,7 +379,7 @@ export default class IndentificationCode extends vue {
       const userInfo = this.$store.getters.userInfo;
 
       // Integration Backend Get Empresa By idUser send() Only supervisor can be founded.
-      const response: EmpresaInterface[] = await this.backend.send(
+      const response: EmpresaInterface = await this.backend.send(
         'get',
         undefined,
         `/empresa/${userInfo.idUser}`
@@ -383,15 +388,15 @@ export default class IndentificationCode extends vue {
       console.log('response get Enterprise', response)
 
       let empresaInfo = {
-        idEmpresa: response[0].idEmpresa,
-        garantia: response[0].garantia,
-        tecnico: response[0].username ? response[0].username : userInfo.username
+        idEmpresa: response.idEmpresa,
+        garantia: response.garantia,
+        tecnico: response.username ? response.username : userInfo.username
       };
       // save in the store the empresaInfo data
       this['$store'].commit('empresaInfo', empresaInfo);
 
       // Fill fiealds Empresa.
-      Object.assign(this.enterprise, response[0]);
+      Object.assign(this.enterprise, response);
       console.log(response);
     } catch (error) {
       console.error(

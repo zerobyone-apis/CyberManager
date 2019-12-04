@@ -1,145 +1,134 @@
 import { Request, Response, response } from 'express';
-import { connect } from '../../sql/connection/MysqlConnection';
+import MysqlConnection from '../../sql/connection/MysqlConnection';
 import { PedidoInterface } from '../interface/PedidoInterface';
+import DateTime from '../utils/DateTime';
+import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries from '../../sql/queries/Queries';
-import { QueryError } from 'mysql';
-import { Resolver } from 'dns';
-const queryM = new Queries();
-const query = queryM.getQuery();
+import ResultObject from '../models/ResultObject';
+
+// Settings
+let datetime: DateTime = new DateTime();
+let queryFunctions: QueryFunctions = new QueryFunctions();
+let queries: Queries = new Queries();
 
 export async function createPedido(req: Request, res: Response) {
-  try {
-    const newPedido: PedidoInterface = req.body.data;
-    console.log('NewPeidod -> ', newPedido);
-    const conn = await connect();
-    const created = await conn.query(query.pedido.create, [newPedido]);
-    return res.status(201).json(created);
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json('Error creando pedido.');
+  const newPedido: PedidoInterface = req.body.data;
+  console.log('NewPeidod -> ', newPedido);
+  let result = await queryFunctions.action(queries.getQuery('pedido', 'create'), [newPedido]);
+
+  let queryParams = [
+    newPedido.nombreCliente,
+    newPedido.fechaIngreso,
+    newPedido.articulo
+  ]
+  let resultId = await queryFunctions.get(queries.getQuery('pedido', 'getNew'), queryParams);
+
+
+  if (result.statusCode == 200) {
+    return res.status(200).json(resultId.value);
+  } else {
+    console.log('Error creando pedido')
+    return res.status(result.statusCode).json(result.value);
   }
 }
 
 export async function findByID(req: Request, res: Response) {
-  try {
-    const id = parseInt(req.params.id);
-    const conn = await connect();
-    const user = await conn.query(query.pedido.getId, [id]);
-    return res.status(200).json(user);
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(404)
-      .json(`Error buscando pedido con el id: ${req.params.id} `);
+  const id = parseInt(req.params.id);
+  let result = await queryFunctions.get(queries.getQuery('pedido', 'getId'), [id]);
+  if (result.statusCode == 200) {
+    return res.status(200).json(result.value);
+  } else {
+    console.log(`Error buscando pedido con el id: ${id}`)
+    return res.status(result.statusCode).json(result.value);
   }
 }
 
-export async function getPedidos(
-  req: Request,
-  res: Response
-): Promise<Response> {
-  try {
-    const conn = await connect();
-    const pedidos = await conn.query(query.pedido.getAll);
-    return res.status(200).json(pedidos[0]);
-  } catch (error) {
-    console.log(error);
-    return res.status(404).json('Error obteniendo los Pedidos.');
+export async function getPedidos(req: Request, res: Response) {
+  let result = await queryFunctions.get(queries.getQuery('pedido', 'getAll'), []);
+  if (result.statusCode == 200) {
+    return res.status(200).json(result.value);
+  } else {
+    console.log(`Error cargando todos los pedidos`)
+    return res.status(result.statusCode).json(result.value);
   }
 }
 
 export async function updatePedido(req: Request, res: Response) {
-  try {
-    const {
-      nombreCliente,
-      telCliente,
-      articulo,
-      modelo,
-      marca,
-      fallReportada,
-      observaciones,
-      isCanceled,
-      fechaReparacion,
-      reparacion,
-      precio,
-      status
-    }: PedidoInterface = req.body.data;
+  const {
+    nombreCliente,
+    telCliente,
+    articulo,
+    modelo,
+    marca,
+    fallReportada,
+    observaciones,
+    isCanceled,
+    fechaReparacion,
+    reparacion,
+    precio,
+    status
+  }: PedidoInterface = req.body.data;
 
-    const id = parseInt(req.params.id);
-    const conn = await connect();
-    const updated = await conn.query(query.pedido.update, [
-      nombreCliente,
-      telCliente,
-      articulo,
-      modelo,
-      marca,
-      fallReportada,
-      observaciones,
-      isCanceled,
-      fechaReparacion,
-      reparacion,
-      precio,
-      id
-    ]);
-    return res.status(200).json(updated);
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json(`Error actualizando este pedido: ${req.body}`);
+  const id = parseInt(req.params.id);
+
+  let queryParams = [
+    nombreCliente,
+    telCliente,
+    articulo,
+    modelo,
+    marca,
+    fallReportada,
+    observaciones,
+    isCanceled,
+    fechaReparacion,
+    reparacion,
+    precio,
+    id
+  ]
+
+  let result = await queryFunctions.action(queries.getQuery('pedido', 'update'), queryParams);
+  if (result.statusCode == 200) {
+    return res.status(200).json('Pedido guardado exitosamente');
+  } else {
+    console.log(`Error editando el pedido con el id: ${id}`)
+    return res.status(result.statusCode).json(result.value);
   }
 }
 
 export async function cancelPedido(req: Request, res: Response) {
-  try {
-    const { isCanceled }: PedidoInterface = req.body;
-    const id = parseInt(req.params.id);
-    const conn = await connect();
-    const canceled = await conn.query(query.pedido.update, [isCanceled, id]);
-    return res.status(200).json(canceled);
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json(`Error cancelando este pedido: ${req.body}`);
+  const { isCanceled }: PedidoInterface = req.body;
+  const id = parseInt(req.params.id);
+
+  let result = await queryFunctions.action(queries.getQuery('pedido', 'cancel'), [isCanceled, id]);
+  if (result.statusCode == 200) {
+    return res.status(200).json('Pedido cancelado exitosamente');
+  } else {
+    console.log(`Error cancelando el pedido con el id: ${id}`)
+    return res.status(result.statusCode).json(result.value);
   }
 }
 
 export async function changeStatus(req: Request, res: Response) {
-  try {
-    const { status } = req.body;
-    const id = parseInt(req.params.id);
-    const conn = await connect();
-    const result = conn.query(query.pedido.setStatus, [status, id]);
+  const { status } = req.body;
+  const id = parseInt(req.params.id);
 
-    return res.status(200).json({
-      message: 'Estado cambiado exitosamente.',
-      body: {
-        pedido: {
-          status,
-          object: result
-        }
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json({
-      message: 'Error cambiando de estado este pedido error: ->' + `${error}`,
-      body: {
-        pedido: {
-          error
-        }
-      }
-    });
+  let result = await queryFunctions.action(queries.getQuery('pedido', 'setStatus'), [status, id]);
+  if (result.statusCode == 200) {
+    return res.status(200).json('Estado cambiado exitosamente.');
+  } else {
+    console.log(`Error cambiando de estado este pedido id : ->' ${id}`)
+    return res.status(result.statusCode).json(result.value);
   }
 }
 
 export async function deletePedido(req: Request, res: Response) {
-  try {
-    const conn = await connect();
-    const id = parseInt(req.params.id);
-    const deleted = await conn.query(query.pedido.delete, [id]);
-    return res.status(200).json({
-      message: `Pedido eliminado exitosamente con el id: ${id}`
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json('Error creando usuario.');
+  const id = parseInt(req.params.id);
+
+  let result = await queryFunctions.action(queries.getQuery('pedido', 'delete'), [id]);
+  if (result.statusCode == 200) {
+    return res.status(200).json(`Pedido eliminado exitosamente con el id: ${id}`);
+  } else {
+    console.log(`Error elimiando este pedido id : ->' ${id}`)
+    return res.status(result.statusCode).json(result.value);
   }
 }

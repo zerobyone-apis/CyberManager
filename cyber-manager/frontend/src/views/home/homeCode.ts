@@ -84,8 +84,17 @@ export default class HomeCode extends vue {
           userFiltered.object,
           `/user`
         );
+
+        // Integration Backend POST user send()
+        let responseSignIn: any = await this.backend.send(
+          'post',
+          userFiltered.object,
+          '/user/signin'
+        );
+        console.log(response)
+
         let user = {
-          id: response[0].insertId,
+          id: responseSignIn.idUser,
           username: this.user.username,
           charge: this.user.cargo,
           isAdmin: this.user.isAdmin
@@ -121,17 +130,18 @@ export default class HomeCode extends vue {
           userData,
           '/user/signin'
         );
-          //User Store info.
-          let user = {
-            idUser: response[0].idUser,
-            username: userData.username,
-            charge: userData.cargo,
-            isAdmin: userData.isAdmin
-          };
-          // save in the store the user data
-          this['$store'].commit('userInfo', user);
-          // goto Identification page
-          this['$router'].push('/Identification');        
+        console.log(response)
+        //User Store info.
+        let user = {
+          idUser: response.idUser,
+          username: userData.username,
+          charge: userData.cargo,
+          isAdmin: userData.isAdmin
+        };
+        // save in the store the user data
+        this['$store'].commit('userInfo', user);
+        // goto Identification page
+        this['$router'].push('/Identification');
       } catch (error) {
         console.error('error causado por -> ', error);
         alert('El usuario o la contraseña no son correctas');
