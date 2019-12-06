@@ -12,7 +12,7 @@
           text
           small
           class="toolbar-button"
-          :disabled="selectedPedido == -1"
+          :disabled="pedido.selectedPedido == -1"
           @click="wizard = 2"
         >
           <v-icon>settings</v-icon>
@@ -23,7 +23,7 @@
           text
           small
           class="toolbar-button"
-          :disabled="selectedPedido == -1 || wizard != 1"
+          :disabled="pedido.selectedPedido == -1 || wizard != 1"
           @click="generateInputPdf()"
         >
           <v-icon>input</v-icon>
@@ -65,7 +65,7 @@
                 <div class="service-number">
                   <v-text-field
                     readonly
-                    v-model="newPedido.idOrden"
+                    v-model="pedido.newPedido.idOrden"
                     label="Orden de servicio"
                     class="custom-field"
                   ></v-text-field>
@@ -73,7 +73,7 @@
                 <div class="reception-date">
                   <v-text-field
                     readonly
-                    v-model="newPedido.fechaIngreso"
+                    v-model="pedido.newPedido.fechaIngreso"
                     label="recepcion"
                     class="custom-field"
                   ></v-text-field>
@@ -83,20 +83,20 @@
               <div class="client-fields-box">
                 <!-- <h4 class="font-title">Datos del cliente</h4> -->
                 <v-text-field
-                  :error="v.get('newPedido.nombreCliente') != ''"
-                  :error-messages="v.get('newPedido.nombreCliente')"
+                  :error="v.get('pedido.newPedido.nombreCliente') != ''"
+                  :error-messages="v.get('pedido.newPedido.nombreCliente')"
                   outlined
                   dense
-                  v-model="newPedido.nombreCliente"
+                  v-model="pedido.newPedido.nombreCliente"
                   label="Nombre del cliente"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('newPedido.telCliente') != ''"
-                  :error-messages="v.get('newPedido.telCliente')"
+                  :error="v.get('pedido.newPedido.telCliente') != ''"
+                  :error-messages="v.get('pedido.newPedido.telCliente')"
                   outlined
                   dense
-                  v-model="newPedido.telCliente"
+                  v-model="pedido.newPedido.telCliente"
                   label="Telefono"
                   class="custom-field"
                 ></v-text-field>
@@ -104,43 +104,43 @@
 
               <div class="getArticulo-fields-box">
                 <v-text-field
-                  :error="v.get('newPedido.articulo') != ''"
-                  :error-messages="v.get('newPedido.articulo')"
+                  :error="v.get('pedido.newPedido.articulo') != ''"
+                  :error-messages="v.get('pedido.newPedido.articulo')"
                   outlined
                   dense
-                  v-model="newPedido.articulo"
+                  v-model="pedido.newPedido.articulo"
                   label="Articulo"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('newPedido.marca') != ''"
-                  :error-messages="v.get('newPedido.marca')"
+                  :error="v.get('pedido.newPedido.marca') != ''"
+                  :error-messages="v.get('pedido.newPedido.marca')"
                   outlined
                   dense
-                  v-model="newPedido.marca"
+                  v-model="pedido.newPedido.marca"
                   label="Marca"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('newPedido.modelo') != ''"
-                  :error-messages="v.get('newPedido.modelo')"
+                  :error="v.get('pedido.newPedido.modelo') != ''"
+                  :error-messages="v.get('pedido.newPedido.modelo')"
                   outlined
                   dense
-                  v-model="newPedido.modelo"
+                  v-model="pedido.newPedido.modelo"
                   label="Modelo"
                   class="custom-field"
                 ></v-text-field>
 
                 <!-- TEXT AREA  -->
                 <v-textarea
-                  v-model="newPedido.fallReportada"
+                  v-model="pedido.newPedido.fallReportada"
                   height="40"
                   label="Daño reportado"
                   value
                   class="custom-text-area"
                 ></v-textarea>
                 <v-textarea
-                  v-model="newPedido.observaciones"
+                  v-model="pedido.newPedido.observaciones"
                   height="40"
                   label="Notas"
                   value
@@ -152,7 +152,7 @@
                 <!-- buttons new, save, cancel a order  -->
                 <v-btn
                   v-if="interactionsMode.order == 0"
-                  @click="addNewOrder()"
+                  @click="addPedido()"
                   :disabled="disabledButtons"
                   color="green"
                   dark
@@ -164,7 +164,7 @@
                 </v-btn>
                 <div v-if="interactionsMode.order == 1">
                   <v-btn
-                    @click="saveOrder()"
+                    @click="savePedido()"
                     :disabled="disabledButtons"
                     class="btn-footer"
                     color="green"
@@ -176,7 +176,7 @@
                   </v-btn>
 
                   <v-btn
-                    @click="cancelSaveOrder()"
+                    @click="cancelSavePedido()"
                     :disabled="disabledButtons"
                     color="grey"
                     dark
@@ -192,31 +192,35 @@
             <!-- TABLE OF pedidos -->
             <div class="pedidos-box">
               <h3 class="font-title">Lista de Ordenes</h3>
+              {{ pedido.pedidos.length }}
               <v-data-table
                 height="100%"
-                :v-model="pedidos.getArray()"
+                :v-model="pedido.pedidos.getArray()"
                 :headers="headerPedido"
-                :items="pedidos.getArray()"
+                :items="pedido.pedidos.getArray()"
                 :items-per-page="8"
+                @item-selected="(item, value) => { selectRow(item, value) }"
                 item-key="idOrden"
                 show-select
                 single-select
                 class="pedidos-table elevation-0"
               >
-                <template v-slot:item.action="{ item }">
+                <template v-slot:item.data-table-select="{ item, select }">
                   <!-- button edit item in pedidos table -->
                   <v-icon
-                    :disabled="interactionsMode.order == 1"
-                    class="mr-3"
-                    @click="editNewOrder(item)"
+                    @click="() => { select();showSelectedPedido(item) }"
                     :color="changeColorToEdit(item)"
                   >edit</v-icon>
+                </template>
+                <template v-slot:item.action="{ item }">
+                  <!-- button delete item in pedidos table -->
                   <v-icon
                     :disabled="
                       interactionsMode.order == 1 &&
-                        selectedPedido != pedidos.getArray().indexOf(item)
+                        pedido.selectedPedido != pedido.pedidos.getArray().indexOf(item)
                     "
-                    @click="deleteOrder(item)"
+                    @click="deletePedido(item)"
+                    :color="changeColorToEdit(item)"
                   >delete</v-icon>
                 </template>
                 <span>Borrar orden</span>
@@ -278,54 +282,64 @@
             <div class="content-box">
               <div class="status-box">
                 <p>Status Pedido</p>
-                <v-switch v-model="status.recibido" inset label="Recibido"></v-switch>
-                <v-switch v-model="status.reparandose" inset label="En Reparacion"></v-switch>
-                <v-switch v-model="status.confirmando_pago" inset label="Confirmando Pago"></v-switch>
-                <v-switch v-model="status.en_talleres" inset label="En Taller"></v-switch>
-                <v-switch v-model="status.entregado" inset label="Entregado"></v-switch>
+                <v-switch v-model="pedido.status.recibido" inset label="Recibido"></v-switch>
+                <v-switch v-model="pedido.status.reparandose" inset label="En Reparacion"></v-switch>
+                <v-switch v-model="pedido.status.confirmando_pago" inset label="Confirmando Pago"></v-switch>
+                <v-switch v-model="pedido.status.en_talleres" inset label="En Taller"></v-switch>
+                <v-switch v-model="pedido.status.entregado" inset label="Entregado"></v-switch>
               </div>
 
               <div class="dates-box">
                 <div class="repair-date">
                   <time-field
-                    v-model="newPedido.reparacion"
+                    v-model="pedido.newPedido.reparacion"
                     @time="
                       time => {
-                        newPedido.reparacion = time;
+                        pedido.newPedido.reparacion = time;
                       }
                     "
                     type="date"
-                    :error="v.get('newPedido.reparacion') != ''"
-                    :errorMessage="v.get('newPedido.reparacion')"
+                    :error="v.get('pedido.newPedido.reparacion') != ''"
+                    :errorMessage="v.get('pedido.newPedido.reparacion')"
                     label="Fecha de reparacion"
                     lang="es"
                   ></time-field>
 
-                  <v-btn @click="newPedido.reparacion = datetime.now()" small color="green" dark>fecha</v-btn>
+                  <v-btn
+                    @click="pedido.newPedido.reparacion = datetime.now()"
+                    small
+                    color="green"
+                    dark
+                  >fecha</v-btn>
                 </div>
 
                 <div class="deliver-date">
                   <time-field
-                    v-model="newPedido.fechaEntrega"
+                    v-model="pedido.newPedido.fechaEntrega"
                     @time="
                       time => {
-                        newPedido.fechaEntrega = time;
+                        pedido.newPedido.fechaEntrega = time;
                       }
                     "
                     type="date"
-                    :error="v.get('newPedido.fechaEntrega') != ''"
-                    :errorMessage="v.get('newPedido.fechaEntrega')"
+                    :error="v.get('pedido.newPedido.fechaEntrega') != ''"
+                    :errorMessage="v.get('pedido.newPedido.fechaEntrega')"
                     label="Fecha de Entrega"
                     lang="es"
                   ></time-field>
 
-                  <v-btn @click="newPedido.fechaEntrega = datetime.now()" small color="green" dark>fecha</v-btn>
+                  <v-btn
+                    @click="pedido.newPedido.fechaEntrega = datetime.now()"
+                    small
+                    color="green"
+                    dark
+                  >fecha</v-btn>
                 </div>
               </div>
             </div>
             <div class="footer">
               <v-btn
-                @click="saveOrder()"
+                @click="savePedido()"
                 :disabled="disabledButtons"
                 class="btn-footer"
                 color="green"
@@ -351,43 +365,46 @@
               <div class="info-fields">
                 <h3 class="font-title pl-2">Datos generales de la empresa</h3>
                 <v-text-field
-                  v-model="enterprise.nombre"
+                  v-model="empresa.data.nombre"
                   label="Nombre de la empresa"
                   class="custom-field"
                 ></v-text-field>
 
-                <v-text-field v-model="enterprise.direccion" label="Direccion" class="custom-field"></v-text-field>
-                <v-text-field v-model="enterprise.telefono" label="Telefono" class="custom-field"></v-text-field>
-                <v-text-field v-model="enterprise.celular" label="Celular" class="custom-field"></v-text-field>
-                <v-text-field v-model="enterprise.email" label="Email" class="custom-field"></v-text-field>
+                <v-text-field
+                  v-model="empresa.data.direccion"
+                  label="Direccion"
+                  class="custom-field"
+                ></v-text-field>
+                <v-text-field v-model="empresa.data.telefono" label="Telefono" class="custom-field"></v-text-field>
+                <v-text-field v-model="empresa.data.celular" label="Celular" class="custom-field"></v-text-field>
+                <v-text-field v-model="empresa.data.email" label="Email" class="custom-field"></v-text-field>
               </div>
 
               <div class="image-box">
-                <input type="file" accept="image/*" @change="uploadImage($event)">
-                <img :src="enterprise.urlLogo" alt="" width=200 height="200">
+                <input type="file" accept="image/*" @change="uploadImage($event)" />
+                <img :src="empresa.data.urlLogo" alt width="200" height="200" />
               </div>
-            
             </div>
             <div class="pdf-fields">
               <v-text-field
-                v-model="enterprise.garantia"
+                v-model="empresa.data.garantia"
                 label="Garantia en las facturas"
                 class="custom-field"
               ></v-text-field>
               <v-text-field
-                v-model="enterprise.primerMsjRecibo"
+                v-model="empresa.data.primerMsjRecibo"
                 label="Anotacion en el pie del reporte de entrada"
                 class="custom-field"
               ></v-text-field>
               <v-text-field
-                v-model="enterprise.segundoMsjRecibo"
+                v-model="empresa.data.segundoMsjRecibo"
                 label="Anotacion en el pie del reporte de salida"
                 class="custom-field"
               ></v-text-field>
             </div>
             <div class="footer">
               <v-btn
-                @click="saveEnterpriseInfo()"
+                @click="empresa.saveEnterpriseInfo()"
                 :disabled="disabledButtons"
                 class="btn-footer"
                 color="green"
@@ -397,7 +414,13 @@
                 GUARDAR
                 <v-icon>save</v-icon>
               </v-btn>
-              <v-btn @click="getEnterpriseInfo()" :disabled="disabledButtons" color="grey" dark small>
+              <v-btn
+                @click="empresa.getEnterpriseInfo()"
+                :disabled="disabledButtons"
+                color="grey"
+                dark
+                small
+              >
                 Cancelar
                 <v-icon>cancel</v-icon>
               </v-btn>

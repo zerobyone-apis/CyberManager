@@ -1,14 +1,37 @@
 export default class Datetime {
   convert(date: string, hour?: string) {
-    let orderDate = date;
+    // deprecated
+    let d = date.split('/');
+    let orderDate = d[2] + '-' + d[1] + '-' + d[0];
     let h = (hour == undefined ? '' : hour);
     return orderDate + (h == '' ? '' : ' ' + h);
   }
 
+  backendConvert(date: string, hour?: string) {
+    // deprecated
+    // let d = date.split('/');
+    let orderDate = date;//d[2] + '-' + d[1] + '-' + d[0];
+    let h = (hour == undefined ? '' : hour);
+    return orderDate + (h == '' ? '' : ' ' + h);
+  }
+
+
+  backendNow() {
+    return this.backendConvert(
+      new Date().toLocaleDateString(),
+      new Date().toLocaleTimeString()
+    );
+  }
+
   now(datetime?: string) {
-    if(datetime) {
-      return this.getDate(datetime) +' '+ this.getHour(datetime);
-    }else{
+    if (datetime) {
+      console.log(this.getDate(datetime) + ' ' + this.getHour(datetime))
+      return this.getDate(datetime) + ' ' + this.getHour(datetime);
+    } else {
+      console.log(this.convert(
+        new Date().toLocaleDateString(),
+        new Date().toLocaleTimeString()
+      ))
       return this.convert(
         new Date().toLocaleDateString(),
         new Date().toLocaleTimeString()
@@ -18,7 +41,7 @@ export default class Datetime {
 
   normalize(datetime: string) { // datetime: 2019-11-26T03:00:00.000Z
     let partDate = datetime.split('T')[0].split('-');
-    return partDate[2]+'-'+partDate[1]+'-'+partDate[0]+' '+ this.getHour(datetime)
+    return partDate[2] + '-' + partDate[1] + '-' + partDate[0] + ' ' + this.getHour(datetime)
   }
 
   getDate(datetime?: string) { // datetime: 2019-11-26T03:00:00.000Z

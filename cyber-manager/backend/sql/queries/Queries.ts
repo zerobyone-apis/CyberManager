@@ -20,7 +20,7 @@ export default class Queries {
 
     // Pedidos
     pedido: {
-      getNew: 'SELECT id from pedido where nombreCliente = ? and fechaIngreso = ? and articulo = ?',
+      getNew: 'SELECT idOrden from pedido where nombreCliente = ? and fechaIngreso = ? and articulo = ?',
       getAll: 'SELECT * FROM pedido',
       getId: 'SELECT * FROM pedido WHERE idOrden = ?',
       create: 'INSERT INTO pedido SET ?',

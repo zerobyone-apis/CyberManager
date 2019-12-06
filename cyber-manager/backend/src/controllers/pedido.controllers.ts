@@ -21,11 +21,9 @@ export async function createPedido(req: Request, res: Response) {
     newPedido.fechaIngreso,
     newPedido.articulo
   ]
-  let resultId = await queryFunctions.get(queries.getQuery('pedido', 'getNew'), queryParams);
-
-
   if (result.statusCode == 200) {
-    return res.status(200).json(resultId.value);
+    let resultId = await queryFunctions.get(queries.getQuery('pedido', 'getNew'), queryParams);
+    return res.status(200).json(resultId.value[0]);
   } else {
     console.log('Error creando pedido')
     return res.status(result.statusCode).json(result.value);

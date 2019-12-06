@@ -5,6 +5,7 @@ import IntegrationBackend from '../../utils/IntegrationBackend';
 // Models
 import User from '../../../../backend/src/models/usuario';
 import { UserInterface } from '../../../../backend/src/interface/UserInterface';
+import ResultObject from '../../../../backend/src/models/ResultObject';
 
 export default class HomeCode extends vue {
   // Utils + Backend
@@ -62,53 +63,56 @@ export default class HomeCode extends vue {
   async signUp() {
     this.isAdmin();
     if (this.v.validateFields(this.createUser, [this.userFields])) {
-      try {
-        const userFiltered: {
-          succes: boolean;
-          object?: UserInterface;
-          message?: string;
-        } = this.getUserValidated(this.createUser);
+      if (this.createUser.passwd == this.createUser.passwd2) {
+        try {
+          const userFiltered: {
+            succes: boolean;
+            object?: UserInterface;
+            message?: string;
+          } = this.getUserValidated(this.createUser);
 
-        userFiltered.succes == true
-          ? userFiltered
-          : (err: Error) => {
-            console.error(err.message);
-            throw new Error(err.message);
+          userFiltered.succes == true
+            ? userFiltered
+            : (err: Error) => {
+              console.error(err.message);
+              throw new Error(err.message);
+            };
+
+          console.log(`user filtered -> ${userFiltered}`);
+
+          // Integration Backend POST user send()
+          const response: Record<string, any> = await this.backend.send(
+            'post',
+            userFiltered.object,
+            `/user`
+          );
+
+          // Integration Backend POST user send()
+          let responseSignIn: any = await this.backend.send(
+            'post',
+            userFiltered.object,
+            '/user/signin'
+          );
+          console.log('sign in in signup', responseSignIn)
+          let user = {
+            id: responseSignIn.idUser,
+            username: this.createUser.username,
+            charge: this.createUser.cargo,
+            isAdmin: this.user.isAdmin
           };
-
-        console.log(`user filtered -> ${userFiltered}`);
-
-        // Integration Backend POST user send()
-        const response: Record<string, any> = await this.backend.send(
-          'post',
-          userFiltered.object,
-          `/user`
-        );
-
-        // Integration Backend POST user send()
-        let responseSignIn: any = await this.backend.send(
-          'post',
-          userFiltered.object,
-          '/user/signin'
-        );
-        console.log(response)
-
-        let user = {
-          id: responseSignIn.idUser,
-          username: this.user.username,
-          charge: this.user.cargo,
-          isAdmin: this.user.isAdmin
-        };
-        // save in the store the user data
-        this['$store'].commit('userInfo', user);
-        // goto Identification page
-        this['$router'].push('/Identification');
-      } catch (error) {
-        console.error(
-          'Algo malo sucedio :( este fue el error -> ',
-          error.message
-        );
-        alert('Las contraseñas no coinciden');
+          // save in the store the user data
+          this['$store'].commit('userInfo', user);
+          // goto Identification page
+          this['$router'].push('/Identification');
+        } catch (error) {
+          console.error(
+            'Algo malo sucedio :( este fue el error -> ',
+            error.message
+          );
+          alert('Las contraseñas no coinciden');
+        }
+      } else {
+        alert('Las contraseñas no coinciden')
       }
     }
   }
@@ -123,17 +127,15 @@ export default class HomeCode extends vue {
           cargo: this.user.cargo,
           isAdmin: this.user.isAdmin
         };
-
         // Integration Backend POST user send()
-        let response: any = await this.backend.send(
+        let response: UserInterface = await this.backend.send(
           'post',
           userData,
           '/user/signin'
         );
-        console.log(response)
         //User Store info.
         let user = {
-          idUser: response.idUser,
+          id: response.idUser,
           username: userData.username,
           charge: userData.cargo,
           isAdmin: userData.isAdmin
@@ -143,8 +145,8 @@ export default class HomeCode extends vue {
         // goto Identification page
         this['$router'].push('/Identification');
       } catch (error) {
-        console.error('error causado por -> ', error);
-        alert('El usuario o la contraseña no son correctas');
+        console.log('error causado por -> ', error);
+        alert('Error iniciando sesion, verifique usuario y contraseña');
       }
     }
   }

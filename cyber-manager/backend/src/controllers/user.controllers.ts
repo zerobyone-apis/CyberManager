@@ -30,7 +30,7 @@ export async function createUser(req: Request, res: Response) {
     newUser.passwd,
     newUser.cargo,
     newUser.isAdmin,
-    datetime.now()
+    new Date().toLocaleDateString() + ' 00:00:00'
   ];
   let result: ResultObject = await queryFunctions.action(queries.getQuery('user', 'create'), queryParams);
   if (result.statusCode == 200) {
@@ -100,20 +100,14 @@ export async function signIn(req: Request, res: Response) {
     newUser.passwd,
     newUser.cargo
   ];
-  const resultUser: ResultObject = await queryFunctions.get(queries.getQuery('user', 'signIn'), paramsQuery);
-
-  if (resultUser.statusCode == 200) {
-    if (resultUser.value != []) {
-      return res.status(200).json(resultUser.value[0]);
+  const result: ResultObject = await queryFunctions.get(queries.getQuery('user', 'signIn'), paramsQuery);
+  if (result.statusCode == 200) {
+    if (result.value.length != 0) {
+      return res.status(200).json(result.value[0]);
     } else {
       return res.status(401).json(`El usuario no esta registrado, verifique usuario y contraseña`);
     }
   } else {
-    console.error(`Error en inicio de sesion`);
-    return res
-      .status(resultUser.statusCode)
-      .json(
-        resultUser.value
-      );
+    return res.status(404).json(`Error: ${result}`);
   }
 }
