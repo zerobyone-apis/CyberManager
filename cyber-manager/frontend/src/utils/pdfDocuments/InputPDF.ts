@@ -64,6 +64,8 @@ export default class InputPdf extends Styles {
         doc
       );
 
+      this.writeText(enterprise.primerMsjRecibo == undefined ? '': enterprise.primerMsjRecibo, 7, 'left', doc);
+
       // end
       this.drawLine(0.1, doc);
     }
