@@ -102,7 +102,7 @@
                 ></v-text-field>
               </div>
 
-              <div class="getArticulo-fields-box">
+              <div class="article-fields-box">
                 <v-text-field
                   :error="v.get('pedido.newPedido.articulo') != ''"
                   :error-messages="v.get('pedido.newPedido.articulo')"
