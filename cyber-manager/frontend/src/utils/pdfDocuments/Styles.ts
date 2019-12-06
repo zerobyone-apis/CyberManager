@@ -48,7 +48,7 @@ export default class Styles {
   // methods of draw
   insertImage(img: string, width: number, height: number, doc: jsPDF) {
     let cooX = ((this.pageSize.width - this.pageSize.exededWidth) - width) / 2;
-    doc.addImage(img, 'jpg',cooX, this.positionText.y, width, height);
+    doc.addImage(img, 'jpg', cooX, this.positionText.y, width, height);
     this.positionText.y += height + 5;
   }
 
@@ -79,9 +79,9 @@ export default class Styles {
 
   drawLine(fontSize: number, doc: jsPDF) {
     doc.setFontSize(fontSize);
-    // doc.setFillColor( 213, 213, 213 );
+    doc.setDrawColor(220, 220, 220)
     this.positionText.y += 15;
-    doc.rect(this.marginsText.width, this.positionText.y, (this.pageSize.width-this.pageSize.exededWidth-this.marginsText.width*2), 0.5) //Fill and Border
+    doc.rect(this.marginsText.width, this.positionText.y, (this.pageSize.width - this.pageSize.exededWidth - this.marginsText.width * 2), 0.5) //Fill and Border
   }
 
   write(text: string, pos: { x: number, y: number } | string, doc: jsPDF, rect?: boolean | undefined) {
@@ -107,15 +107,32 @@ export default class Styles {
           coo.x = this.marginsText.width;
           break;
       }
+
       coo.y = this.positionText.y;
-      doc.text(text, coo.x, coo.y);
-      if (rect) { // draw a rectangle in the text
-        doc.rect(coo.x-1, (coo.y-doc.getLineHeight()+3), doc.getTextWidth(text)+2, doc.getLineHeight()-2)
+      if (doc.getTextWidth(text) < this.pageSize.exededWidth) {
+        doc.text(text, coo.x, coo.y);
+      } else if(pos == 'left') {
+        // word to word
+        let words = text.split(' ')
+        words.forEach(word => {
+          let lengthW = doc.getTextWidth(word + ' ');
+          if (lengthW + coo.x < (this.pageSize.width-200)) {
+            doc.text(word + ' ', coo.x, coo.y);
+            coo.x += lengthW;
+          } else {
+            coo.x = this.marginsText.width;
+            coo.y += 10;
+            doc.text(word + ' ', coo.x, coo.y);
+            coo.x += lengthW;
+          }
+        });
+        //save position
+        this.positionText.y = coo.y;
       }
+      this.positionText.y = coo.y;
     } else {
-      doc.text(text, pos.x, pos.y);
       if (rect) { // draw a rectangle in the text
-        doc.rect(pos.x-1, (pos.y-doc.getLineHeight()+3), doc.getTextWidth(text)+2, doc.getLineHeight()-2) //Fill and Border
+        doc.rect(pos.x - 1, (pos.y - doc.getLineHeight() + 3), doc.getTextWidth(text) + 2, doc.getLineHeight() - 2) //Fill and Border
       }
     }
   }

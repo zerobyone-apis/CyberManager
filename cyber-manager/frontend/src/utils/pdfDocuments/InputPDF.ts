@@ -6,12 +6,11 @@ import Empresa from '../../../../backend/src/models/empresa';
 
 export default class InputPdf extends Styles {
   generateDoc(enterprise: Empresa, order: Pedido) {
-    this.init(30, 0);
+    this.init(30, 10);
     let doc = new jsPDF('p', 'px', [this.pageSize.width, this.pageSize.heigth]);
     for (let i = 0; i < 2; i++) {
-      
       // size of all fonts in this document
-      let fontSize = 9;
+      let fontSize = 8;
 
       this.insertImage(typeof enterprise.urlLogo == 'undefined' ? '' : enterprise.urlLogo, 30, 30, doc)
 
@@ -24,7 +23,7 @@ export default class InputPdf extends Styles {
       this.writeText('Ordern nro: ' + order.idOrden, fontSize, 'left', doc);
       this.writeText('Fecha: ' + order.fechaIngreso, fontSize, 'left', doc);
 
-      this.writeText('', 12, 'center', doc); // space
+      // this.writeText('', 12, 'center', doc); // space
       this.writeText(
         'Nombre del cliente: ' + order.nombreCliente,
         fontSize,
@@ -33,15 +32,20 @@ export default class InputPdf extends Styles {
       );
       this.writeText('Telefono: ' + order.telCliente, fontSize, 'right', doc, true);
 
+      this.drawLine(0.1, doc);
+
       this.writeText('Articulo: ' + order.articulo, fontSize, 'left', doc);
       this.writeText('Modelo: ' + order.modelo, fontSize, 'right', doc, true);
       this.writeText('Marca: ' + order.marca, fontSize, 'center', doc, true);
 
+      this.drawLine(0.1, doc);
+
       this.writeText('Falla: ', fontSize, 'left', doc);
       this.writeText(order.fallReportada, fontSize, 'left', doc);
-      this.writeText('', 12, 'center', doc); // space
+      // this.writeText('', 12, 'center', doc); // space
 
       this.writeText('Observaciones: ', fontSize, 'left', doc);
+
       this.writeText(
         typeof order.observaciones == 'undefined' ? '' : order.observaciones,
         fontSize,
@@ -52,7 +56,7 @@ export default class InputPdf extends Styles {
       this.writeText('Garantia: ', fontSize, 'left', doc);
       this.writeText(enterprise.garantia, fontSize, 'left', doc);
 
-      this.writeText('', 15, 'center', doc); // space
+      // this.writeText('', 15, 'center', doc); // space
       this.writeText(
         'Firma del cliente:________________________________ ',
         fontSize,
