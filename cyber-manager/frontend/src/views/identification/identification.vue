@@ -192,7 +192,6 @@
             <!-- TABLE OF pedidos -->
             <div class="pedidos-box">
               <h3 class="font-title">Lista de Ordenes</h3>
-              {{ pedido.pedidos.length }}
               <v-data-table
                 height="100%"
                 :v-model="pedido.pedidos.getArray()"
