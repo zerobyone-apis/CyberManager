@@ -1,6 +1,5 @@
 export default class Datetime {
   convert(date: string, hour?: string) {
-    // deprecated
     let d = date.split('/');
     let orderDate = d[2] + '-' + d[1] + '-' + d[0];
     let h = (hour == undefined ? '' : hour);
@@ -8,7 +7,6 @@ export default class Datetime {
   }
 
   backendConvert(date: string, hour?: string) {
-    // deprecated
     // let d = date.split('/');
     let orderDate = date;//d[2] + '-' + d[1] + '-' + d[0];
     let h = (hour == undefined ? '' : hour);
@@ -25,13 +23,8 @@ export default class Datetime {
 
   now(datetime?: string) {
     if (datetime) {
-      console.log(this.getDate(datetime) + ' ' + this.getHour(datetime))
       return this.getDate(datetime) + ' ' + this.getHour(datetime);
     } else {
-      console.log(this.convert(
-        new Date().toLocaleDateString(),
-        new Date().toLocaleTimeString()
-      ))
       return this.convert(
         new Date().toLocaleDateString(),
         new Date().toLocaleTimeString()

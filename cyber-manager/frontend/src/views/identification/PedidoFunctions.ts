@@ -81,7 +81,6 @@ export default class PedidoFunctions {
         this.pedidos.add(
           Object.assign(new Pedido(this.newPedido), pedidoInterface)
         );
-        console.log('add new pedido', this.pedidos.getArray().length)
       });
       //clear fields pedidos UI
       Object.assign(this.newPedido, this.cleanFields);
@@ -110,7 +109,6 @@ export default class PedidoFunctions {
         status: this.validateStatus(this.status) //hay que probarlo bien son las 4:00 am -> :_
       };
       const response: any = await this.backend.send('post', data, '/pedido');
-      console.log('add pedido', response)
       let createdPedido: Pedido = new Pedido(data);
       // Aca tengo que obtener el id del pedido creado
       createdPedido.idOrden = response.idOrden;
@@ -132,7 +130,6 @@ export default class PedidoFunctions {
           undefined,
           `/pedido/${pedido.idOrden}`
         );
-        console.log(response);
         this.pedidos.remove(this.selectedPedido);
         this.selectedPedido = -1;
       } catch (error) {

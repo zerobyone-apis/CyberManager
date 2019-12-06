@@ -27,7 +27,6 @@ export default class EmpresaFunctions extends vue {
         data,
         `/empresa/${this.data.idEmpresa}`
       );
-      console.log(response);
       /* Message success */
       alert(' Empresa Actualizada exitosamente!..');
     } catch (error) {

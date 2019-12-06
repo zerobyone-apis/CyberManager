@@ -198,7 +198,6 @@
                 :headers="headerPedido"
                 :items="pedido.pedidos.getArray()"
                 :items-per-page="8"
-                @item-selected="(item, value) => { selectRow(item, value) }"
                 item-key="idOrden"
                 show-select
                 single-select
@@ -403,7 +402,7 @@
             </div>
             <div class="footer">
               <v-btn
-                @click="empresa.saveEnterpriseInfo()"
+                @click="saveEmpresaInfo()"
                 :disabled="disabledButtons"
                 class="btn-footer"
                 color="green"
@@ -414,7 +413,7 @@
                 <v-icon>save</v-icon>
               </v-btn>
               <v-btn
-                @click="empresa.getEnterpriseInfo()"
+                @click="empresa.get()"
                 :disabled="disabledButtons"
                 color="grey"
                 dark

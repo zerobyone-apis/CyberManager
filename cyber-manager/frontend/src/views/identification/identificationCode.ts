@@ -128,8 +128,10 @@ export default class IndentificationCode extends vue {
     }
   }
 
-  private selectRow(item: any, value: boolean) {
-    console.log(item, value)
+  private saveEmpresaInfo() {
+    this.disabledButtons = true;
+    this.empresa.save()
+    this.disabledButtons = false;
   }
 
   private changeColorToEdit(pedido: Pedido) {
@@ -160,13 +162,12 @@ export default class IndentificationCode extends vue {
   }
 
   private uploadImage(e: any) {
-    console.log(e)
     const image = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(image);
     reader.onload = e => {
       let data: any = e.target;
-      this.empresa.data.urlLogo = data['result'];
+      this.empresa.data.urlLogo = data['result'].toString();
     };
   }
 }
