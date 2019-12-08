@@ -192,38 +192,61 @@
             <!-- TABLE OF pedidos -->
             <div class="pedidos-box">
               <h3 class="font-title">Lista de Ordenes</h3>
-              <v-data-table
-                height="100%"
-                :v-model="pedido.pedidos.getArray()"
-                :headers="headerPedido"
-                :items="pedido.pedidos.getArray()"
-                :items-per-page="8"
-                item-key="idOrden"
-                show-select
-                single-select
-                class="pedidos-table elevation-0"
-              >
-                <template v-slot:item.data-table-select="{ item, select }">
-                  <!-- button edit item in pedidos table -->
-                  <v-icon
-                    @click="() => { select();showSelectedPedido(item) }"
-                    :color="changeColorToEdit(item)"
-                  >edit</v-icon>
-                </template>
-                <template v-slot:item.action="{ item }">
-                  <!-- button delete item in pedidos table -->
-                  <v-icon
-                    :disabled="
+              <div class="search-box">
+                
+                <div class="select">
+                  <v-select
+                    v-model="search.filter" 
+                    label="Buscar por" :items="Object.keys(searchFilters)" item-value="text" defa></v-select>
+                </div>
+                <div class="field">
+                  <v-text-field
+                    v-model="search.value"
+                    append-icon="search"
+                    label="Buscar"
+                    single-line
+                    hide-details
+                  ></v-text-field>
+                </div>
+              </div>
+
+              <div class="table-box">
+                <v-data-table
+                  height="100%"
+                  :v-model="pedido.pedidos.getArray()"
+                  :headers="headerPedido"
+                  :items="filterItems()"
+                  :items-per-page="500"
+                  item-key="idOrden"
+                  show-select
+                  hide-default-footer
+                  single-select
+                  class="pedidos-table elevation-0"
+                >
+                  <template v-slot:item.data-table-select="{ item, select }">
+                    <!-- button edit item in pedidos table -->
+                    <v-icon
+                      @click="() => { select();showSelectedPedido(item) }"
+                      :color="changeColorToEdit(item)"
+                    >edit</v-icon>
+                  </template>
+                  <template v-slot:item.action="{ item }">
+                    <!-- button delete item in pedidos table -->
+                    <v-icon
+                      :disabled="
                       interactionsMode.order == 1 &&
                         pedido.selectedPedido != pedido.pedidos.getArray().indexOf(item)
                     "
-                    @click="deletePedido(item)"
-                    :color="changeColorToEdit(item)"
-                  >delete</v-icon>
-                </template>
-                <span>Borrar orden</span>
-              </v-data-table>
-              <!-- footer box table  -->
+                      @click="deletePedido(item)"
+                      :color="changeColorToEdit(item)"
+                    >delete</v-icon>
+                  </template>
+                  <span>Borrar orden</span>
+                  <template v-slot:footer="{ props }">
+                    <div class="green"></div>
+                  </template>
+                </v-data-table>
+              </div>
             </div>
           </div>
         </v-stepper-content>
@@ -289,26 +312,27 @@
 
               <div class="dates-box">
                 <div class="repair-date">
+                  {{ 'fecha: '+reparacionPedido.fechaReparacion }}
                   <time-field
-                    v-model="pedido.newPedido.reparacion"
+                    v-model="pedido.newPedido.fechaReparacion"
                     @time="
                       time => {
-                        pedido.newPedido.reparacion = time;
+                        pedido.newPedido.fechaReparacion = time;
                       }
                     "
                     type="date"
-                    :error="v.get('pedido.newPedido.reparacion') != ''"
-                    :errorMessage="v.get('pedido.newPedido.reparacion')"
+                    :error="v.get('pedido.newPedido.fechaReparacion') != ''"
+                    :errorMessage="v.get('pedido.newPedido.fechaReparacion')"
                     label="Fecha de reparacion"
                     lang="es"
                   ></time-field>
 
-                  <v-btn
+                  <!-- <v-btn
                     @click="pedido.newPedido.reparacion = datetime.now()"
                     small
                     color="green"
                     dark
-                  >fecha</v-btn>
+                  >fecha</v-btn>-->
                 </div>
 
                 <div class="deliver-date">
@@ -326,12 +350,12 @@
                     lang="es"
                   ></time-field>
 
-                  <v-btn
+                  <!-- <v-btn
                     @click="pedido.newPedido.fechaEntrega = datetime.now()"
                     small
                     color="green"
                     dark
-                  >fecha</v-btn>
+                  >fecha</v-btn>-->
                 </div>
               </div>
             </div>
@@ -355,7 +379,6 @@
             </div>
           </div>
         </v-stepper-content>
-
         <!-- enterprise frame -->
         <v-stepper-content step="3">
           <div class="enterprisePage">
@@ -412,14 +435,8 @@
                 GUARDAR
                 <v-icon>save</v-icon>
               </v-btn>
-              <v-btn
-                @click="empresa.get()"
-                :disabled="disabledButtons"
-                color="grey"
-                dark
-                small
-              >
-                Cancelar
+              <v-btn @click="empresa.get()" :disabled="disabledButtons" color="grey" dark small>
+                Cargar los datos por defecto
                 <v-icon>cancel</v-icon>
               </v-btn>
             </div>

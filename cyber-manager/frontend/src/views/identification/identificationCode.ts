@@ -13,7 +13,6 @@ export default class IndentificationCode extends vue {
   private empresa: EmpresaFunctions = new EmpresaFunctions();
   public pedido: PedidoFunctions = new PedidoFunctions();
 
-
   // user info saved in the store
   private userInfo = this.$store.getters.userInfo;
   public wizard = 1;
@@ -28,7 +27,7 @@ export default class IndentificationCode extends vue {
   private datetime: DateTime = new DateTime();
   // Control activity of the buttons of the main actions
   private disabledButtons: boolean = false;
-  
+
   // vars used for validation
   // [ field-name, type: string, int ]
   private clientFields: Record<string, any> = {
@@ -61,9 +60,19 @@ export default class IndentificationCode extends vue {
     reparacion: '',
     garantia: '',
     tecnico: '',
-    status: ''
+    status: '',
+    fechaReparacion: ''
   };
 
+  private searchFilters: any = {
+    'nombre': 'nombreCliente',
+    'status': 'status', 
+    // 'id': 'idOrden'
+  }
+  private search: any = {
+    filter: 'nombre',
+    value: ''
+  };
 
   // METHODS
 
@@ -89,7 +98,7 @@ export default class IndentificationCode extends vue {
     if (this.v.validateFields(this.pedido.newPedido, [
       this.clientFields,
       this.articleFields])) {
-        
+
       this.disabledButtons = true;
       this.pedido.save();
       this.disabledButtons = false;
@@ -112,10 +121,12 @@ export default class IndentificationCode extends vue {
       nombreCliente: this.pedido.newPedido.nombreCliente,
       articulo: this.pedido.newPedido.articulo,
       reparacion: this.pedido.newPedido.reparacion,
+      fechaReparacion: this.pedido.newPedido.fechaReparacion,
       garantia: this.$store.getters.getGarantia,
       tecnico: this.$store.getters.getTecnico,
       status: this.pedido.newPedido.status ? this.pedido.newPedido.status : null
     };
+    console.log(this.pedido.newPedido)
     this.v.clearFails();
     this.interactionsMode.order = 1; // save mode
   }
@@ -169,5 +180,18 @@ export default class IndentificationCode extends vue {
       let data: any = e.target;
       this.empresa.data.urlLogo = data['result'].toString();
     };
+  }
+
+  private filterItems() {
+    if (this.search.value == '') {
+      return this.pedido.pedidos.getArray()
+    } else {
+      // filter
+      let filterKey = this.searchFilters[this.search.filter]; 
+      return this.pedido.pedidos.getArray()
+        .filter((pedido: any) =>
+          (pedido[filterKey] || '').toLowerCase()
+            .indexOf(this.search.value.toLowerCase()) != -1)
+    }
   }
 }

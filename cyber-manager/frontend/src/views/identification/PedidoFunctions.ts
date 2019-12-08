@@ -78,10 +78,17 @@ export default class PedidoFunctions {
       allPedidos.forEach((pedidoInterface: PedidoInterface) => {
         let fechaIngreso: any = pedidoInterface.fechaIngreso;
         pedidoInterface.fechaIngreso = this.datetime.normalize(fechaIngreso);
-        this.pedidos.add(
-          Object.assign(new Pedido(this.newPedido), pedidoInterface)
-        );
+        // for (let i = 0; i < 10; i++) {
+          this.pedidos.add(
+            Object.assign(new Pedido(this.newPedido), pedidoInterface)
+          );  
+        // }
       });
+
+      this.pedidos.getArray().forEach(item => {
+        console.log(item.idOrden, item.fechaReparacion)
+      });
+
       //clear fields pedidos UI
       Object.assign(this.newPedido, this.cleanFields);
     } catch (error) {
