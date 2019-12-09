@@ -55,18 +55,10 @@ export default class Styles {
   writeText(text: string, fontSize: number, pos: { x: number, y: number } | string, doc: jsPDF, inline?: boolean | undefined) {
     doc.setFontSize(fontSize);
     if (!inline) {
-      this.positionText.y += fontSize + 5;
+      this.positionText.y += fontSize + 2;
     }
     this.write(text, pos, doc, false);
   }
-
-  //       this.writeImg(enterprise.getUrlLogo, 100, 100, 'center', doc);
-  writeImg(url: string, width: number, height: number, doc: jsPDF) {
-    let img = new Image();
-    // img.setAttribute
-    // doc.addImage
-  }
-
 
   writeRectText(text: string, fontSize: number, pos: { x: number, y: number } | string, doc: jsPDF, inline?: boolean | undefined) {
     doc.setFontSize(fontSize);
@@ -80,7 +72,7 @@ export default class Styles {
   drawLine(fontSize: number, doc: jsPDF) {
     doc.setFontSize(fontSize);
     doc.setDrawColor(220, 220, 220)
-    this.positionText.y += 15;
+    this.positionText.y += 5;
     doc.rect(this.marginsText.width, this.positionText.y, (this.pageSize.width - this.pageSize.exededWidth - this.marginsText.width * 2), 0.5) //Fill and Border
   }
 
