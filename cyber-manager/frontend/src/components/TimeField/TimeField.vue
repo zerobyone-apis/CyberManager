@@ -1,6 +1,15 @@
 <template>
   <div>
-    <v-dialog v-if="type == 'hour'" ref="dialogHour" v-model="modal2" :return-value.sync="time" persistent width="290px">
+
+
+    <v-dialog
+      v-if="type == 'hour'"
+      ref="dialogHour"
+      v-model="modal2"
+      :return-value.sync="time"
+      persistent
+      width="290px"
+    >
       <template v-slot:activator="{ on }">
         <v-text-field
           v-model="time"
@@ -18,8 +27,18 @@
         <v-btn text color="primary" @click="$refs.dialogHour.save(time)">OK</v-btn>
       </v-time-picker>
     </v-dialog>
-    
-    <v-dialog v-else ref="dialogDate" v-model="modal2" :return-value.sync="time" persistent width="290px">
+
+
+
+
+    <v-dialog
+      v-else
+      ref="dialogDate"
+      v-model="modal2"
+      :return-value.sync="time"
+      persistent
+      width="290px"
+    >
       <template v-slot:activator="{ on }">
         <v-text-field
           v-model="time"
@@ -37,6 +56,8 @@
         <v-btn text color="primary" @click="$refs.dialogDate.save(time)">OK</v-btn>
       </v-date-picker>
     </v-dialog>
+
+    
   </div>
 </template>
 
@@ -44,24 +65,23 @@
 import { Prop, Watch, Component } from "vue-property-decorator";
 import TimeFieldCode from "./TimeFieldCode";
 import "./TimeFieldStyle.scss";
+import Datetime from "../../../../backend/dist/src/utils/DateTIme";
 
 @Component({})
 export default class TimeField extends TimeFieldCode {
+  @Prop({ default: new Datetime().now() }) value: string;
+
   @Prop({ default: "date" }) type!: string;
   @Prop({ default: "es" }) lang!: string;
   @Prop({ default: "" }) label!: string;
-  @Prop({ default: "" }) value!: string;
   @Prop({ default: "" }) icon!: string;
   @Prop({ default: "" }) error!: string;
   @Prop({ default: "" }) errorMessage!: string;
 
-  @Watch("time")
-  timeChanged() {
-    this.$emit("time", this.time);
-  }
-
-  created() {
-    this.time = this["value"];
+  @Watch("value")
+  updateTime() {
+    this.time = this.value;
+    this.$emit("input", this.time);
   }
 }
 </script>
