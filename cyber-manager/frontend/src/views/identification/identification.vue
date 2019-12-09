@@ -35,7 +35,7 @@
           small
           class="toolbar-button"
           :disabled="wizard != 2"
-          @click="generateInputPdf()"
+          @click="generateOutputPdf()"
         >
           <v-icon>send</v-icon>
           <span>Salida</span>
@@ -312,37 +312,27 @@
 
               <div class="dates-box">
                 <div class="repair-date">
-                  {{ 'fecha: '+reparacionPedido.fechaReparacion }}
                   <time-field
                     v-model="pedido.newPedido.fechaReparacion"
-                    @time="
-                      time => {
-                        pedido.newPedido.fechaReparacion = time;
-                      }
-                    "
                     type="date"
                     :error="v.get('pedido.newPedido.fechaReparacion') != ''"
                     :errorMessage="v.get('pedido.newPedido.fechaReparacion')"
                     label="Fecha de reparacion"
                     lang="es"
                   ></time-field>
-
-                  <!-- <v-btn
-                    @click="pedido.newPedido.reparacion = datetime.now()"
+            
+                  <v-btn
+                    @click="pedido.newPedido.fechaReparacion = datetime.now()"
                     small
                     color="green"
                     dark
-                  >fecha</v-btn>-->
+                  >fecha</v-btn>
                 </div>
 
                 <div class="deliver-date">
+                  
                   <time-field
                     v-model="pedido.newPedido.fechaEntrega"
-                    @time="
-                      time => {
-                        pedido.newPedido.fechaEntrega = time;
-                      }
-                    "
                     type="date"
                     :error="v.get('pedido.newPedido.fechaEntrega') != ''"
                     :errorMessage="v.get('pedido.newPedido.fechaEntrega')"
@@ -350,12 +340,12 @@
                     lang="es"
                   ></time-field>
 
-                  <!-- <v-btn
+                  <v-btn
                     @click="pedido.newPedido.fechaEntrega = datetime.now()"
                     small
                     color="green"
                     dark
-                  >fecha</v-btn>-->
+                  >fecha</v-btn>
                 </div>
               </div>
             </div>
@@ -390,7 +380,6 @@
                   label="Nombre de la empresa"
                   class="custom-field"
                 ></v-text-field>
-
                 <v-text-field
                   v-model="empresa.data.direccion"
                   label="Direccion"
@@ -401,9 +390,10 @@
                 <v-text-field v-model="empresa.data.email" label="Email" class="custom-field"></v-text-field>
               </div>
 
+
               <div class="image-box">
-                <input type="file" accept="image/*" @change="uploadImage($event)" />
                 <img :src="empresa.data.urlLogo" alt width="200" height="200" />
+                <input type="file" accept="image/*" @change="uploadImage($event)" />
               </div>
             </div>
             <div class="pdf-fields">

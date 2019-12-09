@@ -1,8 +1,9 @@
 import vue from 'vue';
 import Validation from '../../utils/Validation';
 import InputPdf from '../../utils/pdfDocuments/InputPDF';
+import OutputPdf from '../../utils/pdfDocuments/OutputPDF';
 import IntegrationBackend from '../../utils/IntegrationBackend';
-import DateTime from '../../../../backend/src/utils/DateTime';
+import DateTime from '../../utils/DateTime';
 import EmpresaFunctions from './EmpresaFunctions'
 
 import PedidoFunctions from './PedidoFunctions';
@@ -66,7 +67,7 @@ export default class IndentificationCode extends vue {
 
   private searchFilters: any = {
     'nombre': 'nombreCliente',
-    'status': 'status', 
+    'status': 'status',
     // 'id': 'idOrden'
   }
   private search: any = {
@@ -114,19 +115,23 @@ export default class IndentificationCode extends vue {
 
   private showSelectedPedido(pedido: any) {
     this.pedido.selectPedido(pedido);
+
     //Reparacion Object falta conectar a BD
     // esto habria que moverlo a reparacionFunctions
     this.reparacionPedido = {
       idPedido: this.pedido.newPedido.idOrden,
+
+      fechaReparacion: this.pedido.newPedido.fechaReparacion,
+      fechaEntrega: this.pedido.newPedido.fechaEntrega,
+
       nombreCliente: this.pedido.newPedido.nombreCliente,
       articulo: this.pedido.newPedido.articulo,
       reparacion: this.pedido.newPedido.reparacion,
-      fechaReparacion: this.pedido.newPedido.fechaReparacion,
       garantia: this.$store.getters.getGarantia,
       tecnico: this.$store.getters.getTecnico,
       status: this.pedido.newPedido.status ? this.pedido.newPedido.status : null
     };
-    console.log(this.pedido.newPedido)
+
     this.v.clearFails();
     this.interactionsMode.order = 1; // save mode
   }
@@ -172,6 +177,35 @@ export default class IndentificationCode extends vue {
     }
   }
 
+  private generateOutputPdf() {
+    let outputPdf: OutputPdf = new OutputPdf();
+    try {
+      //Validar que boton llama este metodo en base al WIzard que tenga
+      //Si wiazard es uno, imprimir el recibo de ingreso de pedido, con el primer mesnaje recibo
+      //Si wiazard es dos, imprimir el recibo de entrega de pedido, con el segundo mesnaje recibo
+      /* Tenemos que configurar los parametros ->
+              - Primer MSJ Recibo 
+              - Segundo MSJ Recibo 
+          Que no estan en el PDF y Ajustar los margenes para que no se salgan del A4*/
+      outputPdf.generateDoc(this.empresa.data, new Pedido(this.pedido.newPedido));
+    } catch (error) {
+      console.error('Error generatedDoc -> ', error);
+    }
+  }
+
+  private filterItems() {
+    if (this.search.value == '') {
+      return this.pedido.pedidos.getArray()
+    } else {
+      // filter
+      let filterKey = this.searchFilters[this.search.filter];
+      return this.pedido.pedidos.getArray()
+        .filter((pedido: any) =>
+          (pedido[filterKey] || '').toLowerCase()
+            .indexOf(this.search.value.toLowerCase()) != -1)
+    }
+  }
+
   private uploadImage(e: any) {
     const image = e.target.files[0];
     const reader = new FileReader();
@@ -180,18 +214,5 @@ export default class IndentificationCode extends vue {
       let data: any = e.target;
       this.empresa.data.urlLogo = data['result'].toString();
     };
-  }
-
-  private filterItems() {
-    if (this.search.value == '') {
-      return this.pedido.pedidos.getArray()
-    } else {
-      // filter
-      let filterKey = this.searchFilters[this.search.filter]; 
-      return this.pedido.pedidos.getArray()
-        .filter((pedido: any) =>
-          (pedido[filterKey] || '').toLowerCase()
-            .indexOf(this.search.value.toLowerCase()) != -1)
-    }
   }
 }

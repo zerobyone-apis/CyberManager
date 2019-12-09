@@ -6,6 +6,7 @@
           <!-- SIGN IN -->
           <div class="box-access">
             <h4 class="font-title title">Acceda para utilizar CyberManager</h4>
+
             <v-select
               v-model="user.cargo"
               :items="charges"
@@ -102,15 +103,16 @@
 
 <script lang="ts">
 //code
-import HomeCode from './homeCode';
+import HomeCode from "./homeCode";
 //style
-import './homeStyle.scss';
-import '../../styles/fonts.scss';
+import "./homeStyle.scss";
+import "../../styles/fonts.scss";
 //components
-import { Component } from 'vue-property-decorator';
+import { Component } from "vue-property-decorator";
 
 @Component({
-  components: {}
+  components: {
+  }
 })
 export default class Home extends HomeCode {}
 </script>

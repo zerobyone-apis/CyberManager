@@ -8,6 +8,7 @@ import { UserInterface } from '../../../../backend/src/interface/UserInterface';
 import ResultObject from '../../../../backend/src/models/ResultObject';
 
 export default class HomeCode extends vue {
+
   // Utils + Backend
   private backend: IntegrationBackend = new IntegrationBackend();
   // Validation Fields

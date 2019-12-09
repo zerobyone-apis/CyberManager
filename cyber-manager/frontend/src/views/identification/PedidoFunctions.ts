@@ -1,7 +1,7 @@
 import vue from 'vue';
 import IntegrationBackend from '../../utils/IntegrationBackend';
 import { PedidoInterface } from '../../../../backend/src/interface/PedidoInterface';
-import DateTime from '../../../../backend/src/utils/DateTime';
+import DateTime from '../../utils/DateTime';
 
 // Models
 import Pedido from '../../../../backend/src/models/pedido';
@@ -73,11 +73,23 @@ export default class PedidoFunctions {
       );
       //First reconect if response is empty.
       if (!allPedidos.length) {
-        setTimeout(this.getAll, 5000);
+        // setTimeout(this.getAll, 5000);
       }
       allPedidos.forEach((pedidoInterface: PedidoInterface) => {
         let fechaIngreso: any = pedidoInterface.fechaIngreso;
         pedidoInterface.fechaIngreso = this.datetime.normalize(fechaIngreso);
+        
+        // formatting date
+        let fReparacion: any = pedidoInterface.fechaReparacion;
+        let fEntrega: any = pedidoInterface.fechaEntrega;
+        // let fIngreso: any = pedidoInterface.fechaIngreso; 
+        fReparacion = this.datetime.normalize(fReparacion);
+        fEntrega = this.datetime.normalize(fEntrega);
+        // fIngreso = this.datetime.normalize(fIngreso);
+        pedidoInterface.fechaReparacion = fReparacion;
+        pedidoInterface.fechaEntrega = fEntrega;
+        // pedidoInterface.fechaIngreso = fIngreso;
+
         // for (let i = 0; i < 10; i++) {
           this.pedidos.add(
             Object.assign(new Pedido(this.newPedido), pedidoInterface)
@@ -86,7 +98,8 @@ export default class PedidoFunctions {
       });
 
       this.pedidos.getArray().forEach(item => {
-        console.log(item.idOrden, item.fechaReparacion)
+        // console.log('reparacion:',item.idOrden, item.fechaReparacion)
+        // console.log('entrega:',item.idOrden, item.fechaEntrega)
       });
 
       //clear fields pedidos UI
@@ -95,8 +108,8 @@ export default class PedidoFunctions {
       alert(`Error cargando los datos de pedidos. Recargando...`);
       //reconect if error 404 not found exception.
       if (error.state === 404 || error) {
-        console.log(`Disparando el setTimeout por falla -> ${error.message}`);
-        setTimeout(this.getAll, 5000);
+        // console.log(`Disparando el setTimeout por falla -> ${error.message}`);
+        // setTimeout(this.getAll, 5000);
       }
     }
   }
@@ -187,7 +200,11 @@ export default class PedidoFunctions {
     Object.assign(this.newPedido, this.cleanFields);
     Object.assign(this.newPedido, {
       idOrden: pedido.idOrden,
+
       fechaIngreso: pedido.fechaIngreso,
+      fechaReparacion: pedido.fechaReparacion,
+      fechaEntrega: pedido.fechaEntrega,
+      
       nombreCliente: pedido.nombreCliente,
       telCliente: pedido.telCliente,
       articulo: pedido.articulo,
@@ -196,7 +213,7 @@ export default class PedidoFunctions {
       fallReportada: pedido.fallReportada,
       observaciones: pedido.observaciones,
       isCanceled: pedido.isCanceled,
-      status: pedido.status
+      status: pedido.status,
     });
     this.selectedPedido = this.pedidos.getArray().indexOf(pedido);
   }
