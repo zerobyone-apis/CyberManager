@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from 'express';
 import {
   createPedido,
   getPedidos,
@@ -6,23 +6,26 @@ import {
   deletePedido,
   updatePedido,
   cancelPedido,
-  changeStatus
-} from "../controllers/pedido.controllers";
+  changeStatus,
+  updateReparacionPedido
+} from '../controllers/pedido.controllers';
 const router = Router();
 
 router
-  .route("/")
+  .route('/')
   .get(getPedidos)
   .post(createPedido);
 
 router
-  .route("/:id")
+  .route('/:id')
   .get(findByID)
   .put(updatePedido)
   .delete(deletePedido);
 
-router.route("/status/:id").put(changeStatus);
+router.route('/repair/:id').put(updateReparacionPedido);
 
-router.route("/cancel/:id").put(cancelPedido);
+router.route('/status/:id').put(changeStatus);
+
+router.route('/cancel/:id').put(cancelPedido);
 
 export default router;

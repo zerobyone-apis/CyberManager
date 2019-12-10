@@ -4,13 +4,12 @@ import InputPdf from '../../utils/pdfDocuments/InputPDF';
 import OutputPdf from '../../utils/pdfDocuments/OutputPDF';
 import IntegrationBackend from '../../utils/IntegrationBackend';
 import DateTime from '../../utils/DateTime';
-import EmpresaFunctions from './EmpresaFunctions'
+import EmpresaFunctions from './EmpresaFunctions';
 
 import PedidoFunctions from './PedidoFunctions';
 import Pedido from '../../../../backend/src/models/pedido';
 
 export default class IndentificationCode extends vue {
-
   private empresa: EmpresaFunctions = new EmpresaFunctions();
   public pedido: PedidoFunctions = new PedidoFunctions();
 
@@ -54,6 +53,7 @@ export default class IndentificationCode extends vue {
     { text: 'Articulo', value: 'articulo' },
     { text: 'Status', value: 'status' }
   ];
+
   private reparacionPedido: Record<string, any> = {
     idPedido: '',
     nombreCliente: '',
@@ -66,16 +66,16 @@ export default class IndentificationCode extends vue {
   };
 
   private searchFilters: any = {
-    'nombre': 'nombreCliente',
-    'status': 'status',
+    nombre: 'nombreCliente',
+    status: 'status'
     // 'id': 'idOrden'
-  }
+  };
   private search: any = {
     filter: 'nombre',
     value: ''
   };
 
-  // METHODS
+  // FUNCTIONS ACTIONS-
 
   // Init fill Methods - Iniciar los metodos de carga de data.
   async init() {
@@ -84,10 +84,12 @@ export default class IndentificationCode extends vue {
   }
 
   async addPedido() {
-    if (this.v.validateFields(this.pedido.newPedido, [
-      this.clientFields,
-      this.articleFields])) {
-
+    if (
+      this.v.validateFields(this.pedido.newPedido, [
+        this.clientFields,
+        this.articleFields
+      ])
+    ) {
       this.disabledButtons = true;
       this.pedido.add();
       this.disabledButtons = false;
@@ -96,12 +98,28 @@ export default class IndentificationCode extends vue {
   }
 
   async savePedido() {
-    if (this.v.validateFields(this.pedido.newPedido, [
-      this.clientFields,
-      this.articleFields])) {
-
+    if (
+      this.v.validateFields(this.pedido.newPedido, [
+        this.clientFields,
+        this.articleFields
+      ])
+    ) {
       this.disabledButtons = true;
       this.pedido.save();
+      this.disabledButtons = false;
+      this.interactionsMode.order = 0;
+    }
+  }
+
+  async saveRepairPedido() {
+    if (
+      this.v.validateFields(this.reparacionPedido, [
+        this.clientFields,
+        this.articleFields
+      ])
+    ) {
+      this.disabledButtons = true;
+      this.pedido.saveRepairPedido();
       this.disabledButtons = false;
       this.interactionsMode.order = 0;
     }
@@ -146,14 +164,15 @@ export default class IndentificationCode extends vue {
 
   private saveEmpresaInfo() {
     this.disabledButtons = true;
-    this.empresa.save()
+    this.empresa.save();
     this.disabledButtons = false;
   }
 
   private changeColorToEdit(pedido: Pedido) {
     if (
       this.interactionsMode.order == 1 &&
-      this.pedido.selectedPedido == this.pedido.pedidos.getArray().indexOf(pedido)
+      this.pedido.selectedPedido ==
+        this.pedido.pedidos.getArray().indexOf(pedido)
     ) {
       return 'green';
     } else {
@@ -171,7 +190,10 @@ export default class IndentificationCode extends vue {
               - Primer MSJ Recibo 
               - Segundo MSJ Recibo 
           Que no estan en el PDF y Ajustar los margenes para que no se salgan del A4*/
-      inputPdf.generateDoc(this.empresa.data, new Pedido(this.pedido.newPedido));
+      inputPdf.generateDoc(
+        this.empresa.data,
+        new Pedido(this.pedido.newPedido)
+      );
     } catch (error) {
       console.error('Error generatedDoc -> ', error);
     }
@@ -187,7 +209,10 @@ export default class IndentificationCode extends vue {
               - Primer MSJ Recibo 
               - Segundo MSJ Recibo 
           Que no estan en el PDF y Ajustar los margenes para que no se salgan del A4*/
-      outputPdf.generateDoc(this.empresa.data, new Pedido(this.pedido.newPedido));
+      outputPdf.generateDoc(
+        this.empresa.data,
+        new Pedido(this.pedido.newPedido)
+      );
     } catch (error) {
       console.error('Error generatedDoc -> ', error);
     }
@@ -195,14 +220,18 @@ export default class IndentificationCode extends vue {
 
   private filterItems() {
     if (this.search.value == '') {
-      return this.pedido.pedidos.getArray()
+      return this.pedido.pedidos.getArray();
     } else {
       // filter
       let filterKey = this.searchFilters[this.search.filter];
-      return this.pedido.pedidos.getArray()
-        .filter((pedido: any) =>
-          (pedido[filterKey] || '').toLowerCase()
-            .indexOf(this.search.value.toLowerCase()) != -1)
+      return this.pedido.pedidos
+        .getArray()
+        .filter(
+          (pedido: any) =>
+            (pedido[filterKey] || '')
+              .toLowerCase()
+              .indexOf(this.search.value.toLowerCase()) != -1
+        );
     }
   }
 

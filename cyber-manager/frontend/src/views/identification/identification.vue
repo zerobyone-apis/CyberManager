@@ -351,7 +351,7 @@
             </div>
             <div class="footer">
               <v-btn
-                @click="savePedido()"
+                @click="saveRepairPedido()"
                 :disabled="disabledButtons"
                 class="btn-footer"
                 color="green"

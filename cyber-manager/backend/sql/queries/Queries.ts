@@ -26,7 +26,9 @@ export default class Queries {
       create: 'INSERT INTO pedido SET ?',
       setStatus: 'UPDATE pedido SET status = ? where id = ?',
       update:
-        'UPDATE pedido SET nombreCliente = ?, telCliente = ?, articulo = ?, modelo = ?, marca = ? , fallReportada = ?, observaciones = ?, isCanceled = ?, fechaReparacion = ?, reparacion = ? , precio = ? WHERE idOrden = ?',
+        'UPDATE pedido SET nombreCliente = ?, telCliente = ?, articulo = ?, modelo = ?, marca = ? , fallReportada = ?, observaciones = ?, isCanceled = ?, fechaReparacion = ?, fechaEntrega = ?, reparacion = ? , precio = ?, status = ? WHERE idOrden = ?',
+      reparacion:
+        'UPDATE pedido SET nombreCliente = ?, articulo = ?, isCanceled = ?, fechaEntrega = ?, fechaReparacion = ?, reparacion = ? , precio = ? , status = ? WHERE idOrden = ?',
       delete: 'DELETE FROM pedido WHERE idOrden = ?',
       cancel: 'UPDATE pedido SET isCanceled = ? WHERE idOrden = ?'
     },
@@ -35,7 +37,7 @@ export default class Queries {
     empresa: {
       getAll: 'SELECT username, idEmpresa FROM empresa',
       getId:
-        "select e.* from empresa e, usuario u where u.idUser = ? and e.username = u.username",
+        "SELECT e.*, u.cargo from usuario u inner join empresa e on (u.username = e.username and u.idUser = ?) where u.cargo LIKE '%supervisor%' OR u.cargo LIKE '%empleado%' limit 1",
       create:
         'INSERT INTO empresa (fechaCreacion,nombre,telefono,celular,fax,direccion,garantia,primerMsjRecibo,segundoMsjRecibo,urlLogo,ultimaActualizacion,username) values(?,?,?,?,?,?,?,?,?,?,?,?)',
       update:
