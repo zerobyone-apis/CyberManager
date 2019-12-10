@@ -53,6 +53,15 @@ export default class IndentificationCode extends vue {
     { text: 'Articulo', value: 'articulo' },
     { text: 'Status', value: 'status' }
   ];
+  private status: any = {    
+    // see more colors in: https://vuetifyjs.com/en/styles/colors
+    // used in v-select into the v-data-table as Object.keys(status): string[]
+    'Recibido': 'blue lighten-2',
+    'Reparacion':'yellow lighten-1', 
+    'Confirmando Pago': 'green lighten-1',
+    'Entregado': 'blue-grey lighten-3',
+    'En Taller': 'deep-orange lighten-2',
+  }
 
   private reparacionPedido: Record<string, any> = {
     idPedido: '',
@@ -243,5 +252,10 @@ export default class IndentificationCode extends vue {
       let data: any = e.target;
       this.empresa.data.urlLogo = data['result'].toString();
     };
+  }
+
+  private getColorByStatus(status: string) {
+
+    return (this.status[status] || 'grey');
   }
 }

@@ -32,6 +32,7 @@ export default class PedidoFunctions {
     precio: '',
     status: ''
   };
+
   public status: any = {
     recibido: false,
     reparandose: false,
@@ -98,9 +99,10 @@ export default class PedidoFunctions {
         // }
       });
 
+      console.log('accede')
       this.pedidos.getArray().forEach(item => {
-        console.log('reparacion:', item.idOrden, item.fechaReparacion);
-        console.log('entrega:', item.idOrden, item.fechaEntrega);
+        console.log('id:', item.idOrden);
+        console.log('status:', item.status);
       });
 
       //clear fields pedidos UI
@@ -250,6 +252,10 @@ export default class PedidoFunctions {
   }
 
   public clearNewPedido() {
+    // set original values
+    let updatedPedido: Pedido = this.pedidos.get(this.selectedPedido);
+    updatedPedido.status = this.newPedido.status;
+    this.pedidos.set(this.selectedPedido, updatedPedido)
     this.newPedido = new Pedido(this.cleanFields);
     this.selectedPedido = -1;
   }

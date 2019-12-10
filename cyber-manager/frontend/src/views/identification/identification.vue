@@ -193,11 +193,14 @@
             <div class="pedidos-box">
               <h3 class="font-title">Lista de Ordenes</h3>
               <div class="search-box">
-                
                 <div class="select">
                   <v-select
-                    v-model="search.filter" 
-                    label="Buscar por" :items="Object.keys(searchFilters)" item-value="text" defa></v-select>
+                    v-model="search.filter"
+                    label="Buscar por"
+                    :items="Object.keys(searchFilters)"
+                    item-value="text"
+                    defa
+                  ></v-select>
                 </div>
                 <div class="field">
                   <v-text-field
@@ -224,12 +227,16 @@
                   class="pedidos-table elevation-0"
                 >
                   <template v-slot:item.data-table-select="{ item, select }">
-                    <!-- button edit item in pedidos table -->
                     <v-icon
                       @click="() => { select();showSelectedPedido(item) }"
                       :color="changeColorToEdit(item)"
+                      :disabled="
+                      interactionsMode.order == 1 &&
+                        pedido.selectedPedido != pedido.pedidos.getArray().indexOf(item)
+                    "
                     >edit</v-icon>
                   </template>
+
                   <template v-slot:item.action="{ item }">
                     <!-- button delete item in pedidos table -->
                     <v-icon
@@ -242,8 +249,30 @@
                     >delete</v-icon>
                   </template>
                   <span>Borrar orden</span>
-                  <template v-slot:footer="{ props }">
-                    <div class="green"></div>
+                  <template v-slot:item.status="{ item }">
+                    <!-- {{ 'mode:' + interactionsMode.order }}
+                    {{ '/unselected:' + (pedido.selectedPedido != pedido.pedidos.getArray().indexOf(item)) }}
+                    {{ '/pos:' + pedido.pedidos.getArray().indexOf(item) }}
+                    {{ '/selected:' + pedido.selectedPedido }}-->
+                    <v-select
+                      v-model="item.status"
+                      :items="Object.keys(status)"
+                      :disabled="
+                      (interactionsMode.order == 1 &&
+                        pedido.selectedPedido != pedido.pedidos.getArray().indexOf(item)) ||
+                        (interactionsMode.order == 0)
+                      "
+                      chips
+                      flat
+                      attach
+                      label="Seleccione Status"
+                    >
+                      <template v-slot:selection="{ item }">
+                        <v-chip :color="getColorByStatus(item)">
+                          <span>{{ item }}</span>
+                        </v-chip>
+                      </template>
+                    </v-select>
                   </template>
                 </v-data-table>
               </div>
@@ -320,7 +349,7 @@
                     label="Fecha de reparacion"
                     lang="es"
                   ></time-field>
-            
+
                   <v-btn
                     @click="pedido.newPedido.fechaReparacion = datetime.now()"
                     small
@@ -330,7 +359,6 @@
                 </div>
 
                 <div class="deliver-date">
-                  
                   <time-field
                     v-model="pedido.newPedido.fechaEntrega"
                     type="date"
@@ -389,7 +417,6 @@
                 <v-text-field v-model="empresa.data.celular" label="Celular" class="custom-field"></v-text-field>
                 <v-text-field v-model="empresa.data.email" label="Email" class="custom-field"></v-text-field>
               </div>
-
 
               <div class="image-box">
                 <img :src="empresa.data.urlLogo" alt width="200" height="200" />
