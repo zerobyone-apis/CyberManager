@@ -32,24 +32,46 @@ export default class Datetime {
     }
   }
 
-  normalize(datetime: string) { // datetime: 2019-11-26T03:00:00.000Z
-    let partDate = datetime.split('T')[0].split('-');
-    return partDate[2] + '-' + partDate[1] + '-' + partDate[0] + ' ' + this.getHour(datetime)
-  }
-
-  getDate(datetime?: string) { // datetime: 2019-11-26T03:00:00.000Z
+  getDate(datetime?: string | Date | undefined) {
     if (datetime) {
-      return datetime.split('T')[0];
+      let d =  datetime.toString().split(' ')[0].split('-');
+      return `${d[0]}/${d[1]}/${d[2]}`;
     } else {
       return new Date().toLocaleDateString();
     }
   }
 
+
   getHour(datetime?: string) { // datetime: 2019-11-26T03:00:00.000Z
     if (datetime) {
       return datetime.split('T')[1].split('.')[0];
     } else {
-      return new Date().toLocaleTimeString();
+      return new Date().toLocaleTimeString().split(' ')[0];
     }
   }
+
+
+  normalize(datetime: string) { // datetime: 2019-11-26T03:00:00.000Z
+    let partDate = datetime.split('T')[0].split('-');
+    return partDate[2] + '-' + partDate[1] + '-' + partDate[0] + ' ' + this.getHour(datetime)
+  }
+
+
+  convertDatetime(time: string | Date) {
+    // 06/12/2019 00:00:00 or 06-12-2019 00:00:00
+    let splitChar = '-';
+    if(time.toString().indexOf('/') != -1) {
+      splitChar = '/';
+    }
+    let d: string[] = time.toString().split(' ')[0].split(splitChar);
+    let h = time.toString().split(' ')[1];
+    if(h == 'undefined') {
+      h = '00:00:00';
+    }
+    let formated = d[2] + '-' + d[1] + '-' + d[0];
+    // console.log(formated)
+    return formated;
+  }
+
+
 }
