@@ -228,25 +228,34 @@
                 >
                   <template v-slot:item.data-table-select="{ item, select }">
                     <v-icon
-                      @click="() => { select();showSelectedPedido(item) }"
+                      @click="
+                        () => {
+                          select();
+                          showSelectedPedido(item);
+                        }
+                      "
                       :color="changeColorToEdit(item)"
                       :disabled="
-                      interactionsMode.order == 1 &&
-                        pedido.selectedPedido != pedido.pedidos.getArray().indexOf(item)
-                    "
-                    >edit</v-icon>
+                        interactionsMode.order == 1 &&
+                          pedido.selectedPedido !=
+                            pedido.pedidos.getArray().indexOf(item)
+                      "
+                      >edit</v-icon
+                    >
                   </template>
 
                   <template v-slot:item.action="{ item }">
                     <!-- button delete item in pedidos table -->
                     <v-icon
                       :disabled="
-                      interactionsMode.order == 1 &&
-                        pedido.selectedPedido != pedido.pedidos.getArray().indexOf(item)
-                    "
+                        interactionsMode.order == 1 &&
+                          pedido.selectedPedido !=
+                            pedido.pedidos.getArray().indexOf(item)
+                      "
                       @click="deletePedido(item)"
                       :color="changeColorToEdit(item)"
-                    >delete</v-icon>
+                      >delete</v-icon
+                    >
                   </template>
                   <span>Borrar orden</span>
                   <template v-slot:item.status="{ item }">
@@ -258,9 +267,10 @@
                       v-model="item.status"
                       :items="Object.keys(status)"
                       :disabled="
-                      (interactionsMode.order == 1 &&
-                        pedido.selectedPedido != pedido.pedidos.getArray().indexOf(item)) ||
-                        (interactionsMode.order == 0)
+                        (interactionsMode.order == 1 &&
+                          pedido.selectedPedido !=
+                            pedido.pedidos.getArray().indexOf(item)) ||
+                          interactionsMode.order == 0
                       "
                       chips
                       flat
@@ -321,22 +331,52 @@
             </div>
 
             <div class="garanty-box">
-              <v-text-field v-model="reparacionPedido.garantia" outlined dense label="Garantia"></v-text-field>
+              <v-text-field
+                v-model="reparacionPedido.garantia"
+                outlined
+                dense
+                label="Garantia"
+              ></v-text-field>
             </div>
 
             <div class="technical-box">
-              <v-text-field v-model="reparacionPedido.tecnico" outlined dense label="Tecnico"></v-text-field>
+              <v-text-field
+                v-model="reparacionPedido.tecnico"
+                outlined
+                dense
+                label="Tecnico"
+              ></v-text-field>
               <!-- <v-select></v-select> -->
             </div>
 
             <div class="content-box">
               <div class="status-box">
                 <p>Status Pedido</p>
-                <v-switch v-model="pedido.status.recibido" inset label="Recibido"></v-switch>
-                <v-switch v-model="pedido.status.reparandose" inset label="En Reparacion"></v-switch>
-                <v-switch v-model="pedido.status.confirmando_pago" inset label="Confirmando Pago"></v-switch>
-                <v-switch v-model="pedido.status.en_talleres" inset label="En Taller"></v-switch>
-                <v-switch v-model="pedido.status.entregado" inset label="Entregado"></v-switch>
+                <v-switch
+                  v-model="pedido.status.recibido"
+                  inset
+                  label="Recibido"
+                ></v-switch>
+                <v-switch
+                  v-model="pedido.status.reparandose"
+                  inset
+                  label="En Reparacion"
+                ></v-switch>
+                <v-switch
+                  v-model="pedido.status.confirmando_pago"
+                  inset
+                  label="Confirmando Pago"
+                ></v-switch>
+                <v-switch
+                  v-model="pedido.status.en_talleres"
+                  inset
+                  label="En Taller"
+                ></v-switch>
+                <v-switch
+                  v-model="pedido.status.entregado"
+                  inset
+                  label="Entregado"
+                ></v-switch>
               </div>
 
               <div class="dates-box">
@@ -355,7 +395,8 @@
                     small
                     color="green"
                     dark
-                  >fecha</v-btn>
+                    >Fecha Reparacion</v-btn
+                  >
                 </div>
 
                 <div class="deliver-date">
@@ -373,7 +414,8 @@
                     small
                     color="green"
                     dark
-                  >fecha</v-btn>
+                    >Fecha Entrega</v-btn
+                  >
                 </div>
               </div>
             </div>
@@ -413,14 +455,30 @@
                   label="Direccion"
                   class="custom-field"
                 ></v-text-field>
-                <v-text-field v-model="empresa.data.telefono" label="Telefono" class="custom-field"></v-text-field>
-                <v-text-field v-model="empresa.data.celular" label="Celular" class="custom-field"></v-text-field>
-                <v-text-field v-model="empresa.data.email" label="Email" class="custom-field"></v-text-field>
+                <v-text-field
+                  v-model="empresa.data.telefono"
+                  label="Telefono"
+                  class="custom-field"
+                ></v-text-field>
+                <v-text-field
+                  v-model="empresa.data.celular"
+                  label="Celular"
+                  class="custom-field"
+                ></v-text-field>
+                <v-text-field
+                  v-model="empresa.data.email"
+                  label="Email"
+                  class="custom-field"
+                ></v-text-field>
               </div>
 
               <div class="image-box">
                 <img :src="empresa.data.urlLogo" alt width="200" height="200" />
-                <input type="file" accept="image/*" @change="uploadImage($event)" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  @change="uploadImage($event)"
+                />
               </div>
             </div>
             <div class="pdf-fields">
@@ -452,7 +510,13 @@
                 GUARDAR
                 <v-icon>save</v-icon>
               </v-btn>
-              <v-btn @click="empresa.get()" :disabled="disabledButtons" color="grey" dark small>
+              <v-btn
+                @click="empresa.get()"
+                :disabled="disabledButtons"
+                color="grey"
+                dark
+                small
+              >
                 Cargar los datos por defecto
                 <v-icon>cancel</v-icon>
               </v-btn>
@@ -466,13 +530,13 @@
 
 <script lang="ts">
 // code
-import IndentificationCode from "./identificationCode";
+import IndentificationCode from './identificationCode';
 // style
-import "./identificationStyle.scss";
-import "../../styles/fonts.scss";
-import TimeField from "../../components/TimeField/TimeField.vue";
+import './identificationStyle.scss';
+import '../../styles/fonts.scss';
+import TimeField from '../../components/TimeField/TimeField.vue';
 // components
-import { Component } from "vue-property-decorator";
+import { Component } from 'vue-property-decorator';
 
 @Component({
   components: {

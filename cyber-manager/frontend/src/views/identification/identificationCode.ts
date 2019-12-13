@@ -53,25 +53,28 @@ export default class IndentificationCode extends vue {
     { text: 'Articulo', value: 'articulo' },
     { text: 'Status', value: 'status' }
   ];
-  private status: any = {    
+  private status: any = {
     // see more colors in: https://vuetifyjs.com/en/styles/colors
     // used in v-select into the v-data-table as Object.keys(status): string[]
-    'Recibido': 'blue lighten-2',
-    'Reparacion':'yellow lighten-1', 
+    Recibido: 'blue lighten-2',
+    Reparacion: 'yellow lighten-1',
     'Confirmando Pago': 'green lighten-1',
-    'Entregado': 'blue-grey lighten-3',
-    'En Taller': 'deep-orange lighten-2',
-  }
+    Entregado: 'blue-grey lighten-3',
+    'En Taller': 'deep-orange lighten-2'
+  };
 
   private reparacionPedido: Record<string, any> = {
     idPedido: '',
     nombreCliente: '',
     articulo: '',
-    reparacion: '',
+    modelo: '',
     garantia: '',
     tecnico: '',
-    status: '',
-    fechaReparacion: ''
+    fechaEntrega: '',
+    fechaReparacion: '',
+    reparacion: '',
+    precio: '',
+    status: ''
   };
 
   private searchFilters: any = {
@@ -255,7 +258,6 @@ export default class IndentificationCode extends vue {
   }
 
   private getColorByStatus(status: string) {
-
-    return (this.status[status] || 'grey');
+    return this.status[status] || 'grey';
   }
 }

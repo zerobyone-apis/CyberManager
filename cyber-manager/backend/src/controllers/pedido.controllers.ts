@@ -73,9 +73,9 @@ export async function updatePedido(req: Request, res: Response) {
     observaciones,
     isCanceled,
     fechaReparacion,
-    fechaEntrega,
+    /*  fechaEntrega,*/
     reparacion,
-    precio,
+    /* precio, */
     status
   }: PedidoInterface = req.body.data;
 
@@ -92,9 +92,9 @@ export async function updatePedido(req: Request, res: Response) {
     observaciones,
     isCanceled,
     fechaReparacion,
-    fechaEntrega,
+    /* fechaEntrega, */
     reparacion,
-    precio,
+    /* precio, */
     status,
     id
   ];
@@ -112,6 +112,7 @@ export async function updatePedido(req: Request, res: Response) {
 }
 
 export async function updateReparacionPedido(req: Request, res: Response) {
+  console.log('BODY update repaired  ', req.body.data);
   const {
     nombreCliente,
     articulo,

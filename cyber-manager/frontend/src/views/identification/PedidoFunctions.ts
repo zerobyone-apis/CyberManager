@@ -91,15 +91,12 @@ export default class PedidoFunctions {
         pedidoInterface.fechaReparacion = fReparacion;
         pedidoInterface.fechaEntrega = fEntrega;
         // pedidoInterface.fechaIngreso = fIngreso;
-
-        // for (let i = 0; i < 10; i++) {
         this.pedidos.add(
           Object.assign(new Pedido(this.newPedido), pedidoInterface)
         );
-        // }
       });
 
-      console.log('accede')
+      console.log('accede');
       this.pedidos.getArray().forEach(item => {
         console.log('id:', item.idOrden);
         console.log('status:', item.status);
@@ -108,12 +105,8 @@ export default class PedidoFunctions {
       //clear fields pedidos UI
       Object.assign(this.newPedido, this.cleanFields);
     } catch (error) {
+      console.error(`Disparando el setTimeout por falla -> ${error.message}`);
       alert(`Error cargando los datos de pedidos. Recargando...`);
-      //reconect if error 404 not found exception.
-      if (error.state === 404 || error) {
-        // console.log(`Disparando el setTimeout por falla -> ${error.message}`);
-        // setTimeout(this.getAll, 5000);
-      }
     }
   }
 
@@ -129,17 +122,21 @@ export default class PedidoFunctions {
         fallReportada: this.newPedido.fallReportada,
         observaciones: this.newPedido.observaciones,
         isCanceled: false,
-        status: this.validateStatus(this.status)
+        status: 'Recibido'
       };
+
       const response: any = await this.backend.send('post', data, '/pedido');
+
       let createdPedido: Pedido = new Pedido(data);
-      // Aca tengo que obtener el id del pedido creado
+      // Agrego id de pedido creado para mostrarlo en la tabla
       createdPedido.idOrden = response.idOrden;
       this.pedidos.add(createdPedido);
+
       //clear fields pedidos UI
       Object.assign(this.newPedido, this.cleanFields);
     } catch (error) {
-      console.error(error);
+      console.error('Ocurrio un error creando el pedido. -> ', error.message);
+      alert(`Ocurrio un error creando el pedido. -> ${error.message}`);
     }
   }
 
@@ -177,10 +174,10 @@ export default class PedidoFunctions {
           this.newPedido.fechaReparacion == ''
             ? this.datetime.getDate()
             : this.newPedido.fechaReparacion,
-        reparacion: '',
-        precio: 0.0,
-        status: this.newPedido.status != '' ? this.newPedido.status : 'recibido'
+
+        status: this.newPedido.status != '' ? this.newPedido.status : 'Recibido'
       };
+      console.log('data to update -> ', data);
       const response: any = await this.backend.send(
         'put',
         data,
@@ -193,7 +190,7 @@ export default class PedidoFunctions {
       Object.assign(this.newPedido, this.cleanFields);
       this.selectedPedido = -1;
     } catch (error) {
-      console.error('Error ->' + error);
+      console.error('Ocurrio un error actualizando el pedido -> ', error);
     }
   }
 
@@ -255,7 +252,7 @@ export default class PedidoFunctions {
     // set original values
     let updatedPedido: Pedido = this.pedidos.get(this.selectedPedido);
     updatedPedido.status = this.newPedido.status;
-    this.pedidos.set(this.selectedPedido, updatedPedido)
+    this.pedidos.set(this.selectedPedido, updatedPedido);
     this.newPedido = new Pedido(this.cleanFields);
     this.selectedPedido = -1;
   }

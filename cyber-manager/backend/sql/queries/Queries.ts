@@ -1,5 +1,4 @@
 export default class Queries {
-
   private table: string = '';
   private action: string = '';
   private query: string = '';
@@ -20,13 +19,14 @@ export default class Queries {
 
     // Pedidos
     pedido: {
-      getNew: 'SELECT idOrden from pedido where nombreCliente = ? and fechaIngreso = ? and articulo = ?',
+      getNew:
+        'SELECT idOrden from pedido where nombreCliente = ? and fechaIngreso = ? and articulo = ?',
       getAll: 'SELECT * FROM pedido',
       getId: 'SELECT * FROM pedido WHERE idOrden = ?',
       create: 'INSERT INTO pedido SET ?',
       setStatus: 'UPDATE pedido SET status = ? where id = ?',
       update:
-        'UPDATE pedido SET nombreCliente = ?, telCliente = ?, articulo = ?, modelo = ?, marca = ? , fallReportada = ?, observaciones = ?, isCanceled = ?, fechaReparacion = ?, fechaEntrega = ?, reparacion = ? , precio = ?, status = ? WHERE idOrden = ?',
+        'UPDATE pedido SET nombreCliente = ?, telCliente = ?, articulo = ?, modelo = ?, marca = ? , fallReportada = ?, observaciones = ?, isCanceled = ?, fechaReparacion = ?, status = ? WHERE idOrden = ?',
       reparacion:
         'UPDATE pedido SET nombreCliente = ?, articulo = ?, isCanceled = ?, fechaEntrega = ?, fechaReparacion = ?, reparacion = ? , precio = ? , status = ? WHERE idOrden = ?',
       delete: 'DELETE FROM pedido WHERE idOrden = ?',
@@ -53,15 +53,15 @@ export default class Queries {
   }
 
   public getQuery(tableName: string, actionQuery: string) {
-    console.log('query: ' + this.queries[tableName][actionQuery])
+    console.log('query: ' + this.queries[tableName][actionQuery]);
     try {
       return {
         table: tableName,
         action: actionQuery,
-        query: this.queries[tableName][actionQuery],
+        query: this.queries[tableName][actionQuery]
       };
     } catch (error) {
-      console.log('Error in getQuery :' + error)
+      console.log('Error in getQuery :' + error);
       return null;
     }
   }
