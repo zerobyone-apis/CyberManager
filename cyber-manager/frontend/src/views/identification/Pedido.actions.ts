@@ -84,13 +84,12 @@ export default class PedidoFunctions {
         // formatting date
         let fReparacion: any = pedidoInterface.fechaReparacion;
         let fEntrega: any = pedidoInterface.fechaEntrega;
-        // let fIngreso: any = pedidoInterface.fechaIngreso;
         fReparacion = this.datetime.normalize(fReparacion);
         fEntrega = this.datetime.normalize(fEntrega);
-        // fIngreso = this.datetime.normalize(fIngreso);
+
         pedidoInterface.fechaReparacion = fReparacion;
         pedidoInterface.fechaEntrega = fEntrega;
-        // pedidoInterface.fechaIngreso = fIngreso;
+
         this.pedidos.add(
           Object.assign(new Pedido(this.newPedido), pedidoInterface)
         );
@@ -194,7 +193,11 @@ export default class PedidoFunctions {
     }
   }
 
-  public async saveRepairPedido() {
+  public async saveRepairPedido(reparacionPedido: any) {
+    console.log('saveRepair')
+    console.log('fecha reparacion ', reparacionPedido.fechaReparacion +' '+ this.datetime.getHour())
+    console.log('fecha entrega ', reparacionPedido.fechaEntrega +' '+ this.datetime.getHour())
+
     console.log('save repair pedido', this.newPedido);
     try {
       // Integration Backend PUT orders send()
@@ -204,13 +207,16 @@ export default class PedidoFunctions {
         nombreCliente: this.newPedido.nombreCliente,
         articulo: this.newPedido.articulo,
         isCanceled: this.newPedido.isCanceled,
-        fechaEntrega: this.reparacionPedido.fechaEntrega
-          ? this.reparacionPedido.fechaEntrega
+
+        fechaEntrega: reparacionPedido.fechaEntrega +' '+ this.datetime.getHour()
+          ? reparacionPedido.fechaEntrega
           : this.newPedido.fechaEntrega,
-        fechaReparacion: this.reparacionPedido.fechaReparacion
-          ? this.reparacionPedido.fechaReparacion
+
+        fechaReparacion: reparacionPedido.fechaReparacion +' '+ this.datetime.getHour()
+          ? reparacionPedido.fechaReparacion
           : this.newPedido.fechaReparacion,
-        reparacion: this.reparacionPedido.reparacion,
+
+        reparacion: reparacionPedido.reparacion,
         precio: this.newPedido.precio == '' ? 0.0 : this.newPedido.precio,
         status: this.newPedido.status
       };
