@@ -240,8 +240,7 @@
                           pedido.selectedPedido !=
                             pedido.pedidos.getArray().indexOf(item)
                       "
-                      >edit</v-icon
-                    >
+                    >edit</v-icon>
                   </template>
 
                   <template v-slot:item.action="{ item }">
@@ -254,8 +253,7 @@
                       "
                       @click="deletePedido(item)"
                       :color="changeColorToEdit(item)"
-                      >delete</v-icon
-                    >
+                    >delete</v-icon>
                   </template>
                   <span>Borrar orden</span>
                   <template v-slot:item.status="{ item }">
@@ -275,7 +273,7 @@
                       chips
                       flat
                       attach
-                      label="Seleccione Status"
+                      label="status"
                     >
                       <template v-slot:selection="{ item }">
                         <v-chip :color="getColorByStatus(item)">
@@ -292,31 +290,57 @@
         <!-- reparation frame -->
         <v-stepper-content step="2">
           <div class="repairPage">
+            <h3 class="font-title">Reparacion de Orden</h3>
             <div class="identify-box">
-              <div class="service-number">
-                <v-text-field
-                  v-model="reparacionPedido.idPedido"
-                  readonly
-                  label="Orden de servicio"
-                  class="custom-field"
-                ></v-text-field>
+              <p class="item-info">{{ 'Ordern nro: '+ reparacionPedido.idPedido}}</p>
+              <p class="item-info">{{ 'Cliente: '+ reparacionPedido.nombreCliente }}</p>
+              <p class="item-info">{{ 'Articulo: '+ reparacionPedido.articulo }}</p>
+            </div>
+
+            <div class="content-box">
+              <div class="dates-box">
+                {{ reparacionPedido.fechaReparacion }}
+                <time-field
+                  v-model="reparacionPedido.fechaReparacion"
+                  type="date"
+                  :error="v.get('reparacionPedido.fechaReparacion') != ''"
+                  :errorMessage="v.get('reparacionPedido.fechaReparacion')"
+                  label="Fecha de reparacion"
+                  lang="es"
+                ></time-field>
+
+                {{ reparacionPedido.fechaEntrega }}
+                <time-field
+                  v-model="reparacionPedido.fechaEntrega"
+                  type="date"
+                  :error="v.get('reparacionPedido.fechaEntrega') != ''"
+                  :errorMessage="v.get('reparacionPedido.fechaEntrega')"
+                  label="Fecha de Entrega"
+                  lang="es"
+                ></time-field>
               </div>
-              <div class="client-name">
-                <v-text-field
-                  v-model="reparacionPedido.nombreCliente"
-                  readonly
-                  label="Cliente"
-                  class="custom-field"
-                ></v-text-field>
+
+              <div class="status-box">
+                <p>Status Pedido</p>
+                <v-select
+                  v-model="reparacionPedido.status"
+                  :items="Object.keys(status)"
+                  chips
+                  flat
+                  attach
+                  label="status"
+                >
+                  <template v-slot:selection="{ item }">
+                    <v-chip :color="getColorByStatus(item)">
+                      <span>{{ item }}</span>
+                    </v-chip>
+                  </template>
+                </v-select>
               </div>
-              <div class="getArticulo-name">
-                <v-text-field
-                  v-model="reparacionPedido.articulo"
-                  readonly
-                  label="Articulo"
-                  class="custom-field"
-                ></v-text-field>
-              </div>
+            </div>
+
+            <div class="technical-box">
+              <v-text-field v-model="reparacionPedido.tecnico" outlined dense label="Tecnico"></v-text-field>
             </div>
 
             <div class="diagnosis-box">
@@ -331,94 +355,9 @@
             </div>
 
             <div class="garanty-box">
-              <v-text-field
-                v-model="reparacionPedido.garantia"
-                outlined
-                dense
-                label="Garantia"
-              ></v-text-field>
+              <v-text-field v-model="reparacionPedido.garantia" outlined dense label="Garantia"></v-text-field>
             </div>
 
-            <div class="technical-box">
-              <v-text-field
-                v-model="reparacionPedido.tecnico"
-                outlined
-                dense
-                label="Tecnico"
-              ></v-text-field>
-              <!-- <v-select></v-select> -->
-            </div>
-
-            <div class="content-box">
-              <div class="status-box">
-                <p>Status Pedido</p>
-                <v-switch
-                  v-model="pedido.status.recibido"
-                  inset
-                  label="Recibido"
-                ></v-switch>
-                <v-switch
-                  v-model="pedido.status.reparandose"
-                  inset
-                  label="En Reparacion"
-                ></v-switch>
-                <v-switch
-                  v-model="pedido.status.confirmando_pago"
-                  inset
-                  label="Confirmando Pago"
-                ></v-switch>
-                <v-switch
-                  v-model="pedido.status.en_talleres"
-                  inset
-                  label="En Taller"
-                ></v-switch>
-                <v-switch
-                  v-model="pedido.status.entregado"
-                  inset
-                  label="Entregado"
-                ></v-switch>
-              </div>
-
-              <div class="dates-box">
-                <div class="repair-date">
-                  <time-field
-                    v-model="pedido.newPedido.fechaReparacion"
-                    type="date"
-                    :error="v.get('pedido.newPedido.fechaReparacion') != ''"
-                    :errorMessage="v.get('pedido.newPedido.fechaReparacion')"
-                    label="Fecha de reparacion"
-                    lang="es"
-                  ></time-field>
-
-                  <v-btn
-                    @click="pedido.newPedido.fechaReparacion = datetime.now()"
-                    small
-                    color="green"
-                    dark
-                    >Fecha Reparacion</v-btn
-                  >
-                </div>
-
-                <div class="deliver-date">
-                  <time-field
-                    v-model="pedido.newPedido.fechaEntrega"
-                    type="date"
-                    :error="v.get('pedido.newPedido.fechaEntrega') != ''"
-                    :errorMessage="v.get('pedido.newPedido.fechaEntrega')"
-                    label="Fecha de Entrega"
-                    lang="es"
-                  ></time-field>
-
-                  <v-btn
-                    @click="pedido.newPedido.fechaEntrega = datetime.now()"
-                    small
-                    color="green"
-                    dark
-                    >Fecha Entrega</v-btn
-                  >
-                </div>
-              </div>
-            </div>
             <div class="footer">
               <v-btn
                 @click="saveRepairPedido()"
@@ -455,30 +394,14 @@
                   label="Direccion"
                   class="custom-field"
                 ></v-text-field>
-                <v-text-field
-                  v-model="empresa.data.telefono"
-                  label="Telefono"
-                  class="custom-field"
-                ></v-text-field>
-                <v-text-field
-                  v-model="empresa.data.celular"
-                  label="Celular"
-                  class="custom-field"
-                ></v-text-field>
-                <v-text-field
-                  v-model="empresa.data.email"
-                  label="Email"
-                  class="custom-field"
-                ></v-text-field>
+                <v-text-field v-model="empresa.data.telefono" label="Telefono" class="custom-field"></v-text-field>
+                <v-text-field v-model="empresa.data.celular" label="Celular" class="custom-field"></v-text-field>
+                <v-text-field v-model="empresa.data.email" label="Email" class="custom-field"></v-text-field>
               </div>
 
               <div class="image-box">
                 <img :src="empresa.data.urlLogo" alt width="200" height="200" />
-                <input
-                  type="file"
-                  accept="image/*"
-                  @change="uploadImage($event)"
-                />
+                <input type="file" accept="image/*" @change="uploadImage($event)" />
               </div>
             </div>
             <div class="pdf-fields">
@@ -510,13 +433,7 @@
                 GUARDAR
                 <v-icon>save</v-icon>
               </v-btn>
-              <v-btn
-                @click="empresa.get()"
-                :disabled="disabledButtons"
-                color="grey"
-                dark
-                small
-              >
+              <v-btn @click="empresa.get()" :disabled="disabledButtons" color="grey" dark small>
                 Cargar los datos por defecto
                 <v-icon>cancel</v-icon>
               </v-btn>
@@ -530,20 +447,20 @@
 
 <script lang="ts">
 // code
-import IndentificationCode from './identificationCode';
+import IndentificationAction from "./identification.actions";
 // style
-import './identificationStyle.scss';
-import '../../styles/fonts.scss';
-import TimeField from '../../components/TimeField/TimeField.vue';
+import "./identification.scss";
+import "../../styles/fonts.scss";
+import TimeField from "../../components/TimeField/TimeField.vue";
 // components
-import { Component } from 'vue-property-decorator';
+import { Component } from "vue-property-decorator";
 
 @Component({
   components: {
     TimeField
   }
 })
-export default class Indentificacion extends IndentificationCode {
+export default class Indentificacion extends IndentificationAction {
   created() {
     this.init();
   }

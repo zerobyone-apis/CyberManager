@@ -4,14 +4,15 @@ import InputPdf from '../../utils/pdfDocuments/InputPDF';
 import OutputPdf from '../../utils/pdfDocuments/OutputPDF';
 import IntegrationBackend from '../../utils/IntegrationBackend';
 import DateTime from '../../utils/DateTime';
-import EmpresaFunctions from './EmpresaFunctions';
-
-import PedidoFunctions from './PedidoFunctions';
 import Pedido from '../../../../backend/src/models/pedido';
 
+import EmpresaAction from './Empresa.actions';
+import PedidoAction from './Pedido.actions';
+
 export default class IndentificationCode extends vue {
-  private empresa: EmpresaFunctions = new EmpresaFunctions();
-  public pedido: PedidoFunctions = new PedidoFunctions();
+
+  private empresa: EmpresaAction = new EmpresaAction();
+  public pedido: PedidoAction = new PedidoAction();
 
   // user info saved in the store
   private userInfo = this.$store.getters.userInfo;
@@ -123,36 +124,22 @@ export default class IndentificationCode extends vue {
     }
   }
 
-  async saveRepairPedido() {
-    if (
-      this.v.validateFields(this.reparacionPedido, [
-        this.clientFields,
-        this.articleFields
-      ])
-    ) {
-      this.disabledButtons = true;
-      this.pedido.saveRepairPedido();
-      this.disabledButtons = false;
-      this.interactionsMode.order = 0;
-    }
-  }
-
   async deletePedido(selectedPedido: any) {
     this.disabledButtons = true;
     this.pedido.delete(selectedPedido);
     this.disabledButtons = false;
   }
 
+
+  // Reparation
   private showSelectedPedido(pedido: any) {
     this.pedido.selectPedido(pedido);
 
-    //Reparacion Object falta conectar a BD
-    // esto habria que moverlo a reparacionFunctions
     this.reparacionPedido = {
       idPedido: this.pedido.newPedido.idOrden,
-
-      fechaReparacion: this.pedido.newPedido.fechaReparacion,
-      fechaEntrega: this.pedido.newPedido.fechaEntrega,
+      // formatting dates:
+      fechaReparacion: this.datetime.convertDatetime((this.pedido.newPedido.fechaReparacion || '')),
+      fechaEntrega: this.datetime.convertDatetime(this.pedido.newPedido.fechaEntrega || ''),
 
       nombreCliente: this.pedido.newPedido.nombreCliente,
       articulo: this.pedido.newPedido.articulo,
@@ -165,6 +152,22 @@ export default class IndentificationCode extends vue {
     this.v.clearFails();
     this.interactionsMode.order = 1; // save mode
   }
+
+  async saveRepairPedido() {
+    if (
+      this.v.validateFields(this.reparacionPedido, [
+        this.clientFields,
+        this.articleFields
+      ])
+    ) {
+      this.disabledButtons = true;
+      this.pedido.saveRepairPedido(this.reparacionPedido);
+      this.disabledButtons = false;
+      this.interactionsMode.order = 0;
+    }
+  }
+
+
 
   private cancelSavePedido() {
     if (confirm('Seguro que desea descartar los cambios?')) {
@@ -184,7 +187,7 @@ export default class IndentificationCode extends vue {
     if (
       this.interactionsMode.order == 1 &&
       this.pedido.selectedPedido ==
-        this.pedido.pedidos.getArray().indexOf(pedido)
+      this.pedido.pedidos.getArray().indexOf(pedido)
     ) {
       return 'green';
     } else {
