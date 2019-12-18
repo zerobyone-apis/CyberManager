@@ -33,35 +33,24 @@ export default class PedidoFunctions {
     status: ''
   };
 
-  public status: any = {
-    recibido: false,
-    reparandose: false,
-    confirmando_pago: false,
-    entregado: false,
-    en_talleres: false
-  };
-
   // METHODS
 
   private validateStatus = (req: any): string | undefined => {
-    switch (this.status) {
-      case this.status.recibido:
-        return this.status.recibido === true ? 'Recibido' : '';
+    switch (req.status) {
+      case 'Recibido':
+        return 'Recibido';
         break;
-      case this.status.reparacion:
-        return this.status.reparacion === true ? 'Reparacion' : '';
-
+      case 'Reparacion':
+        return 'Reparacion';
         break;
-      case this.status.confirmando_pago:
-        return this.status.confirmando_pago === true ? 'Confirmando Pago' : '';
-
+      case 'Confirmando Pago':
+        return 'Confirmando Pago';
         break;
-      case this.status.entregado:
-        return this.status.entregado === true ? 'Entregado' : '';
-
+      case 'Entregado':
+        return 'Entregado';
         break;
-      case this.status.en_talleres:
-        return this.status.en_talleres === true ? 'En Taller' : '';
+      case 'En Taller':
+        return 'En Taller';
         break;
     }
   };
@@ -73,28 +62,15 @@ export default class PedidoFunctions {
         undefined,
         '/pedido'
       );
-      //First reconect if response is empty.
-      if (!allPedidos.length) {
-        // setTimeout(this.getAll, 5000);
-      }
-      allPedidos.forEach((pedidoInterface: PedidoInterface) => {
-        let fechaIngreso: any = pedidoInterface.fechaIngreso;
-        pedidoInterface.fechaIngreso = this.datetime.normalize(fechaIngreso);
-
-        // formatting date
-        let fReparacion: any = pedidoInterface.fechaReparacion;
-        let fEntrega: any = pedidoInterface.fechaEntrega;
-        fReparacion = this.datetime.normalize(fReparacion);
-        fEntrega = this.datetime.normalize(fEntrega);
-
-        pedidoInterface.fechaReparacion = fReparacion;
-        pedidoInterface.fechaEntrega = fEntrega;
-
-        this.pedidos.add(
-          Object.assign(new Pedido(this.newPedido), pedidoInterface)
-        );
+      console.log('Whole pedidos.. ', allPedidos);
+      let index;
+      allPedidos.map((pedido: any, index: number) => {
+        let fixedDated = this.normalizeDatesPedidos(pedido);
+        this.pedidos.add(new Pedido(fixedDated));
+        /* this.pedidos.set(index + 1, new Pedido(fixedDated)); */
+        console.log('This array -> ', index);
       });
-
+      debugger;
       console.log('accede');
       this.pedidos.getArray().forEach(item => {
         console.log('id:', item.idOrden);
@@ -107,6 +83,23 @@ export default class PedidoFunctions {
       console.error(`Disparando el setTimeout por falla -> ${error.message}`);
       alert(`Error cargando los datos de pedidos. Recargando...`);
     }
+  }
+
+  /*  Normalize the Dates and Status of TablePedidos */
+  private normalizeDatesPedidos(pedidoInterface: PedidoInterface) {
+    let fechaIngreso: any = pedidoInterface.fechaIngreso;
+    pedidoInterface.fechaIngreso = this.datetime.normalize(fechaIngreso);
+
+    // formatting date
+    let fReparacion: any = pedidoInterface.fechaReparacion;
+    let fEntrega: any = pedidoInterface.fechaEntrega;
+    fReparacion = this.datetime.normalize(fReparacion);
+    fEntrega = this.datetime.normalize(fEntrega);
+
+    pedidoInterface.fechaReparacion = fReparacion;
+    pedidoInterface.fechaEntrega = fEntrega;
+    pedidoInterface.status = this.validateStatus(pedidoInterface);
+    return pedidoInterface;
   }
 
   public async add() {
@@ -157,6 +150,10 @@ export default class PedidoFunctions {
     }
   }
 
+  public setStatus(item: any) {
+    this.newPedido.status = item.status;
+  }
+
   public async save() {
     try {
       let data = {
@@ -174,7 +171,7 @@ export default class PedidoFunctions {
             ? this.datetime.getDate()
             : this.newPedido.fechaReparacion,
 
-        status: this.newPedido.status != '' ? this.newPedido.status : 'Recibido'
+        status: this.validateStatus(this.newPedido)
       };
       console.log('data to update -> ', data);
       const response: any = await this.backend.send(
@@ -194,11 +191,17 @@ export default class PedidoFunctions {
   }
 
   public async saveRepairPedido(reparacionPedido: any) {
-    console.log('saveRepair')
-    console.log('fecha reparacion ', reparacionPedido.fechaReparacion +' '+ this.datetime.getHour())
-    console.log('fecha entrega ', reparacionPedido.fechaEntrega +' '+ this.datetime.getHour())
+    console.log('saveRepair');
+    console.log(
+      'fecha reparacion ',
+      reparacionPedido.fechaReparacion + ' ' + this.datetime.getHour()
+    );
+    console.log(
+      'fecha entrega ',
+      reparacionPedido.fechaEntrega + ' ' + this.datetime.getHour()
+    );
 
-    console.log('save repair pedido', this.newPedido);
+    console.log('save repair pedido', reparacionPedido);
     try {
       // Integration Backend PUT orders send()
       const idOrden = this.newPedido.idOrden;
@@ -208,17 +211,19 @@ export default class PedidoFunctions {
         articulo: this.newPedido.articulo,
         isCanceled: this.newPedido.isCanceled,
 
-        fechaEntrega: reparacionPedido.fechaEntrega +' '+ this.datetime.getHour()
-          ? reparacionPedido.fechaEntrega
-          : this.newPedido.fechaEntrega,
+        fechaEntrega:
+          reparacionPedido.fechaEntrega == ''
+            ? ''
+            : reparacionPedido.fechaEntrega,
 
-        fechaReparacion: reparacionPedido.fechaReparacion +' '+ this.datetime.getHour()
-          ? reparacionPedido.fechaReparacion
-          : this.newPedido.fechaReparacion,
+        fechaReparacion:
+          reparacionPedido.fechaReparacion + ' ' + this.datetime.getHour()
+            ? reparacionPedido.fechaReparacion
+            : this.newPedido.fechaReparacion,
 
         reparacion: reparacionPedido.reparacion,
         precio: this.newPedido.precio == '' ? 0.0 : this.newPedido.precio,
-        status: this.newPedido.status
+        status: this.validateStatus(reparacionPedido)
       };
       console.log('reparacion pedido : ', this.newPedido.fechaEntrega);
       console.log('Repair Pedido ', data);

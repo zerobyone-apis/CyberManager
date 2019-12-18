@@ -26,7 +26,9 @@ export default class PedidoList {
   getArray() {
     return this._pedidos;
   }
-
+  setArray(array: Pedido[]) {
+    this._pedidos.push(...array);
+  }
   remove(index: number) {
     this._pedidos.splice(index, 1);
   }
