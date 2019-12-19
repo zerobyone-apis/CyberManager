@@ -1,7 +1,8 @@
 import vue from 'vue';
-import Empresa from '../../../../backend/src/models/empresa';
-import { EmpresaInterface } from '../../../../backend/src/interface/EmpresaInterface';
-import IntegrationBackend from '../../utils/IntegrationBackend';
+import Empresa from '../../../backend/src/models/empresa';
+import { EmpresaInterface } from '../../../backend/src/interface/EmpresaInterface';
+import IntegrationBackend from '../utils/IntegrationBackend';
+import Datetime from '@/utils/Datetime';
 
 export default class EmpresaFunctions extends vue {
 
@@ -19,7 +20,8 @@ export default class EmpresaFunctions extends vue {
         urlLogo: this.data.urlLogo,
         telefono: this.data.telefono,
         primerMsjRecibo: this.data.primerMsjRecibo,
-        segundoMsjRecibo: this.data.segundoMsjRecibo
+        segundoMsjRecibo: this.data.segundoMsjRecibo,
+        ultimaActualizacion: new Datetime().convert(new Datetime().getDate()) + ' 00:00:00'
       }
       // Integration Backend PUT orders send()
       const response: any = await this.backend.send(
@@ -33,6 +35,8 @@ export default class EmpresaFunctions extends vue {
       console.error(`Error actualizando la empresa.. -> ${error.message}`);
     }
   }
+
+
 
   public async get(userInfo: any) {
     try {
@@ -50,7 +54,10 @@ export default class EmpresaFunctions extends vue {
       // save in the store the empresaInfo data
       // this.$store.commit('empresaInfo', empresaInfo);
       Object.assign(this.data, response);
+      return this.data;
+
     } catch (error) {
+      return this.data
       console.error(
         'Algo sucedio obteniendo los datos de la empresa observe -> ',
         error.message

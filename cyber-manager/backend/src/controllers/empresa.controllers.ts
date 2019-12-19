@@ -65,7 +65,7 @@ export async function updateEmpresa(req: Request, res: Response) {
     updateEmp.primerMsjRecibo,
     updateEmp.segundoMsjRecibo,
     updateEmp.urlLogo,
-    datetime.now(),
+    updateEmp.ultimaActualizacion,
     id
   ]
 

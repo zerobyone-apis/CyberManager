@@ -12,7 +12,7 @@
           text
           small
           class="toolbar-button"
-          :disabled="pedido.selectedPedido == -1"
+          :disabled="selectedPedido == -1"
           @click="wizard = 2"
         >
           <v-icon>settings</v-icon>
@@ -23,7 +23,7 @@
           text
           small
           class="toolbar-button"
-          :disabled="pedido.selectedPedido == -1 || wizard != 1"
+          :disabled="selectedPedido == -1 || wizard != 1"
           @click="generateInputPdf()"
         >
           <v-icon>input</v-icon>
@@ -65,7 +65,7 @@
                 <div class="service-number">
                   <v-text-field
                     readonly
-                    v-model="pedido.newPedido.idOrden"
+                    v-model="newPedido.idOrden"
                     label="Orden de servicio"
                     class="custom-field"
                   ></v-text-field>
@@ -73,7 +73,7 @@
                 <div class="reception-date">
                   <v-text-field
                     readonly
-                    v-model="pedido.newPedido.fechaIngreso"
+                    v-model="newPedido.fechaIngreso"
                     label="recepcion"
                     class="custom-field"
                   ></v-text-field>
@@ -83,20 +83,20 @@
               <div class="client-fields-box">
                 <!-- <h4 class="font-title">Datos del cliente</h4> -->
                 <v-text-field
-                  :error="v.get('pedido.newPedido.nombreCliente') != ''"
-                  :error-messages="v.get('pedido.newPedido.nombreCliente')"
+                  :error="v.get('newPedido.nombreCliente') != ''"
+                  :error-messages="v.get('newPedido.nombreCliente')"
                   outlined
                   dense
-                  v-model="pedido.newPedido.nombreCliente"
+                  v-model="newPedido.nombreCliente"
                   label="Nombre del cliente"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('pedido.newPedido.telCliente') != ''"
-                  :error-messages="v.get('pedido.newPedido.telCliente')"
+                  :error="v.get('newPedido.telCliente') != ''"
+                  :error-messages="v.get('newPedido.telCliente')"
                   outlined
                   dense
-                  v-model="pedido.newPedido.telCliente"
+                  v-model="newPedido.telCliente"
                   label="Telefono"
                   class="custom-field"
                 ></v-text-field>
@@ -104,43 +104,43 @@
 
               <div class="article-fields-box">
                 <v-text-field
-                  :error="v.get('pedido.newPedido.articulo') != ''"
-                  :error-messages="v.get('pedido.newPedido.articulo')"
+                  :error="v.get('newPedido.articulo') != ''"
+                  :error-messages="v.get('newPedido.articulo')"
                   outlined
                   dense
-                  v-model="pedido.newPedido.articulo"
+                  v-model="newPedido.articulo"
                   label="Articulo"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('pedido.newPedido.marca') != ''"
-                  :error-messages="v.get('pedido.newPedido.marca')"
+                  :error="v.get('newPedido.marca') != ''"
+                  :error-messages="v.get('newPedido.marca')"
                   outlined
                   dense
-                  v-model="pedido.newPedido.marca"
+                  v-model="newPedido.marca"
                   label="Marca"
                   class="custom-field"
                 ></v-text-field>
                 <v-text-field
-                  :error="v.get('pedido.newPedido.modelo') != ''"
-                  :error-messages="v.get('pedido.newPedido.modelo')"
+                  :error="v.get('newPedido.modelo') != ''"
+                  :error-messages="v.get('newPedido.modelo')"
                   outlined
                   dense
-                  v-model="pedido.newPedido.modelo"
+                  v-model="newPedido.modelo"
                   label="Modelo"
                   class="custom-field"
                 ></v-text-field>
 
                 <!-- TEXT AREA  -->
                 <v-textarea
-                  v-model="pedido.newPedido.fallReportada"
+                  v-model="newPedido.fallReportada"
                   height="40"
                   label="Daño reportado"
                   value
                   class="custom-text-area"
                 ></v-textarea>
                 <v-textarea
-                  v-model="pedido.newPedido.observaciones"
+                  v-model="newPedido.observaciones"
                   height="40"
                   label="Notas"
                   value
@@ -216,7 +216,7 @@
               <div class="table-box">
                 <v-data-table
                   height="100%"
-                  :v-model="pedido.pedidos.getArray()"
+                  :v-model="pedidos.getArray()"
                   :headers="headerPedido"
                   :items="filterItems()"
                   :items-per-page="500"
@@ -237,8 +237,8 @@
                       :color="changeColorToEdit(item)"
                       :disabled="
                         interactionsMode.order == 1 &&
-                          pedido.selectedPedido !=
-                            pedido.pedidos.getArray().indexOf(item)
+                          selectedPedido !=
+                            pedidos.getArray().indexOf(item)
                       "
                     >edit</v-icon>
                   </template>
@@ -248,43 +248,27 @@
                     <v-icon
                       :disabled="
                         interactionsMode.order == 1 &&
-                          pedido.selectedPedido !=
-                            pedido.pedidos.getArray().indexOf(item)
+                          selectedPedido !=
+                            pedidos.getArray().indexOf(item)
                       "
                       @click="deletePedido(item)"
                       :color="changeColorToEdit(item)"
                     >delete</v-icon>
                   </template>
                   <span>Borrar orden</span>
-                  <template v-slot:item.status="{ item }">
-                    <!-- {{ 'mode:' + interactionsMode.order }}
-                    {{ '/unselected:' + (pedido.selectedPedido != pedido.pedidos.getArray().indexOf(item)) }}
-                    {{ '/pos:' + pedido.pedidos.getArray().indexOf(item) }}
-                    {{ '/selected:' + pedido.selectedPedido }}-->
-                    <v-select
-                      v-model="item.status"
-                      :items="Object.keys(status)"
-                      :disabled="
-                        (interactionsMode.order == 1 &&
-                          pedido.selectedPedido !=
-                            pedido.pedidos.getArray().indexOf(item)) ||
-                          interactionsMode.order == 0
-                      "
-                      chips
-                      flat
-                      attach
-                      label="status"
-                    >
-                      <template v-slot:selection="{ item }">
-                        <v-chip :color="getColorByStatus(item)">
-                          <span>{{ item }}</span>
-                        </v-chip>
-                      </template>
-                    </v-select>
-                  </template>
+
+
                 </v-data-table>
               </div>
             </div>
+
+            <v-progress-circular
+              v-if="disabledButtons"
+              :size="90"
+              :width="7"
+              color="green"
+              indeterminate
+            >{{ 'cargando' }}</v-progress-circular>
           </div>
         </v-stepper-content>
         <!-- reparation frame -->
@@ -308,7 +292,6 @@
                   label="Fecha de reparacion"
                   lang="es"
                 ></time-field>
-
                 {{ reparacionPedido.fechaEntrega }}
                 <time-field
                   v-model="reparacionPedido.fechaEntrega"
@@ -322,6 +305,7 @@
 
               <div class="status-box">
                 <p>Status Pedido</p>
+                {{ 'status: '+ reparacionPedido.status }}
                 <v-select
                   v-model="reparacionPedido.status"
                   :items="Object.keys(status)"
@@ -341,6 +325,7 @@
 
             <div class="technical-box">
               <v-text-field v-model="reparacionPedido.tecnico" outlined dense label="Tecnico"></v-text-field>
+               <v-text-field v-model="reparacionPedido.precio" outlined dense label="Costo Total: "></v-text-field>
             </div>
 
             <div class="diagnosis-box">
@@ -376,6 +361,13 @@
                 <v-icon>cancel</v-icon>
               </v-btn>
             </div>
+            <v-progress-circular
+              v-if="disabledButtons"
+              :size="90"
+              :width="7"
+              color="green"
+              indeterminate
+            >{{ 'cargando' }}</v-progress-circular>
           </div>
         </v-stepper-content>
         <!-- enterprise frame -->
@@ -385,38 +377,34 @@
               <div class="info-fields">
                 <h3 class="font-title pl-2">Datos generales de la empresa</h3>
                 <v-text-field
-                  v-model="empresa.data.nombre"
+                  v-model="empresa.nombre"
                   label="Nombre de la empresa"
                   class="custom-field"
                 ></v-text-field>
-                <v-text-field
-                  v-model="empresa.data.direccion"
-                  label="Direccion"
-                  class="custom-field"
-                ></v-text-field>
-                <v-text-field v-model="empresa.data.telefono" label="Telefono" class="custom-field"></v-text-field>
-                <v-text-field v-model="empresa.data.celular" label="Celular" class="custom-field"></v-text-field>
-                <v-text-field v-model="empresa.data.email" label="Email" class="custom-field"></v-text-field>
+                <v-text-field v-model="empresa.direccion" label="Direccion" class="custom-field"></v-text-field>
+                <v-text-field v-model="empresa.telefono" label="Telefono" class="custom-field"></v-text-field>
+                <v-text-field v-model="empresa.celular" label="Celular" class="custom-field"></v-text-field>
+                <v-text-field v-model="empresa.email" label="Email" class="custom-field"></v-text-field>
               </div>
 
               <div class="image-box">
-                <img :src="empresa.data.urlLogo" alt width="200" height="200" />
+                <img :src="empresa.urlLogo" alt width="200" height="200" />
                 <input type="file" accept="image/*" @change="uploadImage($event)" />
               </div>
             </div>
             <div class="pdf-fields">
               <v-text-field
-                v-model="empresa.data.garantia"
+                v-model="empresa.garantia"
                 label="Garantia en las facturas"
                 class="custom-field"
               ></v-text-field>
               <v-text-field
-                v-model="empresa.data.primerMsjRecibo"
+                v-model="empresa.primerMsjRecibo"
                 label="Anotacion en el pie del reporte de entrada"
                 class="custom-field"
               ></v-text-field>
               <v-text-field
-                v-model="empresa.data.segundoMsjRecibo"
+                v-model="empresa.segundoMsjRecibo"
                 label="Anotacion en el pie del reporte de salida"
                 class="custom-field"
               ></v-text-field>
@@ -438,6 +426,14 @@
                 <v-icon>cancel</v-icon>
               </v-btn>
             </div>
+
+            <v-progress-circular
+              v-if="disabledButtons"
+              :size="90"
+              :width="7"
+              color="green"
+              indeterminate
+            >{{ 'cargando' }}</v-progress-circular>
           </div>
         </v-stepper-content>
       </v-stepper-items>
@@ -447,7 +443,7 @@
 
 <script lang="ts">
 // code
-import IndentificationAction from "./identification.actions";
+import IndentificationView from "./identification.view";
 // style
 import "./identification.scss";
 import "../../styles/fonts.scss";
@@ -460,7 +456,7 @@ import { Component } from "vue-property-decorator";
     TimeField
   }
 })
-export default class Indentificacion extends IndentificationAction {
+export default class Indentificacion extends IndentificationView {
   created() {
     this.init();
   }

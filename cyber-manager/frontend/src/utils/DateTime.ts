@@ -1,4 +1,5 @@
 export default class Datetime {
+  
   convert(date: string, hour?: string) {
     let d = date.split('/');
     let orderDate = d[2] + '-' + d[1] + '-' + d[0];
@@ -25,10 +26,11 @@ export default class Datetime {
     if (datetime) {
       return this.getDate(datetime) + ' ' + this.getHour(datetime);
     } else {
-      return this.convert(
+      let parts = this.convert(
         new Date().toLocaleDateString(),
         new Date().toLocaleTimeString()
-      );
+      ).split(' ');
+        return `${parts[0]} ${parts[1]}` // remove AM or PM
     }
   }
 
@@ -52,7 +54,9 @@ export default class Datetime {
 
 
   normalize(datetime: string) { // datetime: 2019-11-26T03:00:00.000Z
+    // console.log('Normalize date: ', datetime)
     let partDate = datetime.split('T')[0].split('-');
+    // console.log('Result: ', partDate[2] + '-' + partDate[1] + '-' + partDate[0] + ' ' + this.getHour(datetime))
     return partDate[2] + '-' + partDate[1] + '-' + partDate[0] + ' ' + this.getHour(datetime)
   }
 

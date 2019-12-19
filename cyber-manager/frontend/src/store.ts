@@ -11,13 +11,13 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     userInfo: {
-      idUser: -1,
+      id: -1,
       username: '',
       charge: '',
       isAdmin: ''
     },
     empresaInfo: {
-      idEmpresa: '',
+      id: '',
       garantia: '',
       tecnico: ''
     }
@@ -34,7 +34,7 @@ export const store = new Vuex.Store({
     },
     clearUserInfo(state) {
       state.userInfo = {
-        idUser: -1,
+        id: -1,
         username: '',
         charge: '',
         isAdmin: ''
@@ -46,11 +46,11 @@ export const store = new Vuex.Store({
     getUsername: state => state.userInfo.username,
     getCharge: state => state.userInfo.charge,
     getIsAdmin: state => state.userInfo.isAdmin,
-    userLogged: state => (state.userInfo.idUser == -1 ? false : true),
+    userLogged: state => (state.userInfo.id == -1 ? false : true),
     empresaInfo: state => state.empresaInfo,
     getGarantia: state => state.empresaInfo.garantia,
     getTecnico: state => state.empresaInfo.tecnico,
-    getIdEmpresa: state => state.empresaInfo.idEmpresa
+    getIdEmpresa: state => state.empresaInfo.id
   },
   plugins: [vuexLocal.plugin]
 });
