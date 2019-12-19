@@ -1,7 +1,7 @@
 <template transition="slide-x-transition">
   <div id="MainPage">
     <!-- INTERNAL TOOLBAR -->
-    <v-toolbar class="mini-toolbar" fixed dark flat height="50px">
+    <v-toolbar color="grey lighten-2" class="mini-toolbar" fixed outlined height="50px">
       <v-toolbar-items class="toolbar-items hidden-xs-only">
         <v-btn text small class="toolbar-button" @click="wizard = 1">
           <v-icon>people</v-icon>
@@ -53,6 +53,8 @@
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
+
+    <!-- <v-divider></v-divider> -->
 
     <v-stepper v-model="wizard" class="stepper">
       <v-stepper-items>
@@ -243,8 +245,13 @@
                     >edit</v-icon>
                   </template>
 
+                  <template v-slot:item.status="{ item }">
+                    <v-chip :color="getColorByStatus(item.status)">
+                      <span>{{ item.status }}</span>
+                    </v-chip>
+                  </template>
+
                   <template v-slot:item.action="{ item }">
-                    <!-- button delete item in pedidos table -->
                     <v-icon
                       :disabled="
                         interactionsMode.order == 1 &&
@@ -256,8 +263,6 @@
                     >delete</v-icon>
                   </template>
                   <span>Borrar orden</span>
-
-
                 </v-data-table>
               </div>
             </div>
@@ -276,14 +281,32 @@
           <div class="repairPage">
             <h3 class="font-title">Reparacion de Orden</h3>
             <div class="identify-box">
-              <p class="item-info">{{ 'Ordern nro: '+ reparacionPedido.idPedido}}</p>
-              <p class="item-info">{{ 'Cliente: '+ reparacionPedido.nombreCliente }}</p>
-              <p class="item-info">{{ 'Articulo: '+ reparacionPedido.articulo }}</p>
+              <p class="item-info">{{ 'Ordern nro: ' + reparacionPedido.idPedido }}</p>
+              <p class="item-info">{{ 'Cliente: ' + reparacionPedido.nombreCliente }}</p>
+              <p class="item-info">{{ 'Articulo: ' + reparacionPedido.articulo }}</p>
             </div>
 
             <div class="content-box">
+              <div class="status-box">
+                <!-- <p>Status Pedido</p> -->
+                <v-select
+                  v-model="reparacionPedido.status"
+                  :items="Object.keys(status)"
+                  chips
+                  flat
+                  attach
+                  label="Status"
+                >
+                  <template v-slot:selection="{ item }">
+                    <v-chip :color="getColorByStatus(item)">
+                      <span>{{ item }}</span>
+                    </v-chip>
+                  </template>
+                </v-select>
+              </div>
+
               <div class="dates-box">
-                {{ reparacionPedido.fechaReparacion }}
+                <!-- {{ reparacionPedido.fechaReparacion }} -->
                 <time-field
                   v-model="reparacionPedido.fechaReparacion"
                   type="date"
@@ -292,7 +315,7 @@
                   label="Fecha de reparacion"
                   lang="es"
                 ></time-field>
-                {{ reparacionPedido.fechaEntrega }}
+                <!-- {{ reparacionPedido.fechaEntrega }} -->
                 <time-field
                   v-model="reparacionPedido.fechaEntrega"
                   type="date"
@@ -303,29 +326,10 @@
                 ></time-field>
               </div>
 
-              <div class="status-box">
-                <p>Status Pedido</p>
-                {{ 'status: '+ reparacionPedido.status }}
-                <v-select
-                  v-model="reparacionPedido.status"
-                  :items="Object.keys(status)"
-                  chips
-                  flat
-                  attach
-                  label="status"
-                >
-                  <template v-slot:selection="{ item }">
-                    <v-chip :color="getColorByStatus(item)">
-                      <span>{{ item }}</span>
-                    </v-chip>
-                  </template>
-                </v-select>
+              <div class="technical-box">
+                <v-text-field v-model="reparacionPedido.tecnico" flat dense label="Tecnico"></v-text-field>
+                <v-text-field v-model="reparacionPedido.precio" flat dense label="Costo Total: "></v-text-field>
               </div>
-            </div>
-
-            <div class="technical-box">
-              <v-text-field v-model="reparacionPedido.tecnico" outlined dense label="Tecnico"></v-text-field>
-               <v-text-field v-model="reparacionPedido.precio" outlined dense label="Costo Total: "></v-text-field>
             </div>
 
             <div class="diagnosis-box">
@@ -388,8 +392,24 @@
               </div>
 
               <div class="image-box">
-                <img :src="empresa.urlLogo" alt width="200" height="200" />
-                <input type="file" accept="image/*" @change="uploadImage($event)" />
+                <v-btn small color="green" dark class="file-btn">
+                  <span>Cambiar imagen</span>
+                  <v-icon>camera_enhance</v-icon>
+                </v-btn>
+
+                <img
+                  v-if="empresa.urlLogo"
+                  class="img"
+                  :src="empresa.urlLogo"
+                  alt
+                  width="200"
+                  height="200"
+                />
+                <v-btn v-if="!empresa.urlLogo" class="btn-camera">
+                  <span>Seleccione un imagen</span>
+                  <v-icon>camera_enhance</v-icon>
+                </v-btn>
+                <!-- <input label="Seleccione" type="file" accept="image/*" @change="uploadImage($event)" /> -->
               </div>
             </div>
             <div class="pdf-fields">

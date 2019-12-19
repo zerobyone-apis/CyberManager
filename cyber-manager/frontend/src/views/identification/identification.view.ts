@@ -114,8 +114,10 @@ export default class IndentificationCode extends vue {
   // FUNCTIONS ACTIONS-
 
   async init() {
+    this.disabledButtons = true;
     this.pedidos = await this.pedidoActions.getAll();
     this.empresa = await this.empresaActions.get(this.userInfo);
+    this.disabledButtons = false;
   }
 
 
@@ -239,6 +241,11 @@ export default class IndentificationCode extends vue {
     ) {
       this.disabledButtons = true;
       await this.pedidoActions.saveRepairPedido(this.reparacionPedido, this.newPedido);
+      // change status in item selected
+      let updatedPedido: Pedido = this.pedidos.get(this.selectedPedido);
+      updatedPedido.status = this.reparacionPedido.status;
+      this.pedidos.set(this.selectedPedido, updatedPedido);
+
       this.disabledButtons = false;
       this.interactionsMode.order = 0;
     }
@@ -247,7 +254,6 @@ export default class IndentificationCode extends vue {
 
   private cancelSavePedido() {
     if (confirm('Seguro que desea descartar los cambios?')) {
-
       let updatedPedido: Pedido = this.pedidos.get(this.selectedPedido);
       updatedPedido.status = this.newPedido.status;
       this.pedidos.set(this.selectedPedido, updatedPedido);
