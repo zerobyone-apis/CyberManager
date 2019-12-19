@@ -20,9 +20,10 @@
   padding-left: 5%;
 
   .v-toolbar__title {
-    position: relative;
+    position: absolute !important;
     font-size: 1.0em;
     width: 100%;
+    left: 0px !important;
   }
 
   .title {

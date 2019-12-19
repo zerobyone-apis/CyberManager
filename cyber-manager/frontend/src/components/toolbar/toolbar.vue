@@ -1,19 +1,11 @@
 <template v-cloak>
-  <v-toolbar flat dark v-if="$store.getters.userLogged" id="toolbar" fixed light height="50px">
+  <v-toolbar color="grey lighten-2" flat v-if="$store.getters.userLogged" id="toolbar" fixed light height="50px">
     <!-- LOGO  -->
     <v-toolbar-title class="title">
       CyberManager
-      <!-- <img class="logo" src="@/assets/logo.png" @click.stop="pageRouter('/')" alt="Avatar" /> -->
     </v-toolbar-title>
 
     <div class="flex-grow-1"></div>
-
-<!--  { name: "Identificacion", icon: "people", href: "/", route: "/Identification", toolbar: true },
-      { name: "Reparacion", icon: "settings", href: "/", route: "/Repairs", toolbar: true },
-      { name: "Entrada", icon: "input", href: "/", route: "/Repairs", toolbar: true },
-      { name: "Salida", icon: "send", href: "/", route: "/Repairs", toolbar: true }, -->
-
-
 
     <div class="right-box">
       <v-menu offset-y>
