@@ -226,6 +226,7 @@ export default class IndentificationCode extends vue {
       precio: this.newPedido.precio
       // status: this.newPedido.status
     };
+    console.log(this.reparacionPedido.fechaEntrega)
 
     this.v.clearFails();
     this.interactionsMode.order = 1; // save mode
