@@ -4,21 +4,20 @@ import { EmpresaInterface } from '../interface/EmpresaInterface';
 import DateTime from '../utils/DateTime';
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries from '../../sql/queries/Queries';
-import ResultObject from '../models/ResultObject';
 // Settings
 let datetime: DateTime = new DateTime();
 let queryFunctions: QueryFunctions = new QueryFunctions();
 let queries: Queries = new Queries();
 
-export async function getEmpresas(
-  req: Request,
-  res: Response
-) {
-  let result = await queryFunctions.get(queries.getQuery('empresa', 'getAll'), []);
+export async function getEmpresas(req: Request, res: Response) {
+  let result = await queryFunctions.get(
+    queries.getQuery('empresa', 'getAll'),
+    []
+  );
   if (result.statusCode == 200) {
     return res.status(200).json(result.value[0]); // only return one
   } else {
-    console.log(`Error obteniendo todas las empresas`)
+    console.log(`Error obteniendo todas las empresas`);
     return res.status(result.statusCode).json(result.value);
   }
 }
@@ -41,11 +40,14 @@ export async function createEmpresa(req: Request, res: Response) {
     newEmpresa.username
   ];
 
-  let result = await queryFunctions.action(queries.getQuery('empresa', 'create'), queryParams);
+  let result = await queryFunctions.action(
+    queries.getQuery('empresa', 'create'),
+    queryParams
+  );
   if (result.statusCode == 200) {
     return res.status(200).json('Empresa creada satisfactoriamente!!');
   } else {
-    console.log(`Error creando empresa`)
+    console.log(`Error creando empresa`);
     return res.status(result.statusCode).json(result.value);
   }
 }
@@ -59,7 +61,8 @@ export async function updateEmpresa(req: Request, res: Response) {
     updateEmp.nombre,
     updateEmp.telefono,
     updateEmp.celular,
-    updateEmp.fax,
+    /*updateEmp.fax,*/
+
     updateEmp.direccion,
     updateEmp.garantia,
     updateEmp.primerMsjRecibo,
@@ -67,24 +70,32 @@ export async function updateEmpresa(req: Request, res: Response) {
     updateEmp.urlLogo,
     updateEmp.ultimaActualizacion,
     id
-  ]
+  ];
 
-  let result = await queryFunctions.action(queries.getQuery('empresa', 'update'), queryParams);
+  let result = await queryFunctions.action(
+    queries.getQuery('empresa', 'update'),
+    queryParams
+  );
   if (result.statusCode == 200) {
     return res.status(200).json('Empresa guardada satisfactoriamente!!');
   } else {
-    console.log(`Error guardando empresa`)
+    console.log(`Error guardando empresa`);
     return res.status(result.statusCode).json(result.value);
   }
 }
 
 export async function deleteEmpresa(req: Request, res: Response) {
   const id = parseInt(req.params.id);
-  let result = await queryFunctions.action(queries.getQuery('empresa', 'delete'), [id]);
+  let result = await queryFunctions.action(
+    queries.getQuery('empresa', 'delete'),
+    [id]
+  );
   if (result.statusCode == 200) {
-    return res.status(200).json(`Empresa eliminada exitosamente con el id: -> ${id}`);
+    return res
+      .status(200)
+      .json(`Empresa eliminada exitosamente con el id: -> ${id}`);
   } else {
-    console.log(`Error eliminando empresa`)
+    console.log(`Error eliminando empresa`);
     return res.status(result.statusCode).json(result.value);
   }
 }
@@ -95,11 +106,13 @@ export async function findEmpresaByUserID(req: Request, res: Response) {
   // este metodo retornara un arreglo con las empresas asociadas a ese username
   const id = parseInt(req.params.id);
 
-  let result = await queryFunctions.get(queries.getQuery('empresa', 'getId'), [id]);
+  let result = await queryFunctions.get(queries.getQuery('empresa', 'getId'), [
+    id
+  ]);
   if (result.statusCode == 200) {
     return res.status(200).json(result.value[0]); // return only one
   } else {
-    console.log(`Error obteniendo empresa por id`)
+    console.log(`Error obteniendo empresa por id`);
     return res.status(result.statusCode).json(result.value);
   }
 }

@@ -2,7 +2,7 @@ import vue from 'vue';
 import IntegrationBackend from '../utils/IntegrationBackend';
 import { PedidoInterface } from '../../../backend/src/interface/PedidoInterface';
 import ReparacionInterface from '@/types/Reparacion';
-import Datetime from '../utils/Datetime';
+import Datetime from '../utils/DateTime';
 
 // Models
 import Pedido from '../../../backend/src/models/pedido';
@@ -61,23 +61,28 @@ export default class PedidoFunctions {
     }
   };
 
-
   public async getAll() {
     let pedidos: PedidoList = new PedidoList();
     try {
       let responseAllPedidos: PedidoInterface[] = await this.backend.send(
-        'get', undefined, '/pedido'
+        'get',
+        undefined,
+        '/pedido'
       );
 
       responseAllPedidos.forEach((pedido: PedidoInterface) => {
         // formatting date
-        pedido.fechaIngreso = new Datetime().normalize((pedido.fechaIngreso || '').toString());
-        pedido.fechaReparacion =  new Datetime().normalize((pedido.fechaReparacion || '').toString());
-        pedido.fechaEntrega = new Datetime().normalize((pedido.fechaEntrega || '').toString());
-
-        pedidos.add(
-          Object.assign(new Pedido(this.pedidoBase), pedido)
+        pedido.fechaIngreso = new Datetime().normalize(
+          (pedido.fechaIngreso || '').toString()
         );
+        pedido.fechaReparacion = new Datetime().normalize(
+          (pedido.fechaReparacion || '').toString()
+        );
+        pedido.fechaEntrega = new Datetime().normalize(
+          (pedido.fechaEntrega || '').toString()
+        );
+
+        pedidos.add(Object.assign(new Pedido(this.pedidoBase), pedido));
       });
 
       return pedidos;
@@ -87,7 +92,6 @@ export default class PedidoFunctions {
       return pedidos;
     }
   }
-
 
   public async add(pedido: PedidoInterface) {
     try {
@@ -114,9 +118,8 @@ export default class PedidoFunctions {
     }
   }
 
-
   public async save(pedido: PedidoInterface) {
-    console.log('pedido save status: ',pedido.status)
+    console.log('pedido save status: ', pedido.status);
     try {
       let data: PedidoInterface = {
         nombreCliente: pedido.nombreCliente,
@@ -139,14 +142,14 @@ export default class PedidoFunctions {
         data,
         `/pedido/${pedido.idOrden}`
       );
-      console.log(response)
+      console.log(response);
+      alert(' Pedido Actualizada exitosamente!..');
       return pedido;
     } catch (error) {
       return null;
       console.error('Ocurrio un error actualizando el pedido -> ', error);
     }
   }
-
 
   public async delete(pedido: PedidoInterface) {
     if (confirm('Seguro que desea eliminar la orden seleccionada?')) {
@@ -163,8 +166,10 @@ export default class PedidoFunctions {
     }
   }
 
-
-  public async saveRepairPedido(reparacionPedido: ReparacionInterface, pedidoSelected: PedidoInterface) {
+  public async saveRepairPedido(
+    reparacionPedido: ReparacionInterface,
+    pedidoSelected: PedidoInterface
+  ) {
     try {
       const idOrden = pedidoSelected.idOrden;
 
@@ -186,6 +191,7 @@ export default class PedidoFunctions {
         data,
         `/pedido/repair/${idOrden}`
       );
+      alert(' Reparacion guardada exitosamente!..');
     } catch (error) {
       console.error('Error guardar reparacion ->' + error);
     }

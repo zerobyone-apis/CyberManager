@@ -9,14 +9,13 @@ import PedidoAction from '../../actions/Pedido.actions';
 
 import { PedidoInterface } from '../../../../backend/src/interface/PedidoInterface';
 import PedidoList from '../../../../backend/src/models/PedidoList';
-import UserStore from '@/types/UserStore';
-import Reparacion from '@/types/Reparacion';
+import UserStore from '../../types/UserStore';
+import Reparacion from '../../types/Reparacion';
 import Empresa from '../../../../backend/src/models/empresa';
 
-import Datetime from '../../utils/Datetime'
+import Datetime from '../../utils/DateTime';
 
 export default class IndentificationCode extends vue {
-
   // user info saved in the store
   private userInfo: UserStore = this.$store.getters.userInfo;
   // Actions
@@ -109,7 +108,7 @@ export default class IndentificationCode extends vue {
     filter: 'nombre',
     value: ''
   };
-
+  ordenservice: any;
 
   // FUNCTIONS ACTIONS-
 
@@ -120,7 +119,6 @@ export default class IndentificationCode extends vue {
     this.disabledButtons = false;
   }
 
-
   async addPedido() {
     if (
       this.v.validateFields(this.newPedido, [
@@ -130,7 +128,8 @@ export default class IndentificationCode extends vue {
     ) {
       this.disabledButtons = true;
       let responseAddPedido = await this.pedidoActions.add(this.newPedido);
-      if (responseAddPedido != null) { // if null, error
+      if (responseAddPedido != null) {
+        // if null, error
         this.pedidos.add(responseAddPedido);
         //clear fields pedidos UI
         Object.assign(this.newPedido, this.cleanFields);
@@ -140,9 +139,7 @@ export default class IndentificationCode extends vue {
     }
   }
 
-
-
-  // El status de la tabla, al cambiarlo, se cambia en el pedido seleccionado dentro 
+  // El status de la tabla, al cambiarlo, se cambia en el pedido seleccionado dentro
   // del array pedidos
 
   async savePedido() {
@@ -168,14 +165,6 @@ export default class IndentificationCode extends vue {
     }
   }
 
-
-
-
-
-
-
-
-
   async deletePedido(selectedPedido: any) {
     this.disabledButtons = true;
     await this.pedidoActions.delete(selectedPedido);
@@ -186,36 +175,37 @@ export default class IndentificationCode extends vue {
     this.disabledButtons = false;
   }
 
-
   // Reparation
   private showSelectedPedido(pedido: any) {
     this.selectedPedido = this.pedidos.getArray().indexOf(pedido);
     Object.assign(this.newPedido, this.cleanFields);
-    Object.assign(this.newPedido,
-      {
-        idOrden: pedido._idOrden,
-        fechaIngreso: pedido.fechaIngreso,
-        fechaReparacion: pedido.fechaReparacion,
-        fechaEntrega: pedido.fechaEntrega,
-        nombreCliente: pedido.nombreCliente,
-        telCliente: pedido.telCliente,
-        articulo: pedido.articulo,
-        modelo: pedido.modelo,
-        marca: pedido.marca,
-        fallReportada: pedido.fallReportada,
-        observaciones: pedido.observaciones,
-        isCanceled: pedido.isCanceled,
-        status: pedido.status,
-        precio: pedido.precio
-      }
-    );
+    Object.assign(this.newPedido, {
+      idOrden: pedido._idOrden,
+      fechaIngreso: pedido.fechaIngreso,
+      fechaReparacion: pedido.fechaReparacion,
+      fechaEntrega: pedido.fechaEntrega,
+      nombreCliente: pedido.nombreCliente,
+      telCliente: pedido.telCliente,
+      articulo: pedido.articulo,
+      modelo: pedido.modelo,
+      marca: pedido.marca,
+      fallReportada: pedido.fallReportada,
+      observaciones: pedido.observaciones,
+      isCanceled: pedido.isCanceled,
+      status: pedido.status,
+      precio: pedido.precio
+    });
 
     this.reparacionPedido = {
       idPedido: this.newPedido.idOrden,
 
       // formatting dates:
-      fechaReparacion: new Datetime().convertDatetime((this.newPedido.fechaReparacion || '')),
-      fechaEntrega: new Datetime().convertDatetime(this.newPedido.fechaEntrega || ''),
+      fechaReparacion: new Datetime().convertDatetime(
+        this.newPedido.fechaReparacion || ''
+      ),
+      fechaEntrega: new Datetime().convertDatetime(
+        this.newPedido.fechaEntrega || ''
+      ),
 
       nombreCliente: this.newPedido.nombreCliente,
       articulo: this.newPedido.articulo,
@@ -226,12 +216,11 @@ export default class IndentificationCode extends vue {
       precio: this.newPedido.precio
       // status: this.newPedido.status
     };
-    console.log(this.reparacionPedido.fechaEntrega)
+    console.log(this.reparacionPedido.fechaEntrega);
 
     this.v.clearFails();
     this.interactionsMode.order = 1; // save mode
   }
-
 
   async saveRepairPedido() {
     if (
@@ -241,7 +230,10 @@ export default class IndentificationCode extends vue {
       ])
     ) {
       this.disabledButtons = true;
-      await this.pedidoActions.saveRepairPedido(this.reparacionPedido, this.newPedido);
+      await this.pedidoActions.saveRepairPedido(
+        this.reparacionPedido,
+        this.newPedido
+      );
       // change status in item selected
       let updatedPedido: Pedido = this.pedidos.get(this.selectedPedido);
       updatedPedido.status = this.reparacionPedido.status;
@@ -251,7 +243,6 @@ export default class IndentificationCode extends vue {
       this.interactionsMode.order = 0;
     }
   }
-
 
   private cancelSavePedido() {
     if (confirm('Seguro que desea descartar los cambios?')) {
@@ -266,26 +257,22 @@ export default class IndentificationCode extends vue {
     }
   }
 
-
   private async saveEmpresaInfo() {
     this.disabledButtons = true;
     await this.empresaActions.save();
     this.disabledButtons = false;
   }
 
-
   private changeColorToEdit(pedido: Pedido) {
     if (
       this.interactionsMode.order == 1 &&
-      this.selectedPedido ==
-      this.pedidos.getArray().indexOf(pedido)
+      this.selectedPedido == this.pedidos.getArray().indexOf(pedido)
     ) {
       return 'green';
     } else {
       return 'grey';
     }
   }
-
 
   private generateInputPdf() {
     let inputPdf: InputPdf = new InputPdf();
@@ -297,15 +284,11 @@ export default class IndentificationCode extends vue {
               - Primer MSJ Recibo 
               - Segundo MSJ Recibo 
           Que no estan en el PDF y Ajustar los margenes para que no se salgan del A4*/
-      inputPdf.generateDoc(
-        this.empresa,
-        new Pedido(this.newPedido)
-      );
+      inputPdf.generateDoc(this.empresa, new Pedido(this.newPedido));
     } catch (error) {
       console.error('Error generatedDoc -> ', error);
     }
   }
-
 
   private generateOutputPdf() {
     let outputPdf: OutputPdf = new OutputPdf();
@@ -317,18 +300,14 @@ export default class IndentificationCode extends vue {
               - Primer MSJ Recibo 
               - Segundo MSJ Recibo 
           Que no estan en el PDF y Ajustar los margenes para que no se salgan del A4*/
-      let pedido = new Pedido(this.newPedido)
+      let pedido = new Pedido(this.newPedido);
       pedido.reparacion = this.reparacionPedido.reparacion;
 
-      outputPdf.generateDoc(
-        this.empresa,
-        pedido
-      );
+      outputPdf.generateDoc(this.empresa, pedido);
     } catch (error) {
       console.error('Error generatedDoc -> ', error);
     }
   }
-
 
   private filterItems() {
     if (this.search.value == '') {
@@ -347,7 +326,6 @@ export default class IndentificationCode extends vue {
     }
   }
 
-
   private uploadImage(e: any) {
     const image = e.target.files[0];
     const reader = new FileReader();
@@ -358,11 +336,18 @@ export default class IndentificationCode extends vue {
     };
   }
 
-
   private getColorByStatus(status: string) {
     return this.status[status] || 'grey';
   }
 
+  //Count of ids and setting order service plus one, 48 + 1 = 49
+  /*   private getOrderService() {
+    let ordenservice: any = this.pedidos.getArray();
+    console.log(ordenservice);
+    var count = Math.max(this.ordenservice.idOrden) + 1;
+    this.newPedido.idOrden == '' ? count : this.newPedido.idOrden;
+    return count;
+  } */
 
   //Clear fields object UI-CLEAN-Pedido
   private cleanFields: PedidoInterface = {
@@ -383,7 +368,6 @@ export default class IndentificationCode extends vue {
     status: ''
   };
 }
-
 
 /* NO BORRAR
 

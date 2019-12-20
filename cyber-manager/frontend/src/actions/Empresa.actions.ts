@@ -2,10 +2,9 @@ import vue from 'vue';
 import Empresa from '../../../backend/src/models/empresa';
 import { EmpresaInterface } from '../../../backend/src/interface/EmpresaInterface';
 import IntegrationBackend from '../utils/IntegrationBackend';
-import Datetime from '@/utils/Datetime';
+import Datetime from '../utils/DateTime';
 
 export default class EmpresaFunctions extends vue {
-
   public data: Empresa = new Empresa();
   private backend: IntegrationBackend = new IntegrationBackend();
 
@@ -21,8 +20,9 @@ export default class EmpresaFunctions extends vue {
         telefono: this.data.telefono,
         primerMsjRecibo: this.data.primerMsjRecibo,
         segundoMsjRecibo: this.data.segundoMsjRecibo,
-        ultimaActualizacion: new Datetime().convert(new Datetime().getDate()) + ' 00:00:00'
-      }
+        ultimaActualizacion:
+          new Datetime().convert(new Datetime().getDate()) + ' 00:00:00'
+      };
       // Integration Backend PUT orders send()
       const response: any = await this.backend.send(
         'put',
@@ -35,8 +35,6 @@ export default class EmpresaFunctions extends vue {
       console.error(`Error actualizando la empresa.. -> ${error.message}`);
     }
   }
-
-
 
   public async get(userInfo: any) {
     try {
@@ -55,14 +53,12 @@ export default class EmpresaFunctions extends vue {
       // this.$store.commit('empresaInfo', empresaInfo);
       Object.assign(this.data, response);
       return this.data;
-
     } catch (error) {
-      return this.data
+      return this.data;
       console.error(
         'Algo sucedio obteniendo los datos de la empresa observe -> ',
         error.message
       );
     }
   }
-
 }

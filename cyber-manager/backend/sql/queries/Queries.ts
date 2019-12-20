@@ -41,7 +41,7 @@ export default class Queries {
       create:
         'INSERT INTO empresa (fechaCreacion,nombre,telefono,celular,fax,direccion,garantia,primerMsjRecibo,segundoMsjRecibo,urlLogo,ultimaActualizacion,username) values(?,?,?,?,?,?,?,?,?,?,?,?)',
       update:
-        'UPDATE empresa SET nombre = ?, telefono = ?, celular = ?, fax = ? , direccion = ?, garantia = ?, primerMsjRecibo = ?, segundoMsjRecibo = ?, urlLogo = ?, ultimaActualizacion = ? WHERE idEmpresa = ?',
+        'UPDATE empresa SET nombre = ?, telefono = ?, celular = ?, direccion = ?, garantia = ?, primerMsjRecibo = ?, segundoMsjRecibo = ?, urlLogo = ?, ultimaActualizacion = ? WHERE idEmpresa = ?',
       delete: 'DELETE FROM empresa WHERE idEmpresa = ?'
     }
   };
