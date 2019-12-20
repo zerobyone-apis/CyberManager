@@ -15,7 +15,14 @@ export default class OutputPdf extends Styles {
       // end
       this.drawLine(0.1, doc);
 
-      this.insertImage(typeof enterprise.urlLogo == 'undefined' ? '' : enterprise.urlLogo, 30, 30, doc)
+      if (enterprise.urlLogo) {
+        try {
+          let base64 = this.getBase64Image(document.getElementById("imageid"));
+          this.insertImage(base64, 30, 30, doc)
+        } catch (error) {
+          console.log('error cargando imagen - cancelando inclusion')
+        } 
+      }
 
       this.writeText(enterprise.nombre, fontSize, 'center', doc);
 
@@ -24,7 +31,7 @@ export default class OutputPdf extends Styles {
       this.writeText(enterprise.telefono + '', fontSize, 'center', doc);
 
       this.writeText('Ordern nro: ' + order.idOrden, fontSize, 'left', doc);
-      this.writeText('Fecha: ' + order.fechaIngreso, fontSize, 'left', doc);
+      this.writeText('Fecha: ' + order.fechaEntrega, fontSize, 'left', doc);
 
       // this.writeText('', 12, 'center', doc); // space
       this.writeText(
@@ -83,6 +90,6 @@ export default class OutputPdf extends Styles {
 
     }
 
-    doc.save(order.fechaIngreso + '-' + order.idOrden + '.pdf');
+    doc.save(order.fechaEntrega + '-' + order.idOrden + '.pdf');
   }
 }

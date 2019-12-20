@@ -46,7 +46,7 @@ export default class Styles {
 
 
   // methods of draw
-  insertImage(img: string, width: number, height: number, doc: jsPDF) {
+  insertImage(img: any, width: number, height: number, doc: jsPDF) {
     let cooX = ((this.pageSize.width - this.pageSize.exededWidth) - width) / 2;
     doc.addImage(img, 'jpg', cooX, this.positionText.y, width, height);
     this.positionText.y += height + 5;
@@ -128,4 +128,15 @@ export default class Styles {
       }
     }
   }
+
+  getBase64Image(img: any) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    var ctx: any = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    var dataURL = canvas.toDataURL("image/png");
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+  }
+  
 }

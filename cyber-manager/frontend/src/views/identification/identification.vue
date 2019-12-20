@@ -392,21 +392,24 @@
               </div>
 
               <div class="image-box">
-                <v-btn small color="green" dark class="file-btn">
-                  <span>Cambiar imagen</span>
-                  <v-icon>camera_enhance</v-icon>
-                </v-btn>
+                <v-text-field
+                  v-model="empresa.urlLogo"
+                  class="file-btn"
+                  label="Pegue el url de la imagen"
+                  hint="Si al pegar el url la imagen no carga es debido a que no se permite su uso."
+                ></v-text-field>
 
                 <img
+                  id="imageid"
+                  crossorigin="anonymous"
                   v-if="empresa.urlLogo"
                   class="img"
                   :src="empresa.urlLogo"
                   alt
-                  width="200"
-                  height="200"
                 />
+
                 <v-btn v-if="!empresa.urlLogo" class="btn-camera">
-                  <span>Seleccione un imagen</span>
+                  <span>No hay imagen seleccionada</span>
                   <v-icon>camera_enhance</v-icon>
                 </v-btn>
                 <!-- <input label="Seleccione" type="file" accept="image/*" @change="uploadImage($event)" /> -->

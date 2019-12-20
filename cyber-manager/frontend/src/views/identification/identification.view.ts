@@ -220,8 +220,8 @@ export default class IndentificationCode extends vue {
       nombreCliente: this.newPedido.nombreCliente,
       articulo: this.newPedido.articulo,
       reparacion: this.newPedido.reparacion,
-      garantia: this.$store.getters.getGarantia,
-      tecnico: this.$store.getters.getTecnico,
+      garantia: this.empresa.garantia,
+      tecnico: this.userInfo.username,
       status: this.newPedido.status ? this.newPedido.status : null,
       precio: this.newPedido.precio
       // status: this.newPedido.status
@@ -316,9 +316,12 @@ export default class IndentificationCode extends vue {
               - Primer MSJ Recibo 
               - Segundo MSJ Recibo 
           Que no estan en el PDF y Ajustar los margenes para que no se salgan del A4*/
+      let pedido = new Pedido(this.newPedido)
+      pedido.reparacion = this.reparacionPedido.reparacion;
+
       outputPdf.generateDoc(
         this.empresa,
-        new Pedido(this.newPedido)
+        pedido
       );
     } catch (error) {
       console.error('Error generatedDoc -> ', error);

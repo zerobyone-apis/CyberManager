@@ -5,7 +5,8 @@ import Pedido from '../../../../backend/src/models/pedido';
 import Empresa from '../../../../backend/src/models/empresa';
 
 export default class InputPdf extends Styles {
-  generateDoc(enterprise: Empresa, order: Pedido) {
+
+  async generateDoc(enterprise: Empresa, order: Pedido) {
     this.init(30, 0);
     let doc = new jsPDF('p', 'px', [this.pageSize.width, this.pageSize.heigth]);
     for (let i = 0; i < 2; i++) {
@@ -15,7 +16,14 @@ export default class InputPdf extends Styles {
       // end
       this.drawLine(0.1, doc);
 
-      this.insertImage(typeof enterprise.urlLogo == 'undefined' ? '' : enterprise.urlLogo, 30, 30, doc)
+      if (enterprise.urlLogo) {
+        try {
+          let base64 = this.getBase64Image(document.getElementById("imageid"));
+          this.insertImage(base64, 30, 30, doc)
+        } catch (error) {
+          console.log('error cargando imagen - cancelando inclusion')
+        } 
+      }
 
       this.writeText(enterprise.nombre, fontSize, 'center', doc);
 
