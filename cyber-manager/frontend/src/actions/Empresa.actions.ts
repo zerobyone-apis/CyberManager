@@ -2,7 +2,7 @@ import vue from 'vue';
 import Empresa from '../../../backend/src/models/empresa';
 import { EmpresaInterface } from '../../../backend/src/interface/EmpresaInterface';
 import IntegrationBackend from '../utils/IntegrationBackend';
-import Datetime from '../utils/DateTime';
+import Datetime from '../utils/Datetime';
 
 export default class EmpresaFunctions extends vue {
   public data: Empresa = new Empresa();

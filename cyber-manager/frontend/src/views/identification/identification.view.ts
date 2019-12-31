@@ -13,7 +13,7 @@ import UserStore from '../../types/UserStore';
 import Reparacion from '../../types/Reparacion';
 import Empresa from '../../../../backend/src/models/empresa';
 
-import Datetime from '../../utils/DateTime';
+import Datetime from '../../utils/Datetime';
 
 export default class IndentificationCode extends vue {
   // user info saved in the store

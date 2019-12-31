@@ -28,7 +28,6 @@
 </template>
 
 <script lang="ts">
-import Vuetify from "vuetify/lib";
 import ToolbarCode from "./toolbarCode";
 import "./toolbarStyle.scss";
 import { Watch, Component } from "vue-property-decorator";
