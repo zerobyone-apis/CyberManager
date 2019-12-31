@@ -4,7 +4,6 @@ import { PedidoInterface } from '../interface/PedidoInterface';
 import DateTime from '../utils/DateTime';
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries from '../../sql/queries/Queries';
-import ResultObject from '../models/ResultObject';
 
 // Settings
 let datetime: DateTime = new DateTime();
@@ -73,9 +72,7 @@ export async function updatePedido(req: Request, res: Response) {
     observaciones,
     isCanceled,
     fechaReparacion,
-    /*  fechaEntrega,*/
     reparacion,
-    /* precio, */
     status
   }: PedidoInterface = req.body.data;
 
@@ -92,9 +89,7 @@ export async function updatePedido(req: Request, res: Response) {
     observaciones,
     isCanceled,
     fechaReparacion,
-    /* fechaEntrega, */
     reparacion,
-    /* precio, */
     status,
     id
   ];

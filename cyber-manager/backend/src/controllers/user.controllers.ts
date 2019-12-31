@@ -29,7 +29,7 @@ export async function createUser(req: Request, res: Response) {
     newUser.passwd,
     newUser.cargo,
     newUser.isAdmin,
-    datetime.now()
+    new Date().getDate()
   ];
   let result: ResultObject = await queryFunctions.action(
     queries.getQuery('user', 'create'),
