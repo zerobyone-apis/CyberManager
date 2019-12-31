@@ -23,7 +23,7 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
-    wizard(state, value) {
+    wizard(state: any, value) {
       state.wizard = value;
     },
     userInfo(state, value) {
