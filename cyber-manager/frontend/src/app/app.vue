@@ -1,11 +1,6 @@
 <template>
   <v-app id="app">
     <Toolbar class="toolbar-app-fixed"></Toolbar>
-   <back-to-top>
-     <v-btn fab text small class="green">
-       <v-icon>keyboard_arrow_up</v-icon>
-     </v-btn>
-   </back-to-top>
     <!-- <LeftMenu class="left_menu-app-fixed"></LeftMenu> -->
     <v-content class="content">
       <v-container fluid class="container">
@@ -25,7 +20,6 @@ import "./appStyle.scss";
 @Component({
   components: {
     Toolbar,
-    // LeftMenu
   }
 })
 export default class App extends AppCode {
