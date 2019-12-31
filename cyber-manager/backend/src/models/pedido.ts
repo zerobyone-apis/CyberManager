@@ -2,13 +2,13 @@ import { PedidoInterface } from '../interface/PedidoInterface';
 
 export default class Pedido {
   private _idOrden: string | number | undefined;
-  private _fechaIngreso: string | Date;
+  private _fechaIngreso: string | Date | undefined;
   private _nombreCliente: string | undefined;
-  private _telCliente: number | string;
+  private _telCliente: number | string | undefined;
   private _articulo: string | undefined;
   private _modelo: string | undefined;
   private _marca: string | undefined;
-  private _fallReportada: string;
+  private _fallReportada: string | undefined;
   private _observaciones: string | undefined;
   private _isCanceled: boolean | number | string;
   private _fechaReparacion: string | Date | undefined;
@@ -27,7 +27,7 @@ export default class Pedido {
     this._marca = pedido.marca;
     this._fallReportada = pedido.fallReportada;
     this._observaciones = pedido.observaciones;
-    this._isCanceled = pedido.isCanceled;
+    this._isCanceled = pedido.isCanceled || false;
     this._fechaReparacion = pedido.fechaReparacion;
     this._fechaEntrega = pedido.fechaEntrega;
     this._reparacion = pedido.reparacion;
@@ -42,10 +42,10 @@ export default class Pedido {
     this._idOrden = value;
   }
 
-  get fechaIngreso(): string | Date {
+  get fechaIngreso(): string | Date | undefined {
     return this._fechaIngreso;
   }
-  set fechaIngreso(value: string | Date) {
+  set fechaIngreso(value: string | Date | undefined) {
     this._fechaIngreso = value;
   }
 
@@ -56,10 +56,10 @@ export default class Pedido {
     this._nombreCliente = value;
   }
 
-  get telCliente(): number | string {
+  get telCliente(): number | string | undefined {
     return this._telCliente;
   }
-  set telCliente(value: number | string) {
+  set telCliente(value: number | string | undefined) {
     this._telCliente = value;
   }
 
@@ -84,10 +84,10 @@ export default class Pedido {
     this._modelo = value;
   }
 
-  get fallReportada(): string {
+  get fallReportada(): string | undefined {
     return this._fallReportada;
   }
-  set fallReportada(value: string) {
+  set fallReportada(value: string | undefined) {
     this._fallReportada = value;
   }
 
