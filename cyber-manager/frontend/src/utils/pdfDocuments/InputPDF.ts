@@ -52,7 +52,7 @@ export default class InputPdf extends Styles {
       this.drawLine(0.1, doc);
 
       this.writeText('Falla: ', fontSize + 2, 'left', doc);
-      this.writeText(order.fallReportada, fontSize, 'left', doc);
+      this.writeText(order.fallReportada || '', fontSize, 'left', doc);
       // this.writeText('', 12, 'center', doc); // space
 
       this.writeText('Observaciones: ', fontSize + 2, 'left', doc);

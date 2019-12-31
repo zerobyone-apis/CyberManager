@@ -51,7 +51,7 @@ export default class OutputPdf extends Styles {
       this.drawLine(0.1, doc);
 
       this.writeText('Problema reportado: ', fontSize + 2, 'left', doc);
-      this.writeText(order.fallReportada, fontSize, 'left', doc);
+      this.writeText(order.fallReportada || '', fontSize, 'left', doc);
 
       // this.writeText('Repuesto: ', fontSize + 2, 'left', doc);
       // this.writeText((order.reparacion || ''), fontSize, 'left', doc);
