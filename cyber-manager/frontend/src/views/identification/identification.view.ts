@@ -13,7 +13,7 @@ import UserStore from '../../types/UserStore';
 import Reparacion from '../../types/Reparacion';
 import Empresa from '../../../../backend/src/models/empresa';
 
-import Datetime from '../../utils/Datetime';
+import Datetime from '../../../../backend/src/utils/Datetime';
 
 export default class IndentificationCode extends vue {
   // user info saved in the store
@@ -87,7 +87,7 @@ export default class IndentificationCode extends vue {
   };
 
   private reparacionPedido: any = {
-    idPedido: -1,
+    idPedido: '',
     nombreCliente: '',
     articulo: '',
     modelo: '',
@@ -116,6 +116,7 @@ export default class IndentificationCode extends vue {
     this.disabledButtons = true;
     this.pedidos = await this.pedidoActions.getAll();
     this.empresa = await this.empresaActions.get(this.userInfo);
+    this.newPedido.idOrden = this.getLastMaxValueOfOrdersPedido();
     this.disabledButtons = false;
   }
 
@@ -341,17 +342,20 @@ export default class IndentificationCode extends vue {
   }
 
   //Count of ids and setting order service plus one, 48 + 1 = 49
-  /*   private getOrderService() {
-    let ordenservice: any = this.pedidos.getArray();
-    console.log(ordenservice);
-    var count = Math.max(this.ordenservice.idOrden) + 1;
-    this.newPedido.idOrden == '' ? count : this.newPedido.idOrden;
-    return count;
-  } */
+  private getLastMaxValueOfOrdersPedido() {
+    let ordenservice = this.pedidos.getArray();
+    let ids: number[] = [];
+    ordenservice.map(pedido => {
+      ids.push((typeof pedido.idOrden == 'string' ? -1 : pedido.idOrden) || -1);
+    });
+    let maxId = Math.max(...ids);
+    console.log('Maximo id de la lista -> ', maxId);
+    return maxId + 1;
+  }
 
   //Clear fields object UI-CLEAN-Pedido
   private cleanFields: PedidoInterface = {
-    idOrden: '',
+    idOrden: this.getLastMaxValueOfOrdersPedido(),
     fechaIngreso: new Datetime().now(),
     nombreCliente: '',
     telCliente: '',

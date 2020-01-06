@@ -2,7 +2,7 @@ import vue from 'vue';
 import IntegrationBackend from '../utils/IntegrationBackend';
 import { PedidoInterface } from '../../../backend/src/interface/PedidoInterface';
 import ReparacionInterface from '@/types/Reparacion';
-import Datetime from '../utils/Datetime';
+import Datetime from '../../../backend/src/utils/Datetime';
 
 // Models
 import Pedido from '../../../backend/src/models/pedido';

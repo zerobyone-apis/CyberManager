@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import MysqlConnection from '../../sql/connection/MysqlConnection';
 import { UserInterface } from '../interface/UserInterface';
-import DateTime from '../utils/DateTime';
+import DateTime from '../utils/Datetime';
 
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries from '../../sql/queries/Queries';

@@ -1,7 +1,7 @@
 import { Request, Response, response } from 'express';
 import MysqlConnection from '../../sql/connection/MysqlConnection';
 import { PedidoInterface } from '../interface/PedidoInterface';
-import DateTime from '../utils/DateTime';
+import DateTime from '../utils/Datetime';
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries from '../../sql/queries/Queries';
 
