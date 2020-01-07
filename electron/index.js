@@ -1,6 +1,7 @@
-const electron = require("electron");
-const logger = require("./logger");
+const electron = require('electron');
+const logger = require('./logger');
 const { app, BrowserWindow, dialog } = electron;
+const path = require('path');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -14,7 +15,7 @@ function createWindow(callback) {
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 950,
-    show: false, // hide until ready-to-show
+    show: false // hide until ready-to-show
     // webPreferences: {
     //   preload: path.join(__dirname, "preload.js")
     //   // nodeIntegration: true
@@ -22,25 +23,29 @@ function createWindow(callback) {
   });
 
   function stopServer() {
-    logger.info("Stopping server...");
+    logger.info('Stopping server...');
     app.quit(); // quit again
   }
 
   loadHomePage();
 
-  mainWindow.once("ready-to-show", () => {
+  mainWindow.once('ready-to-show', () => {
     mainWindow.show();
     if (callback) callback();
   });
 
   // Emitted when the window is closed.
-  mainWindow.on("closed", function() {
+  mainWindow.on('closed', function() {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     mainWindow = null;
   });
 }
+
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname + '/index.html'));
+});
 
 function loadHomePage() {
   logger.info(`logHomePage: Loading home page at ${baseUrl}`);
@@ -53,26 +58,27 @@ function loadHomePage() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("ready", function() {
+app.on('ready', function() {
   baseUrl = `http://localhost:9000`;
-
-  logger.info("###################################################");
-  logger.info("#               Application Starting              #");
-  logger.info("###################################################");
-
+  const iconName = '/build/system.ico';
+  const iconPath = path.join(__dirname, iconName);
+  logger.info('###################################################');
+  logger.info('#               Application Starting              #');
+  logger.info('###################################################');
+  get();
   createWindow();
 });
 
 // Quit when all windows are closed.
-app.on("window-all-closed", function() {
+app.on('window-all-closed', function() {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== "darwin") {
+  if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-app.on("activate", function() {
+app.on('activate', function() {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
@@ -80,7 +86,7 @@ app.on("activate", function() {
   }
 });
 
-app.on("will-quit", e => {
+app.on('will-quit', e => {
   if (!isDev && baseUrl != null) {
     stopServer();
     e.preventDefault(); // will quite later after stopped the server

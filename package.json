@@ -1,23 +1,32 @@
 {
-  "name": "electron-vue-spring",
+  "name": "cyber.manager",
   "version": "1.0.0",
-  "description": "A minimal starter project for using Electron, Vue and Spring.",
-  "author": "Wu, Ruoyun",
+  "description": "First Version of CyberManager - By ZeroByOne.",
+  "author": "ZeroByOne <smtp.test.zero@gmail.com>",
+  "homepage": "./",
   "repository": {
+    "name": "ZeroByOne",
+    "email": "smtp.test.zero@gmail.com",
     "type": "git",
-    "url": "https://github.com/wuruoyun/electron-vue-spring.git"
+    "url": "https://github.com/"
   },
   "main": "electron/index.js",
   "scripts": {
     "start": "electron .",
-    "build-server": "node build/build-server.js",
-    "build-installer": "node build/build-installer.js",
-    "build": "npm-run-all clean build-server build-installer",
+    "serverback": "nohup  ./serverback.sh > back.out < /dev/null &",
+    "serverfront": "nohup ./serverfront.sh > front.out < /dev/null &",
+    "start-servers": "npm run serverback && npm run serverfront",
+    "build": "electron-builder --linux deb tar.xz ",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=build/system.ico --prune=true --out=release-builds",
+    "package-win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --icon=build/system.ico --prune=true --out=release-builds",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=build/system.ico --prune=true --out=release-builds",
+    "dist": "npm-run-all start-servers clean build",
     "clean": "rimraf dist"
   },
   "license": "MIT",
   "build": {
-    "appId": "electron-vue-spring",
+    "appId": "CyberManager_v1",
+    "asar": true,
     "files": [
       "electron/**/*",
       "node_modules/**/*",
@@ -45,7 +54,7 @@
   "devDependencies": {
     "@types/morgan": "^1.7.37",
     "@types/mysql2": "github:types/mysql2",
-    "electron": "^6.0.10",
+    "electron": "latest",
     "electron-builder": "^21.2.0",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.0",
@@ -55,6 +64,7 @@
     "@types/cors": "^2.8.6",
     "@types/express": "^4.17.2",
     "axios": "^0.19.0",
+    "concurrently": "^5.0.2",
     "dotenv": "^8.2.0",
     "electron-is-dev": "^1.1.0",
     "electron-log": "^3.0.8",
