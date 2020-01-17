@@ -1,5 +1,5 @@
 <template transition="slide-x-transition">
-  <div id="homePage">
+  <div id="home-page">
     <v-stepper v-model="wizard" class="stepper">
       <v-stepper-items>
         <v-stepper-content step="1">
@@ -8,10 +8,10 @@
             <h4 class="font-title title">Acceda para utilizar CyberManager</h4>
 
             <v-select
-              v-model="user.cargo"
+              v-model="user.charge"
               :items="charges"
-              :error="v.get('user.cargo') != ''"
-              :error-messages="v.get('user.cargo')"
+              :error="v.get('user.charge') != ''"
+              :error-messages="v.get('user.charge')"
               label="Cargo"
               outlined
             ></v-select>
@@ -33,12 +33,12 @@
             ></v-text-field>
 
             <div class="footer">
-              <v-btn @click="signIn()" class="button">Acceder</v-btn>
+              <v-btn depressed @click="signIn()" class="button">Acceder</v-btn>
             </div>
 
             <div class="signup-button">
               <p>No tiene cuenta? Registrese aqui</p>
-              <v-btn @click="goToStep(2)">
+              <v-btn depressed @click="goToStep(2)">
                 Registrase Aqui
                 <v-icon>people</v-icon>
               </v-btn>
@@ -53,10 +53,10 @@
               <h4 class="font-title title">Registrese Aqui</h4>
 
               <v-select
-                v-model="createUser.cargo"
+                v-model="createUser.charge"
                 :items="charges"
-                :error="v.get('createUser.cargo') != ''"
-                :error-messages="v.get('createUser.cargo')"
+                :error="v.get('createUser.charge') != ''"
+                :error-messages="v.get('createUser.charge')"
                 label="Cargo"
                 outlined
               ></v-select>
@@ -89,30 +89,29 @@
             </div>
             <!-- <p class="font-error font-text">{{ signUpErrors }}</p> -->
             <div class="footer">
-              <v-btn small @click="goToStep(1)" class="mr-3">
+              <v-btn depressed @click="goToStep(1)" class="mr-3">
                 <v-icon>arrow_back</v-icon>Volver
               </v-btn>
-              <v-btn @click="signUp()" class="button">Registrarse</v-btn>
+              <v-btn depressed @click="signUp()" class="button">Registrarse</v-btn>
             </div>
           </div>
         </v-stepper-content>
       </v-stepper-items>
+
+      <v-snackbar
+        v-model="notification.visible"
+        :color="notification.color"
+      >{{ notification.message }}</v-snackbar>
     </v-stepper>
   </div>
 </template>
 
 <script lang="ts">
-//code
-import HomeCode from "./homeCode";
-//style
-import "./homeStyle.scss";
+import HomeView from "./Home.view";
+import "./Home.scss";
 import "../../styles/fonts.scss";
-//components
 import { Component } from "vue-property-decorator";
 
-@Component({
-  components: {
-  }
-})
-export default class Home extends HomeCode {}
+@Component({})
+export default class Home extends HomeView {}
 </script>

@@ -1,64 +1,64 @@
 import vue from 'vue';
 import Validation from '../../utils/Validation';
 import IntegrationBackend from '../../utils/IntegrationBackend';
+import { IUserStore } from '../../types/UserStore.type';
+import { USER_ADMIN, USER_EMPLOYEE } from '../../types/UsersSystem.type';
+import Datetime from '../../utils/Datetime';
 
-// Models
-import User from '../../../../backend/src/models/usuario';
-import { UserInterface } from '../../../../backend/src/interface/UserInterface';
 import ResultObject from '../../../../backend/src/models/ResultObject';
 
-export default class HomeCode extends vue {
-
-  // Utils + Backend
+export default class HomeView extends vue {
   private backend: IntegrationBackend = new IntegrationBackend();
-  // Validation Fields
   private v: Validation = new Validation();
 
-  //usuario de prueba con Interfaces
-  /* private newUser: UserInterface = {
-      username: '',
-      passwd: '',
-      cargo: '',
-      isAdmin: false
-    }; */
-
-  //Instancia de la clase Model User, Constructor.
-  private user: User = new User({
+  private user: IUserStore = {
     username: '',
     passwd: '',
-    cargo: '',
-    isAdmin: '' //if supervisor true
-  });
+    charge: '',
+    isAdmin: false
+  };
 
-  //Register usuario
-  public createUser = {
+  public createUser: IUserStore = {
     username: '',
     passwd: '',
     passwd2: '',
-    cargo: '',
-    isAdmin: false //if supervisor true
+    charge: '',
+    isAdmin: false
   };
 
-  private charges = ['Empleado', 'Supervisor'];
+  private notification = {
+    message: '',
+    color: 'grey',
+    visible: false
+  }
+  private showNotificationSuccess(message: string) {
+    this.notification.color = 'green';
+    this.notification.message = message;
+    this.notification.visible = true;
+  }
+  private showNotificationFail(message: string) {
+    this.notification.color = 'red lighten-1';
+    this.notification.message = message;
+    this.notification.visible = true;
+  }
 
-  // vars used for validation into the user
-  // [ field-name, type: string, int ]
+
+  private charges: string[] = [ USER_ADMIN, USER_EMPLOYEE ];
+
   private userFields: any = {
     objectName: 'user',
     fields: [
       ['username', 'string'],
       ['passwd', 'string'],
-      ['cargo', 'string']
+      ['charge', 'string']
     ]
   };
 
-  // control step visible in the stepper
-  private wizard = 1;
+  private wizard: number = 1;
 
-  //Si el cargo no esta vacio y no es Empleado entonces es Admin.
   private isAdmin() {
     this.user.isAdmin =
-      this.user.cargo != 'Empleado' && this.user.cargo != '' ? true : false;
+      this.user.charge != USER_EMPLOYEE && this.user.charge != '' ? true : false;
   }
 
   async signUp() {
@@ -68,7 +68,7 @@ export default class HomeCode extends vue {
         try {
           const userFiltered: {
             succes: boolean;
-            object?: UserInterface;
+            object?: IUserStore;
             message?: string;
           } = this.getUserValidated(this.createUser);
 
@@ -78,76 +78,69 @@ export default class HomeCode extends vue {
               console.error(err.message);
               throw new Error(err.message);
             };
-
-          console.log(`user filtered -> ${userFiltered}`);
-
-          // Integration Backend POST user send()
           const response: Record<string, any> = await this.backend.send(
             'post',
             userFiltered.object,
             `/user`
           );
-
-          // Integration Backend POST user send()
           let responseSignIn: any = await this.backend.send(
             'post',
             userFiltered.object,
             '/user/signin'
           );
-          console.log('sign in in signup', responseSignIn)
-          let user = {
+          let user: IUserStore = {
             id: responseSignIn.idUser,
             username: this.createUser.username,
-            charge: this.createUser.cargo,
+            charge: this.createUser.charge,
             isAdmin: this.user.isAdmin
           };
-          // save in the store the user data
+  
           this['$store'].commit('userInfo', user);
-          // goto Identification page
+          this.$store.commit('page', 'Identification');
           this['$router'].push('/Identification');
         } catch (error) {
           console.error(
             'Algo malo sucedio :( este fue el error -> ',
             error.message
           );
-          alert('Las contraseñas no coinciden');
+         this.showNotificationFail('Ocurrio un error!, vuelva a intentarlo')
         }
       } else {
-        alert('Las contraseñas no coinciden')
+        this.showNotificationFail('Las contraseñas no coinciden')
       }
     }
   }
 
+  
   async signIn() {
     this.isAdmin();
     if (this.v.validateFields(this.user, [this.userFields])) {
       try {
-        let userData: UserInterface = {
+        let userData: IUserStore = {
           username: this.user.username,
           passwd: this.user.passwd,
-          cargo: this.user.cargo,
+          charge: this.user.charge,
           isAdmin: this.user.isAdmin
         };
-        // Integration Backend POST user send()
-        let response: UserInterface = await this.backend.send(
+        let response: IUserStore = await this.backend.send(
           'post',
           userData,
           '/user/signin'
         );
-        //User Store info.
-        let user = {
-          id: response.idUser,
+        console.log(response)
+        let user: IUserStore = {
+          id: response.id,
           username: userData.username,
-          charge: userData.cargo,
+          charge: userData.charge,
           isAdmin: userData.isAdmin
         };
-        // save in the store the user data
+
         this['$store'].commit('userInfo', user);
-        // goto Identification page
+        this.$store.commit('page', 'Identification');
         this['$router'].push('/Identification');
       } catch (error) {
         console.log('error causado por -> ', error);
-        alert('Error iniciando sesion, verifique usuario y contraseña');
+        this.showNotificationFail('Error iniciando sesion, verifique usuario y contraseña')
       }
     }
   }
@@ -157,28 +150,27 @@ export default class HomeCode extends vue {
     this.wizard = index;
   }
 
-  /* Function to validate password */
   private getUserValidated = (
     object: Record<string, any>
   ): {
     succes: boolean;
-    object?: UserInterface;
+    object?: IUserStore;
     message?: string;
   } => {
-    /*  let passs = object.passs; */
     if (object.passwd === object.passwd2) {
-      let userFiltered: UserInterface = {
+      let userFiltered: IUserStore = {
         username: object.username,
         passwd: object.passwd,
-        cargo: object.cargo,
-        isAdmin: object.isAdmin
+        charge: object.charge,
+        isAdmin: object.isAdmin,
+        createOn: new Datetime().now()
       };
       return {
         object: userFiltered,
         succes: true
       };
     } else {
-      console.log(`Error en contraseña, intente nuevamente.`);
+      this.showNotificationFail('Error en contraseña, intente nuevamente')
       return {
         succes: false,
         message: `Error en contraseña, intente nuevamente.`
