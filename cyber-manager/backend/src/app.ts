@@ -2,13 +2,11 @@ import Express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import http from 'http';
-
 import MysqlConnection from '../sql/connection/MysqlConnection';
+import Enterprise from './routes/Enterprise.routes';
+import Order from './routes/Order.routes';
+import User from './routes/User.routes';
 
-//Import Routes
-import empresa from './routes/empresa.routes';
-import pedido from './routes/pedido.routes';
-import routes from './routes/user.routes';
 export class App {
   private app: Application;
 
@@ -24,25 +22,21 @@ export class App {
     this.routes();
   }
 
-  //Settings
   settings() {
     this.app.set('port', this.port || process.env.PORT || 3000);
   }
 
-  //Middlewares
   middlewares() {
     this.app.use(morgan('dev'));
     this.app.use(Express.json());
   }
 
-  //Routes
   routes() {
-    this.app.use('/empresa', empresa);
-    this.app.use('/pedido', pedido);
-    this.app.use('/user', routes);
+    this.app.use('/empresa', Enterprise);
+    this.app.use('/pedido', Order);
+    this.app.use('/user', User);
   }
 
-  //Functions
   async listen() {
     await this.app.listen(this.app.get('port'));
     console.log(`Server on port ${this.app.get('port')}`);
