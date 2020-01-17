@@ -8,6 +8,7 @@ export default class ToolbarCode extends MenuItems {
   private closeSesion() {
     if(confirm('Seguro de que desea cerrar sesion?')) {
       this.$store.commit('clearUserInfo')
+      this.$store.commit('page', 'Home');
       this.pageRouter('/');
     }
   }
