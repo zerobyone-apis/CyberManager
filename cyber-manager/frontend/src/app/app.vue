@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <Toolbar class="toolbar-app-fixed"></Toolbar>
+    <!-- <Toolbar class="toolbar-app-fixed"></Toolbar> -->
     <!-- <LeftMenu class="left_menu-app-fixed"></LeftMenu> -->
     <v-content class="content">
       <v-container fluid class="container">
