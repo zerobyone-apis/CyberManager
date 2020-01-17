@@ -1,87 +1,21 @@
 import vue from 'vue';
 import jsPDF from 'jspdf';
 import Styles from './Styles';
-import Pedido from '../../../../backend/src/models/pedido';
-import Empresa from '../../../../backend/src/models/empresa';
+import { IOrder } from '../../types/Order.type';
+import { IEnterprise } from '../../types/Enterprise.type';
+import { PDF_HEIGHT, PDF_WIDTH, PDF_DIFF } from '../../types/PDF.type'
 
-export default class InputPdf extends Styles {
+export default class InputPdf {
 
-  async generateDoc(enterprise: Empresa, order: Pedido) {
-    this.init(30, 0);
-    let doc = new jsPDF('p', 'px', [this.pageSize.width, this.pageSize.heigth]);
-    for (let i = 0; i < 2; i++) {
-      // size of all fonts in this document
-      let fontSize = 8;
+  async generateDoc(captureInvoice: any) {
+    const DIFF_DOC: number = 150;
 
-      // end
-      this.drawLine(0.1, doc);
+    let doc = new jsPDF('p', 'px', [PDF_WIDTH, PDF_HEIGHT]);
+    
+    doc.addImage(captureInvoice, 'jpg', 0, 0, PDF_WIDTH-PDF_DIFF, PDF_HEIGHT-PDF_DIFF);
 
-      if (enterprise.urlLogo) {
-        try {
-          let base64 = this.getBase64Image(document.getElementById("imageid"));
-          this.insertImage(base64, 30, 30, doc)
-        } catch (error) {
-          console.log('error cargando imagen - cancelando inclusion')
-        } 
-      }
-
-      this.writeText(enterprise.nombre, fontSize, 'center', doc);
-
-      this.writeText(enterprise.direccion, fontSize, 'center', doc);
-      this.writeText(enterprise.celular + '', fontSize, 'center', doc);
-      this.writeText(enterprise.telefono + '', fontSize, 'center', doc);
-
-      this.writeText('Ordern nro: ' + order.idOrden, fontSize, 'left', doc);
-      this.writeText('Fecha: ' + order.fechaIngreso, fontSize, 'left', doc);
-
-      // this.writeText('', 12, 'center', doc); // space
-      this.writeText(
-        'Nombre del cliente: ' + order.nombreCliente,
-        fontSize,
-        'left',
-        doc
-      );
-      this.writeText('Telefono: ' + order.telCliente, fontSize, 'right', doc, true);
-
-      this.drawLine(0.1, doc);
-
-      this.writeText('Articulo: ' + order.articulo, fontSize, 'left', doc);
-      this.writeText('Modelo: ' + order.modelo, fontSize, 'right', doc, true);
-      this.writeText('Marca: ' + order.marca, fontSize, 'center', doc, true);
-
-      this.drawLine(0.1, doc);
-
-      this.writeText('Falla: ', fontSize + 2, 'left', doc);
-      this.writeText(order.fallReportada || '', fontSize, 'left', doc);
-      // this.writeText('', 12, 'center', doc); // space
-
-      this.writeText('Observaciones: ', fontSize + 2, 'left', doc);
-
-      this.writeText(
-        typeof order.observaciones == 'undefined' ? '' : order.observaciones,
-        fontSize,
-        'left',
-        doc
-      );
-
-      this.writeText('Garantia: ', fontSize + 2, 'left', doc);
-      this.writeText(enterprise.garantia, fontSize, 'left', doc);
-
-      this.writeText('', 15, 'center', doc); // space
-
-      this.writeText(
-        'Firma del cliente:________________________________ ',
-        fontSize,
-        'right',
-        doc
-      );
-
-      this.writeText('', 30, 'center', doc); // space
-
-      this.writeText(enterprise.primerMsjRecibo == undefined ? '' : enterprise.primerMsjRecibo, 7, 'left', doc);
-
-    }
-
-    doc.save(order.fechaIngreso + '-' + order.idOrden + '.pdf');
+    doc.text('.', 0, 50)
+    doc.text('.', (PDF_WIDTH - DIFF_DOC), 50)
+    doc.save('Factura entrada.pdf');
   }
 }
