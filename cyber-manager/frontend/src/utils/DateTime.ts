@@ -2,7 +2,7 @@ export default class Datetime {
   
   convert(date: string, hour?: string) {
     let d = date.split('/');
-    let orderDate = d[2] + '-' + d[1] + '-' + d[0];
+    let orderDate = d[2] + '-' + d[0] + '-' + d[1];
     let h = (hour == undefined ? '' : hour);
     return orderDate + (h == '' ? '' : ' ' + h);
   }
@@ -30,6 +30,9 @@ export default class Datetime {
         new Date().toLocaleDateString(),
         new Date().toLocaleTimeString()
       ).split(' ');
+      let dParts = parts[0].split('-');
+      parts[0] = `${dParts[1]}/${dParts[2]}/${dParts[0]}`
+
         return `${parts[0]} ${parts[1]}` // remove AM or PM
     }
   }
@@ -57,7 +60,7 @@ export default class Datetime {
     // console.log('Normalize date: ', datetime)
     let partDate = datetime.split('T')[0].split('-');
     // console.log('Result: ', partDate[2] + '-' + partDate[1] + '-' + partDate[0] + ' ' + this.getHour(datetime))
-    return partDate[2] + '-' + partDate[1] + '-' + partDate[0] + ' ' + this.getHour(datetime)
+    return partDate[2] + '/' + partDate[1] + '/' + partDate[0] + ' ' + this.getHour(datetime).substring(0, 5)
   }
 
 
