@@ -6,7 +6,7 @@ import {
   updateUser,
   deleteUser,
   signIn
-} from "../controllers/user.controllers";
+} from "../controllers/User.controllers";
 
 const router = Router();
 
