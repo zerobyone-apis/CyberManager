@@ -10,6 +10,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
+    page: 'Home',
     userInfo: {
       id: -1,
       username: '',
@@ -23,6 +24,9 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
+    page(state: any, value) {
+      state.page = value;
+    },
     wizard(state: any, value) {
       state.wizard = value;
     },
@@ -42,6 +46,7 @@ export const store = new Vuex.Store({
     }
   },
   getters: {
+    page: state => state.page,
     userInfo: state => state.userInfo,
     getUsername: state => state.userInfo.username,
     getCharge: state => state.userInfo.charge,
