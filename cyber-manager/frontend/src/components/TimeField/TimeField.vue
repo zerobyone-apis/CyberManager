@@ -92,7 +92,7 @@
 <script lang="ts">
 import { Prop, Watch, Component } from "vue-property-decorator";
 import TimeFieldCode from "./TimeFieldCode";
-import Datetime from "../../utils/DateTime";
+import Datetime from "../../utils/Datetime";
 import "./TimeFieldStyle.scss";
 
 @Component({})
