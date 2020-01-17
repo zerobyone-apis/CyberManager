@@ -1,0 +1,20 @@
+
+// PDF A4 size
+$PDF_WIDTH: calc(596px - 150px);
+$PDF_HEIGHT: 842px;
+
+.invoice-page {
+  position: relative;
+  width: calc($PDF_WIDTH * 2) !important;
+  height: max-content;
+  background-color: white !important;
+  padding: 120px;
+  .banner {
+    text-align: center;
+  }
+
+  .small-font {
+    color: black;
+    font-size: 13px;
+  }
+}
