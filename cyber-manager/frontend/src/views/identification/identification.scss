@@ -2,7 +2,6 @@
   width: 100% !important;
   margin-left: 0 !important;
 }
-
 .sm-format,
 .md-format,
 .lg-format,
@@ -11,246 +10,258 @@
   margin-left: 20%;
 }
 
-#MainPage {
+#identification-page {
   position: absolute;
-  height: calc(100%-60px);
+  height: 100%; // less height of toolbar
   width: 100%;
-  top: 50px;
-  // padding: 10px;
-  background-color: white;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 60px !important;
+  padding-bottom: 65px !important;
+  background-image: linear-gradient(
+    to bottom right,
+    rgb(167, 225, 240),
+    rgb(47, 82, 235)
+  ); /* Standard syntax (must be last) */
+  background-image: url("https://www.elsetge.cat/myimg/f/11-115406_wide-hd-gray.jpg");
+
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
+  .back-column {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 400px;
+    height: 100%;
+    background-color: grey;
+  }
 
   .mini-toolbar {
-    .v-btn {
-      text-transform: none !important;
-    }
-    .v-icon {
-      color: rgb(18, 165, 74);
-      margin-right: 10px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-style: solid;
+    border-bottom-style: none;
+    border-color: rgb(235, 235, 235);
+    border-width: 2px;
+    background-color: rgba(255, 255, 255, 0.801);
+    .mini-toolbar_title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 30px;
+      color: rgb(56, 56, 56);
     }
   }
 
   .stepper {
-    box-shadow: none !important;
+    border-radius: 0px;
+    border-style: solid;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    border-color: rgb(235, 235, 235);
+    border-top-color: rgba(196, 196, 196, 0.61);
+    border-width: 2px;
+    background-color: rgba(255, 255, 255, 0.801);
+    box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.719);
+    height: 95%;
+    .v-stepper__content {
+      height: max-content !important;
+    }
+
+    .progress-linear {
+      position: absolute;
+      bottom: 0px !important;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+    }
   }
 
-  // step 1
-  .identificationPage {
-    // background-color: rgb(196, 196, 196);
-    // display: flex;
-
-    .identify-box {
+  // STEP 1 - Identification
+  .identify {
+    display: flex;
+    padding: 10px;
+    .service-number {
       position: relative;
-      width: 330px;
-      border-right-style: solid;
-      // padding: 10px;
-      padding-top: 0px;
-      border-width: 2px;
-      border-color: rgb(230, 230, 230);
-      // background-color: rgb(214, 214, 214);
-      padding-right: 20px;
+    }
+    .reception-date {
+      position: relative;
+      margin-left: 10px;
+    }
+  }
+  .notes-box {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    .damage {
+      width: 45%;
+      height: 50px;
+      margin: auto;
+    }
+    .notes {
+      width: 45%;
+      height: 50px;
+      margin: auto;
+    }
+  }
+  .orders-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-width: 300px;
 
-      .identify {
-        display: flex;
-        padding: 10px;
+    .search-box {
+      position: absolute;
+      z-index: 1;
+      top: 27px;
+      // width: 25%;
+      // min-width: 350px;
+      display: flex;
+      margin-top: 10px;
+      right: -30px !important;
 
-        .service-number {
-          position: relative;
-        }
-
-        .reception-date {
-          position: relative;
-          margin-left: 10px;
-        }
-      }
-
-      .client-fields-box {
-        padding: 10px;
-        padding-bottom: 0px;
-        padding-top: 0px;
-      }
-      .article-fields-box {
-        margin-top: 20px;
-        padding: 10px;
-        padding-bottom: 0px;
-        padding-top: 0px;
-
-        .custom-text-area {
-          margin-top: 30px;
-        }
-      }
-
-      .footer-box {
+      .select {
         position: relative;
-        width: 100%;
-        height: 50px;
-        text-align: center;
-
-        .btn-footer {
-          margin: 10px;
-          margin-right: 20px;
+        width: 100px;
+        height: 100%;
+        margin-right: 20px;
+      }
+      .field {
+        position: relative;
+        width: calc(100% - 150px);
+        height: 100%;
+        .v-icon {
+          color: green;
         }
       }
     }
 
-    .pedidos-box {
-      position: absolute;
-      width: calc(100% - 380px) !important;
-      height: 100%;
-      top: 25px;
-      left: 380px;
-
-      .search-box {
-        width: 100%;
-        display: flex;
-
-        .select {
-          position: relative;
-          width: 150px;
-          height: 100%;
-        }
-        .field {
-          position: relative;
-          width: calc(100% - 150px);
-          height: 100%;
+    .table-box {
+      position: relative;
+      width: 100% !important;
+      height: 485px !important;
+      background-color: rgba(255, 255, 255, 0.465);
+      text-align: center;
+      top: 110px;
+      .header-table {
+        right: 0px;
+        float: right;
+      }
+      .no-orders {
+        font-size: 20px;
+        color: grey;
+        opacity: 0.8;
+        margin-top: 100px;
+        .v-icon {
+          color: grey;
+          font-size: 80px;
         }
       }
-
-      .table-box {
-        position: relative;
-        width: 100%;
+      .orders-table {
+        background-color: rgba(230, 230, 230, 0) !important;
+        border-radius: 20px;
         height: 100%;
-
-        .header-table {
-          right: 0px;
-          float: right;
-        }
-
-        .pedidos-table {
-          overflow-y: scroll;
-          border-radius: 20px;
-          height: 90%;
-          margin-right: 20px;
-          padding-top: 10px;
-          .text-start {
-            .checkbox-marked {
-              width: 10px;
-              height: 10px;
-            }
+        margin-right: 20px;
+        padding-top: 10px;
+        .text-start {
+          .checkbox-marked {
+            width: 10px;
+            height: 10px;
           }
         }
       }
     }
+  }
 
-    .notes-box {
-      width: 100%;
+  // STEP 3 ENTERPRISE
+  .image-box {
+    position: relative;
+    text-align: center;
+    .btn-camera {
+      width: 250px;
       height: 100px;
-      display: flex;
-
-      .damage {
-        width: 45%;
-        height: 50px;
-        margin: auto;
+      border-radius: 10px;
+      .text-btn {
+        z-index: 1;
       }
-      .notes {
-        width: 45%;
-        height: 50px;
-        margin: auto;
+      .v-icon {
+        position: absolute;
+        font-size: 100px;
+        color: rgba(197, 197, 197, 0.5);
+      }
+    }
+    .file-btn {
+      width: 270px;
+      margin-bottom: 20px !important;
+    }
+    .img {
+      width: 250px;
+      height: 250px;
+      border-radius: 10px;
+    }
+  }
+
+  // STEP 3, 4 INVOICE
+  .content-doc {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    height: 600px;
+    overflow-x: scroll;
+    text-align: center !important;
+
+    .invoice-box {
+      position: relative;
+      width: calc(595px * 2) !important;
+      height: calc(842px * 2) !important;
+      background-color: white;
+      margin: auto;
+    }
+  }
+
+  // STEP 5 ANALYTICS
+  .content-analytics {
+    text-align: center;
+    .result-box {
+      font-size: 20px;
+      color: grey;
+      opacity: 0.8;
+      margin-top: 100px;
+      .v-icon {
+        color: grey;
+        font-size: 80px;
       }
     }
   }
-  // step 2
-  .repairPage {
-    .identify-box {
+  
+
+  // DEFAULT STEP STRUCTURE
+  .step-content {
+    display: flex;
+    height: 100%;
+    padding: 20px;
+
+    .left_content-box {
       position: relative;
-      width: 100%;
-      height: 50px;
-      display: flex;
+      width: 450px;
+      min-width: 320px;
+      margin-right: 40px;
 
-      .item-info {
-        margin: 20px;
+      .fields {
+        margin-top: 20px;
+        padding-bottom: 0px;
+        padding-top: 0px;
       }
     }
 
-    .content-box {
+    .right_content-box {
       position: relative;
-      padding-top: 30px;
-      margin: 20px;
-      display: flex;
+      width: 100% !important;
+      min-width: 300px;
+      height: 100%;
 
-      .status-box {
-        position: relative;
-        width: 300px;
-        margin: auto;
-      }
-
-      .dates-box {
-        position: relative;
-        width: 300px;
-        margin: auto;
-      }
-    }
-
-    .diagnosis-box {
-      width: 100%;
-    }
-
-    .garanty-box {
-      width: 100%;
-    }
-
-    .technical-box {
-      position: relative;
-      width: 300px;
-    }
-
-    .footer {
-      text-align: center;
-      .btn-footer {
-        margin: 20px;
-      }
-    }
-  }
-  // step 3
-  .enterprisePage {
-    .info-box {
-      display: flex;
-      .info-fields {
-        position: relative;
-        width: 330px;
-        padding: 20px;
-        // max-width: 100px
-        // height: 200px;
-      }
-      .image-box {
-        position: relative;
-        padding: 20px;
-        padding-left: 200px;
-        width: calc(100% - 330px);
-        height: 300px;
-
-        .btn-camera {
-          width: 270px;
-          height: 270px;
-        }
-
-        .file-btn {
-          width: 270px;
-          margin-bottom: 20px !important;
-        }
-
-        .img {
-          width: 270px;
-          height: 270px;
-        }
-      }
-    }
-    .pdf-fields {
-      padding: 20px;
-    }
-    .footer {
-      text-align: center;
-      .btn-footer {
-        margin: 20px;
+      .content-box {
+        margin-top: 20px;
       }
     }
   }

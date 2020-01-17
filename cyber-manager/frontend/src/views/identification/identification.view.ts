@@ -1,272 +1,358 @@
 import vue from 'vue';
+import Datetime from '../../utils/Datetime';
 import Validation from '../../utils/Validation';
 import InputPdf from '../../utils/pdfDocuments/InputPDF';
 import OutputPdf from '../../utils/pdfDocuments/OutputPDF';
 import IntegrationBackend from '../../utils/IntegrationBackend';
-import Pedido from '../../../../backend/src/models/pedido';
-import EmpresaAction from '../../actions/Empresa.actions';
-import PedidoAction from '../../actions/Pedido.actions';
 
-import { PedidoInterface } from '../../../../backend/src/interface/PedidoInterface';
-import PedidoList from '../../../../backend/src/models/PedidoList';
-import UserStore from '../../types/UserStore';
-import Reparacion from '../../types/Reparacion';
-import Empresa from '../../../../backend/src/models/empresa';
+import EnterpriseAction from '../../actions/Enterprise.actions';
+import OrderAction from '../../actions/Order.actions';
+import RepairAction from '../../actions/Repair.actions';
 
-import Datetime from '../../utils/Datetime';
+import { IUserStore } from '../../types/UserStore.type';
+import { IEnterprise } from '../../types/Enterprise.type';
+import { IRepair } from '../../types/Repair.type';
+import { IOrder } from '../../types/Order.type';
 
-export default class IndentificationCode extends vue {
-  // user info saved in the store
-  private userInfo: UserStore = this.$store.getters.userInfo;
-  // Actions
-  // ............
-  private empresaActions: EmpresaAction = new EmpresaAction();
-  public pedidoActions: PedidoAction = new PedidoAction();
-  // ............
-  public newPedido: PedidoInterface = {
-    idOrden: '',
-    fechaIngreso: new Datetime().now(),
-    nombreCliente: '',
-    telCliente: '',
-    articulo: '',
-    modelo: '',
-    marca: '',
-    fallReportada: '',
-    observaciones: '',
-    isCanceled: '',
-    fechaReparacion: '',
-    fechaEntrega: '',
-    reparacion: '',
-    precio: '',
+import { Watch } from 'vue-property-decorator';
+import ResultObject from '../../../../backend/src/models/ResultObject';
+
+import htmlToImage from "html-to-image";
+
+
+/*
+
+  TODO
+  agregar nuevos attbs en order, reparation y en base de dato: 
+
+  garantia: string
+  Estara ubicado en reparacion, bajo status
+
+  costoRepuesto: number
+  Estara abajo de precio
+
+  Solo el USER_ADMIN podra ver estos dos campos
+
+  ARQUEO:
+
+  (fechaInicio a fechaFin) => obtiene la diferencia entre 
+  ganancia de los pedidos entregados en ese rango de tiempo
+  
+  SELECT sum(o.price) AS TOTAL_PRICE, 
+  sum(o.costoRepuesto) AS TOTAL_COSTO_REPUESTO 
+  FROM orders o WHERE fechaEntrega 
+  BETWEEN(fechaInicio, fechaFin)
+
+  Solo podra verla el supervisor, es una tool 
+
+*/
+
+
+import {
+  ORDER_CONFIRM,
+  ORDER_DELIVERED,
+  ORDER_RECIVED,
+  ORDER_REPAIR,
+  ORDER_WORKSHOP
+} from '../../types/OrderStatus.type'
+import { IAnalitycs } from '@/types/Analytics.type';
+
+export default class IndentificationView extends vue {
+
+  private userInfo: IUserStore = this.$store.getters.userInfo;
+
+  private enterpriseActions: EnterpriseAction = new EnterpriseAction();
+  public orderActions: OrderAction = new OrderAction();
+  public repairActions: RepairAction = new RepairAction();
+
+  public newOrder: IOrder = {
+    id: 0,
+    admissionDate: '',
+    admissionDateFront: new Datetime().now(),
+    clientName: '',
+    clientPhone: '',
+    article: '',
+    model: '',
+    brand: '',
+    reportedFailure: '',
+    observations: '',
+    isCanceled: false,
+    deliverDate: '',
     status: ''
   };
-  public pedidos: PedidoList = new PedidoList();
-  public selectedPedido = -1;
-  // ............
-  private empresa: Empresa = new Empresa();
-  // ............
+  private repair: IRepair = {
+    id: -1,
+    clientName: '',
+    article: '',
+    warranty: '',
+    technical: '',
+    deliverDate: '',
+    repairDate: '',
+    reparation: '',
+    price: 0,
+    status: ''
+  };
+  private enterprise: IEnterprise = {
+    id: -1,
+    createdDate: '',
+    enterpriseName: '',
+    email: '',
+    phone: 0,
+    cellphone: 0,
+    location: '',
+    enterpriseRules: '',
+    firstMessage: '',
+    secondMessage: '',
+    urlLogo: '',
+    lastUpdate: '',
+    username: ''
+  };
+  private analitycs: IAnalitycs = {
+    startDate: '',
+    endDate: ''
+  }
 
-  public wizard = 1;
+  public orders: IOrder[] = [];
+  public selectedOrder = -1;
+
+  private wizard: number = 1;
   private backend: IntegrationBackend = new IntegrationBackend();
   private v: Validation = new Validation();
   private interactionsMode = {
     order: 0 // 0 = add / 1 = save
   };
-  private disabledButtons: boolean = false;
   private clientFields: Record<string, any> = {
-    objectName: 'newPedido',
+    objectName: 'newOrder',
     fields: [
-      ['nombreCliente', 'string'],
-      ['telCliente', 'number']
+      ['clientName', 'string'],
+      ['clientPhone', 'number']
     ]
   };
   private articleFields: Record<string, any> = {
-    objectName: 'newPedido',
+    objectName: 'newOrder',
     fields: [
-      ['articulo', 'string'],
-      ['marca', 'string'],
-      ['modelo', 'string']
+      ['article', 'string'],
+      ['brand', 'string'],
+      ['model', 'string']
     ]
   };
-  private headerPedido = [
-    { text: 'Nro', value: 'idOrden' },
-    { text: 'Cliente', value: 'nombreCliente' },
-    { text: 'Acciones', value: 'action' },
-    { text: 'Fecha Ingreso', value: 'fechaIngreso' },
-    { text: 'Articulo', value: 'articulo' },
-    { text: 'Status', value: 'status' }
-  ];
-  private status: any = {
-    // see more colors in: https://vuetifyjs.com/en/styles/colors
-    // used in v-select into the v-data-table as Object.keys(status): string[]
-    Recibido: 'blue lighten-2',
-    Reparacion: 'yellow lighten-1',
-    'Confirmando Pago': 'green lighten-1',
-    Entregado: 'blue-grey lighten-3',
-    'En Taller': 'deep-orange lighten-2'
-  };
 
-  private reparacionPedido: any = {
-    idPedido: -1,
-    nombreCliente: '',
-    articulo: '',
-    modelo: '',
-    garantia: '',
-    tecnico: '',
-    fechaEntrega: '',
-    fechaReparacion: '',
-    reparacion: '',
-    precio: 0,
-    status: ''
-  };
+  private disabledButtons: boolean = false;
+
+
+  private notification = {
+    message: '',
+    color: 'grey',
+    visible: false
+  }
+  private showNotificationSuccess(message: string) {
+    this.notification.color = 'green';
+    this.notification.message = message;
+    this.notification.visible = true;
+  }
+  private showNotificationFail(message: string) {
+    this.notification.color = 'red lighten-1';
+    this.notification.message = message;
+    this.notification.visible = true;
+  }
+
+
+
+  private headerOrder = [
+    { text: 'Nro', value: 'id' },
+    { text: 'Cliente', value: 'clientName' },
+    { text: 'Fecha Ingreso', value: 'admissionDateFront' },
+    { text: 'Articulo', value: 'article' },
+    { text: 'Status', value: 'status' },
+    { text: 'Acciones', value: 'action' }
+  ];
+
+  private status = [
+    ORDER_CONFIRM,
+    ORDER_DELIVERED,
+    ORDER_RECIVED,
+    ORDER_REPAIR,
+    ORDER_WORKSHOP
+  ]
+
+  private getColorByStatus(selectedStatus: string | { text: string, color: string }) {
+    let color: string = 'grey';
+    this.status.forEach(item => {
+      if (typeof selectedStatus === 'object') {
+        if (item.text == selectedStatus.text) {
+          color = selectedStatus.color;
+        }
+      } else {
+        if (item.text == selectedStatus) {
+          color = item.color;
+        }
+      }
+    })
+    return color;
+  }
+
   private searchFilters: any = {
-    nombre: 'nombreCliente',
+    nombre: 'clientName',
+    articulo: 'article',
     status: 'status'
-    // 'id': 'idOrden'
   };
   private search: any = {
     filter: 'nombre',
     value: ''
   };
-  ordenservice: any;
 
-  // FUNCTIONS ACTIONS-
+  /** 
+   * @description Minitoolbar Functions
+   * miniToolbar: buttons array
+   * execMiniToolbar(index) Execute the correspond action of the specify index
+   * @Watch('selectedPedido') Listen this vars for changes in buttons
+   * @Watch('wizard')
+   */
+  public miniToolbar = [
+    { text: 'Identificacion', icon: 'people', disabled: false, visible: true },
+    { text: 'Reparacion', icon: 'settings', disabled: true, visible: true },
+    { text: 'Entrada', icon: 'input', disabled: true, visible: true },
+    { text: 'Salida', icon: 'send', disabled: true, visible: true },
+    { text: 'Empresa', icon: 'home', disabled: false, visible: (this.$store.getters.getCharge == 'Supervisor') },
+    { text: 'Arqueo', icon: 'trending_up', disabled: false, visible: (this.$store.getters.getCharge == 'Supervisor') },
+  ];
+
+  async execMiniToolbarAction(index: number) {
+    this.wizard = index + 1;
+  }
+
+  @Watch('selectedOrder')
+  onChangeSelectedOrder() {
+    if (this.selectedOrder != -1) {
+      this.miniToolbar[1].disabled = false;
+      this.miniToolbar[2].disabled = false;
+    } else {
+      this.miniToolbar[1].disabled = true;
+      this.miniToolbar[2].disabled = true;
+    }
+  }
+
+  @Watch('wizard')
+  onChangeWizard() {
+    switch (this.wizard) {
+      case 1:
+        this.miniToolbar[2].disabled = false;
+        this.miniToolbar[3].disabled = true;
+        break;
+      case 2:
+        this.miniToolbar[2].disabled = true;
+        this.miniToolbar[3].disabled = false;
+        break;
+    }
+  }
 
   async init() {
     this.disabledButtons = true;
-    this.pedidos = await this.pedidoActions.getAll();
-    this.empresa = await this.empresaActions.get(this.userInfo);
+    this.orders = await this.orderActions.getAll();
+    this.enterprise = await this.enterpriseActions.get(this.userInfo) || this.enterprise;
+    this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
     this.disabledButtons = false;
   }
 
-  async addPedido() {
+  async addOrder() {
     if (
-      this.v.validateFields(this.newPedido, [
+      this.v.validateFields(this.newOrder, [
         this.clientFields,
         this.articleFields
       ])
     ) {
       this.disabledButtons = true;
-      let responseAddPedido = await this.pedidoActions.add(this.newPedido);
-      if (responseAddPedido != null) {
-        // if null, error
-        this.pedidos.add(responseAddPedido);
-        //clear fields pedidos UI
-        Object.assign(this.newPedido, this.cleanFields);
+      let responseAddOrder: ResultObject = await this.orderActions.add(this.newOrder);
+      if (responseAddOrder.statusCode === 200) {
+        this.orders.push(responseAddOrder.value);
+        Object.assign(this.newOrder, this.cleanFields);
+        this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
+        this.showNotificationSuccess('Orden creada exitosamente!');
+      } else {
+        this.showNotificationFail('Ocurrio un error guardando los cambios')
+        console.log('Error add order', responseAddOrder)
       }
       this.disabledButtons = false;
       this.interactionsMode.order = 0;
     }
   }
 
-  // El status de la tabla, al cambiarlo, se cambia en el pedido seleccionado dentro
-  // del array pedidos
 
-  async savePedido() {
+  async saveOrder() {
     if (
-      this.v.validateFields(this.newPedido, [
+      this.v.validateFields(this.newOrder, [
         this.clientFields,
         this.articleFields
       ])
     ) {
       this.disabledButtons = true;
-      let responseSavePedido = await this.pedidoActions.save(this.newPedido);
-      if (responseSavePedido != null) {
-        let pSelected: Pedido = this.pedidos.get(this.selectedPedido);
-        Object.assign(pSelected, responseSavePedido);
-        this.pedidos.set(this.selectedPedido, pSelected);
-        // clear fields pedidos UI
-        Object.assign(this.newPedido, this.cleanFields);
-        this.selectedPedido = -1;
+      let responseSaveOrder = await this.orderActions.save(this.newOrder);
+      if (responseSaveOrder != null) {
+        let pSelected: IOrder = this.orders[this.selectedOrder];
+
+
+        Object.assign(pSelected, responseSaveOrder);
+        console.log(this.orders[this.selectedOrder]);
+        this.orders[this.selectedOrder] = pSelected;
+        console.log(this.orders[this.selectedOrder]);
+
+        Object.assign(this.newOrder, this.cleanFields);
+        this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
+        this.selectedOrder = -1;
+        this.showNotificationSuccess('Orden guardados exitosamente!');
       }
-
       this.disabledButtons = false;
       this.interactionsMode.order = 0;
     }
   }
 
-  async deletePedido(selectedPedido: any) {
-    this.disabledButtons = true;
-    await this.pedidoActions.delete(selectedPedido);
-    this.pedidos.remove(this.selectedPedido);
-    Object.assign(this.newPedido, this.cleanFields);
-    this.interactionsMode.order = 0;
-    this.selectedPedido = -1;
-    this.disabledButtons = false;
-  }
-
-  // Reparation
-  private showSelectedPedido(pedido: any) {
-    this.selectedPedido = this.pedidos.getArray().indexOf(pedido);
-    Object.assign(this.newPedido, this.cleanFields);
-    Object.assign(this.newPedido, {
-      idOrden: pedido._idOrden,
-      fechaIngreso: pedido.fechaIngreso,
-      fechaReparacion: pedido.fechaReparacion,
-      fechaEntrega: pedido.fechaEntrega,
-      nombreCliente: pedido.nombreCliente,
-      telCliente: pedido.telCliente,
-      articulo: pedido.articulo,
-      modelo: pedido.modelo,
-      marca: pedido.marca,
-      fallReportada: pedido.fallReportada,
-      observaciones: pedido.observaciones,
-      isCanceled: pedido.isCanceled,
-      status: pedido.status,
-      precio: pedido.precio
-    });
-
-    this.reparacionPedido = {
-      idPedido: this.newPedido.idOrden,
-
-      // formatting dates:
-      fechaReparacion: new Datetime().convertDatetime(
-        this.newPedido.fechaReparacion || ''
-      ),
-      fechaEntrega: new Datetime().convertDatetime(
-        this.newPedido.fechaEntrega || ''
-      ),
-
-      nombreCliente: this.newPedido.nombreCliente,
-      articulo: this.newPedido.articulo,
-      reparacion: this.newPedido.reparacion,
-      garantia: this.empresa.garantia,
-      tecnico: this.userInfo.username,
-      status: this.newPedido.status ? this.newPedido.status : null,
-      precio: this.newPedido.precio
-      // status: this.newPedido.status
-    };
-    console.log(this.reparacionPedido.fechaEntrega);
-
-    this.v.clearFails();
-    this.interactionsMode.order = 1; // save mode
-  }
-
-  async saveRepairPedido() {
+  async saveRepair() {
     if (
-      this.v.validateFields(this.reparacionPedido, [
+      this.v.validateFields(this.repair, [
         this.clientFields,
         this.articleFields
       ])
     ) {
       this.disabledButtons = true;
-      await this.pedidoActions.saveRepairPedido(
-        this.reparacionPedido,
-        this.newPedido
-      );
-      // change status in item selected
-      let updatedPedido: Pedido = this.pedidos.get(this.selectedPedido);
-      updatedPedido.status = this.reparacionPedido.status;
-      this.pedidos.set(this.selectedPedido, updatedPedido);
-
+      let responseSaveRepair = await this.repairActions.saveRepair(this.repair);
+      if (responseSaveRepair != null) {
+        let oSelected: IOrder = this.orders[this.selectedOrder];
+        oSelected.status = responseSaveRepair.status;
+        this.newOrder.status = responseSaveRepair.status;
+        Object.assign(oSelected, responseSaveRepair);
+        this.orders[this.selectedOrder] = oSelected;
+        this.showNotificationSuccess('Cambios guardados exitosamente!')
+      } else {
+        this.showNotificationFail('Ocurrio un error guardando los cambios')
+      }
       this.disabledButtons = false;
-      this.interactionsMode.order = 0;
     }
   }
 
-  private cancelSavePedido() {
-    if (confirm('Seguro que desea descartar los cambios?')) {
-      let updatedPedido: Pedido = this.pedidos.get(this.selectedPedido);
-      updatedPedido.status = this.newPedido.status;
-      this.pedidos.set(this.selectedPedido, updatedPedido);
-      this.newPedido = new Pedido(this.cleanFields);
-      this.selectedPedido = -1;
 
-      this.v.clearFails();
-      this.interactionsMode.order = 0; // mode new
-    }
-  }
-
-  private async saveEmpresaInfo() {
+  
+  private async saveEnterprise() {
     this.disabledButtons = true;
-    await this.empresaActions.save();
+    let responseSaveEnterprise: ResultObject = await this.enterpriseActions.save(this.enterprise);
+    if (responseSaveEnterprise.statusCode === 200) {
+      this.showNotificationSuccess('Empresa guardada exitosamente!')
+    } else {
+      this.showNotificationFail('Ocurrio un error guardando los cambios')
+    }
     this.disabledButtons = false;
   }
 
-  private changeColorToEdit(pedido: Pedido) {
+  private async getEnterprise() {
+    this.enterprise = await this.enterpriseActions.get(this.userInfo) || this.enterprise;
+  }
+
+
+
+
+  private changeColorToEdit(order: IOrder) {
     if (
       this.interactionsMode.order == 1 &&
-      this.selectedPedido == this.pedidos.getArray().indexOf(pedido)
+      this.selectedOrder == this.orders.indexOf(order)
     ) {
       return 'green';
     } else {
@@ -274,49 +360,114 @@ export default class IndentificationCode extends vue {
     }
   }
 
-  private generateInputPdf() {
-    let inputPdf: InputPdf = new InputPdf();
-    try {
-      //Validar que boton llama este metodo en base al WIzard que tenga
-      //Si wiazard es uno, imprimir el recibo de ingreso de pedido, con el primer mesnaje recibo
-      //Si wiazard es dos, imprimir el recibo de entrega de pedido, con el segundo mesnaje recibo
-      /* Tenemos que configurar los parametros ->
-              - Primer MSJ Recibo 
-              - Segundo MSJ Recibo 
-          Que no estan en el PDF y Ajustar los margenes para que no se salgan del A4*/
-      inputPdf.generateDoc(this.empresa, new Pedido(this.newPedido));
-    } catch (error) {
-      console.error('Error generatedDoc -> ', error);
+  async deleteOrder(selectedOrder: IOrder) {
+    this.disabledButtons = true;
+    await this.orderActions.delete(selectedOrder);
+    this.orders.splice(this.selectedOrder, 1);
+    Object.assign(this.newOrder, this.cleanFields);
+    this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
+    this.interactionsMode.order = 0;
+    this.selectedOrder = -1;
+    this.disabledButtons = false;
+  }
+
+
+  private showSelectedOrder(order: IOrder) {
+    this.selectedOrder = this.orders.indexOf(order);
+    Object.assign(this.newOrder, this.cleanFields);
+    Object.assign(this.newOrder, {
+      id: order.id,
+      admissionDate: order.admissionDate,
+      admissionDateFront: order.admissionDateFront,
+      deliverDate: order.deliverDate,
+      clientName: order.clientName,
+      clientPhone: order.clientPhone,
+      article: order.article,
+      model: order.model,
+      brand: order.brand,
+      reportedFailure: order.reportedFailure,
+      observations: order.observations,
+      isCanceled: order.isCanceled,
+      status: order.status,
+    });
+    this.loadRepair(order);
+    this.v.clearFails();
+    this.interactionsMode.order = 1;
+  }
+
+  loadRepair(order: IOrder) {
+    this.repair = {
+      id: order.id || -1,
+      repairDate: order.repairDate || '',
+      deliverDate: order.deliverDate || '',
+      clientName: this.newOrder.clientName,
+      article: this.newOrder.article,
+      reparation: order.reparation || "",
+      warranty: order.warranty,
+      technical: this.userInfo.username,
+      status: this.newOrder.status || ORDER_RECIVED.text,
+      price: order.price || 0
+    };
+  }
+
+  private cancelSaveOrder() {
+    if (confirm('Seguro que desea descartar los cambios?')) {
+      let updatedOrder: IOrder = this.orders[this.selectedOrder];
+      updatedOrder.status = this.newOrder.status;
+      this.orders[this.selectedOrder] = updatedOrder;
+      Object.assign(this.newOrder, this.cleanFields)
+      this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
+      this.selectedOrder = -1;
+      this.v.clearFails();
+      this.interactionsMode.order = 0; // mode new
     }
   }
 
-  private generateOutputPdf() {
-    let outputPdf: OutputPdf = new OutputPdf();
-    try {
-      //Validar que boton llama este metodo en base al WIzard que tenga
-      //Si wiazard es uno, imprimir el recibo de ingreso de pedido, con el primer mesnaje recibo
-      //Si wiazard es dos, imprimir el recibo de entrega de pedido, con el segundo mesnaje recibo
-      /* Tenemos que configurar los parametros ->
-              - Primer MSJ Recibo 
-              - Segundo MSJ Recibo 
-          Que no estan en el PDF y Ajustar los margenes para que no se salgan del A4*/
-      let pedido = new Pedido(this.newPedido);
-      pedido.reparacion = this.reparacionPedido.reparacion;
+  private beginAnalitycs() {
 
-      outputPdf.generateDoc(this.empresa, pedido);
-    } catch (error) {
-      console.error('Error generatedDoc -> ', error);
-    }
   }
+
+  private resetAnalitycs() {
+    
+  }
+
+  // private generateInputPdf() {
+  //   // let inputPdf: InputPdf = new InputPdf();
+  //   try {
+  //     let node: any = document.getElementsByClassName('invoice-box')[0];
+  //     htmlToImage.toPng(node)
+  //       .then(function (dataUrl) {
+  //         var img = new Image();
+  //         img.src = dataUrl;
+  //         (document.getElementById('invoice-capture') || document.body).appendChild(img);
+  //         // inputPdf.generateDoc(img);
+  //       })
+  //       .catch(function (error) {
+  //         console.error('error generando captura del input pdf', error);
+  //       });
+  //   } catch (error) {
+  //     console.error('Error generatedDoc Identification -> ', error);
+  //   }
+  // }
+
+  // private generateOutputPdf() {
+  //   let outputPdf: OutputPdf = new OutputPdf();
+  //   try {
+  //     let order = this.newOrder;
+  //     order.reparation = this.repair.reparation;
+  //     // outputPdf.generateDoc(this.enterprise, order);
+  //   } catch (error) {
+  //     console.error('Error generatedDoc -> ', error);
+  //   }
+  // }
 
   private filterItems() {
     if (this.search.value == '') {
-      return this.pedidos.getArray();
+      return this.orders;
     } else {
       // filter
       let filterKey = this.searchFilters[this.search.filter];
-      return this.pedidos
-        .getArray()
+      return this.orders
         .filter(
           (pedido: any) =>
             (pedido[filterKey] || '')
@@ -332,70 +483,27 @@ export default class IndentificationCode extends vue {
     reader.readAsDataURL(image);
     reader.onload = e => {
       let data: any = e.target;
-      this.empresa.urlLogo = data['result'].toString();
+      this.enterprise.urlLogo = data['result'].toString();
     };
   }
 
-  private getColorByStatus(status: string) {
-    return this.status[status] || 'grey';
-  }
-
-  //Count of ids and setting order service plus one, 48 + 1 = 49
-  /*   private getOrderService() {
-    let ordenservice: any = this.pedidos.getArray();
-    console.log(ordenservice);
-    var count = Math.max(this.ordenservice.idOrden) + 1;
-    this.newPedido.idOrden == '' ? count : this.newPedido.idOrden;
-    return count;
-  } */
-
   //Clear fields object UI-CLEAN-Pedido
-  private cleanFields: PedidoInterface = {
-    idOrden: '',
-    fechaIngreso: new Datetime().now(),
-    nombreCliente: '',
-    telCliente: '',
-    articulo: '',
-    modelo: '',
-    marca: '',
-    fallReportada: '',
-    observaciones: '',
-    isCanceled: '',
-    fechaReparacion: '',
-    fechaEntrega: '',
-    reparacion: '',
-    precio: '',
+  private cleanFields: IOrder = {
+    id: 0,
+    admissionDate: new Datetime().now(),
+    admissionDateFront: new Datetime().now(),
+    clientName: '',
+    clientPhone: '',
+    article: '',
+    model: '',
+    brand: '',
+    reportedFailure: '',
+    observations: '',
+    isCanceled: false,
+    repairDate: '',
+    deliverDate: '',
+    reparation: '',
+    price: 0,
     status: ''
   };
 }
-
-/* NO BORRAR
-
-                  <template v-slot:item.status="{ item }">
-                    <!-- {{ 'mode:' + interactionsMode.order }}
-                    {{ '/unselected:' + (selectedPedido != pedidos.getArray().indexOf(item)) }}
-                    {{ '/pos:' + pedidos.getArray().indexOf(item) }}
-                    {{ '/selected:' + selectedPedido }}-->
-                    <v-select
-                      v-model="item.status"
-                      :items="Object.keys(status)"
-                      @change="changeStatus"
-                      :disabled="
-                        (interactionsMode.order == 1 &&
-                          selectedPedido !=
-                            pedidos.getArray().indexOf(item)) ||
-                          interactionsMode.order == 0
-                      "
-                      chips
-                      flat
-                      attach
-                      label="status"
-                    >
-                      <template v-slot:selection="{ item }">
-                        <v-chip :color="getColorByStatus(item)">
-                          <span>{{ item }}</span>
-                        </v-chip>
-                      </template>
-                    </v-select>
-                  </template>
-*/
