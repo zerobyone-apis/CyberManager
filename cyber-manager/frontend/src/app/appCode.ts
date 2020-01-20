@@ -2,13 +2,9 @@
 import { Vue } from "vue-property-decorator";
 
 export default class AppCode extends Vue {
-    created() {
-        this.init();
-    }
-
     init() {
-        console.log(this.$store.getters.userLogged)
         if (!this.$store.getters.userLogged) {
+            this.$store.commit('page', 'Home');
             this.$router.push("/");
         }
     }
