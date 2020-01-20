@@ -1,20 +1,18 @@
 import { Request, Response } from 'express';
-import MysqlConnection from '../../sql/connection/MysqlConnection';
-import { UserInterface } from '../interface/UserInterface';
-import DateTime from '../utils/Datetime';
+import { IUser } from '../types/User.type';
+import DateTime from '../utils/DateTime';
 
 import QueryFunctions from '../../sql/connection/QueryFunctions';
-import Queries from '../../sql/queries/Queries';
+import Queries, { USER_TABLE } from '../../sql/queries/Queries';
 import ResultObject from '../models/ResultObject';
 
-// Settings
 let datetime: DateTime = new DateTime();
 let queryFunctions: QueryFunctions = new QueryFunctions();
 let queries: Queries = new Queries();
 
-//Exports functions
+
 export async function getUsers(req: Request, res: Response): Promise<Response> {
-  let result = await queryFunctions.get(queries.getQuery('user', 'getAll'), []);
+  let result = await queryFunctions.query(queries.getQuery(USER_TABLE, 'getAll'), []);
   if (result.statusCode == 200) {
     return res.status(200).json(result.value);
   } else {
@@ -23,16 +21,16 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
 }
 
 export async function createUser(req: Request, res: Response) {
-  const newUser: UserInterface = req.body.data;
+  const newUser: IUser = req.body.data;
   let queryParams = [
     newUser.username,
     newUser.passwd,
-    newUser.cargo,
+    newUser.charge,
     newUser.isAdmin,
-    new Date().getDate()
+    newUser.createOn
   ];
-  let result: ResultObject = await queryFunctions.action(
-    queries.getQuery('user', 'create'),
+  let result: ResultObject = await queryFunctions.query(
+    queries.getQuery(USER_TABLE, 'create'),
     queryParams
   );
   if (result.statusCode == 200) {
@@ -43,11 +41,11 @@ export async function createUser(req: Request, res: Response) {
 }
 
 export async function updateUser(req: Request, res: Response) {
-  const { username, passwd, cargo, isAdmin }: UserInterface = req.body.data;
+  const { username, passwd, charge, isAdmin }: IUser = req.body.data;
   const id = parseInt(req.params.id);
-  let queryParams = [username, passwd, cargo, isAdmin, datetime.now(), id];
-  let result: ResultObject = await queryFunctions.action(
-    queries.getQuery('user', 'update'),
+  let queryParams = [username, passwd, charge, isAdmin, datetime.now(), id];
+  let result: ResultObject = await queryFunctions.query(
+    queries.getQuery(USER_TABLE, 'update'),
     queryParams
   );
   if (result.statusCode == 200) {
@@ -60,8 +58,8 @@ export async function updateUser(req: Request, res: Response) {
 
 export async function deleteUser(req: Request, res: Response) {
   const id = parseInt(req.params.id);
-  let result: ResultObject = await queryFunctions.action(
-    queries.getQuery('user', 'delete'),
+  let result: ResultObject = await queryFunctions.query(
+    queries.getQuery(USER_TABLE, 'delete'),
     [id]
   );
   if (result.statusCode == 200) {
@@ -76,8 +74,8 @@ export async function deleteUser(req: Request, res: Response) {
 
 export async function findUserByID(req: Request, res: Response) {
   const id = parseInt(req.params.id);
-  const resultUser: ResultObject = await queryFunctions.get(
-    queries.getQuery('user', 'getId'),
+  const resultUser: ResultObject = await queryFunctions.query(
+    queries.getQuery(USER_TABLE, 'getId'),
     [id]
   );
 
@@ -96,10 +94,10 @@ export async function findUserByID(req: Request, res: Response) {
 }
 
 export async function signIn(req: Request, res: Response) {
-  const newUser: UserInterface = req.body.data;
-  const paramsQuery = [newUser.username, newUser.passwd, newUser.cargo];
-  const result: ResultObject = await queryFunctions.get(
-    queries.getQuery('user', 'signIn'),
+  const newUser: IUser = req.body.data;
+  const paramsQuery = [newUser.username, newUser.passwd, newUser.charge];
+  const result: ResultObject = await queryFunctions.query(
+    queries.getQuery(USER_TABLE, 'signIn'),
     paramsQuery
   );
   if (result.statusCode == 200) {
