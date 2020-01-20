@@ -1,6 +1,6 @@
 import ResultObject from '../../../backend/src/models/ResultObject';
 import IntegrationBackend from '../utils/IntegrationBackend';
-import Datetime from '../utils/Datetime';
+import Datetime from '../utils/DateTime';
 import { IOrder } from '@/types/Order.type';
 import {
   ORDER_CONFIRM,
@@ -8,11 +8,9 @@ import {
   ORDER_RECIVED,
   ORDER_REPAIR,
   ORDER_WORKSHOP
-} from '../types/OrderStatus.type'
-
+} from '../types/OrderStatus.type';
 
 export default class OrderActions {
-
   private backend: IntegrationBackend = new IntegrationBackend();
 
   public async getAll() {
@@ -24,10 +22,10 @@ export default class OrderActions {
         '/pedido'
       );
       responseOrders.forEach((order: IOrder) => {
-        
-        order.admissionDateFront = new Datetime().normalize((order.admissionDate || '').toString()
+        order.admissionDateFront = new Datetime().normalize(
+          (order.admissionDate || '').toString()
         );
-        
+
         orders.push(order);
       });
       return orders;
@@ -37,14 +35,15 @@ export default class OrderActions {
     }
   }
 
-
   public async add(order: IOrder) {
     try {
       let data: IOrder = {
-        admissionDate: new Datetime().convertDatetime(order.admissionDateFront || ''),
+        admissionDate: new Datetime().convertDatetime(
+          order.admissionDateFront || ''
+        ),
         clientName: order.clientName,
         clientPhone: order.clientPhone,
-        
+
         deliverDate: undefined,
         repairDate: undefined,
 
@@ -56,14 +55,18 @@ export default class OrderActions {
         isCanceled: false,
         status: ORDER_RECIVED.text
       };
-      const response: { id: number }[] = await this.backend.send('post', data, '/pedido');
+      const response: { id: number }[] = await this.backend.send(
+        'post',
+        data,
+        '/pedido'
+      );
       let newOrder: IOrder = {
         id: response[0].id,
         admissionDate: data.admissionDate,
 
         deliverDate: data.deliverDate,
         repairDate: data.repairDate,
-        
+
         article: data.article,
         reportedFailure: data.reportedFailure,
         isCanceled: data.isCanceled,
@@ -75,14 +78,13 @@ export default class OrderActions {
         status: data.status,
         clientPhone: data.clientPhone,
         reparation: data.reparation
-      }
+      };
       return new ResultObject(200, newOrder);
     } catch (error) {
       return new ResultObject(404, error);
       console.error('Error Order.actions method add -> ', error.message);
     }
   }
-
 
   public async save(order: IOrder) {
     try {
@@ -96,9 +98,7 @@ export default class OrderActions {
         observations: order.observations,
         isCanceled: false,
         repairDate:
-          order.repairDate == ''
-            ? new Datetime().getDate()
-            : order.repairDate,
+          order.repairDate == '' ? new Datetime().getDate() : order.repairDate,
         status: order.status != '' ? order.status : ORDER_RECIVED.text
       };
       const response: any = await this.backend.send(
@@ -112,7 +112,6 @@ export default class OrderActions {
       console.error('Ocurrio un error actualizando el pedido -> ', error);
     }
   }
-
 
   public async delete(pedido: IOrder) {
     if (confirm('Seguro que desea eliminar la orden seleccionada?')) {
@@ -128,7 +127,6 @@ export default class OrderActions {
     }
   }
 
-
   getMaxIdOfOrders(orders: IOrder[]) {
     let ids: number[] = [];
     orders.map(order => {
@@ -136,9 +134,8 @@ export default class OrderActions {
       ids.push(id);
     });
     let maxId: number = Math.max(...ids);
-    return (maxId === -Infinity ? 0 : maxId + 1);
+    return maxId === -Infinity ? 0 : maxId + 1;
   }
-
 
   public orderBase: IOrder = {
     id: 1,
@@ -158,7 +155,6 @@ export default class OrderActions {
     status: ''
   };
 
-
   public status: any = {
     recibido: false,
     reparandose: false,
@@ -166,7 +162,6 @@ export default class OrderActions {
     entregado: false,
     en_talleres: false
   };
-
 
   private validateStatus = (req: any): string | undefined => {
     switch (this.status) {

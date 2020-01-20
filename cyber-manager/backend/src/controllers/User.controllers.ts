@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { IUser } from '../types/User.type';
-import DateTime from '../utils/DateTime';
+import DateTime from '../utils/Datetime';
 
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries, { USER_TABLE } from '../../sql/queries/Queries';
@@ -10,9 +10,11 @@ let datetime: DateTime = new DateTime();
 let queryFunctions: QueryFunctions = new QueryFunctions();
 let queries: Queries = new Queries();
 
-
 export async function getUsers(req: Request, res: Response): Promise<Response> {
-  let result = await queryFunctions.query(queries.getQuery(USER_TABLE, 'getAll'), []);
+  let result = await queryFunctions.query(
+    queries.getQuery(USER_TABLE, 'getAll'),
+    []
+  );
   if (result.statusCode == 200) {
     return res.status(200).json(result.value);
   } else {

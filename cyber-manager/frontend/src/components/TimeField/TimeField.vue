@@ -39,7 +39,9 @@
       <v-time-picker v-model="time" full-width scrollable :locale="lang">
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="modal2 = false">Cancel</v-btn>
-        <v-btn text color="primary" @click="$refs.dialogHour.save(time)">OK</v-btn>
+        <v-btn text color="primary" @click="$refs.dialogHour.save(time)"
+          >OK</v-btn
+        >
       </v-time-picker>
     </v-dialog>
 
@@ -83,42 +85,44 @@
       <v-date-picker v-model="time" scrollable :min="min" :locale="lang">
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="modal2 = false">Cancel</v-btn>
-        <v-btn text color="primary" @click="$refs.dialogDate.save(time)">OK</v-btn>
+        <v-btn text color="primary" @click="$refs.dialogDate.save(time)"
+          >OK</v-btn
+        >
       </v-date-picker>
     </v-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import { Prop, Watch, Component } from "vue-property-decorator";
-import TimeFieldCode from "./TimeFieldCode";
-import Datetime from "../../utils/Datetime";
-import "./TimeFieldStyle.scss";
+import { Prop, Watch, Component } from 'vue-property-decorator';
+import TimeFieldCode from './TimeFieldCode';
+import Datetime from '../../utils/DateTime';
+import './TimeFieldStyle.scss';
 
 @Component({})
 export default class TimeField extends TimeFieldCode {
-  @Prop({ default: "" }) value!: string;
-  @Prop({ default: "date" }) type!: string;
-  @Prop({ default: "es" }) lang!: string;
-  @Prop({ default: "" }) label!: string;
-  @Prop({ default: "" }) error!: string;
-  @Prop({ default: "" }) min!: string;
-  @Prop({ default: "" }) errorMessage!: string;
+  @Prop({ default: '' }) value!: string;
+  @Prop({ default: 'date' }) type!: string;
+  @Prop({ default: 'es' }) lang!: string;
+  @Prop({ default: '' }) label!: string;
+  @Prop({ default: '' }) error!: string;
+  @Prop({ default: '' }) min!: string;
+  @Prop({ default: '' }) errorMessage!: string;
 
-  @Watch("time")
+  @Watch('time')
   updateTime() {
-    if (this.time.indexOf(":") == -1) {
+    if (this.time.indexOf(':') == -1) {
       this.simpleDate = this.getDate(this.time);
     }
-    this.$emit("input", this.time);
+    this.$emit('input', this.time);
   }
 
-  @Watch("value")
+  @Watch('value')
   updateValue() {
-    if (this.time.indexOf(":") == -1) {
-      if (this.value == "") {
-        this.simpleDate = "";
-        this.time = "";
+    if (this.time.indexOf(':') == -1) {
+      if (this.value == '') {
+        this.simpleDate = '';
+        this.time = '';
       } else {
         this.simpleDate = this.getDate(this.time);
       }

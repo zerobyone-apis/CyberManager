@@ -1,5 +1,5 @@
 import vue from 'vue';
-import Datetime from '../../utils/Datetime';
+import Datetime from '../../utils/DateTime';
 import Validation from '../../utils/Validation';
 import InputPdf from '../../utils/pdfDocuments/InputPDF';
 import OutputPdf from '../../utils/pdfDocuments/OutputPDF';
@@ -17,8 +17,7 @@ import { IOrder } from '../../types/Order.type';
 import { Watch } from 'vue-property-decorator';
 import ResultObject from '../../../../backend/src/models/ResultObject';
 
-import htmlToImage from "html-to-image";
-
+import htmlToImage from 'html-to-image';
 
 /*
 
@@ -47,18 +46,16 @@ import htmlToImage from "html-to-image";
 
 */
 
-
 import {
   ORDER_CONFIRM,
   ORDER_DELIVERED,
   ORDER_RECIVED,
   ORDER_REPAIR,
   ORDER_WORKSHOP
-} from '../../types/OrderStatus.type'
+} from '../../types/OrderStatus.type';
 import { IAnalitycs } from '@/types/Analytics.type';
 
 export default class IndentificationView extends vue {
-
   private userInfo: IUserStore = this.$store.getters.userInfo;
 
   private enterpriseActions: EnterpriseAction = new EnterpriseAction();
@@ -110,7 +107,7 @@ export default class IndentificationView extends vue {
   private analitycs: IAnalitycs = {
     startDate: '',
     endDate: ''
-  }
+  };
 
   public orders: IOrder[] = [];
   public selectedOrder = -1;
@@ -139,12 +136,11 @@ export default class IndentificationView extends vue {
 
   private disabledButtons: boolean = false;
 
-
   private notification = {
     message: '',
     color: 'grey',
     visible: false
-  }
+  };
   private showNotificationSuccess(message: string) {
     this.notification.color = 'green';
     this.notification.message = message;
@@ -155,8 +151,6 @@ export default class IndentificationView extends vue {
     this.notification.message = message;
     this.notification.visible = true;
   }
-
-
 
   private headerOrder = [
     { text: 'Nro', value: 'id' },
@@ -173,9 +167,11 @@ export default class IndentificationView extends vue {
     ORDER_RECIVED,
     ORDER_REPAIR,
     ORDER_WORKSHOP
-  ]
+  ];
 
-  private getColorByStatus(selectedStatus: string | { text: string, color: string }) {
+  private getColorByStatus(
+    selectedStatus: string | { text: string; color: string }
+  ) {
     let color: string = 'grey';
     this.status.forEach(item => {
       if (typeof selectedStatus === 'object') {
@@ -187,7 +183,7 @@ export default class IndentificationView extends vue {
           color = item.color;
         }
       }
-    })
+    });
     return color;
   }
 
@@ -201,7 +197,7 @@ export default class IndentificationView extends vue {
     value: ''
   };
 
-  /** 
+  /**
    * @description Minitoolbar Functions
    * miniToolbar: buttons array
    * execMiniToolbar(index) Execute the correspond action of the specify index
@@ -213,8 +209,18 @@ export default class IndentificationView extends vue {
     { text: 'Reparacion', icon: 'settings', disabled: true, visible: true },
     { text: 'Entrada', icon: 'input', disabled: true, visible: true },
     { text: 'Salida', icon: 'send', disabled: true, visible: true },
-    { text: 'Empresa', icon: 'home', disabled: false, visible: (this.$store.getters.getCharge == 'Supervisor') },
-    { text: 'Arqueo', icon: 'trending_up', disabled: false, visible: (this.$store.getters.getCharge == 'Supervisor') },
+    {
+      text: 'Empresa',
+      icon: 'home',
+      disabled: false,
+      visible: this.$store.getters.getCharge == 'Supervisor'
+    },
+    {
+      text: 'Arqueo',
+      icon: 'trending_up',
+      disabled: false,
+      visible: this.$store.getters.getCharge == 'Supervisor'
+    }
   ];
 
   async execMiniToolbarAction(index: number) {
@@ -249,7 +255,8 @@ export default class IndentificationView extends vue {
   async init() {
     this.disabledButtons = true;
     this.orders = await this.orderActions.getAll();
-    this.enterprise = await this.enterpriseActions.get(this.userInfo) || this.enterprise;
+    this.enterprise =
+      (await this.enterpriseActions.get(this.userInfo)) || this.enterprise;
     this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
     this.disabledButtons = false;
   }
@@ -262,21 +269,22 @@ export default class IndentificationView extends vue {
       ])
     ) {
       this.disabledButtons = true;
-      let responseAddOrder: ResultObject = await this.orderActions.add(this.newOrder);
+      let responseAddOrder: ResultObject = await this.orderActions.add(
+        this.newOrder
+      );
       if (responseAddOrder.statusCode === 200) {
         this.orders.push(responseAddOrder.value);
         Object.assign(this.newOrder, this.cleanFields);
         this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
         this.showNotificationSuccess('Orden creada exitosamente!');
       } else {
-        this.showNotificationFail('Ocurrio un error guardando los cambios')
-        console.log('Error add order', responseAddOrder)
+        this.showNotificationFail('Ocurrio un error guardando los cambios');
+        console.log('Error add order', responseAddOrder);
       }
       this.disabledButtons = false;
       this.interactionsMode.order = 0;
     }
   }
-
 
   async saveOrder() {
     if (
@@ -289,7 +297,6 @@ export default class IndentificationView extends vue {
       let responseSaveOrder = await this.orderActions.save(this.newOrder);
       if (responseSaveOrder != null) {
         let pSelected: IOrder = this.orders[this.selectedOrder];
-
 
         Object.assign(pSelected, responseSaveOrder);
         console.log(this.orders[this.selectedOrder]);
@@ -321,33 +328,31 @@ export default class IndentificationView extends vue {
         this.newOrder.status = responseSaveRepair.status;
         Object.assign(oSelected, responseSaveRepair);
         this.orders[this.selectedOrder] = oSelected;
-        this.showNotificationSuccess('Cambios guardados exitosamente!')
+        this.showNotificationSuccess('Cambios guardados exitosamente!');
       } else {
-        this.showNotificationFail('Ocurrio un error guardando los cambios')
+        this.showNotificationFail('Ocurrio un error guardando los cambios');
       }
       this.disabledButtons = false;
     }
   }
 
-
-  
   private async saveEnterprise() {
     this.disabledButtons = true;
-    let responseSaveEnterprise: ResultObject = await this.enterpriseActions.save(this.enterprise);
+    let responseSaveEnterprise: ResultObject = await this.enterpriseActions.save(
+      this.enterprise
+    );
     if (responseSaveEnterprise.statusCode === 200) {
-      this.showNotificationSuccess('Empresa guardada exitosamente!')
+      this.showNotificationSuccess('Empresa guardada exitosamente!');
     } else {
-      this.showNotificationFail('Ocurrio un error guardando los cambios')
+      this.showNotificationFail('Ocurrio un error guardando los cambios');
     }
     this.disabledButtons = false;
   }
 
   private async getEnterprise() {
-    this.enterprise = await this.enterpriseActions.get(this.userInfo) || this.enterprise;
+    this.enterprise =
+      (await this.enterpriseActions.get(this.userInfo)) || this.enterprise;
   }
-
-
-
 
   private changeColorToEdit(order: IOrder) {
     if (
@@ -371,7 +376,6 @@ export default class IndentificationView extends vue {
     this.disabledButtons = false;
   }
 
-
   private showSelectedOrder(order: IOrder) {
     this.selectedOrder = this.orders.indexOf(order);
     Object.assign(this.newOrder, this.cleanFields);
@@ -388,7 +392,7 @@ export default class IndentificationView extends vue {
       reportedFailure: order.reportedFailure,
       observations: order.observations,
       isCanceled: order.isCanceled,
-      status: order.status,
+      status: order.status
     });
     this.loadRepair(order);
     this.v.clearFails();
@@ -402,7 +406,7 @@ export default class IndentificationView extends vue {
       deliverDate: order.deliverDate || '',
       clientName: this.newOrder.clientName,
       article: this.newOrder.article,
-      reparation: order.reparation || "",
+      reparation: order.reparation || '',
       warranty: order.warranty,
       technical: this.userInfo.username,
       status: this.newOrder.status || ORDER_RECIVED.text,
@@ -415,7 +419,7 @@ export default class IndentificationView extends vue {
       let updatedOrder: IOrder = this.orders[this.selectedOrder];
       updatedOrder.status = this.newOrder.status;
       this.orders[this.selectedOrder] = updatedOrder;
-      Object.assign(this.newOrder, this.cleanFields)
+      Object.assign(this.newOrder, this.cleanFields);
       this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
       this.selectedOrder = -1;
       this.v.clearFails();
@@ -423,13 +427,9 @@ export default class IndentificationView extends vue {
     }
   }
 
-  private beginAnalitycs() {
+  private beginAnalitycs() {}
 
-  }
-
-  private resetAnalitycs() {
-    
-  }
+  private resetAnalitycs() {}
 
   // private generateInputPdf() {
   //   // let inputPdf: InputPdf = new InputPdf();
@@ -467,13 +467,12 @@ export default class IndentificationView extends vue {
     } else {
       // filter
       let filterKey = this.searchFilters[this.search.filter];
-      return this.orders
-        .filter(
-          (pedido: any) =>
-            (pedido[filterKey] || '')
-              .toLowerCase()
-              .indexOf(this.search.value.toLowerCase()) != -1
-        );
+      return this.orders.filter(
+        (pedido: any) =>
+          (pedido[filterKey] || '')
+            .toLowerCase()
+            .indexOf(this.search.value.toLowerCase()) != -1
+      );
     }
   }
 

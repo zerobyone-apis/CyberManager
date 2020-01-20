@@ -100,7 +100,7 @@
                 @save="saveOrder()"
                 @cancel="cancelSaveOrder()"
                 @add="addOrder()"
-                :save-mode="(interactionsMode.order == 1)"
+                :save-mode="interactionsMode.order == 1"
                 :disabled="disabledButtons"
               />
             </div>
@@ -109,7 +109,9 @@
               <h3
                 v-if="orders.length && filterItems().length != 0"
                 class="font-title"
-              >Lista de Ordenes</h3>
+              >
+                Lista de Ordenes
+              </h3>
               <div class="search-box" v-if="orders.length">
                 <div class="select">
                   <v-select
@@ -131,12 +133,18 @@
                 </div>
               </div>
               <div class="table-box">
-                <div v-if="orders.length == 0 && search.value === ''" class="no-orders">
+                <div
+                  v-if="orders.length == 0 && search.value === ''"
+                  class="no-orders"
+                >
                   <p>No tiene ordenes creadas</p>
                   <v-icon>search</v-icon>
                 </div>
 
-                <div class="no-orders" v-if="filterItems() == 0 && search.value">
+                <div
+                  class="no-orders"
+                  v-if="filterItems() == 0 && search.value"
+                >
                   <p>No se encontraron coincidencias</p>
                   <v-icon>search</v-icon>
                 </div>
@@ -165,26 +173,28 @@
                       :color="changeColorToEdit(item)"
                       :disabled="
                         interactionsMode.order == 1 &&
-                          selectedOrder !=
-                            orders.indexOf(item)
+                          selectedOrder != orders.indexOf(item)
                       "
-                    >edit</v-icon>
+                      >edit</v-icon
+                    >
                   </template>
                   <template v-slot:item.status="{ item }">
-                    <v-icon class="mr-2" :color="getColorByStatus(item.status)">info</v-icon>
+                    <v-icon class="mr-2" :color="getColorByStatus(item.status)"
+                      >info</v-icon
+                    >
                     <span>{{ item.status }}</span>
                   </template>
                   <template v-slot:item.action="{ item }">
                     <v-icon
                       :disabled="
-                        interactionsMode.order == 1 &&
-                          selectedOrder !=
-                            orders.indexOf(item)
-                            || changeColorToEdit(item) === 'grey' 
+                        (interactionsMode.order == 1 &&
+                          selectedOrder != orders.indexOf(item)) ||
+                          changeColorToEdit(item) === 'grey'
                       "
                       @click="deleteOrder(item)"
                       :color="changeColorToEdit(item)"
-                    >delete</v-icon>
+                      >delete</v-icon
+                    >
                   </template>
                   <span>Borrar orden</span>
                 </v-data-table>
@@ -237,8 +247,18 @@
                 ></time-field>
               </div>
               <div class="fields">
-                <v-text-field v-model="repair.technical" flat dense label="Tecnico"></v-text-field>
-                <v-text-field v-model="repair.price" flat dense label="Costo Total: "></v-text-field>
+                <v-text-field
+                  v-model="repair.technical"
+                  flat
+                  dense
+                  label="Tecnico"
+                ></v-text-field>
+                <v-text-field
+                  v-model="repair.price"
+                  flat
+                  dense
+                  label="Costo Total: "
+                ></v-text-field>
               </div>
               <Footer
                 @save="saveRepair()"
@@ -260,7 +280,12 @@
                     label="Reparacion"
                     value
                   ></v-textarea>
-                  <v-text-field v-model="repair.warranty" outlined dense label="Garantia"></v-text-field>
+                  <v-text-field
+                    v-model="repair.warranty"
+                    outlined
+                    dense
+                    label="Garantia"
+                  ></v-text-field>
                 </div>
               </div>
             </div>
@@ -270,9 +295,17 @@
         <v-stepper-content step="3">
           <div class="content-doc">
             <div id="invoice-input-box" class="invoice-box">
-              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
+              <Invoice
+                :order="newOrder"
+                class="input-invoice-box"
+                :enterprise="enterprise"
+              />
               <v-divider class="mt-3 mb-3"></v-divider>
-              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
+              <Invoice
+                :order="newOrder"
+                class="input-invoice-box"
+                :enterprise="enterprise"
+              />
             </div>
           </div>
           <Footer v-print="'#invoice-input-box'" add-text="Imprimir" />
@@ -282,14 +315,24 @@
         <v-stepper-content step="4">
           <div class="content-doc">
             <div id="invoice-output-box" class="invoice-box">
-              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
+              <Invoice
+                :order="newOrder"
+                class="input-invoice-box"
+                :enterprise="enterprise"
+              />
               <v-divider class="mt-3 mb-3"></v-divider>
-              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
+              <Invoice
+                :order="newOrder"
+                class="input-invoice-box"
+                :enterprise="enterprise"
+              />
             </div>
           </div>
-          <Footer v-print="'#invoice-output-box'" add-text="Imprimir" add-icon="print" />
-
-
+          <Footer
+            v-print="'#invoice-output-box'"
+            add-text="Imprimir"
+            add-icon="print"
+          />
         </v-stepper-content>
         <!-- enterprise step -->
         <v-stepper-content step="5">
@@ -302,10 +345,26 @@
                   label="Nombre de la empresa"
                   class="custom-field"
                 ></v-text-field>
-                <v-text-field v-model="enterprise.location" label="Direccion" class="custom-field"></v-text-field>
-                <v-text-field v-model="enterprise.phone" label="Telefono" class="custom-field"></v-text-field>
-                <v-text-field v-model="enterprise.cellphone" label="Celular" class="custom-field"></v-text-field>
-                <v-text-field v-model="enterprise.email" label="Email" class="custom-field"></v-text-field>
+                <v-text-field
+                  v-model="enterprise.location"
+                  label="Direccion"
+                  class="custom-field"
+                ></v-text-field>
+                <v-text-field
+                  v-model="enterprise.phone"
+                  label="Telefono"
+                  class="custom-field"
+                ></v-text-field>
+                <v-text-field
+                  v-model="enterprise.cellphone"
+                  label="Celular"
+                  class="custom-field"
+                ></v-text-field>
+                <v-text-field
+                  v-model="enterprise.email"
+                  label="Email"
+                  class="custom-field"
+                ></v-text-field>
               </div>
               <div class="fields">
                 <div class="image-box">
@@ -316,7 +375,12 @@
                     :src="enterprise.urlLogo"
                     alt
                   />
-                  <v-btn disabled depressed v-if="!enterprise.urlLogo" class="btn-camera">
+                  <v-btn
+                    disabled
+                    depressed
+                    v-if="!enterprise.urlLogo"
+                    class="btn-camera"
+                  >
                     <v-icon>camera_enhance</v-icon>
                     <!-- <span class="text-btn">Pulse AQUI para buscar</span> -->
                   </v-btn>
@@ -413,23 +477,22 @@
       ></v-progress-linear>
     </v-stepper>
 
-    <v-snackbar
-      v-model="notification.visible"
-      :color="notification.color"
-    >{{ notification.message }}</v-snackbar>
+    <v-snackbar v-model="notification.visible" :color="notification.color">{{
+      notification.message
+    }}</v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-import IndentificationView from "./Identification.view";
-import "./Identification.scss";
-import "../../styles/fonts.scss";
-import { Component } from "vue-property-decorator";
-import TimeField from "../../components/TimeField/TimeField.vue";
-import Footer from "../../components/Footer/Footer.vue";
-import MiniToolbar from "../../components/MiniToolbar/MiniToolbar.vue";
-import Toolbar from "../../components/toolbar/toolbar.vue";
-import Invoice from "../../components/Invoice/Invoice.vue";
+import IndentificationView from './identification.view';
+import './identification.scss';
+import '../../styles/fonts.scss';
+import { Component } from 'vue-property-decorator';
+import TimeField from '../../components/TimeField/TimeField.vue';
+import Footer from '../../components/Footer/Footer.vue';
+import MiniToolbar from '../../components/MiniToolbar/MiniToolbar.vue';
+import Toolbar from '../../components/toolbar/toolbar.vue';
+import Invoice from '../../components/Invoice/Invoice.vue';
 
 @Component({
   components: {

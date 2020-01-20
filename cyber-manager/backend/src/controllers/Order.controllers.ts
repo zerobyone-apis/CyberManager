@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { IOrder } from '../types/Order.type';
-import DateTime from '../utils/DateTime';
+import DateTime from '../utils/Datetime';
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries, { ORDER_TABLE } from '../../sql/queries/Queries';
 import ResultObject from '../models/ResultObject';
@@ -12,7 +12,7 @@ let queries: Queries = new Queries();
 
 export async function createOrder(req: Request, res: Response) {
   const newOrder: IOrder = req.body.data;
-  console.log(newOrder)
+  console.log(newOrder);
   let result: ResultObject = await queryFunctions.query(
     queries.getQuery(ORDER_TABLE, 'create'),
     [newOrder]
@@ -36,13 +36,12 @@ export async function createOrder(req: Request, res: Response) {
   }
 }
 
-
-
 export async function findByID(req: Request, res: Response) {
   const id = parseInt(req.params.id);
-  let result = await queryFunctions.query(queries.getQuery(ORDER_TABLE, 'getId'), [
-    id
-  ]);
+  let result = await queryFunctions.query(
+    queries.getQuery(ORDER_TABLE, 'getId'),
+    [id]
+  );
   if (result.statusCode == 200) {
     return res.status(200).json(result.value);
   } else {
@@ -51,12 +50,12 @@ export async function findByID(req: Request, res: Response) {
   }
 }
 
-
-
-
 export async function getOrders(req: Request, res: Response) {
-  let result: ResultObject = await queryFunctions.query(queries.getQuery(ORDER_TABLE, 'getAll'), []);
-  console.log('RESULT": ->', result.statusCode)
+  let result: ResultObject = await queryFunctions.query(
+    queries.getQuery(ORDER_TABLE, 'getAll'),
+    []
+  );
+  console.log('RESULT": ->', result.statusCode);
   if (result.statusCode == 200) {
     return res.status(200).json(result.value);
   } else {
@@ -64,9 +63,6 @@ export async function getOrders(req: Request, res: Response) {
     return res.status(result.statusCode).json(result.value);
   }
 }
-
-
-
 
 export async function updateOrder(req: Request, res: Response) {
   const {
@@ -107,9 +103,6 @@ export async function updateOrder(req: Request, res: Response) {
   }
 }
 
-
-
-
 export async function cancelOrder(req: Request, res: Response) {
   const { isCanceled }: IOrder = req.body;
   const id = parseInt(req.params.id);
@@ -125,10 +118,6 @@ export async function cancelOrder(req: Request, res: Response) {
     return res.status(result.statusCode).json(result.value);
   }
 }
-
-
-
-
 
 export async function changeStatus(req: Request, res: Response) {
   const { status } = req.body;
@@ -146,10 +135,6 @@ export async function changeStatus(req: Request, res: Response) {
   }
 }
 
-
-
-
-
 export async function deleteOrder(req: Request, res: Response) {
   const id = parseInt(req.params.id);
 
@@ -166,8 +151,6 @@ export async function deleteOrder(req: Request, res: Response) {
     return res.status(result.statusCode).json(result.value);
   }
 }
-
-
 
 export async function updateRepairOrder(req: Request, res: Response) {
   console.log('BODY update repaired  ', req.body.data);
@@ -208,6 +191,3 @@ export async function updateRepairOrder(req: Request, res: Response) {
     return res.status(result.statusCode).json(result.value);
   }
 }
-
-
-

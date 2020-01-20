@@ -3,9 +3,7 @@ import Validation from '../../utils/Validation';
 import IntegrationBackend from '../../utils/IntegrationBackend';
 import { IUserStore } from '../../types/UserStore.type';
 import { USER_ADMIN, USER_EMPLOYEE } from '../../types/UsersSystem.type';
-import Datetime from '../../utils/Datetime';
-
-import ResultObject from '../../../../backend/src/models/ResultObject';
+import Datetime from '../../utils/DateTime';
 
 export default class HomeView extends vue {
   private backend: IntegrationBackend = new IntegrationBackend();
@@ -30,7 +28,7 @@ export default class HomeView extends vue {
     message: '',
     color: 'grey',
     visible: false
-  }
+  };
   private showNotificationSuccess(message: string) {
     this.notification.color = 'green';
     this.notification.message = message;
@@ -42,8 +40,7 @@ export default class HomeView extends vue {
     this.notification.visible = true;
   }
 
-
-  private charges: string[] = [ USER_ADMIN, USER_EMPLOYEE ];
+  private charges: string[] = [USER_ADMIN, USER_EMPLOYEE];
 
   private userFields: any = {
     objectName: 'user',
@@ -58,7 +55,13 @@ export default class HomeView extends vue {
 
   private isAdmin() {
     this.user.isAdmin =
-      this.user.charge != USER_EMPLOYEE && this.user.charge != '' ? true : false;
+      this.user.charge != USER_EMPLOYEE && this.user.charge != ''
+        ? true
+        : false;
+
+    this.user.isAdmin != false
+      ? (this.createUser.isAdmin = true)
+      : (this.createUser.isAdmin = false);
   }
 
   async signUp() {
@@ -75,9 +78,10 @@ export default class HomeView extends vue {
           userFiltered.succes == true
             ? userFiltered
             : (err: Error) => {
-              console.error(err.message);
-              throw new Error(err.message);
-            };
+                console.error(err.message);
+                throw new Error(err.message);
+              };
+          console.log('filtered object user .> ', userFiltered.object);
           const response: Record<string, any> = await this.backend.send(
             'post',
             userFiltered.object,
@@ -94,7 +98,7 @@ export default class HomeView extends vue {
             charge: this.createUser.charge,
             isAdmin: this.user.isAdmin
           };
-  
+
           this['$store'].commit('userInfo', user);
           this.$store.commit('page', 'Identification');
           this['$router'].push('/Identification');
@@ -103,15 +107,14 @@ export default class HomeView extends vue {
             'Algo malo sucedio :( este fue el error -> ',
             error.message
           );
-         this.showNotificationFail('Ocurrio un error!, vuelva a intentarlo')
+          this.showNotificationFail('Ocurrio un error!, vuelva a intentarlo');
         }
       } else {
-        this.showNotificationFail('Las contraseñas no coinciden')
+        this.showNotificationFail('Las contraseñas no coinciden');
       }
     }
   }
 
-  
   async signIn() {
     this.isAdmin();
     if (this.v.validateFields(this.user, [this.userFields])) {
@@ -127,7 +130,7 @@ export default class HomeView extends vue {
           userData,
           '/user/signin'
         );
-        console.log(response)
+        console.log(response);
         let user: IUserStore = {
           id: response.id,
           username: userData.username,
@@ -140,7 +143,9 @@ export default class HomeView extends vue {
         this['$router'].push('/Identification');
       } catch (error) {
         console.log('error causado por -> ', error);
-        this.showNotificationFail('Error iniciando sesion, verifique usuario y contraseña')
+        this.showNotificationFail(
+          'Error iniciando sesion, verifique usuario y contraseña'
+        );
       }
     }
   }
@@ -163,14 +168,14 @@ export default class HomeView extends vue {
         passwd: object.passwd,
         charge: object.charge,
         isAdmin: object.isAdmin,
-        createOn: new Datetime().now()
+        createOn: new Datetime().convertDatetime(new Datetime().now() || '')
       };
       return {
         object: userFiltered,
         succes: true
       };
     } else {
-      this.showNotificationFail('Error en contraseña, intente nuevamente')
+      this.showNotificationFail('Error en contraseña, intente nuevamente');
       return {
         succes: false,
         message: `Error en contraseña, intente nuevamente.`

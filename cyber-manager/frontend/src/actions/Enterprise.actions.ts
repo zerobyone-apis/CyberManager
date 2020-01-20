@@ -1,6 +1,6 @@
 import { IEnterprise } from '../types/Enterprise.type';
 import IntegrationBackend from '../utils/IntegrationBackend';
-import Datetime from '../utils/Datetime';
+import Datetime from '../utils/DateTime';
 import { IUserStore } from '@/types/UserStore.type';
 import ResultObject from '../../../backend/src/models/ResultObject';
 
@@ -15,12 +15,11 @@ export default class EnterpriseActions {
         cellphone: enterprise.cellphone,
         email: enterprise.email,
         enterpriseRules: enterprise.enterpriseRules,
-        urlLogo: enterprise.urlLogo || "",
+        urlLogo: enterprise.urlLogo || '',
         phone: enterprise.phone,
         firstMessage: enterprise.firstMessage,
         secondMessage: enterprise.secondMessage,
-        lastUpdate:
-          new Datetime().convert(new Datetime().getDate()) + ' 00:00:00',
+        lastUpdate: new Datetime().convertDatetime(new Datetime().now() || ''),
         id: enterprise.id
       };
       const response: any = await this.backend.send(
@@ -35,9 +34,8 @@ export default class EnterpriseActions {
     }
   }
 
-
   public async get(userInfo: IUserStore) {
-    console.log(userInfo)
+    console.log(userInfo);
     try {
       const response: IEnterprise = await this.backend.send(
         'get',

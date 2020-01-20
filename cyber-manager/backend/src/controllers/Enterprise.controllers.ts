@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import DateTime from '../utils/DateTime';
+import DateTime from '../utils/Datetime';
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries, { ENTERPRISE_TABLE } from '../../sql/queries/Queries';
 import { IEnterprise } from '../types/Enterprise.type';
@@ -23,10 +23,11 @@ export async function getEnterprise(req: Request, res: Response) {
 
 export async function findEmpresaByUserID(req: Request, res: Response) {
   const id = parseInt(req.params.id);
-  console.log(id)
-  let result = await queryFunctions.query(queries.getQuery(ENTERPRISE_TABLE, 'getId'), [
-    id
-  ]);
+  console.log(id);
+  let result = await queryFunctions.query(
+    queries.getQuery(ENTERPRISE_TABLE, 'getId'),
+    [id]
+  );
   if (result.statusCode == 200) {
     return res.status(200).json(result.value[0]); // return only one
   } else {
@@ -34,7 +35,6 @@ export async function findEmpresaByUserID(req: Request, res: Response) {
     return res.status(result.statusCode).json(result.value);
   }
 }
-
 
 export async function createEmpresa(req: Request, res: Response) {
   const datetime = new DateTime();
@@ -51,7 +51,8 @@ export async function createEmpresa(req: Request, res: Response) {
     enterprise.secondMessage,
     enterprise.urlLogo,
     datetime.now(),
-    enterprise.username
+    enterprise.username,
+    enterprise.mail
   ];
 
   let result = await queryFunctions.query(
@@ -81,6 +82,7 @@ export async function updateEnterprise(req: Request, res: Response) {
     updateEmp.secondMessage,
     updateEmp.urlLogo,
     updateEmp.lastUpdate,
+    updateEmp.mail,
     id
   ];
 
@@ -95,7 +97,6 @@ export async function updateEnterprise(req: Request, res: Response) {
     return res.status(result.statusCode).json(result.value);
   }
 }
-
 
 export async function deleteEnterprise(req: Request, res: Response) {
   const id = parseInt(req.params.id);
