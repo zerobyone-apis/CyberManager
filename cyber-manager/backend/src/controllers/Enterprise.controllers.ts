@@ -52,7 +52,7 @@ export async function createEmpresa(req: Request, res: Response) {
     enterprise.urlLogo,
     datetime.now(),
     enterprise.username,
-    enterprise.mail
+    enterprise.email
   ];
 
   let result = await queryFunctions.query(
@@ -70,7 +70,6 @@ export async function createEmpresa(req: Request, res: Response) {
 export async function updateEnterprise(req: Request, res: Response) {
   const updateEmp: IEnterprise = req.body.data;
   const id = parseInt(req.params.id);
-  const datetime = new DateTime();
 
   let queryParams = [
     updateEmp.enterpriseName,
@@ -82,7 +81,7 @@ export async function updateEnterprise(req: Request, res: Response) {
     updateEmp.secondMessage,
     updateEmp.urlLogo,
     updateEmp.lastUpdate,
-    updateEmp.mail,
+    updateEmp.email,
     id
   ];
 

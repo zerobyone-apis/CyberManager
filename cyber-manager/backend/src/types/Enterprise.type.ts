@@ -4,7 +4,7 @@ export interface IEnterprise {
   enterpriseName: string;
   phone: number;
   cellphone: number;
-  mail: string;
+  email: string;
   fax?: number;
   location: string;
   enterpriseRules: string;
