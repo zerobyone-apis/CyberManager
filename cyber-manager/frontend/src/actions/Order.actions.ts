@@ -124,7 +124,9 @@ export default class OrderActions {
       } catch (error) {
         console.error('Error borrando pedidio => ', error);
       }
+      return true;
     }
+    return false;
   }
 
   getMaxIdOfOrders(orders: IOrder[]) {

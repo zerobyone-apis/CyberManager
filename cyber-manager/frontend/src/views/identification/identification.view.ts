@@ -205,10 +205,10 @@ export default class IndentificationView extends vue {
    * @Watch('wizard')
    */
   public miniToolbar = [
-    { text: 'Identificacion', icon: 'people', disabled: false, visible: true },
+    { text: 'Lista de ordenes', icon: 'people', disabled: false, visible: true },
     { text: 'Reparacion', icon: 'settings', disabled: true, visible: true },
-    { text: 'Entrada', icon: 'input', disabled: true, visible: true },
-    { text: 'Salida', icon: 'send', disabled: true, visible: true },
+    { text: 'Ingreso de orden', icon: 'input', disabled: true, visible: true },
+    { text: 'Entrega de orden', icon: 'send', disabled: true, visible: true },
     {
       text: 'Empresa',
       icon: 'home',
@@ -367,12 +367,15 @@ export default class IndentificationView extends vue {
 
   async deleteOrder(selectedOrder: IOrder) {
     this.disabledButtons = true;
-    await this.orderActions.delete(selectedOrder);
-    this.orders.splice(this.selectedOrder, 1);
-    Object.assign(this.newOrder, this.cleanFields);
-    this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
-    this.interactionsMode.order = 0;
-    this.selectedOrder = -1;
+    let responseDelete: boolean = await this.orderActions.delete(selectedOrder);
+    if(responseDelete) {
+      this.orders.splice(this.selectedOrder, 1);
+      Object.assign(this.newOrder, this.cleanFields);
+      this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
+      this.interactionsMode.order = 0;
+      this.selectedOrder = -1;      
+      this.showNotificationSuccess('Orden eliminada exitosamente!');
+    }
     this.disabledButtons = false;
   }
 
