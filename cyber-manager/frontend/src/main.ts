@@ -5,12 +5,12 @@ import App from "./app/app.vue";
 import router from "./router";
 import { store } from "./store";
 import 'vue-croppa/dist/vue-croppa.css';
-import vueprint from 'vue-print-nb';
+// import vueprint from 'vue-print-nb';
 
 Vue.config.productionTip = false;
 Vue.use(vuetify);
 Vue.use(Vuetify);
-Vue.use(vueprint)
+// Vue.use(vueprint)
 
 new Vue({
   vuetify,
