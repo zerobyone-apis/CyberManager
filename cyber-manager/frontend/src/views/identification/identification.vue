@@ -5,7 +5,7 @@
       :buttons="miniToolbar"
       @buttonClicked="execMiniToolbarAction($event)"
       :disabled="disabledButtons"
-      colorButtons="green darken-1"
+      colorButtons="grey darken-3"
     />
 
     <v-stepper v-model="wizard" class="stepper">
@@ -310,7 +310,6 @@
           </div>
           <Footer v-print="'#invoice-input-box'" add-text="Imprimir" />
         </v-stepper-content>
-
         <!-- output invoice step -->
         <v-stepper-content step="4">
           <div class="content-doc">
@@ -466,7 +465,6 @@
           </div>
         </v-stepper-content>
       </v-stepper-items>
-
       <v-progress-linear
         class="progress-linear"
         v-if="disabledButtons"

@@ -107,8 +107,8 @@
 </template>
 
 <script lang="ts">
-import HomeView from "./Home.view";
-import "./Home.scss";
+import HomeView from "./home.view";
+import "./home.scss";
 import "../../styles/fonts.scss";
 import { Component } from "vue-property-decorator";
 
