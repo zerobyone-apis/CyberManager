@@ -25,7 +25,7 @@ export default class EnterpriseActions {
       const response: any = await this.backend.send(
         'put',
         data,
-        `/empresa/${enterprise.id}`
+        `/enterprise/${enterprise.id}`
       );
       return new ResultObject(200, 'success');
     } catch (error) {
@@ -35,12 +35,11 @@ export default class EnterpriseActions {
   }
 
   public async get(userInfo: IUserStore) {
-    console.log(userInfo);
     try {
       const response: IEnterprise = await this.backend.send(
         'get',
         undefined,
-        `/empresa/${userInfo.id}`
+        `/enterprise/${userInfo.id}`
       );
       return response;
     } catch (error) {
