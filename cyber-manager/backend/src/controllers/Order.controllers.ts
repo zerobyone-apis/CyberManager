@@ -140,6 +140,24 @@ export async function changeStatus(req: Request, res: Response) {
   }
 }
 
+export async function doArqueo(req: Request, res: Response) {
+  const { startDate, endDate } = req.body;
+
+  let result = await queryFunctions.query(
+    queries.getQuery(ORDER_TABLE, 'arqueo'),
+    [startDate, endDate]
+  );
+  if (result.statusCode == 200) {
+    console.log('Contenido del resultado -> ', result);
+    return res.status(200).json(result);
+  } else {
+    console.log(
+      `Error realizando el arqueo entre estas fechas ->  ${startDate} and ${endDate}`
+    );
+    return res.status(result.statusCode).json(result.value);
+  }
+}
+
 export async function deleteOrder(req: Request, res: Response) {
   const id = parseInt(req.params.id);
 

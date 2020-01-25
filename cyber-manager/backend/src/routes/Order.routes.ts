@@ -7,7 +7,8 @@ import {
   updateOrder,
   cancelOrder,
   changeStatus,
-  updateRepairOrder
+  updateRepairOrder,
+  doArqueo
 } from '../controllers/Order.controllers';
 const router = Router();
 
@@ -27,5 +28,7 @@ router.route('/repair/:id').put(updateRepairOrder);
 router.route('/status/:id').put(changeStatus);
 
 router.route('/cancel/:id').put(cancelOrder);
+
+router.route('/arqueo').get(doArqueo);
 
 export default router;
