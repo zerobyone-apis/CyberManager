@@ -17,6 +17,7 @@
             :label="label"
             readonly
             v-on="on"
+            :outlined="outlined"
           ></v-text-field>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -63,6 +64,7 @@
             :label="label"
             readonly
             v-on="on"
+            :outlined="outlined"
           ></v-text-field>
           <v-tooltip bottom>
             <template v-slot:activator="{ on }">
@@ -107,6 +109,7 @@ export default class TimeField extends TimeFieldCode {
   @Prop({ default: '' }) label!: string;
   @Prop({ default: '' }) error!: string;
   @Prop({ default: '' }) min!: string;
+  @Prop({ default: false }) outlined!: boolean;
   @Prop({ default: '' }) errorMessage!: string;
 
   @Watch('time')
