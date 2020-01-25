@@ -1,7 +1,6 @@
 import { IRepair } from '../types/Repair.type';
-import { IOrder } from '../types/Order.type';
 import IntegrationBackend from '../utils/IntegrationBackend';
-import Datetime from '../utils/DateTime';
+import { REPARIR_ROUTE, PUT_ENDPOIT } from '../types/Routes.type'; 
 
 export default class ReparirActions {
   private backend: IntegrationBackend = new IntegrationBackend();
@@ -50,9 +49,9 @@ export default class ReparirActions {
         status: repair.status
       };
       const response: any = await this.backend.send(
-        'put',
+        PUT_ENDPOIT,
         data,
-        `/order/repair/${repair.id}`
+        `${REPARIR_ROUTE}/${repair.id}`
       );
       return repair;
     } catch (error) {

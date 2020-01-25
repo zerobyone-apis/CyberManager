@@ -3,6 +3,7 @@ import IntegrationBackend from '../utils/IntegrationBackend';
 import Datetime from '../utils/DateTime';
 import { IUserStore } from '@/types/UserStore.type';
 import ResultObject from '../../../backend/src/utils/ResultObject';
+import { ENTERPRISE_ROUTE, PUT_ENDPOIT, GET_ENDPOIT } from '../types/Routes.type'; 
 
 export default class EnterpriseActions {
   private backend: IntegrationBackend = new IntegrationBackend();
@@ -23,9 +24,9 @@ export default class EnterpriseActions {
         id: enterprise.id
       };
       const response: any = await this.backend.send(
-        'put',
+        PUT_ENDPOIT,
         data,
-        `/enterprise/${enterprise.id}`
+        `${ENTERPRISE_ROUTE}/${enterprise.id}`
       );
       return new ResultObject(200, 'success');
     } catch (error) {
@@ -37,9 +38,9 @@ export default class EnterpriseActions {
   public async get(userInfo: IUserStore) {
     try {
       const response: IEnterprise = await this.backend.send(
-        'get',
+        GET_ENDPOIT,
         undefined,
-        `/enterprise/${userInfo.id}`
+        `${ENTERPRISE_ROUTE}/${userInfo.id}`
       );
       return response;
     } catch (error) {
