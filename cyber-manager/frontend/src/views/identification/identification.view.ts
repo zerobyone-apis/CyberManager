@@ -11,6 +11,7 @@ import { IUserStore } from '../../types/UserStore.type';
 import { IEnterprise } from '../../types/Enterprise.type';
 import { IRepair } from '../../types/Repair.type';
 import { IOrder } from '../../types/Order.type';
+import { USER_ADMIN } from '../../types/UsersSystem.type';
 
 import { Watch } from 'vue-property-decorator';
 import htmlToImage from 'html-to-image';
@@ -28,7 +29,7 @@ import htmlToImage from 'html-to-image';
   FROM orders o WHERE fechaEntrega 
   BETWEEN(fechaInicio, fechaFin)
   
-  Solo podra verla el supervisor, es una tool 
+  Solo podra verla el USER_ADMIN, es una tool 
 */
 
 import {
@@ -204,13 +205,13 @@ export default class IndentificationView extends vue {
       text: 'Empresa',
       icon: 'home',
       disabled: false,
-      visible: this.$store.getters.getCharge == 'Supervisor'
+      visible: this.$store.getters.getCharge == USER_ADMIN
     },
     {
       text: 'Arqueo',
       icon: 'trending_up',
       disabled: false,
-      visible: this.$store.getters.getCharge == 'Supervisor'
+      visible: this.$store.getters.getCharge == USER_ADMIN
     }
   ];
 
