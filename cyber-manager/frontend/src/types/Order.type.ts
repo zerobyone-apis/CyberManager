@@ -10,12 +10,13 @@ export interface IOrder {
   reportedFailure: string,
   observations: string,
   isCanceled: boolean,
+  status: string
   // repair attbs
   warranty?: string,
   repairDate?: string,
   reparation?: string,
   price?: number,
+  replacementPrice?: number,
   deliverDate?: string,
-  status: string
 }
 
