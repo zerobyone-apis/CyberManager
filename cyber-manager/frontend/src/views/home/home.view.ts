@@ -4,6 +4,7 @@ import IntegrationBackend from '../../utils/IntegrationBackend';
 import { IUserStore } from '../../types/UserStore.type';
 import { USER_ADMIN, USER_EMPLOYEE } from '../../types/UsersSystem.type';
 import Datetime from '../../utils/DateTime';
+import { USER_ROUTE, USER_SIGN_IN_ROUTE, POST_ENDPOIT } from '../../types/Routes.type';
 
 export default class HomeView extends vue {
   private backend: IntegrationBackend = new IntegrationBackend();
@@ -72,9 +73,6 @@ export default class HomeView extends vue {
       : (this.createUser.isAdmin = false);
   }
 
-
-
-
   async signUp() {
     this.isAdmin();
     if (this.v.validateFields(this.createUser, [this.userFieldsSignUp])) {
@@ -94,14 +92,14 @@ export default class HomeView extends vue {
               };
           console.log('filtered object user .> ', userFiltered.object);
           const response: Record<string, any> = await this.backend.send(
-            'post',
+            POST_ENDPOIT,
             userFiltered.object,
-            `/user`
+            USER_ROUTE
           );
           let responseSignIn: any = await this.backend.send(
-            'post',
+            POST_ENDPOIT,
             userFiltered.object,
-            '/user/signin'
+            USER_SIGN_IN_ROUTE
           );
           let user: IUserStore = {
             id: responseSignIn.idUser,
@@ -137,9 +135,9 @@ export default class HomeView extends vue {
           isAdmin: this.user.isAdmin
         };
         let response: IUserStore = await this.backend.send(
-          'post',
+          POST_ENDPOIT,
           userData,
-          '/user/signin'
+          USER_SIGN_IN_ROUTE
         );
         console.log(response);
         let user: IUserStore = {

@@ -11,6 +11,7 @@ import { IUserStore } from '../../types/UserStore.type';
 import { IEnterprise } from '../../types/Enterprise.type';
 import { IRepair } from '../../types/Repair.type';
 import { IOrder } from '../../types/Order.type';
+import { USER_ADMIN } from '../../types/UsersSystem.type';
 
 import { Watch } from 'vue-property-decorator';
 import htmlToImage from 'html-to-image';
@@ -21,14 +22,14 @@ import htmlToImage from 'html-to-image';
   ARQUEO:
 
   (fechaInicio a fechaFin) => obtiene la diferencia entre 
-  ganancia de los pedidos entregados en ese rango de tiempo
+  ganancia de los orders entregados en ese rango de tiempo
   
   SELECT sum(o.price) AS TOTAL_PRICE, 
   sum(o.costoRepuesto) AS TOTAL_COSTO_REPUESTO 
   FROM orders o WHERE fechaEntrega 
   BETWEEN(fechaInicio, fechaFin)
   
-  Solo podra verla el supervisor, es una tool 
+  Solo podra verla el USER_ADMIN, es una tool 
 */
 
 import {
@@ -187,7 +188,7 @@ export default class IndentificationView extends vue {
    * @description Minitoolbar Functions
    * miniToolbar: buttons array
    * execMiniToolbar(index) Execute the correspond action of the specify index
-   * @Watch('selectedPedido') Listen this vars for changes in buttons
+   * @Watch('selectedorder') Listen this vars for changes in buttons
    * @Watch('wizard')
    */
   public miniToolbar = [
@@ -204,13 +205,13 @@ export default class IndentificationView extends vue {
       text: 'Empresa',
       icon: 'home',
       disabled: false,
-      visible: this.$store.getters.getCharge == 'Supervisor'
+      visible: this.$store.getters.getCharge == USER_ADMIN
     },
     {
       text: 'Arqueo',
       icon: 'trending_up',
       disabled: false,
-      visible: this.$store.getters.getCharge == 'Supervisor'
+      visible: this.$store.getters.getCharge == USER_ADMIN
     }
   ];
 
@@ -433,8 +434,8 @@ export default class IndentificationView extends vue {
       // filter
       let filterKey = this.searchFilters[this.search.filter];
       return this.orders.filter(
-        (pedido: any) =>
-          (pedido[filterKey] || '')
+        (order: any) =>
+          (order[filterKey] || '')
             .toLowerCase()
             .indexOf(this.search.value.toLowerCase()) != -1
       );
@@ -451,7 +452,7 @@ export default class IndentificationView extends vue {
     };
   }
 
-  //Clear fields object UI-CLEAN-Pedido
+  //Clear fields object UI-CLEAN-order
   private cleanFields: IOrder = {
     id: 0,
     admissionDate: new Datetime().now(),

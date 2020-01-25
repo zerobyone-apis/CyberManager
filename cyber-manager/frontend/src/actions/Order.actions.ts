@@ -2,6 +2,13 @@ import IntegrationBackend from '../utils/IntegrationBackend';
 import Datetime from '../utils/DateTime';
 import { IOrder } from '@/types/Order.type';
 import ResultObject from '../../../backend/src/utils/ResultObject';
+import { 
+  ORDER_ROUTE, 
+  PUT_ENDPOIT, 
+  GET_ENDPOIT, 
+  POST_ENDPOIT, 
+  DELETE_ENDPOIT 
+} from '../types/Routes.type';
 import {
   ORDER_CONFIRM,
   ORDER_DELIVERED,
@@ -17,9 +24,9 @@ export default class OrderActions {
     let orders: IOrder[] = [];
     try {
       let responseOrders: IOrder[] = await this.backend.send(
-        'get',
+        GET_ENDPOIT,
         undefined,
-        '/order'
+        ORDER_ROUTE
       );
       responseOrders.forEach((order: IOrder) => {
         order.admissionDateFront = new Datetime().normalize(
@@ -38,9 +45,10 @@ export default class OrderActions {
   public async add(order: IOrder) {
     try {
       let data: IOrder = {
-        admissionDate: new Datetime().convertDatetime(
-          order.admissionDateFront || ''
-        ),
+        admissionDate: new Datetime().convert(
+          (order.admissionDateFront || '').split(' ')[0]
+        ,(order.admissionDateFront || '').split(' ')[1]),
+
         clientName: order.clientName,
         clientPhone: order.clientPhone,
 
@@ -56,9 +64,9 @@ export default class OrderActions {
         status: ORDER_RECIVED.text
       };
       const response: { id: number }[] = await this.backend.send(
-        'post',
+        POST_ENDPOIT,
         data,
-        '/order'
+        ORDER_ROUTE
       );
       let newOrder: IOrder = {
         id: response[0].id,
@@ -102,9 +110,9 @@ export default class OrderActions {
         status: order.status != '' ? order.status : ORDER_RECIVED.text
       };
       const response: any = await this.backend.send(
-        'put',
+        PUT_ENDPOIT,
         data,
-        `/order/${order.id}`
+        `${ORDER_ROUTE}/${order.id}`
       );
       return order;
     } catch (error) {
@@ -117,9 +125,9 @@ export default class OrderActions {
     if (confirm('Seguro que desea eliminar la orden seleccionada?')) {
       try {
         const response: any = await this.backend.send(
-          'delete',
+          DELETE_ENDPOIT,
           undefined,
-          `/order/${pedido.id}`
+          `${ORDER_ROUTE}/${pedido.id}`
         );
       } catch (error) {
         console.error('Error borrando pedidio => ', error);
