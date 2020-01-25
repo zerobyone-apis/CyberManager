@@ -52,7 +52,7 @@ export default class ReparirActions {
       const response: any = await this.backend.send(
         'put',
         data,
-        `/pedido/repair/${repair.id}`
+        `/order/repair/${repair.id}`
       );
       return repair;
     } catch (error) {

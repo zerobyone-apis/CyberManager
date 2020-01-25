@@ -21,7 +21,7 @@ import htmlToImage from 'html-to-image';
   ARQUEO:
 
   (fechaInicio a fechaFin) => obtiene la diferencia entre 
-  ganancia de los pedidos entregados en ese rango de tiempo
+  ganancia de los orders entregados en ese rango de tiempo
   
   SELECT sum(o.price) AS TOTAL_PRICE, 
   sum(o.costoRepuesto) AS TOTAL_COSTO_REPUESTO 
@@ -187,7 +187,7 @@ export default class IndentificationView extends vue {
    * @description Minitoolbar Functions
    * miniToolbar: buttons array
    * execMiniToolbar(index) Execute the correspond action of the specify index
-   * @Watch('selectedPedido') Listen this vars for changes in buttons
+   * @Watch('selectedorder') Listen this vars for changes in buttons
    * @Watch('wizard')
    */
   public miniToolbar = [
@@ -433,8 +433,8 @@ export default class IndentificationView extends vue {
       // filter
       let filterKey = this.searchFilters[this.search.filter];
       return this.orders.filter(
-        (pedido: any) =>
-          (pedido[filterKey] || '')
+        (order: any) =>
+          (order[filterKey] || '')
             .toLowerCase()
             .indexOf(this.search.value.toLowerCase()) != -1
       );
@@ -451,7 +451,7 @@ export default class IndentificationView extends vue {
     };
   }
 
-  //Clear fields object UI-CLEAN-Pedido
+  //Clear fields object UI-CLEAN-order
   private cleanFields: IOrder = {
     id: 0,
     admissionDate: new Datetime().now(),
