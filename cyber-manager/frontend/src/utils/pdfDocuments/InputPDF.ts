@@ -1,4 +1,4 @@
-import vue from 'vue';
+/* import vue from 'vue';
 import jsPDF from 'jspdf';
 import Styles from './Styles';
 import { IOrder } from '../../types/Order.type';
@@ -19,3 +19,4 @@ export default class InputPdf {
     doc.save('Factura entrada.pdf');
   }
 }
+ */

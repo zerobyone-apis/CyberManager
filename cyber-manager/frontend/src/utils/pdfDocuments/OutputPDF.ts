@@ -1,4 +1,4 @@
-import vue from 'vue';
+/* import vue from 'vue';
 import jsPDF from 'jspdf';
 import Styles from './Styles';
 import Pedido from '../../../../backend/src/models/pedido';
@@ -93,3 +93,4 @@ export default class OutputPdf extends Styles {
     doc.save(order.fechaEntrega + '-' + order.idOrden + '.pdf');
   }
 }
+ */

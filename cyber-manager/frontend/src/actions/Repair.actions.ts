@@ -2,7 +2,6 @@ import { IRepair } from '../types/Repair.type';
 import { IOrder } from '../types/Order.type';
 import IntegrationBackend from '../utils/IntegrationBackend';
 import Datetime from '../utils/DateTime';
-import ResultObject from '../../../backend/src/models/ResultObject';
 
 export default class ReparirActions {
   private backend: IntegrationBackend = new IntegrationBackend();

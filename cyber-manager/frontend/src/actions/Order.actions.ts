@@ -1,7 +1,7 @@
-import ResultObject from '../../../backend/src/models/ResultObject';
 import IntegrationBackend from '../utils/IntegrationBackend';
 import Datetime from '../utils/DateTime';
 import { IOrder } from '@/types/Order.type';
+import ResultObject from '../../../backend/src/utils/ResultObject';
 import {
   ORDER_CONFIRM,
   ORDER_DELIVERED,

@@ -4,7 +4,7 @@ import DateTime from '../utils/Datetime';
 
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries, { USER_TABLE } from '../../sql/queries/Queries';
-import ResultObject from '../models/ResultObject';
+import ResultObject from '../utils/ResultObject';
 
 let datetime: DateTime = new DateTime();
 let queryFunctions: QueryFunctions = new QueryFunctions();
