@@ -6,6 +6,7 @@ import MysqlConnection from '../sql/connection/MysqlConnection';
 import Enterprise from './routes/Enterprise.routes';
 import Order from './routes/Order.routes';
 import User from './routes/User.routes';
+import { ENTERPRISE_ROUTE, USER_ROUTE, ORDER_ROUTE } from './types/Routes.type'
 
 export class App {
   private app: Application;
@@ -32,9 +33,9 @@ export class App {
   }
 
   routes() {
-    this.app.use('/enterprise', Enterprise);
-    this.app.use('/order', Order);
-    this.app.use('/user', User);
+    this.app.use(ENTERPRISE_ROUTE, Enterprise);
+    this.app.use(ORDER_ROUTE, Order);
+    this.app.use(USER_ROUTE, User);
   }
 
   async listen() {
