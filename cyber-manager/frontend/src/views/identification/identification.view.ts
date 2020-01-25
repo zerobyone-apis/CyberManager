@@ -1,8 +1,6 @@
 import vue from 'vue';
 import Datetime from '../../utils/DateTime';
 import Validation from '../../utils/Validation';
-import InputPdf from '../../utils/pdfDocuments/InputPDF';
-import OutputPdf from '../../utils/pdfDocuments/OutputPDF';
 import IntegrationBackend from '../../utils/IntegrationBackend';
 
 import EnterpriseAction from '../../actions/Enterprise.actions';
@@ -20,16 +18,6 @@ import ResultObject from '../../../../backend/src/models/ResultObject';
 import htmlToImage from 'html-to-image';
 
 /*
-
-  TODO
-  agregar nuevos attbs en order, reparation y en base de dato: 
-
-  garantia: string
-  Estara ubicado en reparacion, bajo status
-
-  costoRepuesto: number
-  Estara abajo de precio
-
   Solo el USER_ADMIN podra ver estos dos campos
 
   ARQUEO:
@@ -41,9 +29,8 @@ import htmlToImage from 'html-to-image';
   sum(o.costoRepuesto) AS TOTAL_COSTO_REPUESTO 
   FROM orders o WHERE fechaEntrega 
   BETWEEN(fechaInicio, fechaFin)
-
+  
   Solo podra verla el supervisor, es una tool 
-
 */
 
 import {
@@ -87,6 +74,7 @@ export default class IndentificationView extends vue {
     repairDate: '',
     reparation: '',
     price: 0,
+    replacementPrice: 0,
     status: ''
   };
   private enterprise: IEnterprise = {
@@ -413,7 +401,8 @@ export default class IndentificationView extends vue {
       warranty: order.warranty,
       technical: this.userInfo.username,
       status: this.newOrder.status || ORDER_RECIVED.text,
-      price: order.price || 0
+      price: order.price || 0,
+      replacementPrice: order.replacementPrice || 0
     };
   }
 
@@ -434,35 +423,6 @@ export default class IndentificationView extends vue {
 
   private resetAnalitycs() {}
 
-  // private generateInputPdf() {
-  //   // let inputPdf: InputPdf = new InputPdf();
-  //   try {
-  //     let node: any = document.getElementsByClassName('invoice-box')[0];
-  //     htmlToImage.toPng(node)
-  //       .then(function (dataUrl) {
-  //         var img = new Image();
-  //         img.src = dataUrl;
-  //         (document.getElementById('invoice-capture') || document.body).appendChild(img);
-  //         // inputPdf.generateDoc(img);
-  //       })
-  //       .catch(function (error) {
-  //         console.error('error generando captura del input pdf', error);
-  //       });
-  //   } catch (error) {
-  //     console.error('Error generatedDoc Identification -> ', error);
-  //   }
-  // }
-
-  // private generateOutputPdf() {
-  //   let outputPdf: OutputPdf = new OutputPdf();
-  //   try {
-  //     let order = this.newOrder;
-  //     order.reparation = this.repair.reparation;
-  //     // outputPdf.generateDoc(this.enterprise, order);
-  //   } catch (error) {
-  //     console.error('Error generatedDoc -> ', error);
-  //   }
-  // }
 
   private filterItems() {
     if (this.search.value == '') {
@@ -506,6 +466,7 @@ export default class IndentificationView extends vue {
     deliverDate: '',
     reparation: '',
     price: 0,
+    replacementPrice: 0,
     status: ''
   };
 }
