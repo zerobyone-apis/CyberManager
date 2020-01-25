@@ -33,6 +33,7 @@
                   ></v-text-field>
                 </div>
               </div>
+
               <div class="fields">
                 <v-text-field
                   :error="v.get('newOrder.clientName') != ''"
@@ -52,8 +53,7 @@
                   label="Telefono"
                   class="custom-field"
                 ></v-text-field>
-              </div>
-              <div class="fields">
+
                 <v-text-field
                   :error="v.get('newOrder.article') != ''"
                   :error-messages="v.get('newOrder.article')"
@@ -109,9 +109,7 @@
               <h3
                 v-if="orders.length && filterItems().length != 0"
                 class="font-title"
-              >
-                Lista de Ordenes
-              </h3>
+              >Lista de Ordenes</h3>
               <div class="search-box" v-if="orders.length">
                 <div class="select">
                   <v-select
@@ -133,18 +131,12 @@
                 </div>
               </div>
               <div class="table-box">
-                <div
-                  v-if="orders.length == 0 && search.value === ''"
-                  class="no-orders"
-                >
+                <div v-if="orders.length == 0 && search.value === ''" class="no-orders">
                   <p>No tiene ordenes creadas</p>
                   <v-icon>search</v-icon>
                 </div>
 
-                <div
-                  class="no-orders"
-                  v-if="filterItems() == 0 && search.value"
-                >
+                <div class="no-orders" v-if="filterItems() == 0 && search.value">
                   <p>No se encontraron coincidencias</p>
                   <v-icon>search</v-icon>
                 </div>
@@ -175,13 +167,10 @@
                         interactionsMode.order == 1 &&
                           selectedOrder != orders.indexOf(item)
                       "
-                      >edit</v-icon
-                    >
+                    >edit</v-icon>
                   </template>
                   <template v-slot:item.status="{ item }">
-                    <v-icon class="mr-2" :color="getColorByStatus(item.status)"
-                      >info</v-icon
-                    >
+                    <v-icon class="mr-2" :color="getColorByStatus(item.status)">info</v-icon>
                     <span>{{ item.status }}</span>
                   </template>
                   <template v-slot:item.action="{ item }">
@@ -193,8 +182,7 @@
                       "
                       @click="deleteOrder(item)"
                       :color="changeColorToEdit(item)"
-                      >delete</v-icon
-                    >
+                    >delete</v-icon>
                   </template>
                   <span>Borrar orden</span>
                 </v-data-table>
@@ -207,15 +195,33 @@
           <div class="repair-step step-content">
             <div class="left_content-box">
               <h3 class="font-title">Reparacion de Orden</h3>
-              <div class="fields">
-                <p>Cliente: {{ newOrder.clientName }}</p>
-                <p>Articulo: {{ newOrder.article }}</p>
+
+              <div class="identify">
+                <div class="service-number">
+                  <v-text-field
+                    readonly
+                    :value="`${newOrder.clientName}`"
+                    label="Nombre del cliente"
+                    class="custom-field"
+                  ></v-text-field>
+                </div>
+                <div class="reception-date">
+                  <v-text-field
+                    readonly
+                    :value="`${newOrder.article}`"
+                    label="Articulo"
+                    class="custom-field"
+                  ></v-text-field>
+                </div>
               </div>
+
               <div class="fields">
                 <v-select
                   v-model="repair.status"
+                  class="select-status"
                   :items="status"
                   item-value="text"
+                  outlined
                   chips
                   flat
                   attach
@@ -227,8 +233,7 @@
                     </v-chip>
                   </template>
                 </v-select>
-              </div>
-              <div class="fields">
+
                 <time-field
                   v-model="repair.repairDate"
                   type="date"
@@ -236,7 +241,9 @@
                   :errorMessage="v.get('repair.repairDate')"
                   label="Fecha de reparacion"
                   lang="es"
+                  :outlined="true"
                 ></time-field>
+
                 <time-field
                   v-model="repair.deliverDate"
                   type="date"
@@ -244,22 +251,24 @@
                   :errorMessage="v.get('repair.deliverDate')"
                   label="Fecha de Entrega"
                   lang="es"
+                  :outlined="true"
                 ></time-field>
-              </div>
-              <div class="fields">
+
+                <v-text-field v-model="repair.technical" outlined flat dense label="Tecnico"></v-text-field>
+                <v-text-field v-model="repair.price" outlined flat dense label="Costo total: "></v-text-field>
                 <v-text-field
-                  v-model="repair.technical"
+                  v-model="repair.replacementPrice"
+                  outlined
                   flat
                   dense
-                  label="Tecnico"
-                ></v-text-field>
-                <v-text-field
-                  v-model="repair.price"
-                  flat
-                  dense
-                  label="Costo Total: "
+                  label="Costo de repuesto: "
                 ></v-text-field>
               </div>
+
+              <!-- <div class="fields">
+
+              </div>-->
+
               <Footer
                 @save="saveRepair()"
                 @cancel="loadRepair(orders[selectedOrder])"
@@ -280,12 +289,7 @@
                     label="Reparacion"
                     value
                   ></v-textarea>
-                  <v-text-field
-                    v-model="repair.warranty"
-                    outlined
-                    dense
-                    label="Garantia"
-                  ></v-text-field>
+                  <v-text-field v-model="repair.warranty" outlined dense label="Garantia"></v-text-field>
                 </div>
               </div>
             </div>
@@ -295,43 +299,23 @@
         <v-stepper-content step="3">
           <div class="content-doc">
             <div id="invoice-input-box" class="invoice-box">
-              <Invoice
-                :order="newOrder"
-                class="input-invoice-box"
-                :enterprise="enterprise"
-              />
+              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
               <v-divider class="mt-3 mb-3"></v-divider>
-              <Invoice
-                :order="newOrder"
-                class="input-invoice-box"
-                :enterprise="enterprise"
-              />
+              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
             </div>
           </div>
-          <Footer v-print="'#invoice-input-box'" add-text="Imprimir" />
+          <!-- <Footer v-print="'#invoice-input-box'" add-text="Imprimir" /> -->
         </v-stepper-content>
         <!-- output invoice step -->
         <v-stepper-content step="4">
           <div class="content-doc">
             <div id="invoice-output-box" class="invoice-box">
-              <Invoice
-                :order="newOrder"
-                class="input-invoice-box"
-                :enterprise="enterprise"
-              />
+              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
               <v-divider class="mt-3 mb-3"></v-divider>
-              <Invoice
-                :order="newOrder"
-                class="input-invoice-box"
-                :enterprise="enterprise"
-              />
+              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
             </div>
           </div>
-          <Footer
-            v-print="'#invoice-output-box'"
-            add-text="Imprimir"
-            add-icon="print"
-          />
+          <!-- <Footer v-print="'#invoice-output-box'" add-text="Imprimir" add-icon="print" /> -->
         </v-stepper-content>
         <!-- enterprise step -->
         <v-stepper-content step="5">
@@ -344,26 +328,10 @@
                   label="Nombre de la empresa"
                   class="custom-field"
                 ></v-text-field>
-                <v-text-field
-                  v-model="enterprise.location"
-                  label="Direccion"
-                  class="custom-field"
-                ></v-text-field>
-                <v-text-field
-                  v-model="enterprise.phone"
-                  label="Telefono"
-                  class="custom-field"
-                ></v-text-field>
-                <v-text-field
-                  v-model="enterprise.cellphone"
-                  label="Celular"
-                  class="custom-field"
-                ></v-text-field>
-                <v-text-field
-                  v-model="enterprise.email"
-                  label="Email"
-                  class="custom-field"
-                ></v-text-field>
+                <v-text-field v-model="enterprise.location" label="Direccion" class="custom-field"></v-text-field>
+                <v-text-field v-model="enterprise.phone" label="Telefono" class="custom-field"></v-text-field>
+                <v-text-field v-model="enterprise.cellphone" label="Celular" class="custom-field"></v-text-field>
+                <v-text-field v-model="enterprise.email" label="Email" class="custom-field"></v-text-field>
               </div>
               <div class="fields">
                 <div class="image-box">
@@ -374,12 +342,7 @@
                     :src="enterprise.urlLogo"
                     alt
                   />
-                  <v-btn
-                    disabled
-                    depressed
-                    v-if="!enterprise.urlLogo"
-                    class="btn-camera"
-                  >
+                  <v-btn disabled depressed v-if="!enterprise.urlLogo" class="btn-camera">
                     <v-icon>camera_enhance</v-icon>
                     <!-- <span class="text-btn">Pulse AQUI para buscar</span> -->
                   </v-btn>
@@ -475,22 +438,24 @@
       ></v-progress-linear>
     </v-stepper>
 
-    <v-snackbar v-model="notification.visible" :color="notification.color">{{
+    <v-snackbar v-model="notification.visible" :color="notification.color">
+      {{
       notification.message
-    }}</v-snackbar>
+      }}
+    </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-import IndentificationView from './identification.view';
-import './identification.scss';
-import '../../styles/fonts.scss';
-import { Component } from 'vue-property-decorator';
-import TimeField from '../../components/TimeField/TimeField.vue';
-import Footer from '../../components/Footer/Footer.vue';
-import MiniToolbar from '../../components/MiniToolbar/MiniToolbar.vue';
-import Toolbar from '../../components/toolbar/toolbar.vue';
-import Invoice from '../../components/Invoice/Invoice.vue';
+import IdentificationView from "./identification.view";
+import "./identification.scss";
+import "../../styles/fonts.scss";
+import { Component } from "vue-property-decorator";
+import TimeField from "../../components/TimeField/TimeField.vue";
+import Footer from "../../components/Footer/Footer.vue";
+import MiniToolbar from "../../components/MiniToolbar/MiniToolbar.vue";
+import Toolbar from "../../components/toolbar/toolbar.vue";
+import Invoice from "../../components/Invoice/Invoice.vue";
 
 @Component({
   components: {
@@ -501,7 +466,7 @@ import Invoice from '../../components/Invoice/Invoice.vue';
     Invoice
   }
 })
-export default class Indentificacion extends IndentificationView {
+export default class Identification extends IdentificationView {
   created() {
     this.init();
   }

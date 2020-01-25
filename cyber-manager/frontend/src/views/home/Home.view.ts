@@ -50,6 +50,14 @@ export default class HomeView extends vue {
       ['charge', 'string']
     ]
   };
+  private userFieldsSignUp: any = {
+    objectName: 'createUser',
+    fields: [
+      ['username', 'string'],
+      ['passwd', 'string'],
+      ['charge', 'string']
+    ]
+  };
 
   private wizard: number = 1;
 
@@ -64,9 +72,12 @@ export default class HomeView extends vue {
       : (this.createUser.isAdmin = false);
   }
 
+
+
+
   async signUp() {
     this.isAdmin();
-    if (this.v.validateFields(this.createUser, [this.userFields])) {
+    if (this.v.validateFields(this.createUser, [this.userFieldsSignUp])) {
       if (this.createUser.passwd == this.createUser.passwd2) {
         try {
           const userFiltered: {

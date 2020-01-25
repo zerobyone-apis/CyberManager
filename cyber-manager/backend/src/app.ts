@@ -32,8 +32,8 @@ export class App {
   }
 
   routes() {
-    this.app.use('/empresa', Enterprise);
-    this.app.use('/pedido', Order);
+    this.app.use('/enterprise', Enterprise);
+    this.app.use('/order', Order);
     this.app.use('/user', User);
   }
 
