@@ -14,9 +14,9 @@ export class App {
     this.app = Express();
     this.app.use(cors());
     const server = http.createServer(this.app);
-    
+
     MysqlConnection.connect();
-    
+
     this.settings();
     this.middlewares();
     this.routes();
