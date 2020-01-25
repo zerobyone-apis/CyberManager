@@ -1,4 +1,5 @@
 export interface IAnalitycs {
-  startDate: string,
-  endDate: string
+  startDate: string;
+  endDate: string;
+  result: string;
 }
