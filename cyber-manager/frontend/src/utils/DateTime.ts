@@ -2,7 +2,7 @@ export default class Datetime {
   
   convert(date: string, hour?: string) {
     let d = date.split('/');
-    let orderDate = d[2] + '-' + d[0] + '-' + d[1];
+    let orderDate = d[2] + '-' + d[1] + '-' + d[0];
     let h = (hour == undefined ? '' : hour);
     return orderDate + (h == '' ? '' : ' ' + h);
   }

@@ -2,7 +2,13 @@ import IntegrationBackend from '../utils/IntegrationBackend';
 import Datetime from '../utils/DateTime';
 import { IOrder } from '@/types/Order.type';
 import ResultObject from '../../../backend/src/utils/ResultObject';
-import { ORDER_ROUTE, PUT_ENDPOIT, GET_ENDPOIT, POST_ENDPOIT, DELETE_ENDPOIT } from '../types/Routes.type'; 
+import { 
+  ORDER_ROUTE, 
+  PUT_ENDPOIT, 
+  GET_ENDPOIT, 
+  POST_ENDPOIT, 
+  DELETE_ENDPOIT 
+} from '../types/Routes.type';
 import {
   ORDER_CONFIRM,
   ORDER_DELIVERED,
@@ -39,9 +45,10 @@ export default class OrderActions {
   public async add(order: IOrder) {
     try {
       let data: IOrder = {
-        admissionDate: new Datetime().convertDatetime(
-          order.admissionDateFront || ''
-        ),
+        admissionDate: new Datetime().convert(
+          (order.admissionDateFront || '').split(' ')[0]
+        ,(order.admissionDateFront || '').split(' ')[1]),
+
         clientName: order.clientName,
         clientPhone: order.clientPhone,
 
