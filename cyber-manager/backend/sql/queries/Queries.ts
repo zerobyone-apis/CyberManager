@@ -24,7 +24,7 @@ export default class Queries {
       create: `INSERT INTO ${ORDER_TABLE} SET ?`,
       setStatus: `UPDATE ${ORDER_TABLE} SET status = ? where id = ?`,
       update: `UPDATE ${ORDER_TABLE} SET clientName = ?, clientPhone = ?, article = ?, model = ?, brand = ? , reportedFailure = ?, observations = ?, isCanceled = ?, status = ? WHERE id = ?`,
-      reparacion: `UPDATE ${ORDER_TABLE} SET clientName = ?, article = ?, isCanceled = ?, deliverDate = ?, repairDate = ?, reparation = ?, warranty = ?, price = ? , status = ? WHERE id = ?`,
+      reparacion: `UPDATE ${ORDER_TABLE} SET clientName = ?, article = ?, isCanceled = ?, deliverDate = ?, repairDate = ?, reparation = ?, warranty = ?, price = ? , status = ?, replacementPrice = ? WHERE id = ?`,
       delete: `DELETE FROM ${ORDER_TABLE} WHERE id = ?`,
       cancel: `UPDATE ${ORDER_TABLE} SET isCanceled = ? WHERE id = ?`
     },
