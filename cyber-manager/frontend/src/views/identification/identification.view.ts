@@ -40,6 +40,7 @@ import {
   ORDER_WORKSHOP
 } from '../../types/OrderStatus.type';
 import { IAnalitycs } from '@/types/Analytics.type';
+import Analitycs from '../../actions/Analytics.actions';
 
 export default class IndentificationView extends vue {
   private userInfo: IUserStore = this.$store.getters.userInfo;
@@ -93,7 +94,8 @@ export default class IndentificationView extends vue {
   };
   private analitycs: IAnalitycs = {
     startDate: '',
-    endDate: ''
+    endDate: '',
+    result: ''
   };
 
   public orders: IOrder[] = [];
@@ -423,7 +425,32 @@ export default class IndentificationView extends vue {
     }
   }
 
-  private beginAnalitycs() {}
+  private async beginAnalitycs() {
+    if (this.analitycs.startDate && this.analitycs.endDate) {
+      console.log('date start: ', this.analitycs.startDate);
+      console.log('date end: ', this.analitycs.endDate);
+      if (
+        new Date(this.analitycs.startDate) < new Date() &&
+        new Date(this.analitycs.endDate) > new Date(this.analitycs.startDate)
+      ) {
+        this.disabledButtons = true;
+        let responseArqueo: any = await new Analitycs().doArqueo(
+          this.analitycs
+        );
+        this.analitycs.result = responseArqueo[0];
+        this.showNotificationSuccess(responseArqueo);
+        this.disabledButtons = false;
+      } else {
+        this.showNotificationFail(
+          'Lo sentimos la fecha final debe ser mayor que la fecha inicial. Intentelo nuevamente.'
+        );
+      }
+    } else {
+      this.showNotificationFail(
+        'Lo sentimos los campos no pueden estar vacios para esta operación. Intentelo nuevamente.'
+      );
+    }
+  }
 
   private resetAnalitycs() {}
 

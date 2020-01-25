@@ -7,7 +7,8 @@ import {
   updateOrder,
   cancelOrder,
   changeStatus,
-  updateRepairOrder
+  updateRepairOrder,
+  doArqueo
 } from '../controllers/Order.controllers';
 const router = Router();
 
@@ -15,6 +16,8 @@ router
   .route('/')
   .get(getOrders)
   .post(createOrder);
+
+router.route('/arqueo').get(doArqueo);
 
 router
   .route('/:id')
