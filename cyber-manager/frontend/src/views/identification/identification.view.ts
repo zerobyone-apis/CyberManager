@@ -14,23 +14,7 @@ import { IOrder } from '../../types/Order.type';
 import { USER_ADMIN } from '../../types/UsersSystem.type';
 
 import { Watch } from 'vue-property-decorator';
-import htmlToImage from 'html-to-image';
-
-/*
-  Solo el USER_ADMIN podra ver estos dos campos
-
-  ARQUEO:
-
-  (fechaInicio a fechaFin) => obtiene la diferencia entre 
-  ganancia de los orders entregados en ese rango de tiempo
-  
-  SELECT sum(o.price) AS TOTAL_PRICE, 
-  sum(o.costoRepuesto) AS TOTAL_COSTO_REPUESTO 
-  FROM orders o WHERE fechaEntrega 
-  BETWEEN(fechaInicio, fechaFin)
-  
-  Solo podra verla el USER_ADMIN, es una tool 
-*/
+// import htmlToImage from 'html-to-image';
 
 import {
   ORDER_CONFIRM,
@@ -427,8 +411,6 @@ export default class IndentificationView extends vue {
 
   private async beginAnalitycs() {
     if (this.analitycs.startDate && this.analitycs.endDate) {
-      console.log('date start: ', this.analitycs.startDate);
-      console.log('date end: ', this.analitycs.endDate);
       if (
         new Date(this.analitycs.startDate) < new Date() &&
         new Date(this.analitycs.endDate) > new Date(this.analitycs.startDate)
@@ -437,8 +419,8 @@ export default class IndentificationView extends vue {
         let responseArqueo: any = await new Analitycs().doArqueo(
           this.analitycs
         );
-        this.analitycs.result = responseArqueo[0];
-        this.showNotificationSuccess(responseArqueo);
+        let result: any = responseArqueo[0];
+        this.analitycs.result = `Precio Total: $${result.totalPrice}, Precio total de reparacion: $${result.totalReplacementPrice}, Precio neto: $${result.netoPrice}`;
         this.disabledButtons = false;
       } else {
         this.showNotificationFail(
@@ -452,7 +434,11 @@ export default class IndentificationView extends vue {
     }
   }
 
-  private resetAnalitycs() {}
+  private resetAnalitycs() {
+    this.analitycs.startDate = '';
+    this.analitycs.endDate = '';
+    this.analitycs.result = '';
+  }
 
   private filterItems() {
     if (this.search.value == '') {
