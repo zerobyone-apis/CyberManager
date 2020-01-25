@@ -19,7 +19,7 @@ export default class OrderActions {
       let responseOrders: IOrder[] = await this.backend.send(
         'get',
         undefined,
-        '/pedido'
+        '/order'
       );
       responseOrders.forEach((order: IOrder) => {
         order.admissionDateFront = new Datetime().normalize(
@@ -58,7 +58,7 @@ export default class OrderActions {
       const response: { id: number }[] = await this.backend.send(
         'post',
         data,
-        '/pedido'
+        '/order'
       );
       let newOrder: IOrder = {
         id: response[0].id,
@@ -104,7 +104,7 @@ export default class OrderActions {
       const response: any = await this.backend.send(
         'put',
         data,
-        `/pedido/${order.id}`
+        `/order/${order.id}`
       );
       return order;
     } catch (error) {
@@ -119,7 +119,7 @@ export default class OrderActions {
         const response: any = await this.backend.send(
           'delete',
           undefined,
-          `/pedido/${pedido.id}`
+          `/order/${pedido.id}`
         );
       } catch (error) {
         console.error('Error borrando pedidio => ', error);

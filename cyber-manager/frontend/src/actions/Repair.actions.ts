@@ -46,6 +46,7 @@ export default class ReparirActions {
         reparation: repair.reparation,
         warranty: repair.warranty,
         price: repair.price,
+        replacementPrice: repair.replacementPrice,
         status: repair.status
       };
       const response: any = await this.backend.send(

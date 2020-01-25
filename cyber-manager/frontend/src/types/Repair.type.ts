@@ -9,5 +9,6 @@ export interface IRepair {
   repairDate: string | null,
   reparation: string,
   price: number,
+  replacementPrice: number,
   status: string,
 }
