@@ -3,7 +3,6 @@ import { IOrder } from '../types/Order.type';
 import DateTime from '../utils/Datetime';
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries, { ORDER_TABLE } from '../../sql/queries/Queries';
-import ResultObject from '../models/ResultObject';
 import { IRepair } from '../types/Repair.type';
 
 let datetime: DateTime = new DateTime();
@@ -13,10 +12,13 @@ let queries: Queries = new Queries();
 export async function createOrder(req: Request, res: Response) {
   const newOrder: IOrder = req.body.data;
   console.log(newOrder);
-  let result: ResultObject = await queryFunctions.query(
-    queries.getQuery(ORDER_TABLE, 'create'),
-    [newOrder]
-  );
+
+  let result: {
+    statusCode: number;
+    value: any;
+  } = await queryFunctions.query(queries.getQuery(ORDER_TABLE, 'create'), [
+    newOrder
+  ]);
 
   let queryParams = [
     newOrder.clientName,
@@ -25,7 +27,10 @@ export async function createOrder(req: Request, res: Response) {
   ];
 
   if (result.statusCode == 200) {
-    let resultId: ResultObject = await queryFunctions.query(
+    let resultId: {
+      statusCode: number;
+      value: any;
+    } = await queryFunctions.query(
       queries.getQuery(ORDER_TABLE, 'getNew'),
       queryParams
     );
@@ -51,10 +56,10 @@ export async function findByID(req: Request, res: Response) {
 }
 
 export async function getOrders(req: Request, res: Response) {
-  let result: ResultObject = await queryFunctions.query(
-    queries.getQuery(ORDER_TABLE, 'getAll'),
-    []
-  );
+  let result: {
+    statusCode: number;
+    value: any;
+  } = await queryFunctions.query(queries.getQuery(ORDER_TABLE, 'getAll'), []);
   console.log('RESULT": ->', result.statusCode);
   if (result.statusCode == 200) {
     return res.status(200).json(result.value);
@@ -163,7 +168,8 @@ export async function updateRepairOrder(req: Request, res: Response) {
     reparation,
     warranty,
     price,
-    status
+    status,
+    replacementPrice
   }: IRepair = req.body.data;
 
   const id = parseInt(req.params.id);
@@ -178,6 +184,7 @@ export async function updateRepairOrder(req: Request, res: Response) {
     warranty,
     price,
     status,
+    replacementPrice,
     id
   ];
   let result = await queryFunctions.query(
