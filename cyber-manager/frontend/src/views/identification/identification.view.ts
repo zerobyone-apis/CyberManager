@@ -1,11 +1,6 @@
 import vue from 'vue';
 import Datetime from '../../utils/DateTime';
 import Validation from '../../utils/Validation';
-<<<<<<< HEAD
-/* import InputPdf from '../../utils/pdfDocuments/InputPDF';
-import OutputPdf from '../../utils/pdfDocuments/OutputPDF'; */
-=======
->>>>>>> 9185ffa9aca1939bb6af51dec519fc41409d66b4
 import IntegrationBackend from '../../utils/IntegrationBackend';
 
 import EnterpriseAction from '../../actions/Enterprise.actions';
@@ -430,7 +425,6 @@ export default class IndentificationView extends vue {
   private beginAnalitycs() {}
 
   private resetAnalitycs() {}
-
 
   private filterItems() {
     if (this.search.value == '') {

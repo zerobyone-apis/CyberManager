@@ -102,6 +102,7 @@ export async function signIn(req: Request, res: Response) {
     queries.getQuery(USER_TABLE, 'signIn'),
     paramsQuery
   );
+  console.log('Este es el resultado de la busqueda de usuario ', result);
   if (result.statusCode == 200) {
     if (result.value.length != 0) {
       return res.status(200).json(result.value[0]);
