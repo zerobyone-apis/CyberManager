@@ -1,22 +1,20 @@
 import vue from 'vue';
 import Datetime from '../../utils/DateTime';
 import Validation from '../../utils/Validation';
-import InputPdf from '../../utils/pdfDocuments/InputPDF';
-import OutputPdf from '../../utils/pdfDocuments/OutputPDF';
+/* import InputPdf from '../../utils/pdfDocuments/InputPDF';
+import OutputPdf from '../../utils/pdfDocuments/OutputPDF'; */
 import IntegrationBackend from '../../utils/IntegrationBackend';
 
 import EnterpriseAction from '../../actions/Enterprise.actions';
 import OrderAction from '../../actions/Order.actions';
 import RepairAction from '../../actions/Repair.actions';
-
+import ResultObject from '../../../../backend/src/utils/ResultObject';
 import { IUserStore } from '../../types/UserStore.type';
 import { IEnterprise } from '../../types/Enterprise.type';
 import { IRepair } from '../../types/Repair.type';
 import { IOrder } from '../../types/Order.type';
 
 import { Watch } from 'vue-property-decorator';
-import ResultObject from '../../../../backend/src/models/ResultObject';
-
 import htmlToImage from 'html-to-image';
 
 /*
@@ -205,7 +203,12 @@ export default class IndentificationView extends vue {
    * @Watch('wizard')
    */
   public miniToolbar = [
-    { text: 'Lista de ordenes', icon: 'people', disabled: false, visible: true },
+    {
+      text: 'Lista de ordenes',
+      icon: 'people',
+      disabled: false,
+      visible: true
+    },
     { text: 'Reparacion', icon: 'settings', disabled: true, visible: true },
     { text: 'Ingreso de orden', icon: 'input', disabled: true, visible: true },
     { text: 'Entrega de orden', icon: 'send', disabled: true, visible: true },
@@ -368,12 +371,12 @@ export default class IndentificationView extends vue {
   async deleteOrder(selectedOrder: IOrder) {
     this.disabledButtons = true;
     let responseDelete: boolean = await this.orderActions.delete(selectedOrder);
-    if(responseDelete) {
+    if (responseDelete) {
       this.orders.splice(this.selectedOrder, 1);
       Object.assign(this.newOrder, this.cleanFields);
       this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
       this.interactionsMode.order = 0;
-      this.selectedOrder = -1;      
+      this.selectedOrder = -1;
       this.showNotificationSuccess('Orden eliminada exitosamente!');
     }
     this.disabledButtons = false;

@@ -2,7 +2,7 @@ import { IEnterprise } from '../types/Enterprise.type';
 import IntegrationBackend from '../utils/IntegrationBackend';
 import Datetime from '../utils/DateTime';
 import { IUserStore } from '@/types/UserStore.type';
-import ResultObject from '../../../backend/src/models/ResultObject';
+import ResultObject from '../../../backend/src/utils/ResultObject';
 
 export default class EnterpriseActions {
   private backend: IntegrationBackend = new IntegrationBackend();
