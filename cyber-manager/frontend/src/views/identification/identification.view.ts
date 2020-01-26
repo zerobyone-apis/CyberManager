@@ -32,6 +32,7 @@ export default class IndentificationView extends vue {
   private enterpriseActions: EnterpriseAction = new EnterpriseAction();
   public orderActions: OrderAction = new OrderAction();
   public repairActions: RepairAction = new RepairAction();
+  public analyticsActions: Analitycs = new Analitycs();
 
   public newOrder: IOrder = {
     id: 0,
@@ -416,11 +417,14 @@ export default class IndentificationView extends vue {
         new Date(this.analitycs.endDate) > new Date(this.analitycs.startDate)
       ) {
         this.disabledButtons = true;
-        let responseArqueo: any = await new Analitycs().doArqueo(
+        let responseArqueo: any = await this.analyticsActions.doArqueo(
           this.analitycs
         );
         let result: any = responseArqueo[0];
-        this.analitycs.result = `Precio Total: $${result.totalPrice}, Precio total de reparacion: $${result.totalReplacementPrice}, Precio neto: $${result.netoPrice}`;
+        this.analitycs.result = `Articulos: ${result.cantArticles}, 
+                                 Precio Total: $${result.totalPrice}, 
+                                 Precio total de reparacion: $${result.totalReplacementPrice}, 
+                                 Precio Neto: $${result.netoPrice}`;
         this.disabledButtons = false;
       } else {
         this.showNotificationFail(

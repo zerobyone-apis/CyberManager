@@ -17,7 +17,7 @@ router
   .get(getOrders)
   .post(createOrder);
 
-router.route('/arqueo').get(doArqueo);
+router.route('/arqueo').patch(doArqueo);
 
 router
   .route('/:id')

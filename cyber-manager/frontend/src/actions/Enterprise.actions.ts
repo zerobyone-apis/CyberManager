@@ -3,7 +3,11 @@ import IntegrationBackend from '../utils/IntegrationBackend';
 import Datetime from '../utils/DateTime';
 import { IUserStore } from '@/types/UserStore.type';
 import ResultObject from '../../../backend/src/utils/ResultObject';
-import { ENTERPRISE_ROUTE, PUT_ENDPOIT, GET_ENDPOIT } from '../types/Routes.type'; 
+import {
+  ENTERPRISE_ROUTE,
+  PUT_ENDPOIT,
+  GET_ENDPOIT
+} from '../types/Routes.type';
 
 export default class EnterpriseActions {
   private backend: IntegrationBackend = new IntegrationBackend();
@@ -44,11 +48,11 @@ export default class EnterpriseActions {
       );
       return response;
     } catch (error) {
-      return null;
       console.error(
         'Algo sucedio obteniendo los datos de la empresa observe -> ',
         error
       );
+      return null;
     }
   }
 }

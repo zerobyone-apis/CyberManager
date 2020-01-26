@@ -1,0 +1,19 @@
+.invoice-page {
+  position: relative;
+  width: calc($PDF_WIDTH * 2) !important;
+  height: -webkit-max-content;
+  height: -moz-max-content;
+  height: max-content;
+  background-color: white !important;
+  padding: 120px;
+}
+
+.invoice-page .banner {
+  text-align: center;
+}
+
+.invoice-page .small-font {
+  color: black;
+  font-size: 13px;
+}
+/*# sourceMappingURL=Invoice.css.map */

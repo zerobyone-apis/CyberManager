@@ -1,0 +1,20 @@
+#app .toolbar-app-fixed {
+  position: fixed;
+  z-index: 2;
+}
+
+#app .left_menu-app-fixed {
+  position: fixed;
+}
+
+#app .container {
+  padding: 0 !important;
+}
+
+#app .goToUp {
+  position: fixed;
+  z-index: 2;
+  right: 10px;
+  bottom: 50px;
+}
+/*# sourceMappingURL=appStyle.css.map */

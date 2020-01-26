@@ -145,17 +145,15 @@ export async function changeStatus(req: Request, res: Response) {
 export async function doArqueo(req: Request, res: Response) {
   console.log('CONSOLE LLEGO');
   console.log('Contenido del req body data -> ', req.body.data);
-
-  //todo: Arreglar el tema de la data que nos devuelve la query de arqueo
-  const { startDate, endDate } = req.body;
+  const { startDate, endDate }: any = req.body.data;
 
   try {
     let result = await queryFunctions.query(
       queries.getQuery(ORDER_TABLE, 'arqueo'),
-      ['2020-01-01 00:00:00', '2020-01-21 00:00:00']
+      [startDate, endDate]
     );
+    console.log('result -> ', result);
     if (result.statusCode == 200) {
-      console.log('Contenido del resultado -> ', result);
       return res.status(200).json(result);
     }
   } catch (error) {

@@ -1,0 +1,25 @@
+.font-title {
+  font-family: titling-gothic-fb-extended, sans-serif;
+  color: #2a2a2a;
+  font-weight: 300;
+  text-transform: none;
+}
+
+.font-text {
+  font-family: "Inter beta", sans-serif;
+  color: #303030d5;
+  font-weight: 300;
+  text-transform: none;
+  -webkit-box-shadow: 1px, 3px #ffffff4f;
+          box-shadow: 1px, 3px #ffffff4f;
+}
+
+.font-error {
+  font-family: "Inter beta", sans-serif;
+  color: #ff7a7ad5;
+  font-weight: 300;
+  text-transform: none;
+  -webkit-box-shadow: 1px, 3px #ffffff4f;
+          box-shadow: 1px, 3px #ffffff4f;
+}
+/*# sourceMappingURL=fonts.css.map */

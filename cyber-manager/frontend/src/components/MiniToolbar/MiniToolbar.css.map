@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAIE,aAJW,CAIX,MAAM,CAAC;EACL,cAAc,EAAE,eAAe;CAChC;;AANH,AAOE,aAPW,CAOX,OAAO,CAAC;EACN,YAAY,EAAE,IAAI;CACnB",
+    "sources": [
+        "MiniToolbar.scss"
+    ],
+    "names": [],
+    "file": "MiniToolbar.css"
+}
