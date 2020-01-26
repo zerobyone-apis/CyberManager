@@ -16,13 +16,12 @@
   width: 100%;
   padding-left: 20px;
   padding-right: 20px;
-  padding-top: 60px !important;
+  padding-top: 50px !important;
   padding-bottom: 65px !important;
+  // background-image:linear-gradient(0deg, rgba(82,132,133,1) 0%, rgba(167,230,231,1) 100%);
   background-image: linear-gradient(
-    to bottom right,
-    rgb(119, 119, 119),
-    rgb(48, 51, 66)
-  ); /* Standard syntax (must be last) */
+    rgb(60, 146, 89) 
+  );
   // background-image: url("https://www.elsetge.cat/myimg/f/11-115406_wide-hd-gray.jpg");
 
   background-position: center center;
@@ -40,14 +39,14 @@
   }
 
   .mini-toolbar {
-    border-top-right-radius: 15px;
-    border-top-left-radius: 15px;
-    border-style: solid;
     border-bottom-style: none;
-    border-color: rgb(235, 235, 235);
+    border-color: rgb(121, 121, 121);
     border-width: 2px;
-    // background-color: rgba(255, 255, 255, 0.801);
-    background-color: white;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    background-color: rgb(255, 255, 255);
+    border-top-right-radius: 100px;
+
     .mini-toolbar_title {
       font-family: Arial, Helvetica, sans-serif;
       font-size: 30px;
@@ -56,17 +55,12 @@
   }
 
   .stepper {
-    border-radius: 0px;
-    border-style: none;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    // border-color: rgb(235, 235, 235);
-    // border-top-color: rgba(196, 196, 196, 0.61);
-    border-width: 2px;
-    // background-color: rgba(255, 255, 255, 0.801);
     background-color: white;
-    // box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.719);
     height: 95%;
+    border-radius: 5px;
+    // box-shadow: 0 30px 20px -20px rgba(27, 27, 27, 0.719);
+    border-bottom-left-radius: 50px;
+
     .v-stepper__content {
       height: max-content !important;
     }
@@ -127,6 +121,7 @@
       margin-left: 10px;
     }
   }
+  
   .notes-box {
     width: 100%;
     height: 100px;
@@ -174,7 +169,7 @@
     .table-box {
       position: relative;
       width: 100% !important;
-      height: 485px !important;
+      height: 415px !important;
       background-color: rgba(255, 255, 255, 0.465);
       text-align: center;
       top: 110px;

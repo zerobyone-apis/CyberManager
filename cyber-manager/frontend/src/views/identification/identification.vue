@@ -5,7 +5,7 @@
       :buttons="miniToolbar"
       @buttonClicked="execMiniToolbarAction($event)"
       :disabled="disabledButtons"
-      colorButtons="grey darken-3"
+      colorButtons="green"
     />
 
     <v-stepper v-model="wizard" class="stepper">
