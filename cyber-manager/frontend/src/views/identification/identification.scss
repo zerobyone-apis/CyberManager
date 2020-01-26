@@ -18,9 +18,8 @@
   padding-right: 20px;
   padding-top: 50px !important;
   padding-bottom: 65px !important;
-  // background-image:linear-gradient(0deg, rgba(82,132,133,1) 0%, rgba(167,230,231,1) 100%);
-  background-image: radial-gradient(circle, rgba(187,187,187,1) 0%, rgba(209,209,209,1) 49%, rgba(68,68,68,1) 100%);
-
+  // background-image: radial-gradient(circle, rgba(96,182,178,1) 0%, rgba(86,189,190,1) 49%, rgba(24,121,121,1) 100%);
+background-image: radial-gradient(circle, rgba(58,214,207,1) 0%, rgba(36,156,157,1) 49%, rgba(0,93,93,1) 100%);
   // background-image: url("https://www.elsetge.cat/myimg/f/11-115406_wide-hd-gray.jpg");
 
   background-position: center center;
@@ -43,7 +42,7 @@
     border-width: 2px;
     border-radius: 5px;
     margin-bottom: 5px;
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.801);
     border-top-right-radius: 100px;
 
     .mini-toolbar_title {
@@ -54,7 +53,7 @@
   }
 
   .stepper {
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.801);
     height: 95%;
     border-radius: 5px;
     // box-shadow: 0 30px 20px -20px rgba(27, 27, 27, 0.719);
@@ -169,7 +168,7 @@
       position: relative;
       width: 100% !important;
       height: 415px !important;
-      background-color: rgba(255, 255, 255, 0.465);
+      // background-color: rgba(255, 255, 255, 0.465);
       text-align: center;
       top: 110px;
       .header-table {
