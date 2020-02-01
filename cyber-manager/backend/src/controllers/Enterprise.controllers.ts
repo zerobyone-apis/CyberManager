@@ -1,24 +1,13 @@
 import { Request, Response } from 'express';
-import DateTime from '../utils/Datetime';
+import moment from 'moment';
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries, { ENTERPRISE_TABLE } from '../../sql/queries/Queries';
 import { IEnterprise } from '../types/Enterprise.type';
 
-let datetime: DateTime = new DateTime();
 let queryFunctions: QueryFunctions = new QueryFunctions();
 let queries: Queries = new Queries();
 
 export async function getEnterprise(req: Request, res: Response) {
-  // let result = await queryFunctions.get(
-  //   queries.getQuery(ENTERPRISE_TABLE, 'getAll'),
-  //   []
-  // );
-  // if (result.statusCode == 200) {
-  //   return res.status(200).json(result.value[0]); // only return one
-  // } else {
-  //   console.log(`Error obteniendo todas las empresas`);
-  //   return res.status(result.statusCode).json(result.value);
-  // }
 }
 
 export async function findEmpresaByUserID(req: Request, res: Response) {
@@ -37,10 +26,9 @@ export async function findEmpresaByUserID(req: Request, res: Response) {
 }
 
 export async function createEmpresa(req: Request, res: Response) {
-  const datetime = new DateTime();
   const enterprise: IEnterprise = req.body.data;
   let queryParams = [
-    datetime.now(),
+    moment().format('YYYY-MM-DD HH:mm:ss'),
     enterprise.enterpriseName,
     enterprise.phone,
     enterprise.cellphone,
@@ -50,7 +38,7 @@ export async function createEmpresa(req: Request, res: Response) {
     enterprise.firstMessage,
     enterprise.secondMessage,
     enterprise.urlLogo,
-    datetime.now(),
+    moment().format('YYYY-MM-DD HH:mm:ss'),
     enterprise.username,
     enterprise.email
   ];

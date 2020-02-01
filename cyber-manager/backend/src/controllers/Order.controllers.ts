@@ -1,11 +1,9 @@
 import { Request, Response } from 'express';
 import { IOrder } from '../types/Order.type';
-import DateTime from '../utils/Datetime';
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries, { ORDER_TABLE } from '../../sql/queries/Queries';
 import { IRepair } from '../types/Repair.type';
 
-let datetime: DateTime = new DateTime();
 let queryFunctions: QueryFunctions = new QueryFunctions();
 let queries: Queries = new Queries();
 

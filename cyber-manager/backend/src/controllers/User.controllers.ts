@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
+import moment from 'moment';
 import { IUser } from '../types/User.type';
-import DateTime from '../utils/Datetime';
-
 import QueryFunctions from '../../sql/connection/QueryFunctions';
 import Queries, { USER_TABLE } from '../../sql/queries/Queries';
 import ResultObject from '../utils/ResultObject';
 
-let datetime: DateTime = new DateTime();
 let queryFunctions: QueryFunctions = new QueryFunctions();
 let queries: Queries = new Queries();
 
@@ -45,7 +43,7 @@ export async function createUser(req: Request, res: Response) {
 export async function updateUser(req: Request, res: Response) {
   const { username, passwd, charge, isAdmin }: IUser = req.body.data;
   const id = parseInt(req.params.id);
-  let queryParams = [username, passwd, charge, isAdmin, datetime.now(), id];
+  let queryParams = [username, passwd, charge, isAdmin, moment().format('YYYY-MM-DD HH:mm:ss'), id];
   let result: ResultObject = await queryFunctions.query(
     queries.getQuery(USER_TABLE, 'update'),
     queryParams
