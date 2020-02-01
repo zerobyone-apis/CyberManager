@@ -40,6 +40,18 @@ export class App {
 
   async listen() {
     await this.app.listen(this.app.get('port'));
-    console.log(`Server on port ${this.app.get('port')}`);
+    console.log('')
+    console.log('══════════════════════════')
+    console.log('')
+    console.log(' ╦══╦      ╦═╦   ╦══╦');
+    console.log(' ╠═╝╠═╦═╦═╗║░╩╦╦╗║╔╗╠═╦═╗ ');
+    console.log(' ║╔═╣╩╣╠╣║║║░░║║║║╚╝║║║╩╣ ');
+    console.log(' ╚══╩═╩╝╚═╝╚══╬╗║╚══╩╩╩═╝ ');
+    console.log('              ╩═╩')
+
+    console.log(` CyberManager backend is ready on port ${this.app.get('port')}`);
+    console.log('')
+    console.log('══════════════════════════')
+    console.log('')
   }
 }
