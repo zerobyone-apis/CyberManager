@@ -7,7 +7,7 @@ import ResultObject from '../../../backend/src/utils/ResultObject';
 export default class UserActions {
   private backend: IntegrationBackend = new IntegrationBackend();
 
-  public async signUp(userData: IUserStore) {
+  public async signUp(userData: IUserStore ) {
     try {
       const response: Record<string, any> = await this.backend.send(
         POST_ENDPOIT,

@@ -1,6 +1,6 @@
 import IntegrationBackend from '../utils/IntegrationBackend';
 import ResultObject from '../../../backend/src/utils/ResultObject';
-import { ORDER_ROUTE, GET_ENDPOIT, PATCH_ENDPOIT } from '../types/Routes.type';
+import { ORDER_ROUTE, PATCH_ENDPOIT } from '../types/Routes.type';
 import { IAnalitycs } from '@/types/Analytics.type';
 
 export default class AnalyticsActions {

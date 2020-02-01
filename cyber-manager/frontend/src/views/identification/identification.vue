@@ -416,6 +416,13 @@
             <div class="right_content-box">
               <div class="content-analytics">
                 <div class="result-box">
+                  <!-- TODO separar las partes del result en varios tags -->
+                  <p class="">
+                  </p>
+                  <p>
+                  </p>
+                  <p>
+                  </p>
                   <p class="result">{{ analitycs.result || 'Resultado' }}</p>
                   <v-icon class="icon">trending_up</v-icon>
                 </div>
