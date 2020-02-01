@@ -1,5 +1,6 @@
 import vue from 'vue';
-import Datetime from '../../utils/DateTime';
+import moment from 'moment';
+
 import Validation from '../../utils/Validation';
 import IntegrationBackend from '../../utils/IntegrationBackend';
 
@@ -22,13 +23,13 @@ import {
   ORDER_RECIVED,
   ORDER_REPAIR,
   ORDER_WORKSHOP
-} from '../../types/OrderStatus.type';
+} from '../../types/OrderStatus.type'; 
 import { IAnalitycs } from '@/types/Analytics.type';
 import Analitycs from '../../actions/Analytics.actions';
 
 export default class IndentificationView extends vue {
   private userInfo: IUserStore = this.$store.getters.userInfo;
-
+ 
   private enterpriseActions: EnterpriseAction = new EnterpriseAction();
   public orderActions: OrderAction = new OrderAction();
   public repairActions: RepairAction = new RepairAction();
@@ -37,7 +38,7 @@ export default class IndentificationView extends vue {
   public newOrder: IOrder = {
     id: 0,
     admissionDate: '',
-    admissionDateFront: new Datetime().now(),
+    admissionDateFront: moment().format('L h:mm:ss'),
     clientName: '',
     clientPhone: '',
     article: '',
@@ -212,7 +213,7 @@ export default class IndentificationView extends vue {
       this.miniToolbar[1].disabled = false;
       this.miniToolbar[2].disabled = false;
     } else {
-      this.miniToolbar[1].disabled = true;
+      this.miniToolbar[1].disabled = true; 
       this.miniToolbar[2].disabled = true;
     }
   }
@@ -472,8 +473,8 @@ export default class IndentificationView extends vue {
   //Clear fields object UI-CLEAN-order
   private cleanFields: IOrder = {
     id: 0,
-    admissionDate: new Datetime().now(),
-    admissionDateFront: new Datetime().now(),
+    admissionDate: moment().format('L h:mm:ss'),
+    admissionDateFront: moment().format('L h:mm:ss'),
     clientName: '',
     clientPhone: '',
     article: '',

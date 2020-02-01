@@ -1,5 +1,6 @@
 import IntegrationBackend from '../utils/IntegrationBackend';
-import Datetime from '../utils/DateTime';
+// import Datetime from '../utils/DateTime';
+import moment from 'moment';
 import { IOrder } from '@/types/Order.type';
 import ResultObject from '../../../backend/src/utils/ResultObject';
 import { 
@@ -29,10 +30,7 @@ export default class OrderActions {
         ORDER_ROUTE
       );
       responseOrders.forEach((order: IOrder) => {
-        order.admissionDateFront = new Datetime().normalize(
-          (order.admissionDate || '').toString()
-        );
-
+        order.admissionDateFront = moment(order.admissionDate).format('DD/MM/YYYY hh:mm:ss')
         orders.push(order);
       });
       return orders;
@@ -45,16 +43,11 @@ export default class OrderActions {
   public async add(order: IOrder) {
     try {
       let data: IOrder = {
-        admissionDate: new Datetime().convert(
-          (order.admissionDateFront || '').split(' ')[0]
-        ,(order.admissionDateFront || '').split(' ')[1]),
-
+        admissionDate: moment(order.admissionDateFront).format('YYYY-MM-DD hh:mm:ss'),
         clientName: order.clientName,
         clientPhone: order.clientPhone,
-
         deliverDate: undefined,
         repairDate: undefined,
-
         article: order.article,
         model: order.model,
         brand: order.brand,
@@ -106,7 +99,7 @@ export default class OrderActions {
         observations: order.observations,
         isCanceled: false,
         repairDate:
-          order.repairDate == '' ? new Datetime().getDate() : order.repairDate,
+          order.repairDate == '' ? moment().format('YYYY-MM-DD hh:mm:ss') : order.repairDate,
         status: order.status != '' ? order.status : ORDER_RECIVED.text
       };
       const response: any = await this.backend.send(
@@ -149,7 +142,7 @@ export default class OrderActions {
 
   public orderBase: IOrder = {
     id: 1,
-    admissionDate: new Datetime().now(),
+    admissionDate: moment().format('YYYY-MM-DD hh:mm:ss'),
     clientName: '',
     clientPhone: '',
     article: '',

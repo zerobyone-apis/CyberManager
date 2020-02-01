@@ -3,7 +3,7 @@ import Validation from '../../utils/Validation';
 import IntegrationBackend from '../../utils/IntegrationBackend';
 import { IUserStore } from '../../types/UserStore.type';
 import { USER_ADMIN, USER_EMPLOYEE } from '../../types/UsersSystem.type';
-import Datetime from '../../utils/DateTime';
+import moment from 'moment';
 import { USER_ROUTE, USER_SIGN_IN_ROUTE, POST_ENDPOIT } from '../../types/Routes.type';
 
 export default class HomeView extends vue {
@@ -77,6 +77,7 @@ export default class HomeView extends vue {
     this.isAdmin();
     if (this.v.validateFields(this.createUser, [this.userFieldsSignUp])) {
       if (this.createUser.passwd == this.createUser.passwd2) {
+
         try {
           const userFiltered: {
             succes: boolean;
@@ -87,9 +88,10 @@ export default class HomeView extends vue {
           userFiltered.succes == true
             ? userFiltered
             : (err: Error) => {
-                console.error(err.message);
-                throw new Error(err.message);
-              };
+              console.error(err.message);
+              throw new Error(err.message);
+            };
+
           console.log('filtered object user .> ', userFiltered.object);
           const response: Record<string, any> = await this.backend.send(
             POST_ENDPOIT,
@@ -118,6 +120,13 @@ export default class HomeView extends vue {
           );
           this.showNotificationFail('Ocurrio un error!, vuelva a intentarlo');
         }
+
+
+
+
+
+
+
       } else {
         this.showNotificationFail('Las contraseñas no coinciden');
       }
@@ -177,7 +186,7 @@ export default class HomeView extends vue {
         passwd: object.passwd,
         charge: object.charge,
         isAdmin: object.isAdmin,
-        createOn: new Datetime().convertDatetime(new Datetime().now() || '')
+        createOn: moment().format('YYYY-MM-DD HH:mm:ss')
       };
       return {
         object: userFiltered,

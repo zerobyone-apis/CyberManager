@@ -1,6 +1,6 @@
 import { IEnterprise } from '../types/Enterprise.type';
 import IntegrationBackend from '../utils/IntegrationBackend';
-import Datetime from '../utils/DateTime';
+import moment from 'moment';
 import { IUserStore } from '@/types/UserStore.type';
 import ResultObject from '../../../backend/src/utils/ResultObject';
 import {
@@ -23,7 +23,7 @@ export default class EnterpriseActions {
         phone: enterprise.phone,
         firstMessage: enterprise.firstMessage,
         secondMessage: enterprise.secondMessage,
-        lastUpdate: new Datetime().convertDatetime(new Datetime().now() || ''),
+        lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'),
         email: enterprise.email || '',
         id: enterprise.id
       };
