@@ -40,7 +40,9 @@
       <v-time-picker v-model="time" full-width scrollable :locale="lang">
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="modal2 = false">Cancel</v-btn>
-        <v-btn text color="primary" @click="$refs.dialogHour.save(time)">OK</v-btn>
+        <v-btn text color="primary" @click="$refs.dialogHour.save(time)"
+          >OK</v-btn
+        >
       </v-time-picker>
     </v-dialog>
 
@@ -68,7 +70,13 @@
             <template v-slot:append>
               <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
-                  <v-btn @click="setTodayDate()" text color="green" v-on="on" class="insert_date-btn">
+                  <v-btn
+                    @click="setTodayDate()"
+                    text
+                    color="green"
+                    v-on="on"
+                    class="insert_date-btn"
+                  >
                     <v-icon>calendar_today</v-icon>
                   </v-btn>
                 </template>
@@ -81,7 +89,9 @@
       <v-date-picker v-model="time" scrollable :min="min" :locale="lang">
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="modal2 = false">Cancel</v-btn>
-        <v-btn text color="primary" @click="$refs.dialogDate.save(time)">OK</v-btn>
+        <v-btn text color="primary" @click="$refs.dialogDate.save(time)"
+          >OK</v-btn
+        >
       </v-date-picker>
     </v-dialog>
   </div>
@@ -94,29 +104,29 @@ import "./TimeFieldStyle.scss";
 
 @Component({})
 export default class TimeField extends TimeFieldCode {
-  @Prop({ default: "" }) value!: string;
-  @Prop({ default: "date" }) type!: string;
-  @Prop({ default: "es" }) lang!: string;
-  @Prop({ default: "" }) label!: string;
-  @Prop({ default: "" }) error!: string;
-  @Prop({ default: "" }) min!: string;
+  @Prop({ default: '' }) value!: string;
+  @Prop({ default: 'date' }) type!: string;
+  @Prop({ default: 'es' }) lang!: string;
+  @Prop({ default: '' }) label!: string;
+  @Prop({ default: '' }) error!: string;
+  @Prop({ default: '' }) min!: string;
   @Prop({ default: false }) outlined!: boolean;
-  @Prop({ default: "" }) errorMessage!: string;
+  @Prop({ default: '' }) errorMessage!: string;
 
-  @Watch("time")
+  @Watch('time')
   updateTime() {
-    if (this.time.indexOf(":") == -1) {
+    if (this.time.indexOf(':') == -1) {
       this.simpleDate = this.getDate(this.time);
     }
-    this.$emit("input", this.time);
+    this.$emit('input', this.time);
   }
 
-  @Watch("value")
+  @Watch('value')
   updateValue() {
-    if (this.time.indexOf(":") == -1) {
-      if (this.value == "") {
-        this.simpleDate = "";
-        this.time = "";
+    if (this.time.indexOf(':') == -1) {
+      if (this.value == '') {
+        this.simpleDate = '';
+        this.time = '';
       } else {
         this.simpleDate = this.getDate(this.time);
       }

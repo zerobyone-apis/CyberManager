@@ -1,66 +1,62 @@
 const electron = require('electron');
 const logger = require('./logger');
-const { app, BrowserWindow, dialog } = electron;
+const {app, BrowserWindow, dialog } = electron;
 const path = require('path');
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
+  // Keep a global reference of the window object, if you don't, the window will
+  // be closed automatically when the JavaScript object is garbage collected.
+  let mainWindow;
 
-// The server url and process
-let serverProcess;
-let baseUrl;
+  // The server url and process
+  let serverProcess;
+  let baseUrl;
 
-function createWindow(callback) {
-  mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 950,
-    show: false // hide until ready-to-show
-    // webPreferences: {
-    //   preload: path.join(__dirname, "preload.js")
-    //   // nodeIntegration: true
-    // }
-  });
+  function createWindow(callback) {
+    mainWindow = new BrowserWindow({
+      width: 1200,
+      height: 950,
+      show: false, // hide until ready-to-show
+      webPreferences: {
+        preload: path.join(__dirname, "preload.js"),
+        nodeIntegration: true
+      }
+    });
 
-  function stopServer() {
-    logger.info('Stopping server...');
-    app.quit(); // quit again
+    function stopServer() {
+      logger.info('Stopping server...');
+      app.quit(); // quit again
+    }
+
+    loadHomePage();
+
+    mainWindow.once('ready-to-show', () => {
+      mainWindow.show();
+      if (callback) callback();
+    });
+
+    // Emitted when the window is closed.
+    mainWindow.on('closed', function() {
+      // Dereference the window object, usually you would store windows
+      // in an array if your app supports multi windows, this is the time
+      // when you should delete the corresponding element.
+      mainWindow = null;
+    });
   }
 
-  loadHomePage();
+  function loadHomePage() {
+    logger.info(`logHomePage: Loading home page at ${baseUrl}`);
+    // check server health and switch to main page
 
-  mainWindow.once('ready-to-show', () => {
-    mainWindow.show();
-    if (callback) callback();
-  });
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null;
-  });
-}
-
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
-});
-
-function loadHomePage() {
-  logger.info(`logHomePage: Loading home page at ${baseUrl}`);
-  // check server health and switch to main page
-
-  mainWindow.loadURL(`${baseUrl}?_=${Date.now()}`);
-  checkCount = 0;
-}
+    mainWindow.loadURL(`${baseUrl}?_=${Date.now()}`);
+    checkCount = 0;
+  }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
   baseUrl = `http://localhost:9000`;
-  const iconName = '/build/system.ico';
+  const iconName = '/home/zoroismymain/Escritorio/test/CyberManager/electron/build/system.ico';
   const iconPath = path.join(__dirname, iconName);
   console.log('')
   console.log('══════════════════════════')
@@ -75,9 +71,15 @@ app.on('ready', function() {
   console.log('')
   console.log('══════════════════════════')
   console.log('')
-  get();
   createWindow();
 });
+
+//Solo MacOS
+app.on('activate', function () {
+  if (mainWindow === null) {
+    createWindow()
+  }
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
@@ -104,3 +106,19 @@ app.on('will-quit', e => {
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
+
+
+//codigo que funca
+//const {app, BrowserWindow, url} = require('electron')
+//
+//function createWindow () {
+//  // Crear la ventana de navegador
+//  win = new BrowserWindow({width: 800, height: 600})
+//  var url = 'http://localhost:9000';
+//  // abrir el html de nuestra app
+//  win.loadURL(url)
+//}
+//// Asociar al evento 'ready'
+//app.on('ready', createWindow)
