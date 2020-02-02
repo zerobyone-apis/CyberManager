@@ -297,7 +297,7 @@
               <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
             </div>
           </div>
-          <!-- <Footer v-print="'#invoice-input-box'" add-text="Imprimir" /> -->
+          <Footer v-print="'#invoice-input-box'" add-text="Imprimir" />
         </v-stepper-content>
         <!-- output invoice step -->
         <v-stepper-content step="4">
@@ -308,7 +308,7 @@
               <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
             </div>
           </div>
-          <!-- <Footer v-print="'#invoice-output-box'" add-text="Imprimir" add-icon="print" /> -->
+          <Footer v-print="'#invoice-output-box'" add-text="Imprimir" add-icon="print" />
         </v-stepper-content>
         <!-- enterprise step -->
         <v-stepper-content step="5">
@@ -451,7 +451,7 @@
 <script lang="ts">
 import IdentificationView from "./identification.view";
 import "./identification.scss";
-import "../../styles/fonts.scss";
+import "../../styles/CyberManager.scss";
 import { Component } from "vue-property-decorator";
 import TimeField from "../../components/TimeField/TimeField.vue";
 import Footer from "../../components/Footer/Footer.vue";

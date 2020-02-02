@@ -15,7 +15,6 @@ import { IOrder } from '../../types/Order.type';
 import { USER_ADMIN } from '../../types/UsersSystem.type';
 
 import { Watch } from 'vue-property-decorator';
-// import htmlToImage from 'html-to-image';
 
 import {
   ORDER_CONFIRM,

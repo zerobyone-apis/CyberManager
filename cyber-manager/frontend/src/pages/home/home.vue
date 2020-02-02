@@ -109,7 +109,7 @@
 <script lang="ts">
 import HomeView from "./home.view";
 import "./home.scss";
-import "../../styles/fonts.scss";
+import "../../styles/CyberManager.scss";
 import { Component } from "vue-property-decorator";
 
 @Component({})

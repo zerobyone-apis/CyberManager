@@ -8,12 +8,12 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: () => import('./views/home/home.vue')
+      component: () => import('./pages/home/home.vue')
     },
     {
       path: '/Identification',
       name: 'Identification',
-      component: () => import('./views/identification/identification.vue')
+      component: () => import('./pages/identification/identification.vue')
     }
   ]
 });

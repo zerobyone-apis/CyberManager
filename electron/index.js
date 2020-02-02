@@ -62,9 +62,19 @@ app.on('ready', function() {
   baseUrl = `http://localhost:9000`;
   const iconName = '/build/system.ico';
   const iconPath = path.join(__dirname, iconName);
-  logger.info('###################################################');
-  logger.info('#               Application Starting              #');
-  logger.info('###################################################');
+  console.log('')
+  console.log('══════════════════════════')
+  console.log('')
+  console.log(' ╦══╦      ╦═╦   ╦══╦');
+  console.log(' ╠═╝╠═╦═╦═╗║░╩╦╦╗║╔╗╠═╦═╗ ');
+  console.log(' ║╔═╣╩╣╠╣║║║░░║║║║╚╝║║║╩╣ ');
+  console.log(' ╚══╩═╩╝╚═╝╚══╬╗║╚══╩╩╩═╝ ');
+  console.log('              ╩═╩')
+
+  console.log(` CyberManager Electron is ready `);
+  console.log('')
+  console.log('══════════════════════════')
+  console.log('')
   get();
   createWindow();
 });
