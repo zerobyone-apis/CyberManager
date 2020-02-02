@@ -23,13 +23,13 @@ import {
   ORDER_RECIVED,
   ORDER_REPAIR,
   ORDER_WORKSHOP
-} from '../../types/OrderStatus.type'; 
+} from '../../types/OrderStatus.type';
 import { IAnalitycs } from '@/types/Analytics.type';
 import Analitycs from '../../actions/Analytics.actions';
 
 export default class IndentificationView extends vue {
   private userInfo: IUserStore = this.$store.getters.userInfo;
- 
+
   private enterpriseActions: EnterpriseAction = new EnterpriseAction();
   public orderActions: OrderAction = new OrderAction();
   public repairActions: RepairAction = new RepairAction();
@@ -213,7 +213,7 @@ export default class IndentificationView extends vue {
       this.miniToolbar[1].disabled = false;
       this.miniToolbar[2].disabled = false;
     } else {
-      this.miniToolbar[1].disabled = true; 
+      this.miniToolbar[1].disabled = true;
       this.miniToolbar[2].disabled = true;
     }
   }
@@ -222,8 +222,12 @@ export default class IndentificationView extends vue {
   onChangeWizard() {
     switch (this.wizard) {
       case 1:
-        this.miniToolbar[2].disabled = false;
         this.miniToolbar[3].disabled = true;
+        if (this.selectedOrder != -1) {
+          this.miniToolbar[2].disabled = false;
+        } else {
+          this.miniToolbar[2].disabled = true;
+        }
         break;
       case 2:
         this.miniToolbar[2].disabled = true;
