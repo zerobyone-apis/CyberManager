@@ -98,9 +98,15 @@
 </template>
 
 <script lang="ts">
+<<<<<<< Updated upstream
 import { Prop, Watch, Component } from "vue-property-decorator";
 import TimeFieldCode from "./TimeFieldCode";
 import "./TimeFieldStyle.scss";
+=======
+import { Prop, Watch, Component } from 'vue-property-decorator';
+import TimeFieldCode from './TimeFieldCode';
+import './TimeFieldStyle.scss';
+>>>>>>> Stashed changes
 
 @Component({})
 export default class TimeField extends TimeFieldCode {
