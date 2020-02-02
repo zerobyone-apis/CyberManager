@@ -297,7 +297,7 @@
               <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
             </div>
           </div>
-          <Footer v-print="'#invoice-input-box'" add-text="Imprimir" />
+          <Footer v-print="'#invoice-input-box'" add-text="Imprimir" add-icon="print"/>
         </v-stepper-content>
         <!-- output invoice step -->
         <v-stepper-content step="4">
