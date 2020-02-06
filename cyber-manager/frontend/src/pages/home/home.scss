@@ -16,6 +16,17 @@
   height: 100%;
   width: 100%;
   text-align: center;
+  background-image: radial-gradient(circle, rgba(58,214,207,1) 0%, rgba(36,156,157,1) 49%, rgba(0,93,93,1) 100%);
+
+  .img-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    opacity: 0.5;
+    
+  }
 
   .stepper {
     position: relative;
