@@ -14,7 +14,7 @@ export default class Queries {
       create: `INSERT INTO ${USER_TABLE}(username, passwd, charge, isAdmin, createOn) values(?,?,?,?,?)`,
       update: `UPDATE ${USER_TABLE} SET username = ? , passwd = ? , charge = ? , isAdmin = ? , updateOn = ? WHERE id = ?`,
       delete: `DELETE FROM ${USER_TABLE} WHERE id = ?`,
-      signIn: `SELECT * FROM ${USER_TABLE} where username = ? and passwd = ? and charge = ?`
+      signIn: `SELECT * FROM ${USER_TABLE} where username = ? and passwd = ?`
     },
 
     [ORDER_TABLE]: {

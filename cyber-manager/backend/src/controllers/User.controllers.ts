@@ -95,7 +95,7 @@ export async function findUserByID(req: Request, res: Response) {
 
 export async function signIn(req: Request, res: Response) {
   const newUser: IUser = req.body.data;
-  const paramsQuery = [newUser.username, newUser.passwd, newUser.charge];
+  const paramsQuery = [newUser.username, newUser.passwd];
   const result: ResultObject = await queryFunctions.query(
     queries.getQuery(USER_TABLE, 'signIn'),
     paramsQuery
