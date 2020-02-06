@@ -1,4 +1,4 @@
-/* import jsPDF from 'jspdf';
+ import jsPDF from 'jspdf';
 
 export default class Styles {
 
@@ -139,4 +139,4 @@ export default class Styles {
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   }
   
-} */
+}
