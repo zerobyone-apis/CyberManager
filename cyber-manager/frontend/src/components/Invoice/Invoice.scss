@@ -11,6 +11,8 @@ $PDF_HEIGHT: 842px;
   padding: 120px;
   .banner {
     text-align: center;
+    height: max-content;
+    // background-color: red;
   }
 
   .small-font {

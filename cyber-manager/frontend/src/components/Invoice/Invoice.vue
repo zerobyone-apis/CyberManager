@@ -1,14 +1,14 @@
 <template>
   <div class="invoice-page">
     <div class="banner">
-      <p class="small-font">{{ enterprise.enterpriseName }}</p>
-      <p class="small-font">{{ enterprise.location }}</p>
-      <p class="small-font">{{ enterprise.phone }}</p>
-      <p class="small-font">{{ enterprise.cellPhone }}</p>
+      <p class="small-font">{{ enterprise.enterpriseName || 'enterprise name' }}</p>
+      <p class="small-font">{{ enterprise.location || 'location' }}</p>
+      <p class="small-font">{{ enterprise.phone || 'phone' }}</p>
+      <p class="small-font">{{ enterprise.cellPhone || 'cellphone' }}</p>
     </div>
 
     <div class="container">
-      <v-container class="mt-6 grey lighten-5">
+      <v-container class="grey lighten-5">
         <v-row no-gutters>
           <v-col lg="12">
             <v-card outlined class="small-font">
