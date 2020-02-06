@@ -11,7 +11,7 @@
     <v-stepper v-model="wizard" class="stepper">
       <v-stepper-items>
         <!-- identification step -->
-        <v-stepper-content step="1">
+        <v-stepper-content step="0">
           <div class="step-content">
             <div class="left_content-box">
               <h3 class="font-title pl-2">Datos de la Orden</h3>
@@ -184,7 +184,7 @@
           </div>
         </v-stepper-content>
         <!-- reparation step -->
-        <v-stepper-content step="2">
+        <v-stepper-content step="1">
           <div class="repair-step step-content">
             <div class="left_content-box">
               <h3 class="font-title">Reparacion de Orden</h3>
@@ -258,10 +258,6 @@
                 ></v-text-field>
               </div>
 
-              <!-- <div class="fields">
-
-              </div>-->
-
               <Footer
                 @save="saveRepair()"
                 @cancel="loadRepair(orders[selectedOrder])"
@@ -288,30 +284,9 @@
             </div>
           </div>
         </v-stepper-content>
-        <!-- input invoice step -->
-        <v-stepper-content step="3">
-          <div class="content-doc">
-            <div id="invoice-input-box" class="invoice-box">
-              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
-              <v-divider class="mt-3 mb-3"></v-divider>
-              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
-            </div>
-          </div>
-          <Footer v-print="'#invoice-input-box'" add-text="Imprimir" add-icon="print"/>
-        </v-stepper-content>
-        <!-- output invoice step -->
-        <v-stepper-content step="4">
-          <div class="content-doc">
-            <div id="invoice-output-box" class="invoice-box">
-              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
-              <v-divider class="mt-3 mb-3"></v-divider>
-              <Invoice :order="newOrder" class="input-invoice-box" :enterprise="enterprise" />
-            </div>
-          </div>
-          <Footer v-print="'#invoice-output-box'" add-text="Imprimir" add-icon="print" />
-        </v-stepper-content>
+
         <!-- enterprise step -->
-        <v-stepper-content step="5">
+        <v-stepper-content step="4">
           <div class="step-content">
             <div class="left_content-box">
               <h3 class="font-title pl-2">Datos generales de la empresa</h3>
@@ -329,6 +304,7 @@
               <div class="fields">
                 <div class="image-box">
                   <img
+                    id="imageid"
                     class="img"
                     crossorigin="anonymous"
                     v-if="enterprise.urlLogo"
@@ -378,7 +354,7 @@
           </div>
         </v-stepper-content>
         <!-- arqueo step -->
-        <v-stepper-content step="6">
+        <v-stepper-content step="5">
           <div class="step-content">
             <div class="left_content-box">
               <h3 class="font-title pl-2">Arqueo</h3>

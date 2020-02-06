@@ -2,7 +2,9 @@ import vue from 'vue';
 import moment from 'moment';
 
 import Validation from '../../utils/Validation';
-import IntegrationBackend from '../../utils/IntegrationBackend';
+
+import InputPdf from '../../utils/pdfDocuments/InputPDF';
+import OutputPdf from '../../utils/pdfDocuments/OutputPDF';
 
 import EnterpriseAction from '../../actions/Enterprise.actions';
 import OrderAction from '../../actions/Order.actions';
@@ -86,8 +88,7 @@ export default class IndentificationView extends vue {
   public orders: IOrder[] = [];
   public selectedOrder = -1;
 
-  private wizard: number = 1;
-  private backend: IntegrationBackend = new IntegrationBackend();
+  private wizard: number = 0;
   private v: Validation = new Validation();
   private interactionsMode = {
     order: 0 // 0 = add / 1 = save
@@ -203,7 +204,17 @@ export default class IndentificationView extends vue {
   ];
 
   async execMiniToolbarAction(index: number) {
-    this.wizard = index + 1;
+    switch (index) {
+      case 2:
+        new InputPdf().generateDoc(this.enterprise, this.orders[this.selectedOrder])
+        break;
+      case 3:
+          new OutputPdf().generateDoc(this.enterprise, this.orders[this.selectedOrder], this.repair)
+        break;
+      default:
+        this.wizard = index;
+        break;
+    }
   }
 
   @Watch('selectedOrder')
@@ -220,7 +231,7 @@ export default class IndentificationView extends vue {
   @Watch('wizard')
   onChangeWizard() {
     switch (this.wizard) {
-      case 1:
+      case 0:
         this.miniToolbar[3].disabled = true;
         if (this.selectedOrder != -1) {
           this.miniToolbar[2].disabled = false;
@@ -228,7 +239,7 @@ export default class IndentificationView extends vue {
           this.miniToolbar[2].disabled = true;
         }
         break;
-      case 2:
+      case 1:
         this.miniToolbar[2].disabled = true;
         this.miniToolbar[3].disabled = false;
         break;
