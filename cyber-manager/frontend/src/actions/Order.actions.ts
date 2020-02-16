@@ -2,13 +2,13 @@ import IntegrationBackend from '../utils/IntegrationBackend';
 // import Datetime from '../utils/DateTime';
 import moment from 'moment';
 import { IOrder } from '@/types/Order.type';
-import ResultObject from '../../../backend/src/utils/ResultObject';
-import { 
-  ORDER_ROUTE, 
-  PUT_ENDPOIT, 
-  GET_ENDPOIT, 
-  POST_ENDPOIT, 
-  DELETE_ENDPOIT 
+import ResultObject from '../utils/ResultObject';
+import {
+  ORDER_ROUTE,
+  PUT_ENDPOIT,
+  GET_ENDPOIT,
+  POST_ENDPOIT,
+  DELETE_ENDPOIT
 } from '../types/Routes.type';
 import {
   ORDER_CONFIRM,
@@ -30,7 +30,9 @@ export default class OrderActions {
         ORDER_ROUTE
       );
       responseOrders.forEach((order: IOrder) => {
-        order.admissionDateFront = moment(order.admissionDate).format('DD/MM/YYYY hh:mm:ss')
+        order.admissionDateFront = moment(order.admissionDate).format(
+          'DD/MM/YYYY hh:mm:ss'
+        );
         orders.push(order);
       });
       return orders;
@@ -43,7 +45,9 @@ export default class OrderActions {
   public async add(order: IOrder) {
     try {
       let data: IOrder = {
-        admissionDate: moment(order.admissionDateFront).format('YYYY-MM-DD hh:mm:ss'),
+        admissionDate: moment(order.admissionDateFront).format(
+          'YYYY-MM-DD hh:mm:ss'
+        ),
         clientName: order.clientName,
         clientPhone: order.clientPhone,
         deliverDate: undefined,
@@ -99,7 +103,9 @@ export default class OrderActions {
         observations: order.observations,
         isCanceled: false,
         repairDate:
-          order.repairDate == '' ? moment().format('YYYY-MM-DD hh:mm:ss') : order.repairDate,
+          order.repairDate == ''
+            ? moment().format('YYYY-MM-DD hh:mm:ss')
+            : order.repairDate,
         status: order.status != '' ? order.status : ORDER_RECIVED.text
       };
       const response: any = await this.backend.send(

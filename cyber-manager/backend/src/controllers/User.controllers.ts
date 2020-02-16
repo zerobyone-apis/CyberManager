@@ -21,18 +21,24 @@ export async function getUsers(req: Request, res: Response): Promise<Response> {
 }
 
 export async function createUser(req: Request, res: Response) {
+  //This const is for linked to the correct enterprise.
+  //just The Only.
+  const enterpriseId = 1;
+
   const newUser: IUser = req.body.data;
   let queryParams = [
     newUser.username,
     newUser.passwd,
     newUser.charge,
     newUser.isAdmin,
-    newUser.createOn
+    newUser.createOn,
+    enterpriseId
   ];
   let result: ResultObject = await queryFunctions.query(
     queries.getQuery(USER_TABLE, 'create'),
     queryParams
   );
+
   if (result.statusCode == 200) {
     return res.status(201).json('success');
   } else {
@@ -43,7 +49,14 @@ export async function createUser(req: Request, res: Response) {
 export async function updateUser(req: Request, res: Response) {
   const { username, passwd, charge, isAdmin }: IUser = req.body.data;
   const id = parseInt(req.params.id);
-  let queryParams = [username, passwd, charge, isAdmin, moment().format('YYYY-MM-DD HH:mm:ss'), id];
+  let queryParams = [
+    username,
+    passwd,
+    charge,
+    isAdmin,
+    moment().format('YYYY-MM-DD HH:mm:ss'),
+    id
+  ];
   let result: ResultObject = await queryFunctions.query(
     queries.getQuery(USER_TABLE, 'update'),
     queryParams

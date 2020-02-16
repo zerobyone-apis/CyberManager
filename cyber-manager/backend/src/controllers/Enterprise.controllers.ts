@@ -7,14 +7,13 @@ import { IEnterprise } from '../types/Enterprise.type';
 let queryFunctions: QueryFunctions = new QueryFunctions();
 let queries: Queries = new Queries();
 
-export async function getEnterprise(req: Request, res: Response) {
-}
+export async function getEnterprise(req: Request, res: Response) {}
 
 export async function findEmpresaByUserID(req: Request, res: Response) {
   const id = parseInt(req.params.id);
   console.log(id);
   let result = await queryFunctions.query(
-    queries.getQuery(ENTERPRISE_TABLE, 'getId'),
+    queries.getQuery(ENTERPRISE_TABLE, 'getByUserId'),
     [id]
   );
   if (result.statusCode == 200) {
