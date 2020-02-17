@@ -193,13 +193,13 @@ export default class IndentificationView extends vue {
       text: 'Empresa',
       icon: 'home',
       disabled: false,
-      visible: this.$store.getters.getCharge == USER_ADMIN
+      visible: (this.$store.getters.getCharge === USER_ADMIN)
     },
     {
       text: 'Arqueo',
       icon: 'trending_up',
       disabled: false,
-      visible: this.$store.getters.getCharge == USER_ADMIN
+      visible: (this.$store.getters.getCharge === USER_ADMIN)
     }
   ];
 

@@ -4,9 +4,8 @@
 
     <v-toolbar-items class="toolbar-items hidden-xs-only">
       <v-btn
-        v-for="(btn,index) in buttons"
+        v-for="(btn,index) in filtredButtons()"
         :key="index"
-        :v-if="btn.visible"
         :disabled="disabled ? true : btn.disabled"
         @click.native.stop="$emit('buttonClicked', index)"
         :color="colorButtons"
@@ -60,5 +59,17 @@ export default class MiniToolbar extends MiniToolbarView {
   @Prop({ default: "50px" }) height!: string;
   @Prop({ default: undefined }) colorButtons!: string;
   @Prop({ default: "" }) title!: string;
+
+  private filtredButtons() {
+    return this.buttons.filter((button: IButton) => {
+      if (button.visible === true) {
+        return button;
+      }
+    });
+  }
+
+  // created() {
+  //   console.log(this.filtredButtons())
+  // }
 }
 </script>
