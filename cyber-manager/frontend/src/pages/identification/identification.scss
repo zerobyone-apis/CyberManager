@@ -16,10 +16,10 @@
   width: 100%;
   padding-left: 20px;
   padding-right: 20px;
-  padding-top: 50px !important;
-  padding-bottom: 65px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
   // background-image: radial-gradient(circle, rgba(96,182,178,1) 0%, rgba(86,189,190,1) 49%, rgba(24,121,121,1) 100%);
-background-image: radial-gradient(circle, rgba(58,214,207,1) 0%, rgba(36,156,157,1) 49%, rgba(0,93,93,1) 100%);
+background-image: radial-gradient(circle, rgb(26, 97, 93) 0%, rgb(55, 138, 138) 49%, rgba(0,93,93,1) 100%);
   // background-image: url("https://www.elsetge.cat/myimg/f/11-115406_wide-hd-gray.jpg");
 
   background-position: center center;
@@ -40,10 +40,9 @@ background-image: radial-gradient(circle, rgba(58,214,207,1) 0%, rgba(36,156,157
     border-bottom-style: none;
     border-color: rgb(121, 121, 121);
     border-width: 2px;
-    border-radius: 5px;
-    margin-bottom: 5px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
     background-color: rgba(255, 255, 255, 0.801);
-    border-top-right-radius: 100px;
 
     .mini-toolbar_title {
       font-family: Arial, Helvetica, sans-serif;
@@ -55,9 +54,9 @@ background-image: radial-gradient(circle, rgba(58,214,207,1) 0%, rgba(36,156,157
   .stepper {
     background-color: rgba(255, 255, 255, 0.801);
     height: 95%;
-    border-radius: 5px;
-    // box-shadow: 0 30px 20px -20px rgba(27, 27, 27, 0.719);
-    border-bottom-left-radius: 50px;
+    border-radius: 0px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 
     .v-stepper__content {
       height: max-content !important;
@@ -79,8 +78,8 @@ background-image: radial-gradient(circle, rgba(58,214,207,1) 0%, rgba(36,156,157
 
     .left_content-box {
       position: relative;
-      width: 450px;
-      min-width: 320px;
+      width: 300px;
+      min-width: 300px;
       margin-right: 40px;
 
       .fields {
@@ -108,11 +107,15 @@ background-image: radial-gradient(circle, rgba(58,214,207,1) 0%, rgba(36,156,157
 
   // STEP 1 - Identification
   .identify {
+    position: relative;
+    // left: -10px;
+    // visibility: hidden;
     display: flex;
-    padding: 10px;
+    padding: 10px;  
 
     .service-number {
       position: relative;
+      width: 100px;
     }
     .reception-date {
       position: relative;
@@ -191,6 +194,9 @@ background-image: radial-gradient(circle, rgba(58,214,207,1) 0%, rgba(36,156,157
         height: 100%;
         margin-right: 20px;
         padding-top: 10px;
+        .v-data-table__selected {
+          background: rgba(101, 187, 187, 0.315) 49% !important;
+        }
         .text-start {
           .checkbox-marked {
             width: 10px;
