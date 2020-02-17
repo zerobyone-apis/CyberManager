@@ -212,11 +212,7 @@ export default class IndentificationView extends vue {
         );
         break;
       case 3:
-        new OutputPdf().generateDoc(
-          this.enterprise,
-          this.orders[this.selectedOrder],
-          this.repair
-        );
+        new OutputPdf().generateDoc(this.enterprise, this.orders[this.selectedOrder], this.repair)
         break;
       default:
         this.wizard = index;
@@ -242,6 +238,11 @@ export default class IndentificationView extends vue {
         this.miniToolbar[3].disabled = true;
         if (this.selectedOrder != -1) {
           this.miniToolbar[2].disabled = false;
+          // reset when go reparation to identification
+          this.interactionsMode.order = 0;
+          this.selectedOrder = -1;
+          Object.assign(this.newOrder, this.cleanFields);
+          this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
         } else {
           this.miniToolbar[2].disabled = true;
         }
