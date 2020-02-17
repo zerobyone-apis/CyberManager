@@ -1,7 +1,7 @@
 <template>
   <v-toolbar flat class="mini-toolbar" fixed outlined :height="height">
     <v-toolbar-title v-if="title" class="mini-toolbar_title ml-4">{{ title }}</v-toolbar-title>
-    
+
     <v-toolbar-items class="toolbar-items hidden-xs-only">
       <v-btn
         v-for="(btn,index) in buttons"
@@ -17,7 +17,27 @@
         <v-icon>{{ btn.icon }}</v-icon>
         <span>{{ btn.text }}</span>
       </v-btn>
+
+      <div class="right-box">
+        <v-menu offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on" class="user-btn" small color="green" outlined text>
+              <v-icon>people</v-icon>
+              {{ $store.getters.getUsername }}
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item @click="closeSesion()">
+              <v-list-item-title>Cerrar sesion</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
     </v-toolbar-items>
+    <v-snackbar
+      v-model="notification.visible"
+      :color="notification.color"
+    >{{ notification.message }}</v-snackbar>
   </v-toolbar>
 </template>
 
@@ -38,7 +58,7 @@ export default class MiniToolbar extends MiniToolbarView {
   @Prop({ default: [] }) buttons!: IButton[];
   @Prop({ default: false }) disabled!: boolean;
   @Prop({ default: "50px" }) height!: string;
-  @Prop({ default: undefined }) colorButtons!: string; 
-  @Prop({ default: '' }) title!: string; 
+  @Prop({ default: undefined }) colorButtons!: string;
+  @Prop({ default: "" }) title!: string;
 }
 </script>
