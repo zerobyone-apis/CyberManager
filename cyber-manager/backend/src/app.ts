@@ -6,7 +6,7 @@ import MysqlConnection from '../sql/connection/MysqlConnection';
 import Enterprise from './routes/Enterprise.routes';
 import Order from './routes/Order.routes';
 import User from './routes/User.routes';
-import { ENTERPRISE_ROUTE, USER_ROUTE, ORDER_ROUTE } from './types/Routes.type'
+import { ENTERPRISE_ROUTE, USER_ROUTE, ORDER_ROUTE } from './types/Routes.type';
 
 export class App {
   private app: Application;
@@ -15,6 +15,7 @@ export class App {
     this.app = Express();
     this.app.use(cors());
     const server = http.createServer(this.app);
+    server.listen(port);
 
     MysqlConnection.connect();
 
@@ -24,7 +25,7 @@ export class App {
   }
 
   settings() {
-    this.app.set('port', this.port || process.env.PORT || 3000);
+    /* this.app.set('port', this.port); */
   }
 
   middlewares() {
@@ -40,18 +41,18 @@ export class App {
 
   async listen() {
     await this.app.listen(this.app.get('port'));
-    console.log('')
-    console.log('══════════════════════════')
-    console.log('')
+    console.log('');
+    console.log('══════════════════════════');
+    console.log('');
     console.log(' ╦══╦      ╦═╦   ╦══╦');
     console.log(' ╠═╝╠═╦═╦═╗║░╩╦╦╗║╔╗╠═╦═╗ ');
     console.log(' ║╔═╣╩╣╠╣║║║░░║║║║╚╝║║║╩╣ ');
     console.log(' ╚══╩═╩╝╚═╝╚══╬╗║╚══╩╩╩═╝ ');
-    console.log('              ╩═╩')
+    console.log('              ╩═╩');
 
-    console.log(` CyberManager backend is ready on port ${this.app.get('port')}`);
-    console.log('')
-    console.log('══════════════════════════')
-    console.log('')
+    console.log(` CyberManager backend is ready on port ${this.port}`);
+    console.log('');
+    console.log('══════════════════════════');
+    console.log('');
   }
 }

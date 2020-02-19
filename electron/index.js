@@ -75,7 +75,7 @@ function createWindow(callback) {
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
   app.on('ready', function() {
-    baseUrl = `http://localhost:9000`;
+    baseUrl = `https://cyber-manager-frontend.now.sh/#/`;
     const iconName =
       '/home/zoroismymain/Escritorio/test/CyberManager/electron/build/system.ico';
     const iconPath = path.join(__dirname, iconName);

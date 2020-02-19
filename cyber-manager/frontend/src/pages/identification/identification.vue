@@ -20,16 +20,16 @@
                   <v-text-field
                     readonly
                     v-model="newOrder.id"
-                    label="Orden de servicio"
-                    class="custom-field"
+                    label="Orden nº"
+                    outlined
                   ></v-text-field>
                 </div>
                 <div class="reception-date">
                   <v-text-field
                     readonly
                     v-model="newOrder.admissionDateFront"
-                    label="recepcion"
-                    class="custom-field"
+                    label="fecha de recepcion"
+                    outlined
                   ></v-text-field>
                 </div>
               </div>
@@ -190,20 +190,19 @@
               <h3 class="font-title">Reparacion de Orden</h3>
 
               <div class="identify">
-                <div class="service-number">
-                  <v-text-field
+                <v-text-field
                     readonly
                     :value="`${newOrder.clientName}`"
                     label="Nombre del cliente"
-                    class="custom-field"
+                    outlined
                   ></v-text-field>
-                </div>
                 <div class="reception-date">
                   <v-text-field
                     readonly
                     :value="`${newOrder.article}`"
                     label="Articulo"
                     class="custom-field"
+                    outlined
                   ></v-text-field>
                 </div>
               </div>
@@ -214,7 +213,7 @@
                   class="select-status"
                   :items="status"
                   item-value="text"
-                    outlined
+                  
                   chips
                   flat
                   attach
@@ -259,10 +258,11 @@
               </div>
 
               <Footer
-                @save="saveRepair()"
+                @add="saveRepair()"
                 @cancel="loadRepair(orders[selectedOrder])"
-                cancel-text="Cancelar"
-                :save-mode="true"
+                add-text="Guardar"
+                add-icon="save"
+                :save-mode="false"
                 :disabled="disabledButtons"
               />
             </div>
@@ -284,7 +284,6 @@
             </div>
           </div>
         </v-stepper-content>
-
         <!-- enterprise step -->
         <v-stepper-content step="4">
           <div class="step-content">

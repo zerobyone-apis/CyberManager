@@ -6,4 +6,5 @@ export interface IUser {
   isAdmin: boolean | number | string;
   createOn?: string | Date;
   updateOn?: string | Date;
+  enterprise: number;
 }

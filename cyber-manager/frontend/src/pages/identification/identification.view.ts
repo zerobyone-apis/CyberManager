@@ -9,7 +9,7 @@ import OutputPdf from '../../utils/pdfDocuments/OutputPDF';
 import EnterpriseAction from '../../actions/Enterprise.actions';
 import OrderAction from '../../actions/Order.actions';
 import RepairAction from '../../actions/Repair.actions';
-import ResultObject from '../../../../backend/src/utils/ResultObject';
+import ResultObject from '../../utils/ResultObject';
 import { IUserStore } from '../../types/UserStore.type';
 import { IEnterprise } from '../../types/Enterprise.type';
 import { IRepair } from '../../types/Repair.type';
@@ -193,23 +193,26 @@ export default class IndentificationView extends vue {
       text: 'Empresa',
       icon: 'home',
       disabled: false,
-      visible: this.$store.getters.getCharge == USER_ADMIN
+      visible: (this.$store.getters.getCharge === USER_ADMIN)
     },
     {
       text: 'Arqueo',
       icon: 'trending_up',
       disabled: false,
-      visible: this.$store.getters.getCharge == USER_ADMIN
+      visible: (this.$store.getters.getCharge === USER_ADMIN)
     }
   ];
 
   async execMiniToolbarAction(index: number) {
     switch (index) {
       case 2:
-        new InputPdf().generateDoc(this.enterprise, this.orders[this.selectedOrder])
+        new InputPdf().generateDoc(
+          this.enterprise,
+          this.orders[this.selectedOrder]
+        );
         break;
       case 3:
-          new OutputPdf().generateDoc(this.enterprise, this.orders[this.selectedOrder], this.repair)
+        new OutputPdf().generateDoc(this.enterprise, this.orders[this.selectedOrder], this.repair)
         break;
       default:
         this.wizard = index;
@@ -235,6 +238,11 @@ export default class IndentificationView extends vue {
         this.miniToolbar[3].disabled = true;
         if (this.selectedOrder != -1) {
           this.miniToolbar[2].disabled = false;
+          // reset when go reparation to identification
+          this.interactionsMode.order = 0;
+          this.selectedOrder = -1;
+          Object.assign(this.newOrder, this.cleanFields);
+          this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
         } else {
           this.miniToolbar[2].disabled = true;
         }

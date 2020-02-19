@@ -2,7 +2,7 @@ import { IEnterprise } from '../types/Enterprise.type';
 import IntegrationBackend from '../utils/IntegrationBackend';
 import moment from 'moment';
 import { IUserStore } from '@/types/UserStore.type';
-import ResultObject from '../../../backend/src/utils/ResultObject';
+import ResultObject from '../utils/ResultObject';
 import {
   ENTERPRISE_ROUTE,
   PUT_ENDPOIT,

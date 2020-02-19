@@ -1,5 +1,5 @@
 require('dotenv').config();
-import Mysql from 'mysql'
+import Mysql from 'mysql';
 
 export default class MysqlConnection {
   public static conn: Mysql.Pool;
@@ -11,7 +11,7 @@ export default class MysqlConnection {
       user: process.env.USER_NAME,
       password: process.env.PASSWORD,
       database: process.env.DATABASE,
-      port: parseInt(process.env.PORT || '3306')
+      port: parseInt(process.env.PORTDB || '3306')
     });
     setInterval(() => {
       this.conn.query('SELECT 1', (err: any, rows: any) => {

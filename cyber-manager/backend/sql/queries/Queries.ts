@@ -11,7 +11,7 @@ export default class Queries {
     [USER_TABLE]: {
       getAll: `SELECT * FROM ${USER_TABLE}`,
       getId: `SELECT * FROM ${USER_TABLE} WHERE id = ?`,
-      create: `INSERT INTO ${USER_TABLE}(username, passwd, charge, isAdmin, createOn) values(?,?,?,?,?)`,
+      create: `INSERT INTO ${USER_TABLE}(username, passwd, charge, isAdmin, createOn, enterprise) values(?,?,?,?,?,?)`,
       update: `UPDATE ${USER_TABLE} SET username = ? , passwd = ? , charge = ? , isAdmin = ? , updateOn = ? WHERE id = ?`,
       delete: `DELETE FROM ${USER_TABLE} WHERE id = ?`,
       signIn: `SELECT * FROM ${USER_TABLE} where username = ? and passwd = ?`
@@ -32,8 +32,8 @@ export default class Queries {
 
     [ENTERPRISE_TABLE]: {
       getAll: `SELECT username, idEnterprise FROM ${ENTERPRISE_TABLE}`,
-      getId: `SELECT e.*, u.charge from ${USER_TABLE} u inner join ${ENTERPRISE_TABLE} e on (u.username = e.username and u.id = ?) where u.charge LIKE '%supervisor%' OR u.charge LIKE '%empleado%' limit 1`,
-      create: `INSERT INTO ${ENTERPRISE_TABLE} (createdDate,enterpriseName,phone,cellphone,fax,location,warranty,firstMessage,secondMessage,urlLogo,lastUpdate,username,mail) values(?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      getByUserId: `SELECT e.*, u.charge from ${USER_TABLE} u inner join ${ENTERPRISE_TABLE} e on (u.enterprise = e.id and u.id = ?) where u.charge LIKE '%supervisor%' OR u.charge LIKE '%empleado%' limit 1`,
+      create: `INSERT INTO ${ENTERPRISE_TABLE} ( createdDate, enterpriseName, phone, cellphone, fax, location, enterpriseRules, firstMessage, secondMessage, urlLogo, lastUpdate, username, mail) values(?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       update: `UPDATE ${ENTERPRISE_TABLE} SET enterpriseName = ?, phone = ?, cellphone = ?, location = ?, enterpriseRules = ?, firstMessage = ?, secondMessage = ?, urlLogo = ?, lastUpdate = ?, email = ? WHERE id = ?`,
       delete: `DELETE FROM ${ENTERPRISE_TABLE} WHERE id = ?`
     }

@@ -1,4 +1,4 @@
- import jsPDF from 'jspdf';
+import jsPDF from 'jspdf';
 
 export default class Styles {
 
@@ -47,7 +47,7 @@ export default class Styles {
 
   // methods of draw
   insertImage(img: any, width: number, height: number, doc: jsPDF) {
-    let cooX = ((this.pageSize.width - this.pageSize.exededWidth) - width) / 2;
+    let cooX = ((this.pageSize.width - this.pageSize.exededWidth) - (width + this.marginsText.width));
     doc.addImage(img, 'jpg', cooX, this.positionText.y, width, height);
     this.positionText.y += height + 5;
   }
@@ -65,7 +65,7 @@ export default class Styles {
     if (!inline) {
       this.positionText.y += fontSize + 5;
     }
-    // doc.setFillColor( 213, 213, 213 );
+    doc.setFillColor(0, 0, 0);
     this.write(text, pos, doc, true);
   }
 
@@ -77,11 +77,12 @@ export default class Styles {
   }
 
   write(text: string, pos: { x: number, y: number } | string, doc: jsPDF, rect?: boolean | undefined) {
+    let coo = {
+      x: -1,
+      y: -1
+    }
     if (typeof (pos) == 'string') {
-      let coo = {
-        x: -1,
-        y: -1
-      }
+
       // properties position
       switch (pos) {
         case 'left':
@@ -103,12 +104,12 @@ export default class Styles {
       coo.y = this.positionText.y;
       if (doc.getTextWidth(text) < this.pageSize.exededWidth) {
         doc.text(text, coo.x, coo.y);
-      } else if(pos == 'left') {
+      } else if (pos == 'left') {
         // word to word
         let words = text.split(' ')
         words.forEach(word => {
           let lengthW = doc.getTextWidth(word + ' ');
-          if (lengthW + coo.x < (this.pageSize.width-200)) {
+          if (lengthW + coo.x < (this.pageSize.width - 200)) {
             doc.text(word + ' ', coo.x, coo.y);
             coo.x += lengthW;
           } else {
@@ -122,10 +123,10 @@ export default class Styles {
         this.positionText.y = coo.y;
       }
       this.positionText.y = coo.y;
-    } else {
-      if (rect) { // draw a rectangle in the text
-        doc.rect(pos.x - 1, (pos.y - doc.getLineHeight() + 3), doc.getTextWidth(text) + 2, doc.getLineHeight() - 2) //Fill and Border
-      }
+    }
+
+    if (rect) { // draw a rectangle in the text
+      doc.rect(coo.x - 1, (coo.y - doc.getLineHeight() + 3), doc.getTextWidth(text) + 2, doc.getLineHeight() - 2) //Fill and Border
     }
   }
 
@@ -138,5 +139,5 @@ export default class Styles {
     var dataURL = canvas.toDataURL("image/png");
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
   }
-  
+
 }
