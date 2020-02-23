@@ -1,14 +1,14 @@
 import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default class Styles {
-
   // dimensions of a page a4 = 595 x 842
   // but i do not why only accept 445 x 842
   pageSize = {
-    width: 595, // medida de la hoja 
+    width: 595, // medida de la hoja
     heigth: 842,
-    exededWidth: 155, // width - exededWidth = medida real de uso para escritura 
-  }
+    exededWidth: 155 // width - exededWidth = medida real de uso para escritura
+  };
 
   private config = {
     title: {
@@ -22,19 +22,19 @@ export default class Styles {
     smallText: {
       size: 10,
       bottomSpace: 10
-    },
-  }
+    }
+  };
 
   // actual position of the text in the document
   private positionText = {
     x: 0,
     y: 0
-  }
+  };
 
   private marginsText = {
     width: 0,
-    heigth: 0,
-  }
+    heigth: 0
+  };
 
   // funtion specify padding of the text
   init(marginX: number, marginY: number) {
@@ -44,15 +44,23 @@ export default class Styles {
     this.marginsText.heigth = marginY;
   }
 
-
   // methods of draw
   insertImage(img: any, width: number, height: number, doc: jsPDF) {
-    let cooX = ((this.pageSize.width - this.pageSize.exededWidth) - (width + this.marginsText.width));
+    let cooX =
+      this.pageSize.width -
+      this.pageSize.exededWidth -
+      (width + this.marginsText.width);
     doc.addImage(img, 'jpg', cooX, this.positionText.y, width, height);
     this.positionText.y += height + 5;
   }
 
-  writeText(text: string, fontSize: number, pos: { x: number, y: number } | string, doc: jsPDF, inline?: boolean | undefined) {
+  writeText(
+    text: string,
+    fontSize: number,
+    pos: { x: number; y: number } | string,
+    doc: jsPDF,
+    inline?: boolean | undefined
+  ) {
     doc.setFontSize(fontSize);
     if (!inline) {
       this.positionText.y += fontSize + 2;
@@ -60,7 +68,13 @@ export default class Styles {
     this.write(text, pos, doc, false);
   }
 
-  writeRectText(text: string, fontSize: number, pos: { x: number, y: number } | string, doc: jsPDF, inline?: boolean | undefined) {
+  writeRectText(
+    text: string,
+    fontSize: number,
+    pos: { x: number; y: number } | string,
+    doc: jsPDF,
+    inline?: boolean | undefined
+  ) {
     doc.setFontSize(fontSize);
     if (!inline) {
       this.positionText.y += fontSize + 5;
@@ -71,18 +85,84 @@ export default class Styles {
 
   drawLine(fontSize: number, doc: jsPDF) {
     doc.setFontSize(fontSize);
-    doc.setDrawColor(220, 220, 220)
+    doc.setDrawColor(160, 200, 160);
     this.positionText.y += 5;
-    doc.rect(this.marginsText.width, this.positionText.y, (this.pageSize.width - this.pageSize.exededWidth - this.marginsText.width * 2), 0.5) //Fill and Border
+    doc.rect(
+      this.marginsText.width,
+      this.positionText.y,
+      this.pageSize.width -
+        this.pageSize.exededWidth -
+        this.marginsText.width * 2,
+      0.5
+    ); //Fill and Border
   }
 
-  write(text: string, pos: { x: number, y: number } | string, doc: jsPDF, rect?: boolean | undefined) {
+  /* DRAW LINES ON THE PDF ESTRUCTURE */
+  drawVerticalLinePrincipal(doc: jsPDF) {
+    doc.setLineWidth(1);
+    doc.setDrawColor(160, 200, 160);
+    doc.line(70, 75, 70, 310); // vertical line
+    doc.line(70, 370, 70, 600); // vertical line
+  }
+
+  drawVerticalLinesItemsInput(doc: jsPDF) {
+    doc.setLineWidth(0.1);
+    doc.setDrawColor(160, 200, 160);
+    /*    DRAW LINES FIRST MENU           **/
+    doc.line(80, 153, 80, 168);
+    doc.line(158, 153, 158, 168);
+    doc.line(280, 153, 280, 168);
+    doc.line(360, 153, 360, 168);
+
+    /*   DRAW LINES BORDER FIRST MENU            **/
+    doc.line(80, 165, 80, 273);
+    doc.line(360, 165, 360, 273);
+
+    /*    DRAW LINES SECOND MENU           **/
+    doc.line(80, 443, 80, 458);
+    doc.line(158, 443, 158, 458);
+    doc.line(280, 443, 280, 458);
+    doc.line(360, 443, 360, 458);
+
+    /*   DRAW LINES BORDER SECOND MENU            **/
+    doc.line(80, 443, 80, 563);
+    doc.line(360, 443, 360, 563);
+  }
+
+  drawVerticalLinesItemsOutput(doc: jsPDF) {
+    doc.setLineWidth(0.1);
+    doc.setDrawColor(160, 200, 160);
+    /*    DRAW LINES FIRST MENU           **/
+    doc.line(80, 141, 80, 153);
+    doc.line(158, 141, 158, 153);
+    doc.line(280, 141, 280, 153);
+    doc.line(360, 141, 360, 153);
+
+    /*   DRAW LINES BORDER FIRST MENU            **/
+    doc.line(80, 141, 80, 283);
+    doc.line(360, 141, 360, 283);
+
+    /*    DRAW LINES SECOND MENU           **/
+    doc.line(80, 429, 80, 441);
+    doc.line(158, 429, 158, 441);
+    doc.line(280, 429, 280, 441);
+    doc.line(360, 429, 360, 441);
+    34; /*   DRAW L29ES34ORDER SECOND MENU            **/
+    doc.line(80, 429, 80, 572);
+    doc.line(360, 429, 360, 572);
+  }
+
+  write(
+    text: string,
+    pos: { x: number; y: number } | string,
+    doc: jsPDF,
+    rect?: boolean | undefined
+  ) {
     let coo = {
       x: -1,
       y: -1
-    }
-    if (typeof (pos) == 'string') {
-
+    };
+    if (typeof pos == 'string') {
       // properties position
       switch (pos) {
         case 'left':
@@ -90,10 +170,15 @@ export default class Styles {
           break;
         case 'center':
           let widthText = doc.getTextWidth(text);
-          coo.x = ((this.pageSize.width - this.pageSize.exededWidth) - widthText) / 2;
+          coo.x =
+            (this.pageSize.width - this.pageSize.exededWidth - widthText) / 2;
           break;
         case 'right':
-          coo.x = ((this.pageSize.width - this.pageSize.exededWidth) - this.marginsText.width) - doc.getTextWidth(text);
+          coo.x =
+            this.pageSize.width -
+            this.pageSize.exededWidth -
+            this.marginsText.width -
+            doc.getTextWidth(text);
           break;
         default:
           //default = left
@@ -106,10 +191,10 @@ export default class Styles {
         doc.text(text, coo.x, coo.y);
       } else if (pos == 'left') {
         // word to word
-        let words = text.split(' ')
+        let words = text.split(' ');
         words.forEach(word => {
           let lengthW = doc.getTextWidth(word + ' ');
-          if (lengthW + coo.x < (this.pageSize.width - 200)) {
+          if (lengthW + coo.x < this.pageSize.width - 200) {
             doc.text(word + ' ', coo.x, coo.y);
             coo.x += lengthW;
           } else {
@@ -125,19 +210,24 @@ export default class Styles {
       this.positionText.y = coo.y;
     }
 
-    if (rect) { // draw a rectangle in the text
-      doc.rect(coo.x - 1, (coo.y - doc.getLineHeight() + 3), doc.getTextWidth(text) + 2, doc.getLineHeight() - 2) //Fill and Border
+    if (rect) {
+      // draw a rectangle in the text
+      doc.rect(
+        coo.x - 1,
+        coo.y - doc.getLineHeight() + 3,
+        doc.getTextWidth(text) + 2,
+        doc.getLineHeight() - 2
+      ); //Fill and Border
     }
   }
 
   getBase64Image(img: any) {
-    var canvas = document.createElement("canvas");
+    var canvas = document.createElement('canvas');
     canvas.width = img.width;
     canvas.height = img.height;
-    var ctx: any = canvas.getContext("2d");
+    var ctx: any = canvas.getContext('2d');
     ctx.drawImage(img, 0, 0);
-    var dataURL = canvas.toDataURL("image/png");
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    var dataURL = canvas.toDataURL('image/png');
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, '');
   }
-
 }
