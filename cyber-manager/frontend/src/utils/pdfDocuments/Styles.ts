@@ -102,31 +102,29 @@ export default class Styles {
     doc.setLineWidth(1);
     doc.setDrawColor(160, 200, 160);
     doc.line(70, 75, 70, 310); // vertical line
-    doc.line(70, 370, 70, 600); // vertical line
+    doc.line(70, 360, 70, 585); // vertical line
   }
 
   drawVerticalLinesItemsInput(doc: jsPDF) {
     doc.setLineWidth(0.1);
     doc.setDrawColor(160, 200, 160);
     /*    DRAW LINES FIRST MENU           **/
-    doc.line(80, 153, 80, 168);
-    doc.line(158, 153, 158, 168);
-    doc.line(280, 153, 280, 168);
-    doc.line(360, 153, 360, 168);
-
-    /*   DRAW LINES BORDER FIRST MENU            **/
-    doc.line(80, 165, 80, 273);
-    doc.line(360, 165, 360, 273);
+    doc.line(80, 143, 80, 157);
+    doc.line(158, 143, 158, 157);
+    doc.line(280, 143, 280, 157);
+    doc.line(360, 143, 360, 157);
+    3; /*   DRAW LINES 3ORDER FIRST MENU            **/
+    doc.line(80, 143, 80, 263);
+    doc.line(360, 143, 360, 263);
 
     /*    DRAW LINES SECOND MENU           **/
-    doc.line(80, 443, 80, 458);
-    doc.line(158, 443, 158, 458);
-    doc.line(280, 443, 280, 458);
-    doc.line(360, 443, 360, 458);
-
-    /*   DRAW LINES BORDER SECOND MENU            **/
-    doc.line(80, 443, 80, 563);
-    doc.line(360, 443, 360, 563);
+    doc.line(80, 423, 80, 437);
+    doc.line(158, 423, 158, 437);
+    doc.line(280, 423, 280, 437);
+    doc.line(360, 423, 360, 437);
+    4; /*   DRAW LINES 4ORDER SECOND MENU            **/
+    doc.line(80, 423, 80, 543);
+    doc.line(360, 423, 360, 543);
   }
 
   drawVerticalLinesItemsOutput(doc: jsPDF) {
@@ -147,7 +145,7 @@ export default class Styles {
     doc.line(158, 429, 158, 441);
     doc.line(280, 429, 280, 441);
     doc.line(360, 429, 360, 441);
-    34; /*   DRAW L29ES34ORDER SECOND MENU            **/
+    /*   DRAW LINES SECOND MENU            **/
     doc.line(80, 429, 80, 572);
     doc.line(360, 429, 360, 572);
   }
