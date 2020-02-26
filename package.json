@@ -1,68 +1,61 @@
 {
-  "name": "cyber.manager",
-  "version": "1.0.0",
-  "description": "First Version of CyberManager - By ZeroByOne.",
-  "author": "ZeroByOne <smtp.test.zero@gmail.com>",
-  "homepage": "./",
-  "repository": {
-    "name": "ZeroByOne",
-    "email": "smtp.test.zero@gmail.com",
-    "type": "git",
-    "url": "https://github.com/"
+  "name": "cyber-manager-frontend",
+  "version": "2.0.0",
+  "private": true,
+  "engines": {
+    "node": "13.0.1",
+    "yarn": "1.21.1"
   },
-  "main": "electron/index.js",
   "scripts": {
-    "start": "electron .",
-    "serverback": "nohup  ./serverback.sh > back.out < /dev/null &",
-    "serverfront": "nohup ./serverfront.sh > front.out < /dev/null &",
-    "start-servers": "npm run serverback && npm run serverfront",
-    "build": "electron-builder --linux deb tar.xz ",
-    "package-mac": "electron-builder . --overwrite --platform=darwin --arch=x64 --icon=build/system.ico --prune=true --out=release-builds",
-    "package-win": "electron-builder . --overwrite --platform=win32 --arch=ia32 --icon=build/system.ico --prune=true --out=release-builds",
-    "package-linux": "electron-builder . --overwrite --platform=linux --arch=x64 --icon=build/system.ico --prune=true --out=release-builds",
-    "dist": "npm-run-all start-servers clean build",
-    "clean": "rimraf dist"
-  },
-  "license": "MIT",
-  "build": {
-    "appId": "CyberManager_v1",
-    "asar": true,
-    "files": [
-      "electron/**/*",
-      "node_modules/**/*",
-      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
-      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
-      "!**/node_modules/*.d.ts",
-      "!**/node_modules/.bin",
-      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
-      "!.editorconfig",
-      "!**/._*",
-      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
-      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
-      "!**/{appveyor.yml,.travis.yml,circle.yml}",
-      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
-    ]
-  },
-  "devDependencies": {
-    "@types/morgan": "^1.7.37",
-    "@types/mysql2": "github:types/mysql2",
-    "electron": "^6.1.7",
-    "electron-builder": "^22.3.2",
-    "express": "^4.17.1",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.1",
-    "shelljs": "^0.8.3"
+    "start": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "@types/cors": "^2.8.6",
-    "@types/express": "^4.17.2",
-    "axios": "^0.19.2",
-    "concurrently": "^5.1.0",
-    "dotenv": "^8.2.0",
-    "electron-log": "^3.0.9",
-    "find-free-port": "^2.0.0",
-    "morgan": "^1.9.1",
-    "path": "^0.12.7",
-    "tree-kill": "^1.2.2"
-  }
+    "@types/jspdf": "^1.3.2",
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-typescript": "^3.11.0",
+    "@vue/cli-plugin-unit-jest": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "axios": "^0.19.0",
+    "html-to-image": "^0.1.1",
+    "jspdf": "^1.5.3",
+    "moment": "^2.24.0",
+    "vue": "^2.6.10",
+    "vue-class-component": "^7.1.0",
+    "vue-croppa": "^1.3.8",
+    "vue-print-nb": "^1.5.0",
+    "vue-property-decorator": "^8.2.2",
+    "vue-router": "^3.1.3",
+    "vuetify": "^2.1.15",
+    "vuex": "^3.1.1",
+    "vuex-persist": "^2.1.0",
+    "concurrently": "^5.0.0",
+    "fibers": "^4.0.1",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.3",
+    "sass": "^1.23.0",
+    "sass-loader": "^7.3.1",
+    "style-loader": "^1.0.0",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
+    "typescript": "^3.6.3",
+    "vue-cli-plugin-vuetify": "^0.6.3",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.3.0",
+    "webpack": "^4.41.0",
+    "yarn-upgrade-all": "^0.5.2"
+  },
+  "devDependencies": {},
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }
