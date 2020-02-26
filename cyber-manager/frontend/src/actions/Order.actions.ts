@@ -24,10 +24,11 @@ export default class OrderActions {
   public async getAll() {
     let orders: IOrder[] = [];
     try {
+      // console.log('')
       let responseOrders: IOrder[] = await this.backend.send(
         GET_ENDPOIT,
         undefined,
-        ORDER_ROUTE
+        ORDER_ROUTE 
       );
       responseOrders.forEach((order: IOrder) => {
         order.admissionDateFront = moment(order.admissionDate).format(

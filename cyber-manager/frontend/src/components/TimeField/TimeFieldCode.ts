@@ -39,7 +39,7 @@ export default class TimeFieldCode extends Vue {
   convertDatetime(time: string) {
     // 06/12/2019 00:00:00 or 06-12-2019 00:00:00
     let splitChar = '-';
-    if(time.indexOf('/') != -1) {
+    if(time.indexOf('/') != -1) { 
       splitChar = '/';
     }
     let d: string[] = time.split(' ')[0].split(splitChar);

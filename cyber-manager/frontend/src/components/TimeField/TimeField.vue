@@ -131,7 +131,7 @@ export default class TimeField extends TimeFieldCode {
         this.simpleDate = this.getDate(this.time);
       }
     }
-  }
+  } 
 
   created() {
     this.time = this.value;
