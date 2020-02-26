@@ -432,7 +432,6 @@ import TimeField from "../../components/TimeField/TimeField.vue";
 import Footer from "../../components/Footer/Footer.vue";
 import MiniToolbar from "../../components/MiniToolbar/MiniToolbar.vue";
 import Toolbar from "../../components/toolbar/toolbar.vue";
-import Invoice from "../../components/Invoice/Invoice.vue";
 
 @Component({
   components: {
@@ -440,7 +439,6 @@ import Invoice from "../../components/Invoice/Invoice.vue";
     Footer,
     MiniToolbar,
     Toolbar,
-    Invoice
   }
 })
 export default class Identification extends IdentificationView {
