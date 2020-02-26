@@ -17,19 +17,13 @@
               <h3 class="font-title pl-2">Datos de la Orden</h3>
               <div class="identify">
                 <div class="service-number">
-                  <v-text-field
-                    readonly
-                    v-model="newOrder.id"
-                    label="Orden nº"
-                   
-                  ></v-text-field>
+                  <v-text-field readonly v-model="newOrder.id" label="Orden nº"></v-text-field>
                 </div>
                 <div class="reception-date">
                   <v-text-field
                     readonly
                     v-model="newOrder.admissionDateFront"
                     label="fecha de recepcion"
-                   
                   ></v-text-field>
                 </div>
               </div>
@@ -191,11 +185,11 @@
 
               <div class="identify">
                 <v-text-field
-                    readonly
-                    :value="`${newOrder.clientName}`"
-                    label="Nombre del cliente"
-                    outlined
-                  ></v-text-field>
+                  readonly
+                  :value="`${newOrder.clientName}`"
+                  label="Nombre del cliente"
+                  outlined
+                ></v-text-field>
                 <div class="reception-date">
                   <v-text-field
                     readonly
@@ -213,7 +207,6 @@
                   class="select-status"
                   :items="status"
                   item-value="text"
-                  
                   chips
                   flat
                   attach
@@ -233,7 +226,6 @@
                   :errorMessage="v.get('repair.repairDate')"
                   label="Fecha de reparacion"
                   lang="es"
-                 
                 ></time-field>
 
                 <time-field
@@ -243,11 +235,10 @@
                   :errorMessage="v.get('repair.deliverDate')"
                   label="Fecha de Entrega"
                   lang="es"
-                 
                 ></time-field>
 
-                <v-text-field v-model="repair.technical"  flat dense label="Tecnico"></v-text-field>
-                <v-text-field v-model="repair.price" flat  outlined dense label="Costo total: "></v-text-field>
+                <v-text-field v-model="repair.technical" flat dense label="Tecnico"></v-text-field>
+                <v-text-field v-model="repair.price" flat outlined dense label="Costo total: "></v-text-field>
                 <v-text-field
                   v-model="repair.replacementPrice"
                   outlined
@@ -391,14 +382,11 @@
             <div class="right_content-box">
               <div class="content-analytics">
                 <div class="result-box">
-                  <!-- TODO separar las partes del result en varios tags -->
-                  <p class="">
-                  </p>
-                  <p>
-                  </p>
-                  <p>
-                  </p>
-                  <p class="result">{{ analitycs.result || 'Resultado' }}</p>
+                  <p class="result-text">{{ analitycs.result.split(',')[0] }}</p>
+                  <p class="result-text">{{ analitycs.result.split(',')[1] }}</p>
+                  <p class="result-text">{{ analitycs.result.split(',')[2] }}</p>
+                  <p class="result-text">{{ analitycs.result.split(',')[3] }}</p>
+                  <p class="result">{{ !analitycs.result ? 'Resultado' : '' }}</p>
                   <v-icon class="icon">trending_up</v-icon>
                 </div>
               </div>
@@ -438,7 +426,7 @@ import Toolbar from "../../components/toolbar/toolbar.vue";
     TimeField,
     Footer,
     MiniToolbar,
-    Toolbar,
+    Toolbar
   }
 })
 export default class Identification extends IdentificationView {

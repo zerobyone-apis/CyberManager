@@ -12,14 +12,13 @@
 
 #identification-page {
   position: absolute;
-  height: 100%; // less height of toolbar
+  height: 100%;
   width: 100%;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 40px;
+  padding-right: 40px;
   padding-top: 30px !important;
   padding-bottom: 30px !important;
   background-image: radial-gradient(circle, rgb(46, 46, 46) 0%, rgb(87, 87, 87) 49%, rgb(29, 29, 29)100%);
-  // background-image: url("https://www.elsetge.cat/myimg/f/11-115406_wide-hd-gray.jpg");
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -72,15 +71,11 @@
   .step-content {
     display: flex;
     height: 100%;
-    // padding: 20px;
-    // background-color: grey;
-
     .left_content-box {
       position: relative;
       width: 300px;
       min-width: 300px;
       margin-right: 40px;
-      // background-color: silver;
 
       .fields {
         margin-top: 20px;
@@ -92,7 +87,6 @@
         }
       }
     }
-
     .right_content-box {
       position: relative;
       width: 100% !important;
@@ -110,8 +104,6 @@
     position: relative;
     display: flex;
     padding-top: 20px;
-    // background-color: azure;
-
     .service-number {
       position: relative;
       width: 100px;
@@ -148,11 +140,8 @@
       width: 400px;
       z-index: 1;
       top: 30px;
-      // right: -30px !important;
       display: flex;
       margin-top: 10px;
-      // background-color: green;
-
       .select {
         position: relative;
         width: 100px;
@@ -172,9 +161,27 @@
       position: relative;
       width: 100% !important;
       height: 415px !important;
-      // background-color: rgba(255, 255, 255, 0.465);
       text-align: center;
-      top: 95px;
+      top: 110px;
+      background-color: rgba(255, 255, 255, 0.486);
+      border-radius: 10px;
+
+      .orders-table {
+        background-color: rgba(230, 230, 230, 0) !important;
+        border-radius: 20px;
+        height: 100%;
+        padding-top: 10px;
+        .v-data-table__selected {
+          background: rgba(101, 187, 187, 0.315) 49% !important;
+        }
+        .text-start {
+          .checkbox-marked {
+            width: 10px;
+            height: 10px;
+          }
+        }
+      }
+
       .header-table {
         right: 0px;
         float: right;
@@ -187,22 +194,6 @@
         .v-icon {
           color: grey;
           font-size: 80px;
-        }
-      }
-      .orders-table {
-        background-color: rgba(230, 230, 230, 0) !important;
-        border-radius: 20px;
-        height: 100%;
-        // margin-right: 20px;
-        padding-top: 10px;
-        .v-data-table__selected {
-          background: rgba(101, 187, 187, 0.315) 49% !important;
-        }
-        .text-start {
-          .checkbox-marked {
-            width: 10px;
-            height: 10px;
-          }
         }
       }
     }
@@ -272,6 +263,9 @@
       .v-icon {
         color: grey;
         font-size: 80px;
+      }
+      .result-text {
+        color: green;
       }
     }
   }

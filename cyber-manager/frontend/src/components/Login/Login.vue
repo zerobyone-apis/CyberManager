@@ -6,14 +6,14 @@
         v-model="userSignIn.username"
         :rules="fieldRules"
         class="organize__text-field"
-        label="usuario"
+        label="Usuario"
         dense
       />
       <v-text-field
         v-model="userSignIn.password"
         :rules="fieldRules"
         class="organize__text-field organize__text-field_button"
-        label="constraseña"
+        label="Constraseña"
         type="password"
         dense
       ></v-text-field>
@@ -29,7 +29,7 @@
       >Acceder</v-btn>
     </v-form>
 
-    <h2 class="mb-6 organize__font-title">registrese aqui</h2>
+    <h2 class="mb-6 organize__font-title">Registrese aqui</h2>
 
     <v-form :ref="ON_SIGNUP">
       <v-select
@@ -46,7 +46,7 @@
         v-model="userSignUp.username"
         :rules="fieldRules"
         class="organize__text-field"
-        label="nombre de usuario"
+        label="Nombre de usuario"
         dense
       />
 
@@ -54,7 +54,7 @@
         v-model="userSignUp.password"
         :rules="fieldRules"
         class="organize__text-field"
-        label="contraseña"
+        label="Contraseña"
         type="password"
         dense
       />
@@ -62,7 +62,7 @@
         v-model="userSignUp.repeatPassword"
         :rules="passwordRules"
         class="organize__text-field"
-        label="repita contraseña"
+        label="Repita contraseña"
         type="password"
         dense
       />
