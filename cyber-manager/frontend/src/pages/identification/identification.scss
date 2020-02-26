@@ -16,12 +16,10 @@
   width: 100%;
   padding-left: 20px;
   padding-right: 20px;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  // background-image: radial-gradient(circle, rgba(96,182,178,1) 0%, rgba(86,189,190,1) 49%, rgba(24,121,121,1) 100%);
-background-image: radial-gradient(circle, rgb(26, 97, 93) 0%, rgb(55, 138, 138) 49%, rgba(0,93,93,1) 100%);
+  padding-top: 30px !important;
+  padding-bottom: 30px !important;
+  background-image: radial-gradient(circle, rgb(46, 46, 46) 0%, rgb(87, 87, 87) 49%, rgb(29, 29, 29)100%);
   // background-image: url("https://www.elsetge.cat/myimg/f/11-115406_wide-hd-gray.jpg");
-
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -74,13 +72,15 @@ background-image: radial-gradient(circle, rgb(26, 97, 93) 0%, rgb(55, 138, 138) 
   .step-content {
     display: flex;
     height: 100%;
-    padding: 20px;
+    // padding: 20px;
+    // background-color: grey;
 
     .left_content-box {
       position: relative;
       width: 300px;
       min-width: 300px;
       margin-right: 40px;
+      // background-color: silver;
 
       .fields {
         margin-top: 20px;
@@ -108,10 +108,9 @@ background-image: radial-gradient(circle, rgb(26, 97, 93) 0%, rgb(55, 138, 138) 
   // STEP 1 - Identification
   .identify {
     position: relative;
-    // left: -10px;
-    // visibility: hidden;
     display: flex;
-    padding: 10px;  
+    padding-top: 20px;
+    // background-color: azure;
 
     .service-number {
       position: relative;
@@ -122,7 +121,7 @@ background-image: radial-gradient(circle, rgb(26, 97, 93) 0%, rgb(55, 138, 138) 
       margin-left: 10px;
     }
   }
-  
+
   .notes-box {
     width: 100%;
     height: 100px;
@@ -146,11 +145,13 @@ background-image: radial-gradient(circle, rgb(26, 97, 93) 0%, rgb(55, 138, 138) 
 
     .search-box {
       position: absolute;
+      width: 400px;
       z-index: 1;
-      top: 20px;
+      top: 30px;
+      // right: -30px !important;
       display: flex;
       margin-top: 10px;
-      right: -30px !important;
+      // background-color: green;
 
       .select {
         position: relative;
@@ -173,7 +174,7 @@ background-image: radial-gradient(circle, rgb(26, 97, 93) 0%, rgb(55, 138, 138) 
       height: 415px !important;
       // background-color: rgba(255, 255, 255, 0.465);
       text-align: center;
-      top: 110px;
+      top: 95px;
       .header-table {
         right: 0px;
         float: right;
@@ -192,7 +193,7 @@ background-image: radial-gradient(circle, rgb(26, 97, 93) 0%, rgb(55, 138, 138) 
         background-color: rgba(230, 230, 230, 0) !important;
         border-radius: 20px;
         height: 100%;
-        margin-right: 20px;
+        // margin-right: 20px;
         padding-top: 10px;
         .v-data-table__selected {
           background: rgba(101, 187, 187, 0.315) 49% !important;

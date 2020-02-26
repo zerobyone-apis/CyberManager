@@ -21,7 +21,7 @@
                     readonly
                     v-model="newOrder.id"
                     label="Orden nº"
-                    outlined
+                   
                   ></v-text-field>
                 </div>
                 <div class="reception-date">
@@ -29,7 +29,7 @@
                     readonly
                     v-model="newOrder.admissionDateFront"
                     label="fecha de recepcion"
-                    outlined
+                   
                   ></v-text-field>
                 </div>
               </div>
