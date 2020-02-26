@@ -18,7 +18,7 @@ import { USER_ADMIN } from '../../types/UsersSystem.type';
 
 import { Watch } from 'vue-property-decorator';
 
-import {
+import { 
   ORDER_CONFIRM,
   ORDER_DELIVERED,
   ORDER_RECIVED,

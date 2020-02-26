@@ -421,7 +421,7 @@
       :color="notification.color"
     >{{ notification.message }}</v-snackbar>
   </div>
-</template>
+</template> 
 
 <script lang="ts">
 import IdentificationView from "./identification.view";
