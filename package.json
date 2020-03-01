@@ -13,15 +13,16 @@
   "main": "electron/index.js",
   "scripts": {
     "start": "electron .",
+    "build-lin": "electron-builder --linux deb tar.xz",
+    "build-win": "electron-builder --win --ia32",
+    "clean": "rimraf dist",
+    "dist": "npm-run-all start-servers clean build",
     "serverback": "nohup  ./serverback.sh > back.out < /dev/null &",
     "serverfront": "nohup ./serverfront.sh > front.out < /dev/null &",
     "start-servers": "npm run serverback && npm run serverfront",
-    "build": "electron-builder --linux deb tar.xz ",
     "package-mac": "electron-builder . --overwrite --platform=darwin --arch=x64 --icon=build/system.ico --prune=true --out=release-builds",
     "package-win": "electron-builder . --overwrite --platform=win32 --arch=ia32 --icon=build/system.ico --prune=true --out=release-builds",
-    "package-linux": "electron-builder . --overwrite --platform=linux --arch=x64 --icon=build/system.ico --prune=true --out=release-builds",
-    "dist": "npm-run-all start-servers clean build",
-    "clean": "rimraf dist"
+    "package-linux": "electron-builder . --overwrite --platform=linux --arch=x64 --icon=./build/system.ico --prune=true --out=release-builds"
   },
   "license": "MIT",
   "build": {
@@ -46,7 +47,7 @@
   "devDependencies": {
     "@types/morgan": "^1.7.37",
     "@types/mysql2": "github:types/mysql2",
-    "electron": "^6.1.7",
+    "electron": "^6.1.9",
     "electron-builder": "^22.3.2",
     "express": "^4.17.1",
     "npm-run-all": "^4.1.5",
