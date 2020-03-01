@@ -53,8 +53,9 @@
   }
 
   .stepper {
+    overflow-y: scroll;
     background-color: rgba(255, 255, 255, 0.027);
-    height: 95%;
+    height: 90%;
     border-radius: 15px;
     // border-radius: 15px;
     padding-left: 40px;
@@ -78,6 +79,7 @@
   .step-content {
     display: flex;
     height: 100%;
+
 
     .left_content-box {
       position: relative;
@@ -165,14 +167,16 @@
       }
     }
 
+
+
     .table-header {
       position: relative;
       width: 100% !important;
       height: 60px !important;
-      // background-color: red;
       padding-left: 20px;
       padding-right: 30px;
       top: 80px;
+      // background-color: green;
 
       .order {
         position: relative;
@@ -198,7 +202,13 @@
           width: 90%;
           height: 100%;
           // background-color: blue;
-          padding-left: 120px;
+          padding-left: 5%;
+
+          .item_table-text {
+            // text-align: left;
+            // font-size: 14px;
+            // margin-left: 30px;
+          }
         }
         .right-box {
           position: relative;
@@ -212,11 +222,14 @@
       }
     }
 
+
+
+
     .table-box {
       position: relative;
       top: 50px;
       width: 100% !important;
-      height: 415px !important;
+      height: 500px !important;
       text-align: center;
       background-color: rgba(255, 255, 255, 0.027);
       overflow-y: scroll;
@@ -248,7 +261,14 @@
           width: 90%;
           height: 100%;
           margin-top: 10px;
-          // background-color: blue;
+          // background-color: red;
+          .item_table-text {
+            color: white;
+            font-size: 14px;
+            // text-align: left;
+            // margin-left: 100px;
+            // margin-right: 100px;
+          }
         }
         .right-box {
           position: relative;

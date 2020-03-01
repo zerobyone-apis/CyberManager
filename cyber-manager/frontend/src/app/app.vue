@@ -15,6 +15,7 @@ import Toolbar from "@/components/toolbar/toolbar.vue";
 import AppCode from "./appCode";
 import "./appStyle.scss";
 
+
 @Component({
   components: {
     Toolbar,

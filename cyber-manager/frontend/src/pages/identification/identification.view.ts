@@ -130,7 +130,7 @@ export default class IndentificationView extends vue {
   private headerOrder = [
     { text: 'Nro', value: 'id' },
     { text: 'Cliente', value: 'clientName' },
-    { text: 'Fecha Ingreso', value: 'admissionDateFront' },
+    { text: 'Ingreso', value: 'admissionDateFront' },
     { text: 'Articulo', value: 'article' },
     { text: 'Status', value: 'status' },
     

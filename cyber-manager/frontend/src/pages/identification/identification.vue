@@ -147,7 +147,7 @@
                   <div class="content-box">
                     <v-layout row wrap>
                       <v-flex xs2 xl2 sm2 v-for="(header,index) in headerOrder" :key="index">
-                        <p>{{ header.text }}</p>
+                        <p class="item_table-text">{{ header.text }}</p>
                       </v-flex>
                     </v-layout>
                   </div>
@@ -185,7 +185,7 @@
                   <div class="content-box">
                     <v-layout row wrap>
                       <v-flex xs2 xl2 sm2 v-for="(header,index) in headerOrder" :key="index">
-                        <p>{{ item[header.value] }}</p>
+                        <p class="item_table-text">{{ item[header.value] }}</p>
                       </v-flex>
                     </v-layout>
                   </div>
