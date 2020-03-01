@@ -5,7 +5,7 @@
       :buttons="miniToolbar"
       @buttonClicked="execMiniToolbarAction($event)"
       :disabled="disabledButtons"
-      colorButtons="green"
+      colorButtons="rgb(29, 211, 29)"
     />
 
     <v-stepper v-model="wizard" class="stepper">
@@ -14,13 +14,21 @@
         <v-stepper-content step="0">
           <div class="step-content">
             <div class="left_content-box">
-              <h3 class="font-title pl-2">Datos de la Orden</h3>
+              <p class="cyber_manager-title">Datos de la Orden</p>
               <div class="identify">
                 <div class="service-number">
-                  <v-text-field readonly v-model="newOrder.id" label="Orden nº"></v-text-field>
+                  <v-text-field
+                    dark
+                    class="cyber_manager-text_field"
+                    readonly
+                    v-model="newOrder.id"
+                    label="Orden nº"
+                  ></v-text-field>
                 </div>
                 <div class="reception-date">
                   <v-text-field
+                    dark
+                    class="cyber_manager-text_field"
                     readonly
                     v-model="newOrder.admissionDateFront"
                     label="fecha de recepcion"
@@ -30,57 +38,68 @@
 
               <div class="fields">
                 <v-text-field
+                  dark
                   :error="v.get('newOrder.clientName') != ''"
                   :error-messages="v.get('newOrder.clientName')"
                   dense
                   v-model="newOrder.clientName"
                   label="Nombre del cliente"
-                  class="custom-field"
+                  class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
+                  dark
                   :error="v.get('newOrder.clientPhone') != ''"
                   :error-messages="v.get('newOrder.clientPhone')"
                   dense
                   v-model="newOrder.clientPhone"
                   label="Telefono"
-                  class="custom-field"
+                  class="cyber_manager-text_field"
                 ></v-text-field>
 
                 <v-text-field
+                  dark
                   :error="v.get('newOrder.article') != ''"
                   :error-messages="v.get('newOrder.article')"
                   dense
                   v-model="newOrder.article"
                   label="Articulo"
-                  class="custom-field"
+                  class="cyber_manager-text_field"
                 ></v-text-field>
+
                 <v-text-field
+                  dark
                   :error="v.get('newOrder.brand') != ''"
                   :error-messages="v.get('newOrder.brand')"
                   dense
                   v-model="newOrder.brand"
                   label="Marca"
-                  class="custom-field"
+                  class="cyber_manager-text_field"
                 ></v-text-field>
+
                 <v-text-field
+                  dark
                   :error="v.get('newOrder.model') != ''"
                   :error-messages="v.get('newOrder.model')"
                   dense
                   v-model="newOrder.model"
                   label="Modelo"
-                  class="custom-field"
+                  class="cyber_manager-text_field"
                 ></v-text-field>
 
                 <v-text-field
+                  dark
                   v-model="newOrder.reportedFailure"
+                  dense
                   label="Daño reportado"
-                  class="custom-text-area"
+                  class="cyber_manager-text_field"
                 ></v-text-field>
 
                 <v-text-field
+                  dark
                   v-model="newOrder.observations"
+                  dense
                   label="Notas"
-                  class="custom-text-area"
+                  class="cyber_manager-text_field"
                 ></v-text-field>
               </div>
               <Footer
@@ -91,15 +110,17 @@
                 :disabled="disabledButtons"
               />
             </div>
+
             <!-- TABLE OF orders -->
             <div class="orders-box">
-              <h3
-                v-if="orders.length && filterItems().length != 0"
-                class="font-title"
-              >Lista de Ordenes</h3>
+              <p
+                class="cyber_manager-title"
+              >Lista de Ordenes</p>
+
               <div class="search-box" v-if="orders.length">
                 <div class="select">
                   <v-select
+                    dark
                     v-model="search.filter"
                     label="Buscar por"
                     :items="Object.keys(searchFilters)"
@@ -109,6 +130,7 @@
                 </div>
                 <div class="field">
                   <v-text-field
+                    dark
                     v-model="search.value"
                     append-icon="search"
                     label="Buscar"
@@ -117,6 +139,24 @@
                   ></v-text-field>
                 </div>
               </div>
+
+              <!-- custom header of table -->
+              <div class="table-header">
+                <div class="order">
+                  <div class="left-box"></div>
+                  <div class="content-box">
+                    <v-layout row wrap>
+                      <v-flex xs2 xl2 sm2 v-for="(header,index) in headerOrder" :key="index">
+                        <p>{{ header.text }}</p>
+                      </v-flex>
+                    </v-layout>
+                  </div>
+
+                  <div class="right-box"></div>
+                </div>
+              </div>
+
+              <!-- table  -->
               <div class="table-box">
                 <div v-if="orders.length == 0 && search.value === ''" class="no-orders">
                   <p>No tiene ordenes creadas</p>
@@ -128,40 +168,31 @@
                   <v-icon>search</v-icon>
                 </div>
 
-                <v-data-table
-                  v-if="orders.length && filterItems().length != 0"
-                  height="100%"
-                  :v-model="orders"
-                  :headers="headerOrder"
-                  :items="filterItems()"
-                  :items-per-page="500"
-                  item-key="id"
-                  show-select
-                  hide-default-footer
-                  single-select
-                  class="orders-table elevation-0"
-                >
-                  <template v-slot:item.data-table-select="{ item, select }">
+                <!-- TABLE  -->
+                <div class="order" v-for="(item, index) in filterItems()" :key="index">
+                  <div class="left-box">
                     <v-icon
-                      @click="
-                        () => {
-                          select();
-                          showSelectedOrder(item);
-                        }
-                      "
+                      class="icon"
+                      @click="showSelectedOrder(item)"
                       :color="changeColorToEdit(item)"
                       :disabled="
                         interactionsMode.order == 1 &&
                           selectedOrder != orders.indexOf(item)
                       "
                     >edit</v-icon>
-                  </template>
-                  <template v-slot:item.status="{ item }">
-                    <v-icon class="mr-2" :color="getColorByStatus(item.status)">info</v-icon>
-                    <span>{{ item.status }}</span>
-                  </template>
-                  <template v-slot:item.action="{ item }">
+                  </div>
+
+                  <div class="content-box">
+                    <v-layout row wrap>
+                      <v-flex xs2 xl2 sm2 v-for="(header,index) in headerOrder" :key="index">
+                        <p>{{ item[header.value] }}</p>
+                      </v-flex>
+                    </v-layout>
+                  </div>
+
+                  <div class="right-box">
                     <v-icon
+                      class="icon"
                       :disabled="
                         (interactionsMode.order == 1 &&
                           selectedOrder != orders.indexOf(item)) ||
@@ -170,9 +201,9 @@
                       @click="deleteOrder(item)"
                       :color="changeColorToEdit(item)"
                     >delete</v-icon>
-                  </template>
-                  <span>Borrar orden</span>
-                </v-data-table>
+                  </div>
+                </div>
+                <!-- /TABLE -->
               </div>
             </div>
           </div>
@@ -181,22 +212,23 @@
         <v-stepper-content step="1">
           <div class="repair-step step-content">
             <div class="left_content-box">
-              <h3 class="font-title">Reparacion de Orden</h3>
+              <p class="cyber_manager-title">Reparacion de Orden</p>
 
               <div class="identify">
                 <v-text-field
+                  dark
                   readonly
                   :value="`${newOrder.clientName}`"
                   label="Nombre del cliente"
-                  outlined
+                  class="cyber_manager-text_field"
                 ></v-text-field>
                 <div class="reception-date">
                   <v-text-field
+                    dark
                     readonly
                     :value="`${newOrder.article}`"
                     label="Articulo"
-                    class="custom-field"
-                    outlined
+                    class="cyber_manager-text_field"
                   ></v-text-field>
                 </div>
               </div>
@@ -209,6 +241,7 @@
                   item-value="text"
                   chips
                   flat
+                  dark
                   attach
                   label="Status"
                 >
@@ -220,12 +253,14 @@
                 </v-select>
 
                 <time-field
+                  dark="true"
                   v-model="repair.repairDate"
                   type="date"
                   :error="v.get('repair.repairDate') != ''"
                   :errorMessage="v.get('repair.repairDate')"
                   label="Fecha de reparacion"
                   lang="es"
+                  class="cyber_manager-text_field"
                 ></time-field>
 
                 <time-field
@@ -235,15 +270,25 @@
                   :errorMessage="v.get('repair.deliverDate')"
                   label="Fecha de Entrega"
                   lang="es"
+                  class="cyber_manager-text_field"
                 ></time-field>
 
-                <v-text-field v-model="repair.technical" flat dense label="Tecnico"></v-text-field>
-                <v-text-field v-model="repair.price" flat outlined dense label="Costo total: "></v-text-field>
                 <v-text-field
+                  dark
+                  v-model="repair.technical"
+                  class="cyber_manager-text_field"
+                  label="Tecnico"
+                ></v-text-field>
+                <v-text-field
+                  dark
+                  v-model="repair.price"
+                  class="cyber_manager-text_field"
+                  label="Costo total: "
+                ></v-text-field>
+                <v-text-field
+                  dark
                   v-model="repair.replacementPrice"
-                  outlined
-                  flat
-                  dense
+                  class="cyber_manager-text_field"
                   label="Costo de repuesto: "
                 ></v-text-field>
               </div>
@@ -258,10 +303,11 @@
               />
             </div>
             <div class="right_content-box">
-              <h3 class="font-title">Reparacion y Garantia</h3>
+              <p class="cyber_manager-title">Reparacion y Garantia</p>
               <div class="content-box">
                 <div class="diagnosis-box">
                   <v-textarea
+                    dark
                     v-model="repair.reparation"
                     outlined
                     dense
@@ -269,7 +315,7 @@
                     label="Reparacion"
                     value
                   ></v-textarea>
-                  <v-text-field v-model="repair.warranty" outlined dense label="Garantia"></v-text-field>
+                  <v-text-field v-model="repair.warranty" outlined dense dark label="Garantia"></v-text-field>
                 </div>
               </div>
             </div>
@@ -279,17 +325,38 @@
         <v-stepper-content step="4">
           <div class="step-content">
             <div class="left_content-box">
-              <h3 class="font-title pl-2">Datos generales de la empresa</h3>
+              <p class="cyber_manager-title pl-2">Datos generales de la empresa</p>
               <div class="fields">
                 <v-text-field
+                  dark
                   v-model="enterprise.enterpriseName"
                   label="Nombre de la empresa"
-                  class="custom-field"
+                  class="cyber_manager-text_field"
                 ></v-text-field>
-                <v-text-field v-model="enterprise.location" label="Direccion" class="custom-field"></v-text-field>
-                <v-text-field v-model="enterprise.phone" label="Telefono" class="custom-field"></v-text-field>
-                <v-text-field v-model="enterprise.cellphone" label="Celular" class="custom-field"></v-text-field>
-                <v-text-field v-model="enterprise.email" label="Email" class="custom-field"></v-text-field>
+                <v-text-field
+                  dark
+                  v-model="enterprise.location"
+                  label="Direccion"
+                  class="cyber_manager-text_field"
+                ></v-text-field>
+                <v-text-field
+                  dark
+                  v-model="enterprise.phone"
+                  label="Telefono"
+                  class="cyber_manager-text_field"
+                ></v-text-field>
+                <v-text-field
+                  dark
+                  v-model="enterprise.cellphone"
+                  label="Celular"
+                  class="cyber_manager-text_field"
+                ></v-text-field>
+                <v-text-field
+                  dark
+                  v-model="enterprise.email"
+                  label="Email"
+                  class="cyber_manager-text_field"
+                ></v-text-field>
               </div>
               <div class="fields">
                 <div class="image-box">
@@ -307,6 +374,8 @@
                   </v-btn>
                 </div>
                 <v-text-field
+                  dark
+                  class="cyber_manager-text_field"
                   v-model="enterprise.urlLogo"
                   label="Pegue el url de la imagen"
                   hint="Si al pegar el url la imagen no carga es debido a que no se permite su uso."
@@ -324,19 +393,22 @@
               <div class="content">
                 <div class="pdf-fields">
                   <v-text-field
+                    dark
                     v-model="enterprise.enterpriseRules"
                     label="Reglas de la empresa"
-                    class="custom-field"
+                    class="cyber_manager-text_field"
                   ></v-text-field>
                   <v-text-field
+                    dark
                     v-model="enterprise.firstMessage"
                     label="Anotacion en el pie del reporte de entrada"
-                    class="custom-field"
+                    class="cyber_manager-text_field"
                   ></v-text-field>
                   <v-text-field
+                    dark
                     v-model="enterprise.secondMessage"
                     label="Anotacion en el pie del reporte de salida"
-                    class="custom-field"
+                    class="cyber_manager-text_field"
                   ></v-text-field>
                 </div>
               </div>
@@ -347,7 +419,7 @@
         <v-stepper-content step="5">
           <div class="step-content">
             <div class="left_content-box">
-              <h3 class="font-title pl-2">Arqueo</h3>
+              <p class="cyber_manager-title pl-2">Arqueo</p>
               <div class="fields">
                 <time-field
                   v-model="analitycs.startDate"
@@ -356,6 +428,7 @@
                   :errorMessage="v.get('analitycs.startDate')"
                   label="Fecha inicio"
                   lang="es"
+                  class="cyber_manager-text_field"
                 ></time-field>
                 <time-field
                   v-model="analitycs.endDate"
@@ -364,6 +437,7 @@
                   :errorMessage="v.get('analitycs.endDate')"
                   label="Fecha fin"
                   lang="es"
+                  class="cyber_manager-text_field"
                 ></time-field>
 
                 <Footer

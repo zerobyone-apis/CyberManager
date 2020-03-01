@@ -20,7 +20,7 @@
       <div class="right-box">
         <v-menu offset-y>
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" class="user-btn" small color="green" outlined text>
+            <v-btn v-on="on" class="user-btn" small color="rgb(29, 211, 29)" outlined text>
               <v-icon>people</v-icon>
               {{ $store.getters.getUsername }}
             </v-btn>

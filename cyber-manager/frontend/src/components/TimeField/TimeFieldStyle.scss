@@ -1,7 +1,7 @@
 
 .field {
   .v-label {
-    top: 10px !important;
+    // top: 10px !important;
   }
   .v-input__slot {
     min-height: 40px !important;
@@ -10,6 +10,7 @@
   .insert_date-btn {
     position: absolute;
     right: 0px;
-    bottom: 0px;
+    bottom: 2px;
   }
 }
+

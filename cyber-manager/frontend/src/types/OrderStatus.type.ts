@@ -10,7 +10,7 @@ export const ORDER_REPAIR = {
 
 export const ORDER_CONFIRM = {
   text: 'Presupuestado',
-  color: 'yellow lighten-1',
+  color: 'yellow darken-1',
 }
 
 export const ORDER_DELIVERED = {

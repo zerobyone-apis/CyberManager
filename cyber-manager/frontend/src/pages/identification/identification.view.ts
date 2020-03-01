@@ -133,7 +133,7 @@ export default class IndentificationView extends vue {
     { text: 'Fecha Ingreso', value: 'admissionDateFront' },
     { text: 'Articulo', value: 'article' },
     { text: 'Status', value: 'status' },
-    { text: 'Acciones', value: 'action' }
+    
   ];
 
   private status = [
