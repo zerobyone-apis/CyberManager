@@ -24,7 +24,6 @@ export default class OrderActions {
   public async getAll() {
     let orders: IOrder[] = [];
     try {
-      // console.log('')
       let responseOrders: IOrder[] = await this.backend.send(
         GET_ENDPOIT,
         undefined,
@@ -34,7 +33,7 @@ export default class OrderActions {
         order.admissionDateFront = moment(order.admissionDate).format(
           'DD/MM/YYYY hh:mm:ss'
         );
-        orders.push(order);
+        orders.unshift(order);
       });
       return orders;
     } catch (error) {

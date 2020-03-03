@@ -133,7 +133,6 @@ export default class IndentificationView extends vue {
     { text: 'Ingreso', value: 'admissionDateFront' },
     { text: 'Articulo', value: 'article' },
     { text: 'Status', value: 'status' },
-    
   ];
 
   private status = [
@@ -275,7 +274,9 @@ export default class IndentificationView extends vue {
         this.newOrder
       );
       if (responseAddOrder.statusCode === 200) {
-        this.orders.push(responseAddOrder.value);
+        responseAddOrder.value.admissionDateFront = this.newOrder.admissionDateFront;
+        this.orders.unshift(responseAddOrder.value);
+
         Object.assign(this.newOrder, this.cleanFields);
         this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
         this.showNotificationSuccess('Orden creada exitosamente!');
