@@ -1,16 +1,18 @@
-
 .field {
-  .v-label {
-    // top: 10px !important;
-  }
   .v-input__slot {
     min-height: 40px !important;
-    // top: 10px !important;
   }
   .insert_date-btn {
     position: absolute;
-    right: 0px;
+    right: 4px;
     bottom: 2px;
   }
-}
+  
+  .insert_date-btn::before {
+    top: 4px;
+    height: 28px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 
+  }
+}
