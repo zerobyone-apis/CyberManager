@@ -1,7 +1,7 @@
 <template transition="slide-x-transition">
-  <div id="identification-page">
+  <div id="identification-page" :class="`cyber_manager-window_${theme}`">
     <MiniToolbar
-      class="mini-toolbar"
+      :class="`cyber_manager-background_${theme} mini-toolbar`"
       :buttons="miniToolbar"
       @buttonClicked="execMiniToolbarAction($event)"
       :disabled="disabledButtons"
@@ -113,9 +113,7 @@
 
             <!-- TABLE OF orders -->
             <div class="orders-box">
-              <p
-                class="cyber_manager-title"
-              >Lista de Ordenes</p>
+              <p class="cyber_manager-title">Lista de Ordenes</p>
 
               <div class="search-box" v-if="orders.length">
                 <div class="select">
@@ -142,17 +140,12 @@
 
               <!-- custom header of table -->
               <div class="table-header">
-                <div class="order">
-                  <div class="left-box"></div>
-                  <div class="content-box">
-                    <v-layout row wrap>
-                      <v-flex xs2 xl2 sm2 v-for="(header,index) in headerOrder" :key="index">
-                        <p class="header_table-text">{{ header.text }}</p>
-                      </v-flex>
-                    </v-layout>
-                  </div>
-
-                  <div class="right-box"></div>
+                <div class="headers">
+                  <v-layout row wrap>
+                    <v-flex xs2 xl2 sm2 v-for="(header,index) in headerOrder" :key="index">
+                      <p class="header_table-text">{{ header.text }}</p>
+                    </v-flex>
+                  </v-layout>
                 </div>
               </div>
 
@@ -185,7 +178,8 @@
                   <div class="content-box">
                     <v-layout row wrap>
                       <v-flex xs2 xl2 sm2 v-for="(header,index) in headerOrder" :key="index">
-                        <p class="item_table-text">{{ item[header.value] }}</p>
+                        <p v-if="header.value != 'status'" class="item_table-text">{{ item[header.value] }}</p>
+                        <v-btn v-if="header.value == 'status'" :color="getColorByStatus(item[header.value])" class="item_table-text" small depressed outlined>{{ item[header.value] }}</v-btn>
                       </v-flex>
                     </v-layout>
                   </div>
@@ -242,11 +236,12 @@
                   chips
                   flat
                   dark
+                  outlined
                   attach
                   label="Status"
                 >
                   <template v-slot:selection="{ item }">
-                    <v-chip :color="getColorByStatus(item)">
+                    <v-chip class="chip" :color="getColorByStatus(item)">
                       <span>{{ item.text }}</span>
                     </v-chip>
                   </template>
@@ -444,8 +439,8 @@
                   @save="beginAnalitycs()"
                   @cancel="resetAnalitycs()"
                   :save-mode="true"
-                  save-icon="arrow_right"
-                  cancel-icon="arrow_left"
+                  save-icon="trending_up"
+                  cancel-icon="autorenew"
                   save-text="Comenzar"
                   cancel-text="Reiniciar"
                   :disabled="disabledButtons"

@@ -30,6 +30,7 @@ import Analitycs from '../../actions/Analytics.actions';
 
 export default class IndentificationView extends vue {
   private userInfo: IUserStore = this.$store.getters.userInfo;
+  private theme: string = this.$store.getters.theme;
 
   private enterpriseActions: EnterpriseAction = new EnterpriseAction();
   public orderActions: OrderAction = new OrderAction();
@@ -463,8 +464,8 @@ export default class IndentificationView extends vue {
   }
 
   private resetAnalitycs() {
-    this.analitycs.startDate = '';
-    this.analitycs.endDate = '';
+    this.analitycs.startDate = this.newOrder.admissionDate || '';
+    this.analitycs.endDate = this.newOrder.admissionDate || '';
     this.analitycs.result = '';
   }
 

@@ -10,6 +10,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
+    theme: 'dark',
     page: 'Home',
     userInfo: {
       id: -1,
@@ -24,6 +25,9 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
+    setTheme(state: any, value) {
+      state.theme = value;
+    },
     page(state: any, value) {
       state.page = value;
     },
@@ -46,6 +50,7 @@ export const store = new Vuex.Store({
     }
   },
   getters: {
+    theme: state => state.theme,
     page: state => state.page,
     userInfo: state => state.userInfo,
     getUsername: state => state.userInfo.username,
