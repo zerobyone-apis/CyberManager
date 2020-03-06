@@ -1,5 +1,5 @@
 <template transition="slide-x-transition">
-  <div id="home-page">
+  <div id="home-page" class="cyber_manager-window_background">
     <img
       class="img-back"
       src="https://i.pinimg.com/originals/9c/d1/a0/9cd1a09bb5c3d5a6774128147c96b18b.gif"

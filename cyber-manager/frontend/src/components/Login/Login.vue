@@ -1,21 +1,23 @@
 <template>
-  <div id="login-box">
-    <h1 class="mb-6 organize__font-title">Login</h1>
+  <div id="login-box" class="cyber_manager-dark_background">
+    <h1 class="mb-6 cyber_manager-title">Login</h1>
     <v-form :ref="ON_SIGNIN">
       <v-text-field
         v-model="userSignIn.username"
         :rules="fieldRules"
-        class="organize__text-field"
+        class="cyber_manager-text_field"
         label="Usuario"
         dense
+        dark
       />
       <v-text-field
         v-model="userSignIn.password"
         :rules="fieldRules"
-        class="organize__text-field organize__text-field_button"
+        class="cyber_manager-text_field"
         label="Constraseña"
         type="password"
         dense
+        dark
       ></v-text-field>
 
       <v-btn
@@ -29,7 +31,7 @@
       >Acceder</v-btn>
     </v-form>
 
-    <h2 class="mb-6 organize__font-title">Registrese aqui</h2>
+    <h2 class="mb-6 cyber_manager-title">Registrese aqui</h2>
 
     <v-form :ref="ON_SIGNUP">
       <v-select
@@ -40,31 +42,35 @@
         class="organize__select-field"
         label="Cargo"
         dense
+        dark
       ></v-select>
 
       <v-text-field
         v-model="userSignUp.username"
         :rules="fieldRules"
-        class="organize__text-field"
+        class="cyber_manager-text_field"
         label="Nombre de usuario"
         dense
+        dark
       />
 
       <v-text-field
         v-model="userSignUp.password"
         :rules="fieldRules"
-        class="organize__text-field"
+        class="cyber_manager-text_field"
         label="Contraseña"
         type="password"
         dense
+        dark
       />
       <v-text-field
         v-model="userSignUp.repeatPassword"
         :rules="passwordRules"
-        class="organize__text-field"
+        class="cyber_manager-text_field"
         label="Repita contraseña"
         type="password"
         dense
+        dark
       />
       <v-btn
         @click="signUp()"
@@ -83,8 +89,11 @@
 import { Component, Prop } from "vue-property-decorator";
 import LoginActions from "./Login.actions";
 import "./Login.scss";
+import "../../styles/CyberManager.scss";
 
-@Component({})
+@Component({
+  components: {}
+})
 export default class Login extends LoginActions {
   @Prop({ default: false }) charges!: string[];
 }
