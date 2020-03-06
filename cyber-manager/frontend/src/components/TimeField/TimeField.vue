@@ -115,7 +115,11 @@ export default class TimeField extends TimeFieldCode {
   @Watch("time")
   updateTime() {
     if (this.time.indexOf(":") == -1) {
-      this.simpleDate = this.getDate(this.time);
+      /*
+        // this.simpleDate = this.getDate(this.time);
+        fix: if time is '', simple date was current date, this is incorrect in case of reset value of field 
+      */
+      this.simpleDate = "";
     }
     this.$emit("input", this.time);
   }
