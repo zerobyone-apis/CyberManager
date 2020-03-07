@@ -1,5 +1,6 @@
 export default class IntegrationBackend {
-  private baseUrl = 'https://cyber-manager-back-v2.herokuapp.com';
+  private baseUrl = 'http://localhost:3000';
+  //private baseUrl = 'https://cyber-manager-back-v2.herokuapp.com';
   //private baseUrl = 'https://cyber-manager-backend-stg.herokuapp.com';
   private axios = require('axios');
 

@@ -8,21 +8,36 @@ let queryFunctions: QueryFunctions = new QueryFunctions();
 let queries: Queries = new Queries();
 
 export async function createOrder(req: Request, res: Response) {
-  const newOrder: IOrder = req.body.data;
-  console.log(newOrder);
+  const {
+    admissionDate,
+    clientName,
+    clientPhone,
+    article,
+    model,
+    brand,
+    reportedFailure,
+    observations,
+    isCanceled,
+    status
+  }: IOrder = req.body.data;
 
   let result: {
     statusCode: number;
     value: any;
   } = await queryFunctions.query(queries.getQuery(ORDER_TABLE, 'create'), [
-    newOrder
+    clientName,
+    clientPhone,
+    article,
+    model,
+    brand,
+    admissionDate,
+    reportedFailure,
+    observations,
+    isCanceled,
+    status
   ]);
 
-  let queryParams = [
-    newOrder.clientName,
-    newOrder.admissionDate,
-    newOrder.article
-  ];
+  let queryParams = [clientName, admissionDate, article];
 
   if (result.statusCode == 200) {
     let resultId: {
@@ -32,7 +47,9 @@ export async function createOrder(req: Request, res: Response) {
       queries.getQuery(ORDER_TABLE, 'getNew'),
       queryParams
     );
-    return res.status(resultId.statusCode).json(resultId.value);
+    console.log('Resultado obtenido : ', resultId);
+    console.log('Obtener el id creado desde las rows: ', resultId.value.rows);
+    return res.status(resultId.statusCode).json(resultId.value.rows);
   } else {
     console.log('Error creando Order', result);
     return res.status(result.statusCode).json(result.value);
@@ -60,9 +77,10 @@ export async function getOrders(req: Request, res: Response) {
     statusCode: number;
     value: any;
   } = await queryFunctions.query(queries.getQuery(ORDER_TABLE, 'getAll'), []);
-  console.log('RESULT": ->', result.statusCode);
+  console.log('StatusCode ->', result.statusCode);
   if (result.statusCode == 200) {
-    return res.status(200).json(result.value);
+    console.log('Result ->', result.value.rows);
+    return res.status(200).json(result.value.rows);
   } else {
     console.log(`Error cargando todos los pedidos`);
     return res.status(result.statusCode).json(result.value);

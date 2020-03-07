@@ -1,5 +1,4 @@
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 
 export default class Styles {
   // dimensions of a page a4 = 595 x 842
