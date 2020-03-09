@@ -307,9 +307,8 @@ export default class IndentificationView extends vue {
         let pSelected: IOrder = this.orders[this.selectedOrder];
 
         Object.assign(pSelected, responseSaveOrder);
-        console.log(this.orders[this.selectedOrder]);
         this.orders[this.selectedOrder] = pSelected;
-        console.log(this.orders[this.selectedOrder]);
+        //console.log(this.orders[this.selectedOrder]);
 
         Object.assign(this.newOrder, this.cleanFields);
         this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
