@@ -1,20 +1,21 @@
 export interface IOrder {
-  idOrder: number;
-  admissionDate: string;
-  admissionDateFront?: string; // dd/mm/yyyy HH:MM:SS
-  clientName: string;
-  clientPhone: string;
+  id?: number;
+  admissiondate?: string;
+  admissiondateFront?: string; // dd/mm/yyyy HH:MM:SS
+  clientname: string;
+  clientphone: string;
   article: string;
   model: string;
   brand: string;
-  reportedFailure: string;
+  reportedfailure: string;
   observations: string;
-  isCanceled: boolean;
+  iscanceled: boolean;
+  status: string;
   // repair attbs
-  repairDate?: string;
+  warranty?: string;
+  repairdate?: string;
   reparation?: string;
   price?: number;
-  deliverDate?: string;
-  status: string;
-  replacementPrice?: number;
+  replacementprice?: number;
+  deliverydate?: string;
 }

@@ -39,19 +39,19 @@
               <div class="fields">
                 <v-text-field
                   dark
-                  :error="v.get('newOrder.clientName') != ''"
-                  :error-messages="v.get('newOrder.clientName')"
+                  :error="v.get('newOrder.clientname') != ''"
+                  :error-messages="v.get('newOrder.clientname')"
                   dense
-                  v-model="newOrder.clientName"
+                  v-model="newOrder.clientname"
                   label="Nombre del cliente"
                   class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
                   dark
-                  :error="v.get('newOrder.clientPhone') != ''"
-                  :error-messages="v.get('newOrder.clientPhone')"
+                  :error="v.get('newOrder.clientphone') != ''"
+                  :error-messages="v.get('newOrder.clientphone')"
                   dense
-                  v-model="newOrder.clientPhone"
+                  v-model="newOrder.clientphone"
                   label="Telefono"
                   class="cyber_manager-text_field"
                 ></v-text-field>
@@ -88,7 +88,7 @@
 
                 <v-text-field
                   dark
-                  v-model="newOrder.reportedFailure"
+                  v-model="newOrder.reportedfailure"
                   dense
                   label="Daño reportado"
                   class="cyber_manager-text_field"
@@ -142,7 +142,13 @@
               <div class="table-header">
                 <div class="headers">
                   <v-layout row wrap>
-                    <v-flex xs2 xl2 sm2 v-for="(header,index) in headerOrder" :key="index">
+                    <v-flex
+                      xs2
+                      xl2
+                      sm2
+                      v-for="(header, index) in headerOrder"
+                      :key="index"
+                    >
                       <p class="header_table-text">{{ header.text }}</p>
                     </v-flex>
                   </v-layout>
@@ -151,18 +157,28 @@
 
               <!-- table  -->
               <div class="table-box">
-                <div v-if="orders.length == 0 && search.value === ''" class="no-orders">
+                <div
+                  v-if="orders.length == 0 && search.value === ''"
+                  class="no-orders"
+                >
                   <p>No tiene ordenes creadas</p>
                   <v-icon>search</v-icon>
                 </div>
 
-                <div class="no-orders" v-if="filterItems() == 0 && search.value">
+                <div
+                  class="no-orders"
+                  v-if="filterItems() == 0 && search.value"
+                >
                   <p>No se encontraron coincidencias</p>
                   <v-icon>search</v-icon>
                 </div>
 
                 <!-- TABLE  -->
-                <div class="order" v-for="(item, index) in filterItems()" :key="index">
+                <div
+                  class="order"
+                  v-for="(item, index) in filterItems()"
+                  :key="index"
+                >
                   <div class="left-box">
                     <v-icon
                       class="icon"
@@ -172,14 +188,34 @@
                         interactionsMode.order == 1 &&
                           selectedOrder != orders.indexOf(item)
                       "
-                    >edit</v-icon>
+                      >edit</v-icon
+                    >
                   </div>
 
                   <div class="content-box">
                     <v-layout row wrap>
-                      <v-flex xs2 xl2 sm2 v-for="(header,index) in headerOrder" :key="index">
-                        <p v-if="header.value != 'status'" class="item_table-text">{{ item[header.value] }}</p>
-                        <v-btn v-if="header.value == 'status'" :color="getColorByStatus(item[header.value])" class="item_table-text" small depressed outlined>{{ item[header.value] }}</v-btn>
+                      <v-flex
+                        xs2
+                        xl2
+                        sm2
+                        v-for="(header, index) in headerOrder"
+                        :key="index"
+                      >
+                        <p
+                          v-if="header.value != 'status'"
+                          class="item_table-text"
+                        >
+                          {{ item[header.value] }}
+                        </p>
+                        <v-btn
+                          v-if="header.value == 'status'"
+                          :color="getColorByStatus(item[header.value])"
+                          class="item_table-text"
+                          small
+                          depressed
+                          outlined
+                          >{{ item[header.value] }}</v-btn
+                        >
                       </v-flex>
                     </v-layout>
                   </div>
@@ -194,7 +230,8 @@
                       "
                       @click="deleteOrder(item)"
                       :color="changeColorToEdit(item)"
-                    >delete</v-icon>
+                      >delete</v-icon
+                    >
                   </div>
                 </div>
                 <!-- /TABLE -->
@@ -212,7 +249,7 @@
                 <v-text-field
                   dark
                   readonly
-                  :value="`${newOrder.clientName}`"
+                  :value="`${newOrder.clientname}`"
                   label="Nombre del cliente"
                   class="cyber_manager-text_field"
                 ></v-text-field>
@@ -249,20 +286,20 @@
 
                 <time-field
                   dark="true"
-                  v-model="repair.repairDate"
+                  v-model="repair.repairdate"
                   type="date"
-                  :error="v.get('repair.repairDate') != ''"
-                  :errorMessage="v.get('repair.repairDate')"
+                  :error="v.get('repair.repairdate') != ''"
+                  :errorMessage="v.get('repair.repairdate')"
                   label="Fecha de reparacion"
                   lang="es"
                   class="cyber_manager-text_field"
                 ></time-field>
 
                 <time-field
-                  v-model="repair.deliverDate"
+                  v-model="repair.deliverydate"
                   type="date"
-                  :error="v.get('repair.deliverDate') != ''"
-                  :errorMessage="v.get('repair.deliverDate')"
+                  :error="v.get('repair.deliverydate') != ''"
+                  :errorMessage="v.get('repair.deliverydate')"
                   label="Fecha de Entrega"
                   lang="es"
                   class="cyber_manager-text_field"
@@ -282,7 +319,7 @@
                 ></v-text-field>
                 <v-text-field
                   dark
-                  v-model="repair.replacementPrice"
+                  v-model="repair.replacementprice"
                   class="cyber_manager-text_field"
                   label="Costo de repuesto: "
                 ></v-text-field>
@@ -310,7 +347,13 @@
                     label="Reparacion"
                     value
                   ></v-textarea>
-                  <v-text-field v-model="repair.warranty" outlined dense dark label="Garantia"></v-text-field>
+                  <v-text-field
+                    v-model="repair.warranty"
+                    outlined
+                    dense
+                    dark
+                    label="Garantia"
+                  ></v-text-field>
                 </div>
               </div>
             </div>
@@ -320,11 +363,13 @@
         <v-stepper-content step="4">
           <div class="step-content">
             <div class="left_content-box">
-              <p class="cyber_manager-title pl-2">Datos generales de la empresa</p>
+              <p class="cyber_manager-title pl-2">
+                Datos generales de la empresa
+              </p>
               <div class="fields">
                 <v-text-field
                   dark
-                  v-model="enterprise.enterpriseName"
+                  v-model="enterprise.enterprisename"
                   label="Nombre de la empresa"
                   class="cyber_manager-text_field"
                 ></v-text-field>
@@ -359,11 +404,16 @@
                     id="imageid"
                     class="img"
                     crossorigin="anonymous"
-                    v-if="enterprise.urlLogo"
-                    :src="enterprise.urlLogo"
+                    v-if="enterprise.urllogo"
+                    :src="enterprise.urllogo"
                     alt
                   />
-                  <v-btn disabled depressed v-if="!enterprise.urlLogo" class="btn-camera">
+                  <v-btn
+                    disabled
+                    depressed
+                    v-if="!enterprise.urllogo"
+                    class="btn-camera"
+                  >
                     <v-icon>camera_enhance</v-icon>
                     <!-- <span class="text-btn">Pulse AQUI para buscar</span> -->
                   </v-btn>
@@ -371,7 +421,7 @@
                 <v-text-field
                   dark
                   class="cyber_manager-text_field"
-                  v-model="enterprise.urlLogo"
+                  v-model="enterprise.urllogo"
                   label="Pegue el url de la imagen"
                   hint="Si al pegar el url la imagen no carga es debido a que no se permite su uso."
                 ></v-text-field>
@@ -389,19 +439,19 @@
                 <div class="pdf-fields">
                   <v-text-field
                     dark
-                    v-model="enterprise.enterpriseRules"
+                    v-model="enterprise.enterpriserules"
                     label="Reglas de la empresa"
                     class="cyber_manager-text_field"
                   ></v-text-field>
                   <v-text-field
                     dark
-                    v-model="enterprise.firstMessage"
+                    v-model="enterprise.firstmessage"
                     label="Anotacion en el pie del reporte de entrada"
                     class="cyber_manager-text_field"
                   ></v-text-field>
                   <v-text-field
                     dark
-                    v-model="enterprise.secondMessage"
+                    v-model="enterprise.secondmessage"
                     label="Anotacion en el pie del reporte de salida"
                     class="cyber_manager-text_field"
                   ></v-text-field>
@@ -451,11 +501,21 @@
             <div class="right_content-box">
               <div class="content-analytics">
                 <div class="result-box">
-                  <p class="result-text">{{ analitycs.result.split(',')[0] }}</p>
-                  <p class="result-text">{{ analitycs.result.split(',')[1] }}</p>
-                  <p class="result-text">{{ analitycs.result.split(',')[2] }}</p>
-                  <p class="result-text">{{ analitycs.result.split(',')[3] }}</p>
-                  <p class="result">{{ !analitycs.result ? 'Resultado' : '' }}</p>
+                  <p class="result-text">
+                    {{ analitycs.result.split(',')[0] }}
+                  </p>
+                  <p class="result-text">
+                    {{ analitycs.result.split(',')[1] }}
+                  </p>
+                  <p class="result-text">
+                    {{ analitycs.result.split(',')[2] }}
+                  </p>
+                  <p class="result-text">
+                    {{ analitycs.result.split(',')[3] }}
+                  </p>
+                  <p class="result">
+                    {{ !analitycs.result ? 'Resultado' : '' }}
+                  </p>
                   <v-icon class="icon">trending_up</v-icon>
                 </div>
               </div>
@@ -473,22 +533,21 @@
       ></v-progress-linear>
     </v-stepper>
 
-    <v-snackbar
-      v-model="notification.visible"
-      :color="notification.color"
-    >{{ notification.message }}</v-snackbar>
+    <v-snackbar v-model="notification.visible" :color="notification.color">{{
+      notification.message
+    }}</v-snackbar>
   </div>
-</template> 
+</template>
 
 <script lang="ts">
-import IdentificationView from "./identification.view";
-import "./identification.scss";
-import "../../styles/CyberManager.scss";
-import { Component } from "vue-property-decorator";
-import TimeField from "../../components/TimeField/TimeField.vue";
-import Footer from "../../components/Footer/Footer.vue";
-import MiniToolbar from "../../components/MiniToolbar/MiniToolbar.vue";
-import Toolbar from "../../components/toolbar/toolbar.vue";
+import IdentificationView from './identification.view';
+import './identification.scss';
+import '../../styles/CyberManager.scss';
+import { Component } from 'vue-property-decorator';
+import TimeField from '../../components/TimeField/TimeField.vue';
+import Footer from '../../components/Footer/Footer.vue';
+import MiniToolbar from '../../components/MiniToolbar/MiniToolbar.vue';
+import Toolbar from '../../components/toolbar/toolbar.vue';
 
 @Component({
   components: {

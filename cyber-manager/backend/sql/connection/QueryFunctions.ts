@@ -10,7 +10,10 @@ export default class QueryFunctions {
     console.log('');
     console.log('');
     console.log(
-      '.START QUERY. ' + queryData.action + ' of table ' + queryData.table
+      '-> START QUERY. ' +
+        `[ ${queryData.action} ]` +
+        ' of table ' +
+        `[ ${queryData.table} ]: `
     );
     let query: string = queryData.query;
     let reader: string = '';

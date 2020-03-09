@@ -81,7 +81,7 @@ CREATE TABLE `order` (
     `brand` varchar(100) DEFAULT NULL,
     `admissionDate` datetime NOT NULL,
     `repairDate` datetime DEFAULT NULL,
-    `deliverDate` datetime DEFAULT NULL,
+    `deliveryDate` datetime DEFAULT NULL,
     `reportedFailure` varchar(500) DEFAULT NULL,
     `observations` varchar(500) DEFAULT NULL,
     `reparation` varchar(750) DEFAULT NULL,

@@ -27,10 +27,10 @@ export default class OrderActions {
       let responseOrders: IOrder[] = await this.backend.send(
         GET_ENDPOIT,
         undefined,
-        ORDER_ROUTE 
+        ORDER_ROUTE
       );
       responseOrders.forEach((order: IOrder) => {
-        order.admissionDateFront = moment(order.admissionDate).format(
+        order.admissiondateFront = moment(order.admissiondate).format(
           'DD/MM/YYYY hh:mm:ss'
         );
         orders.unshift(order);
@@ -45,19 +45,19 @@ export default class OrderActions {
   public async add(order: IOrder) {
     try {
       let data: IOrder = {
-        admissionDate: moment(order.admissionDateFront).format(
+        admissiondate: moment(order.admissiondateFront).format(
           'YYYY-MM-DD hh:mm:ss'
         ),
-        clientName: order.clientName,
-        clientPhone: order.clientPhone,
-        deliverDate: undefined,
-        repairDate: undefined,
+        clientname: order.clientname,
+        clientphone: order.clientphone,
+        deliverydate: undefined,
+        repairdate: undefined,
         article: order.article,
         model: order.model,
         brand: order.brand,
-        reportedFailure: order.reportedFailure,
+        reportedfailure: order.reportedfailure,
         observations: order.observations,
-        isCanceled: false,
+        iscanceled: false,
         status: ORDER_RECIVED.text
       };
       const response: { id: number }[] = await this.backend.send(
@@ -67,45 +67,45 @@ export default class OrderActions {
       );
       let newOrder: IOrder = {
         id: response[0].id,
-        admissionDate: data.admissionDate,
+        admissiondate: data.admissiondate,
 
-        deliverDate: data.deliverDate,
-        repairDate: data.repairDate,
+        deliverydate: data.deliverydate,
+        repairdate: data.repairdate,
 
         article: data.article,
-        reportedFailure: data.reportedFailure,
-        isCanceled: data.isCanceled,
+        reportedfailure: data.reportedfailure,
+        iscanceled: data.iscanceled,
         brand: data.brand,
         model: data.model,
-        clientName: data.clientName,
+        clientname: data.clientname,
         observations: data.observations,
         price: data.price,
         status: data.status,
-        clientPhone: data.clientPhone,
+        clientphone: data.clientphone,
         reparation: data.reparation
       };
       return new ResultObject(200, newOrder);
     } catch (error) {
-      return new ResultObject(404, error);
       console.error('Error Order.actions method add -> ', error.message);
+      return new ResultObject(404, error);
     }
   }
 
   public async save(order: IOrder) {
     try {
       let data: IOrder = {
-        clientName: order.clientName,
-        clientPhone: order.clientPhone,
+        clientname: order.clientname,
+        clientphone: order.clientphone,
         article: order.article,
         model: order.model,
         brand: order.brand,
-        reportedFailure: order.reportedFailure,
+        reportedfailure: order.reportedfailure,
         observations: order.observations,
-        isCanceled: false,
-        repairDate:
-          order.repairDate == ''
+        iscanceled: false,
+        repairdate:
+          order.repairdate == ''
             ? moment().format('YYYY-MM-DD hh:mm:ss')
-            : order.repairDate,
+            : order.repairdate,
         status: order.status != '' ? order.status : ORDER_RECIVED.text
       };
       const response: any = await this.backend.send(
@@ -115,8 +115,8 @@ export default class OrderActions {
       );
       return order;
     } catch (error) {
-      return null;
       console.error('Ocurrio un error actualizando el pedido -> ', error);
+      return null;
     }
   }
 
@@ -146,32 +146,6 @@ export default class OrderActions {
     return maxId === -Infinity ? 0 : maxId + 1;
   }
 
-  public orderBase: IOrder = {
-    id: 1,
-    admissionDate: moment().format('YYYY-MM-DD hh:mm:ss'),
-    clientName: '',
-    clientPhone: '',
-    article: '',
-    model: '',
-    brand: '',
-    reportedFailure: '',
-    observations: '',
-    isCanceled: false,
-    repairDate: '',
-    deliverDate: '',
-    reparation: '',
-    price: 0,
-    status: ''
-  };
-
-  public status: any = {
-    recibido: false,
-    reparandose: false,
-    confirmando_pago: false,
-    entregado: false,
-    en_talleres: false
-  };
-
   private validateStatus = (req: any): string | undefined => {
     switch (this.status) {
       case this.status.recibido:
@@ -190,5 +164,31 @@ export default class OrderActions {
         return this.status.en_talleres === true ? ORDER_WORKSHOP.text : '';
         break;
     }
+  };
+
+  public orderBase: IOrder = {
+    id: 1,
+    admissiondate: moment().format('YYYY-MM-DD hh:mm:ss'),
+    clientname: '',
+    clientphone: '',
+    article: '',
+    model: '',
+    brand: '',
+    reportedfailure: '',
+    observations: '',
+    iscanceled: false,
+    repairdate: '',
+    deliverydate: '',
+    reparation: '',
+    price: 0,
+    status: ''
+  };
+
+  public status: any = {
+    recibido: false,
+    reparandose: false,
+    confirmando_pago: false,
+    entregado: false,
+    en_talleres: false
   };
 }
