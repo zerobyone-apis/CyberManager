@@ -24,6 +24,7 @@ export async function findEmpresaByUserID(req: Request, res: Response) {
     return res.status(result.statusCode).json(result.value.rows[0]);
   }
 }
+
 export async function createEmpresa(req: Request, res: Response) {
   const enterprise: IEnterprise = req.body.data;
   let queryParams = [
@@ -52,6 +53,7 @@ export async function createEmpresa(req: Request, res: Response) {
     return res.status(result.statusCode).json(result.value.rows[0]);
   }
 }
+
 export async function updateEnterprise(req: Request, res: Response) {
   const updateEmp: IEnterprise = req.body.data;
   const id = parseInt(req.params.id);
@@ -79,6 +81,7 @@ export async function updateEnterprise(req: Request, res: Response) {
     return res.status(result.statusCode).json(result.value.rows[0]);
   }
 }
+
 export async function deleteEnterprise(req: Request, res: Response) {
   const id = parseInt(req.params.id);
   let result = await queryFunctions.query(

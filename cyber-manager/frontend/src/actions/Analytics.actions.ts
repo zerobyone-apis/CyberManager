@@ -7,7 +7,7 @@ export default class AnalyticsActions {
   private backend: IntegrationBackend = new IntegrationBackend();
 
   public async doArqueo(analytics: IAnalitycs) {
-    console.log('Object analytics ToDo Arqueo -> ', analytics);
+    // console.log('Object analytics ToDo Arqueo -> ', analytics);
     let data: IAnalitycs = {
       startDate: analytics.startDate + ' 00:00:00',
       endDate: analytics.endDate + ' 00:00:00'
@@ -18,7 +18,7 @@ export default class AnalyticsActions {
         data,
         `${ORDER_ROUTE}/arqueo`
       );
-      console.log('Analitycs: Resultado del arqueo: ', resultArqueo);
+      // console.log('Analitycs: Resultado del arqueo: ', resultArqueo);
       return resultArqueo;
     } catch (error) {
       console.error(`Error: Arqueo -> ${error.message}`);

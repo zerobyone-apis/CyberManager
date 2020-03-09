@@ -11,11 +11,10 @@ export default class ReparirActions {
       // ..........
       let deliverydateFormat: string | null = repair.deliverydate || null;
       let repairDateFormat: string | null = repair.repairdate || null;
-      console.log('Se envio la request Update Raparation.');
+      //console.log('Se envio la request Update Raparation.');
 
       if (deliverydateFormat != null) {
         if (deliverydateFormat.indexOf('T') != -1) {
-          console.log('tipo T');
           deliverydateFormat = deliverydateFormat.split('T')[0] + ' 00:00:00';
         } else {
           deliverydateFormat = `${deliverydateFormat} 00:00:00`;

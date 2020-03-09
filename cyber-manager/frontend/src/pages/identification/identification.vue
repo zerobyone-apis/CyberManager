@@ -30,7 +30,7 @@
                     dark
                     class="cyber_manager-text_field"
                     readonly
-                    v-model="newOrder.admissionDateFront"
+                    v-model="newOrder.admissiondateFront"
                     label="fecha de recepcion"
                   ></v-text-field>
                 </div>

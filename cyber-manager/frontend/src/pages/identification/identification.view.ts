@@ -131,7 +131,7 @@ export default class IndentificationView extends vue {
   private headerOrder = [
     { text: 'Nro', value: 'id' },
     { text: 'Cliente', value: 'clientname' },
-    { text: 'Ingreso', value: 'admissionDateFront' },
+    { text: 'Ingreso', value: 'admissiondateFront' },
     { text: 'Articulo', value: 'article' },
     { text: 'Status', value: 'status' }
   ];
@@ -163,12 +163,12 @@ export default class IndentificationView extends vue {
   }
 
   private searchFilters: any = {
-    nombre: 'clientname',
-    articulo: 'article',
-    status: 'status'
+    Nombre: 'clientname',
+    Articulo: 'article',
+    Status: 'status'
   };
   private search: any = {
-    filter: 'nombre',
+    filter: 'Nombre',
     value: ''
   };
 
@@ -449,7 +449,6 @@ export default class IndentificationView extends vue {
         let responseArqueo: any = await this.analyticsActions.doArqueo(
           this.analitycs
         );
-        console.log('IDENT: Resultado del arqueo:', responseArqueo);
         let result: any = responseArqueo;
         this.analitycs.result = `Articulos: ${
           result.cantarticles === null ? 0 : result.cantarticles

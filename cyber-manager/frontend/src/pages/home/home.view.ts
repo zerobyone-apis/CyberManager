@@ -18,7 +18,7 @@ export default class HomeView extends vue {
   private charges: string[] = [USER_ADMIN, USER_EMPLOYEE];
 
   private successAccess(user: IUserStore) {
-    console.log('User Identificated -> ', user);
+    //console.log('User Identificated -> ', user);
     this.$store.commit('userInfo', user);
     this.$store.commit('page', 'Identification');
     this.$router.push('/Identification');
@@ -54,7 +54,7 @@ export default class HomeView extends vue {
         userData,
         USER_SIGN_IN_ROUTE
       );
-      console.log('Response singIn -> ', response);
+      //console.log('Response singIn -> ', response);
       let user: IUserStore = {
         id: response.iduser,
         username: response.username,

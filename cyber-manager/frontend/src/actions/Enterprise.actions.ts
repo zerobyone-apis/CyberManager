@@ -32,7 +32,7 @@ export default class EnterpriseActions {
         data,
         `${ENTERPRISE_ROUTE}/${enterprise.id}`
       );
-      console.log('Response Empresa creada -> ', response);
+      //console.log('Response Empresa creada -> ', response);
       return new ResultObject(200, 'success');
     } catch (error) {
       console.error(`Error actualizando la empresa.. -> ${error.message}`);
@@ -47,7 +47,7 @@ export default class EnterpriseActions {
         undefined,
         `${ENTERPRISE_ROUTE}/${userInfo.id}`
       );
-      console.log('Response Empresa encontrada -> ', response);
+      //console.log('Response Empresa encontrada -> ', response);
       return response;
     } catch (error) {
       console.error(
