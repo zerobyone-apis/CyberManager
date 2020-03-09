@@ -28,7 +28,6 @@
     border-width: 2px;
     border-radius: 15px;
     margin-bottom: 20px !important;
-    // background-color: rgba(255, 255, 255, 0.027);
     box-shadow: 0px 2px 2px black;
 
     .mini-toolbar_title {
@@ -286,9 +285,22 @@
       min-height: 40px !important;
     }
     .chip {
+      // height: 20px;
       width: 100%;
       margin: auto;
+      margin-top: 5px;
     }
+  }
+  .table-box {
+    position: relative;
+    top:35px;
+    width: 100% !important;
+    height: 270px !important;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.027);
+    // overflow-y: scroll;
+    padding: 10px;
+    border-radius: 15px;
   }
 
   // STEP 3 ENTERPRISE

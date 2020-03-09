@@ -5,7 +5,7 @@
       :buttons="miniToolbar"
       @buttonClicked="execMiniToolbarAction($event)"
       :disabled="disabledButtons"
-      colorButtons="rgb(29, 211, 29)"
+      colorButtons="green"
     />
 
     <v-stepper v-model="wizard" class="stepper">
@@ -142,13 +142,7 @@
               <div class="table-header">
                 <div class="headers">
                   <v-layout row wrap>
-                    <v-flex
-                      xs2
-                      xl2
-                      sm2
-                      v-for="(header, index) in headerOrder"
-                      :key="index"
-                    >
+                    <v-flex xs2 xl2 sm2 v-for="(header, index) in headerOrder" :key="index">
                       <p class="header_table-text">{{ header.text }}</p>
                     </v-flex>
                   </v-layout>
@@ -157,28 +151,18 @@
 
               <!-- table  -->
               <div class="table-box">
-                <div
-                  v-if="orders.length == 0 && search.value === ''"
-                  class="no-orders"
-                >
+                <div v-if="orders.length == 0 && search.value === ''" class="no-orders">
                   <p>No tiene ordenes creadas</p>
                   <v-icon>search</v-icon>
                 </div>
 
-                <div
-                  class="no-orders"
-                  v-if="filterItems() == 0 && search.value"
-                >
+                <div class="no-orders" v-if="filterItems() == 0 && search.value">
                   <p>No se encontraron coincidencias</p>
                   <v-icon>search</v-icon>
                 </div>
 
                 <!-- TABLE  -->
-                <div
-                  class="order"
-                  v-for="(item, index) in filterItems()"
-                  :key="index"
-                >
+                <div class="order" v-for="(item, index) in filterItems()" :key="index">
                   <div class="left-box">
                     <v-icon
                       class="icon"
@@ -188,25 +172,16 @@
                         interactionsMode.order == 1 &&
                           selectedOrder != orders.indexOf(item)
                       "
-                      >edit</v-icon
-                    >
+                    >edit</v-icon>
                   </div>
 
                   <div class="content-box">
                     <v-layout row wrap>
-                      <v-flex
-                        xs2
-                        xl2
-                        sm2
-                        v-for="(header, index) in headerOrder"
-                        :key="index"
-                      >
+                      <v-flex xs2 xl2 sm2 v-for="(header, index) in headerOrder" :key="index">
                         <p
                           v-if="header.value != 'status'"
                           class="item_table-text"
-                        >
-                          {{ item[header.value] }}
-                        </p>
+                        >{{ item[header.value] }}</p>
                         <v-btn
                           v-if="header.value == 'status'"
                           :color="getColorByStatus(item[header.value])"
@@ -214,8 +189,7 @@
                           small
                           depressed
                           outlined
-                          >{{ item[header.value] }}</v-btn
-                        >
+                        >{{ item[header.value] }}</v-btn>
                       </v-flex>
                     </v-layout>
                   </div>
@@ -229,9 +203,8 @@
                           changeColorToEdit(item) === 'grey'
                       "
                       @click="deleteOrder(item)"
-                      :color="changeColorToEdit(item)"
-                      >delete</v-icon
-                    >
+                      :color="changeColorToEdit(item) == 'green' ? 'red lighten-2' : 'grey'"
+                    >delete</v-icon>
                   </div>
                 </div>
                 <!-- /TABLE -->
@@ -270,11 +243,7 @@
                   class="select-status"
                   :items="status"
                   item-value="text"
-                  chips
-                  flat
                   dark
-                  outlined
-                  attach
                   label="Status"
                 >
                   <template v-slot:selection="{ item }">
@@ -336,24 +305,20 @@
             </div>
             <div class="right_content-box">
               <p class="cyber_manager-title">Reparacion y Garantia</p>
-              <div class="content-box">
-                <div class="diagnosis-box">
-                  <v-textarea
-                    dark
-                    v-model="repair.reparation"
-                    outlined
-                    dense
-                    name="input-7-1"
-                    label="Reparacion"
-                    value
-                  ></v-textarea>
-                  <v-text-field
-                    v-model="repair.warranty"
-                    outlined
-                    dense
-                    dark
-                    label="Garantia"
-                  ></v-text-field>
+              <div class="table-box">
+                <div class="content-box">
+                  <div class="diagnosis-box">
+                    <v-textarea
+                      dark
+                      v-model="repair.reparation"
+                      outlined
+                      dense
+                      name="input-7-1"
+                      label="Reparacion"
+                      value
+                    ></v-textarea>
+                    <v-text-field v-model="repair.warranty" outlined dense dark label="Garantia"></v-text-field>
+                  </div>
                 </div>
               </div>
             </div>
@@ -363,9 +328,7 @@
         <v-stepper-content step="4">
           <div class="step-content">
             <div class="left_content-box">
-              <p class="cyber_manager-title pl-2">
-                Datos generales de la empresa
-              </p>
+              <p class="cyber_manager-title pl-2">Datos generales de la empresa</p>
               <div class="fields">
                 <v-text-field
                   dark
@@ -408,12 +371,7 @@
                     :src="enterprise.urllogo"
                     alt
                   />
-                  <v-btn
-                    disabled
-                    depressed
-                    v-if="!enterprise.urllogo"
-                    class="btn-camera"
-                  >
+                  <v-btn disabled depressed v-if="!enterprise.urllogo" class="btn-camera">
                     <v-icon>camera_enhance</v-icon>
                     <!-- <span class="text-btn">Pulse AQUI para buscar</span> -->
                   </v-btn>
@@ -501,21 +459,11 @@
             <div class="right_content-box">
               <div class="content-analytics">
                 <div class="result-box">
-                  <p class="result-text">
-                    {{ analitycs.result.split(',')[0] }}
-                  </p>
-                  <p class="result-text">
-                    {{ analitycs.result.split(',')[1] }}
-                  </p>
-                  <p class="result-text">
-                    {{ analitycs.result.split(',')[2] }}
-                  </p>
-                  <p class="result-text">
-                    {{ analitycs.result.split(',')[3] }}
-                  </p>
-                  <p class="result">
-                    {{ !analitycs.result ? 'Resultado' : '' }}
-                  </p>
+                  <p class="result-text">{{ analitycs.result.split(',')[0] }}</p>
+                  <p class="result-text">{{ analitycs.result.split(',')[1] }}</p>
+                  <p class="result-text">{{ analitycs.result.split(',')[2] }}</p>
+                  <p class="result-text">{{ analitycs.result.split(',')[3] }}</p>
+                  <p class="result">{{ !analitycs.result ? 'Resultado' : '' }}</p>
                   <v-icon class="icon">trending_up</v-icon>
                 </div>
               </div>
@@ -533,21 +481,23 @@
       ></v-progress-linear>
     </v-stepper>
 
-    <v-snackbar v-model="notification.visible" :color="notification.color">{{
+    <v-snackbar v-model="notification.visible" :color="notification.color">
+      {{
       notification.message
-    }}</v-snackbar>
+      }}
+    </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-import IdentificationView from './identification.view';
-import './identification.scss';
-import '../../styles/CyberManager.scss';
-import { Component } from 'vue-property-decorator';
-import TimeField from '../../components/TimeField/TimeField.vue';
-import Footer from '../../components/Footer/Footer.vue';
-import MiniToolbar from '../../components/MiniToolbar/MiniToolbar.vue';
-import Toolbar from '../../components/toolbar/toolbar.vue';
+import IdentificationView from "./identification.view";
+import "./identification.scss";
+import "../../styles/CyberManager.scss";
+import { Component } from "vue-property-decorator";
+import TimeField from "../../components/TimeField/TimeField.vue";
+import Footer from "../../components/Footer/Footer.vue";
+import MiniToolbar from "../../components/MiniToolbar/MiniToolbar.vue";
+import Toolbar from "../../components/toolbar/toolbar.vue";
 
 @Component({
   components: {
