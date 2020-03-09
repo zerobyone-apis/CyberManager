@@ -121,6 +121,6 @@ export default class InputPdf extends Styles {
       this.drawLine(0.1, doc);
       this.writeText('', 5, 'left', doc);
     }
-    doc.save(order.admissionDate + '-' + order.id + '.pdf');
+    doc.save(order.admissiondate + '-' + order.id + '.pdf');
   }
 }

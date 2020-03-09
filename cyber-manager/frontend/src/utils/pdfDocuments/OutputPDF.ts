@@ -129,6 +129,6 @@ export default class OutputPdf extends Styles {
       this.drawLine(0.1, doc);
       this.writeText('', 5, 'center', doc); // space
     }
-    doc.save(order.deliveryDate + '-' + order.id + '.pdf');
+    doc.save(order.deliverydate + '-' + order.id + '.pdf');
   }
 }
