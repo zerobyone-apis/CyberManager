@@ -1,5 +1,6 @@
 .mini-toolbar {
-  height: 40px;
+  height: max-content !important;
+  display: flex;
 
   .toolbar-items {
     padding: 5px;
