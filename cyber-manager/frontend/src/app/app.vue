@@ -11,15 +11,11 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Toolbar from "@/components/toolbar/toolbar.vue";
 import AppCode from "./appCode";
 import "./appStyle.scss";
 
-
 @Component({
-  components: {
-    Toolbar,
-  }
+  components: {}
 })
 export default class App extends AppCode {
   created() {
