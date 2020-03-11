@@ -121,19 +121,17 @@ export default class OrderActions {
   }
 
   public async delete(pedido: IOrder) {
-    if (confirm('Seguro que desea eliminar la orden seleccionada?')) {
-      try {
-        const response: any = await this.backend.send(
-          DELETE_ENDPOIT,
-          undefined,
-          `${ORDER_ROUTE}/${pedido.id}`
-        );
-      } catch (error) {
-        console.error('Error borrando pedidio => ', error);
-      }
+    try {
+      const response: any = await this.backend.send(
+        DELETE_ENDPOIT,
+        undefined,
+        `${ORDER_ROUTE}/${pedido.id}`
+      );
       return true;
+    } catch (error) {
+      console.error('Error borrando pedidio => ', error);
+      return null
     }
-    return false;
   }
 
   getMaxIdOfOrders(orders: IOrder[]) {
