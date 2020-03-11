@@ -498,8 +498,8 @@ export default class IndentificationView extends vue {
   }
 
   private resetAnalitycs() {
-    this.analitycs.startDate = this.newOrder.admissiondate || '';
-    this.analitycs.endDate = this.newOrder.admissiondate || '';
+    this.analitycs.startDate = '';
+    this.analitycs.endDate = '';
     this.analitycs.result = '';
   }
 

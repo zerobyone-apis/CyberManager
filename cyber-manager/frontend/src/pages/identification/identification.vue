@@ -195,7 +195,6 @@
                       "
                       small
                       fab
-                      outlined
                       text
                     >
                       <v-icon>edit</v-icon>
@@ -209,14 +208,12 @@
                           v-if="header.value != 'status'"
                           class="item_table-text"
                         >{{ item[header.value] }}</p>
-                        <v-btn
+
+                        <v-chip
                           v-if="header.value == 'status'"
                           :color="getColorByStatus(item[header.value])"
-                          class="item_table-text"
-                          small
-                          depressed
                           outlined
-                        >{{ item[header.value] }}</v-btn>
+                        >{{ item[header.value] }}</v-chip>
                       </v-flex>
                     </v-layout>
                   </div>
@@ -239,7 +236,6 @@
                           :color="changeColorToEdit(item) == 'green' ? 'red lighten-2' : 'grey'"
                           small
                           fab
-                          outlined
                           text
                         >
                           <v-icon>delete</v-icon>
