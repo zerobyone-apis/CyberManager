@@ -102,13 +102,34 @@
                   class="cyber_manager-text_field"
                 ></v-text-field>
               </div>
+
               <Footer
                 @save="saveOrder()"
                 @cancel="cancelSaveOrder()"
                 @add="addOrder()"
                 :save-mode="interactionsMode.order == 1"
                 :disabled="disabledButtons"
-              />
+              >
+                <template v-slot:cancelButton="{ saveMode, disabled }">
+                  <confirm-dialog
+                    dark
+                    v-if="saveMode"
+                    v-model="showDialogCancelOrder"
+                    @onSelectAction="(action)=>{ action ? cancelSaveOrder() : false }"
+                    :info-values="confirmDialogCancelOrder"
+                  >
+                    <template v-slot:button="{ on }">
+                      <v-btn
+                        :disabled="disabled"
+                        class="button-footer"
+                        small
+                        depressed
+                        v-on="on"
+                      >Cancelar</v-btn>
+                    </template>
+                  </confirm-dialog>
+                </template>
+              </Footer>
             </div>
 
             <!-- TABLE OF orders -->
@@ -164,7 +185,7 @@
                 <!-- TABLE  -->
                 <div class="order" v-for="(item, index) in filterItems()" :key="index">
                   <div class="left-box">
-                    <v-icon
+                    <v-btn
                       class="icon"
                       @click="showSelectedOrder(item)"
                       :color="changeColorToEdit(item)"
@@ -172,7 +193,13 @@
                         interactionsMode.order == 1 &&
                           selectedOrder != orders.indexOf(item)
                       "
-                    >edit</v-icon>
+                      small
+                      fab
+                      outlined
+                      text
+                    >
+                      <v-icon>edit</v-icon>
+                    </v-btn>
                   </div>
 
                   <div class="content-box">
@@ -195,16 +222,30 @@
                   </div>
 
                   <div class="right-box">
-                    <v-icon
-                      class="icon"
-                      :disabled="
+                    <confirm-dialog
+                      dark
+                      v-model="showDialogDelete"
+                      @onSelectAction="(action)=>{deleteOrder(item, action)}"
+                      :info-values="confirmDialogDelete"
+                    >
+                      <template v-slot:button="{ on }">
+                        <v-btn
+                          class="icon"
+                          v-on="on"
+                          :disabled="
                         (interactionsMode.order == 1 &&
                           selectedOrder != orders.indexOf(item)) ||
-                          changeColorToEdit(item) === 'grey'
-                      "
-                      @click="deleteOrder(item)"
-                      :color="changeColorToEdit(item) == 'green' ? 'red lighten-2' : 'grey'"
-                    >delete</v-icon>
+                          changeColorToEdit(item) === 'grey'"
+                          :color="changeColorToEdit(item) == 'green' ? 'red lighten-2' : 'grey'"
+                          small
+                          fab
+                          outlined
+                          text
+                        >
+                          <v-icon>delete</v-icon>
+                        </v-btn>
+                      </template>
+                    </confirm-dialog>
                   </div>
                 </div>
                 <!-- /TABLE -->
@@ -497,14 +538,14 @@ import { Component } from "vue-property-decorator";
 import TimeField from "../../components/TimeField/TimeField.vue";
 import Footer from "../../components/Footer/Footer.vue";
 import MiniToolbar from "../../components/MiniToolbar/MiniToolbar.vue";
-import Toolbar from "../../components/toolbar/toolbar.vue";
+import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog.vue";
 
 @Component({
   components: {
     TimeField,
     Footer,
     MiniToolbar,
-    Toolbar
+    ConfirmDialog
   }
 })
 export default class Identification extends IdentificationView {
