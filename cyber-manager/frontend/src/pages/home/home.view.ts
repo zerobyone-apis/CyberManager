@@ -14,6 +14,8 @@ export default class HomeView extends vue {
     super();
   }
 
+  private disabledButtons: boolean = false;
+
   private backend: IntegrationBackend = new IntegrationBackend();
   private charges: string[] = [USER_ADMIN, USER_EMPLOYEE];
 
@@ -44,6 +46,7 @@ export default class HomeView extends vue {
 
   //Login
   async signIn(signInUser: any) {
+    this.disabledButtons = true;
     let userData = {
       username: signInUser.username,
       passwd: signInUser.password
@@ -66,10 +69,12 @@ export default class HomeView extends vue {
       console.error(error);
       this.showNotificationFail('El usuario o la contraseña no son correctas');
     }
+    this.disabledButtons = false;
   }
 
   //Create User
   async signUp(signUpUser: IUserSignUp) {
+    this.disabledButtons = true;
     let userData = {
       username: signUpUser.username,
       passwd: signUpUser.password,
@@ -94,5 +99,6 @@ export default class HomeView extends vue {
       this.showNotificationFail('Ocurrio un error inesperado!');
       console.error(error);
     }
+    this.disabledButtons = false;
   }
 }

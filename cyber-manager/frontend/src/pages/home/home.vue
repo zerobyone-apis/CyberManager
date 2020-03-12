@@ -10,6 +10,15 @@
       :charges="charges"
     />
 
+    <v-progress-linear
+      class="progress-linear"
+      v-if="disabledButtons"
+      height="15"
+      :active="disabledButtons"
+      :indeterminate="disabledButtons"
+      color="green"
+    ></v-progress-linear>
+
     <v-snackbar
       v-model="notification.visible"
       :color="notification.color"
