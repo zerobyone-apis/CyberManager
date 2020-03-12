@@ -139,13 +139,14 @@
               <div class="search-box" v-if="orders.length">
                 <div class="select">
                   <v-select
+                    class="select-list"
                     dark
                     v-model="search.filter"
                     label="Buscar por"
                     :items="Object.keys(searchFilters)"
                     item-value="text"
-                    defa
-                  ></v-select>
+                  >
+                  </v-select>
                 </div>
                 <div class="field">
                   <v-text-field
@@ -208,7 +209,6 @@
                           v-if="header.value != 'status'"
                           class="item_table-text"
                         >{{ item[header.value] }}</p>
-
                         <v-chip
                           v-if="header.value == 'status'"
                           :color="getColorByStatus(item[header.value])"
@@ -508,6 +508,7 @@
           </div>
         </v-stepper-content>
       </v-stepper-items>
+
       <v-progress-linear
         class="progress-linear"
         v-if="disabledButtons"
@@ -516,6 +517,7 @@
         :indeterminate="disabledButtons"
         color="green"
       ></v-progress-linear>
+    
     </v-stepper>
 
     <v-snackbar v-model="notification.visible" :color="notification.color">
