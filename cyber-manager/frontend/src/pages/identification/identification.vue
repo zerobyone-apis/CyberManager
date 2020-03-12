@@ -145,8 +145,7 @@
                     label="Buscar por"
                     :items="Object.keys(searchFilters)"
                     item-value="text"
-                  >
-                  </v-select>
+                  ></v-select>
                 </div>
                 <div class="field">
                   <v-text-field
@@ -494,14 +493,16 @@
             </div>
 
             <div class="right_content-box">
-              <div class="content-analytics">
-                <div class="result-box">
-                  <p class="result-text">{{ analitycs.result.split(',')[0] }}</p>
-                  <p class="result-text">{{ analitycs.result.split(',')[1] }}</p>
-                  <p class="result-text">{{ analitycs.result.split(',')[2] }}</p>
-                  <p class="result-text">{{ analitycs.result.split(',')[3] }}</p>
-                  <p class="result">{{ !analitycs.result ? 'Resultado' : '' }}</p>
-                  <v-icon class="icon">trending_up</v-icon>
+              <div class="box-analytics">
+                <div class="content-analytics">
+                  <div class="result-box">
+                    <p class="result-text">{{ analitycs.result.split(',')[0] }}</p>
+                    <p class="result-text">{{ analitycs.result.split(',')[1] }}</p>
+                    <p class="result-text">{{ analitycs.result.split(',')[2] }}</p>
+                    <p class="result-text">{{ analitycs.result.split(',')[3] }}</p>
+                    <p class="result">{{ !analitycs.result ? 'Resultado' : '' }}</p>
+                    <v-icon class="icon">trending_up</v-icon>
+                  </div>
                 </div>
               </div>
             </div>
@@ -517,7 +518,6 @@
         :indeterminate="disabledButtons"
         color="green"
       ></v-progress-linear>
-    
     </v-stepper>
 
     <v-snackbar v-model="notification.visible" :color="notification.color">

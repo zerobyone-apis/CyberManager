@@ -10,7 +10,6 @@
   margin-left: 20%;
 }
 
-
 #identification-page {
   position: absolute;
   height: 100%;
@@ -67,6 +66,7 @@
   .step-content {
     display: flex;
     height: 100%;
+    min-height: 600px;
 
     .left_content-box {
       position: relative;
@@ -320,7 +320,6 @@
     height: 270px !important;
     text-align: center;
     background-color: rgba(255, 255, 255, 0.027);
-    // overflow-y: scroll;
     padding: 10px;
     border-radius: 15px;
   }
@@ -373,23 +372,34 @@
   }
 
   // STEP 5 ANALYTICS
-  .content-analytics {
-    margin: auto;
-    width: max-content;
+  .box-analytics {
     position: relative;
-    margin-top: -58px;
+    top: 64px;
+    width: 100% !important;
+    height: 100% !important;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.027);
+    padding: 10px;
+    border-radius: 15px;
 
-    .result-box {
-      font-size: 20px;
-      color: grey;
-      opacity: 0.8;
-      margin-top: 100px;
-      .v-icon {
+    .content-analytics {
+      margin: auto;
+      width: max-content;
+      position: relative;
+      margin-top: -58px;
+
+      .result-box {
+        font-size: 20px;
         color: grey;
-        font-size: 80px;
-      }
-      .result-text {
-        color: white;
+        opacity: 0.8;
+        margin-top: 100px;
+        .v-icon {
+          color: grey;
+          font-size: 80px;
+        }
+        .result-text {
+          color: white;
+        }
       }
     }
   }
