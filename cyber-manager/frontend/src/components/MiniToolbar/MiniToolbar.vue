@@ -19,7 +19,7 @@
     <div class="right-box">
       <v-icon v-if="false" @click="changeVisualMode()">{{ visualModes[currentMode] }}</v-icon>
 
-      <v-menu offset-y>
+      <v-menu offset-y dark>
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" class="user-btn" small color="rgb(29, 211, 29)" text>
             <v-icon>people</v-icon>
@@ -27,9 +27,18 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item @click="closeSesion()">
-            <v-list-item-title>Cerrar sesion</v-list-item-title>
-          </v-list-item>
+          <confirm-dialog
+            dark
+            v-model="showDialogExit"
+            @onSelectAction="(action)=>{ action ? closeSesion() : false }"
+            :info-values="confirmDialogExit"
+          >
+            <template v-slot:button="{ on }">
+              <v-list-item v-on="on">
+                <v-list-item-title>Cerrar sesion</v-list-item-title>
+              </v-list-item>
+            </template>
+          </confirm-dialog>
         </v-list>
       </v-menu>
     </div>
@@ -46,6 +55,7 @@ import "./MiniToolbar.scss";
 import { Component, Prop } from "vue-property-decorator";
 import MiniToolbarView from "./MiniToolbar.view";
 import "../../styles/CyberManager.scss";
+import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog.vue";
 
 interface IButton {
   text: "default-text";
@@ -54,7 +64,11 @@ interface IButton {
   disabled: false;
 }
 
-@Component({})
+@Component({
+  components: {
+    ConfirmDialog
+  }
+})
 export default class MiniToolbar extends MiniToolbarView {
   @Prop({ default: [] }) buttons!: IButton[];
   @Prop({ default: false }) disabled!: boolean;
