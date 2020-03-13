@@ -1,7 +1,7 @@
 export interface IOrder {
   id?: number;
   admissiondate?: string;
-  admissiondateFront?: string; // dd/mm/yyyy HH:MM:SS
+  admissionDateFront?: string; // dd/mm/yyyy HH:MM:SS
   clientname: string;
   clientphone: string;
   article: string;

@@ -30,7 +30,7 @@ export default class OrderActions {
         ORDER_ROUTE
       );
       responseOrders.forEach((order: IOrder) => {
-        order.admissiondateFront = moment(order.admissiondate).format(
+        order.admissionDateFront = moment(order.admissiondate).format(
           'DD/MM/YYYY hh:mm:ss'
         );
         orders.unshift(order);
@@ -45,7 +45,7 @@ export default class OrderActions {
   public async add(order: IOrder) {
     try {
       let data: IOrder = {
-        admissiondate: moment(order.admissiondateFront).format(
+        admissiondate: moment(order.admissionDateFront).format(
           'YYYY-MM-DD hh:mm:ss'
         ),
         clientname: order.clientname,
@@ -130,7 +130,7 @@ export default class OrderActions {
       return true;
     } catch (error) {
       console.error('Error borrando pedidio => ', error);
-      return null
+      return null;
     }
   }
 
