@@ -18,10 +18,10 @@
               <div class="identify">
                 <div class="service-number">
                   <v-text-field
-                    dark
-                    class="cyber_manager-text_field"
-                    readonly
                     v-model="newOrder.id"
+                    class="cyber_manager-text_field"
+                    dark
+                    readonly
                     label="Orden nº"
                   ></v-text-field>
                 </div>
@@ -133,117 +133,119 @@
             </div>
 
             <!-- TABLE OF orders -->
-            <div class="orders-box">
-              <p class="cyber_manager-title">Lista de Ordenes</p>
+            <div class="right_content-box">
+              <div class="orders-box">
+                <p class="cyber_manager-title">Lista de Ordenes</p>
 
-              <div class="search-box" v-if="orders.length">
-                <div class="select">
-                  <v-select
-                    class="select-list"
-                    dark
-                    v-model="search.filter"
-                    label="Buscar por"
-                    :items="Object.keys(searchFilters)"
-                    item-value="text"
-                  ></v-select>
-                </div>
-                <div class="field">
-                  <v-text-field
-                    dark
-                    v-model="search.value"
-                    append-icon="search"
-                    label="Buscar"
-                    single-line
-                    hide-details
-                  ></v-text-field>
-                </div>
-              </div>
-
-              <!-- custom header of table -->
-              <div class="table-header">
-                <div class="headers">
-                  <v-layout row wrap>
-                    <v-flex xs2 xl2 sm2 v-for="(header, index) in headerOrder" :key="index">
-                      <p class="header_table-text">{{ header.text }}</p>
-                    </v-flex>
-                  </v-layout>
-                </div>
-              </div>
-
-              <!-- table  -->
-              <div class="table-box">
-                <div v-if="orders.length == 0 && search.value === ''" class="no-orders">
-                  <p>No tiene ordenes creadas</p>
-                  <v-icon>search</v-icon>
-                </div>
-
-                <div class="no-orders" v-if="filterItems() == 0 && search.value">
-                  <p>No se encontraron coincidencias</p>
-                  <v-icon>search</v-icon>
-                </div>
-
-                <!-- TABLE  -->
-                <div class="order" v-for="(item, index) in filterItems()" :key="index">
-                  <div class="left-box">
-                    <v-btn
-                      class="icon"
-                      @click="showSelectedOrder(item)"
-                      :color="changeColorToEdit(item)"
-                      :disabled="
-                        interactionsMode.order == 1 &&
-                          selectedOrder != orders.indexOf(item)
-                      "
-                      small
-                      fab
-                      text
-                    >
-                      <v-icon>edit</v-icon>
-                    </v-btn>
+                <div class="search-box" v-if="orders.length">
+                  <div class="select">
+                    <v-select
+                      class="select-list"
+                      dark
+                      v-model="search.filter"
+                      label="Buscar por"
+                      :items="Object.keys(searchFilters)"
+                      item-value="text"
+                    ></v-select>
                   </div>
+                  <div class="field">
+                    <v-text-field
+                      dark
+                      v-model="search.value"
+                      append-icon="search"
+                      label="Buscar"
+                      single-line
+                      hide-details
+                    ></v-text-field>
+                  </div>
+                </div>
 
-                  <div class="content-box">
+                <!-- custom header of table -->
+                <div class="table-header">
+                  <div class="headers">
                     <v-layout row wrap>
                       <v-flex xs2 xl2 sm2 v-for="(header, index) in headerOrder" :key="index">
-                        <p
-                          v-if="header.value != 'status'"
-                          class="item_table-text"
-                        >{{ item[header.value] }}</p>
-                        <v-chip
-                          v-if="header.value == 'status'"
-                          :color="getColorByStatus(item[header.value])"
-                          outlined
-                        >{{ item[header.value] }}</v-chip>
+                        <p class="header_table-text">{{ header.text }}</p>
                       </v-flex>
                     </v-layout>
                   </div>
+                </div>
 
-                  <div class="right-box">
-                    <confirm-dialog
-                      dark
-                      v-model="showDialogDelete"
-                      @onSelectAction="(action)=>{deleteOrder(item, action)}"
-                      :info-values="confirmDialogDelete"
-                    >
-                      <template v-slot:button="{ on }">
-                        <v-btn
-                          class="icon"
-                          v-on="on"
-                          :disabled="
+                <!-- table  -->
+                <div class="table-box">
+                  <div v-if="orders.length == 0 && search.value === ''" class="no-orders">
+                    <p>No tiene ordenes creadas</p>
+                    <v-icon>search</v-icon>
+                  </div>
+
+                  <div class="no-orders" v-if="filterItems() == 0 && search.value">
+                    <p>No se encontraron coincidencias</p>
+                    <v-icon>search</v-icon>
+                  </div>
+
+                  <!-- TABLE  -->
+                  <div class="order" v-for="(item, index) in filterItems()" :key="index">
+                    <div class="left-box">
+                      <v-btn
+                        class="icon"
+                        @click="showSelectedOrder(item)"
+                        :color="changeColorToEdit(item)"
+                        :disabled="
+                        interactionsMode.order == 1 &&
+                          selectedOrder != orders.indexOf(item)
+                      "
+                        small
+                        fab
+                        text
+                      >
+                        <v-icon>edit</v-icon>
+                      </v-btn>
+                    </div>
+
+                    <div class="content-box">
+                      <v-layout row wrap>
+                        <v-flex xs2 xl2 sm2 v-for="(header, index) in headerOrder" :key="index">
+                          <p
+                            v-if="header.value != 'status'"
+                            class="item_table-text"
+                          >{{ item[header.value] }}</p>
+                          <v-chip
+                            v-if="header.value == 'status'"
+                            :color="getColorByStatus(item[header.value])"
+                            outlined
+                          >{{ item[header.value] }}</v-chip>
+                        </v-flex>
+                      </v-layout>
+                    </div>
+
+                    <div class="right-box">
+                      <confirm-dialog
+                        dark
+                        v-model="showDialogDelete"
+                        @onSelectAction="(action)=>{deleteOrder(item, action)}"
+                        :info-values="confirmDialogDelete"
+                      >
+                        <template v-slot:button="{ on }">
+                          <v-btn
+                            class="icon"
+                            v-on="on"
+                            :disabled="
                         (interactionsMode.order == 1 &&
                           selectedOrder != orders.indexOf(item)) ||
                           changeColorToEdit(item) === 'grey'"
-                          :color="changeColorToEdit(item) == 'green' ? 'red lighten-2' : 'grey'"
-                          small
-                          fab
-                          text
-                        >
-                          <v-icon>delete</v-icon>
-                        </v-btn>
-                      </template>
-                    </confirm-dialog>
+                            :color="changeColorToEdit(item) == 'green' ? 'red lighten-2' : 'grey'"
+                            small
+                            fab
+                            text
+                          >
+                            <v-icon>delete</v-icon>
+                          </v-btn>
+                        </template>
+                      </confirm-dialog>
+                    </div>
                   </div>
+                  <!-- /TABLE -->
                 </div>
-                <!-- /TABLE -->
               </div>
             </div>
           </div>
@@ -341,7 +343,7 @@
             </div>
             <div class="right_content-box">
               <p class="cyber_manager-title">Reparacion y Garantia</p>
-              <div class="table-box">
+              <div class="repair-box">
                 <div class="content-box">
                   <div class="diagnosis-box">
                     <v-textarea
@@ -429,26 +431,28 @@
               />
             </div>
             <div class="right_content-box">
-              <div class="content">
-                <div class="pdf-fields">
-                  <v-text-field
-                    dark
-                    v-model="enterprise.enterpriserules"
-                    label="Reglas de la empresa"
-                    class="cyber_manager-text_field"
-                  ></v-text-field>
-                  <v-text-field
-                    dark
-                    v-model="enterprise.firstmessage"
-                    label="Anotacion en el pie del reporte de entrada"
-                    class="cyber_manager-text_field"
-                  ></v-text-field>
-                  <v-text-field
-                    dark
-                    v-model="enterprise.secondmessage"
-                    label="Anotacion en el pie del reporte de salida"
-                    class="cyber_manager-text_field"
-                  ></v-text-field>
+              <div class="enterprise-box">
+                <div class="content">
+                  <div class="pdf-fields">
+                    <v-text-field
+                      dark
+                      v-model="enterprise.enterpriserules"
+                      label="Reglas de la empresa"
+                      class="cyber_manager-text_field"
+                    ></v-text-field>
+                    <v-text-field
+                      dark
+                      v-model="enterprise.firstmessage"
+                      label="Anotacion en el pie del reporte de entrada"
+                      class="cyber_manager-text_field"
+                    ></v-text-field>
+                    <v-text-field
+                      dark
+                      v-model="enterprise.secondmessage"
+                      label="Anotacion en el pie del reporte de salida"
+                      class="cyber_manager-text_field"
+                    ></v-text-field>
+                  </div>
                 </div>
               </div>
             </div>
