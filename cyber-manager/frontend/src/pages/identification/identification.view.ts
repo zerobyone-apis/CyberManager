@@ -15,10 +15,10 @@ import { IEnterprise } from '../../types/Enterprise.type';
 import { IRepair } from '../../types/Repair.type';
 import { IOrder } from '../../types/Order.type';
 import { USER_ADMIN } from '../../types/UsersSystem.type';
-
 import { Watch } from 'vue-property-decorator';
+import { IConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog.view';
 
-import { 
+import {
   ORDER_CONFIRM,
   ORDER_DELIVERED,
   ORDER_RECIVED,
@@ -32,6 +32,23 @@ export default class IndentificationView extends vue {
   private userInfo: IUserStore = this.$store.getters.userInfo;
   private theme: string = this.$store.getters.theme;
 
+  private showDialogDelete: boolean = false;
+  private confirmDialogDelete: IConfirmDialog = {
+    title: 'Eliminar orden',
+    info: 'Desea borrar la orden seleccionada?',
+    buttonActivator: '',
+    agreeText: 'Eliminar',
+    disagreeText: 'Cancelar'
+  };
+  private showDialogCancelOrder: boolean = false;
+  private confirmDialogCancelOrder: IConfirmDialog = {
+    title: 'Cancelar cambios',
+    info: 'Desea cancelar los cambios de la orden seleccionada?',
+    buttonActivator: 'cancelar',
+    agreeText: 'Cancelar Cambios',
+    disagreeText: 'Volver'
+  };
+
   private enterpriseActions: EnterpriseAction = new EnterpriseAction();
   public orderActions: OrderAction = new OrderAction();
   public repairActions: RepairAction = new RepairAction();
@@ -39,45 +56,45 @@ export default class IndentificationView extends vue {
 
   public newOrder: IOrder = {
     id: 0,
-    admissionDate: '',
+    admissiondate: '',
     admissionDateFront: moment().format('L h:mm:ss'),
-    clientName: '',
-    clientPhone: '',
+    clientname: '',
+    clientphone: '',
     article: '',
     model: '',
     brand: '',
-    reportedFailure: '',
+    reportedfailure: '',
     observations: '',
-    isCanceled: false,
-    deliverDate: '',
+    iscanceled: false,
+    deliverydate: '',
     status: ''
   };
   private repair: IRepair = {
     id: -1,
-    clientName: '',
+    clientname: '',
     article: '',
     warranty: '',
     technical: '',
-    deliverDate: '',
-    repairDate: '',
+    deliverydate: '',
+    repairdate: '',
     reparation: '',
     price: 0,
-    replacementPrice: 0,
+    replacementprice: 0,
     status: ''
   };
   private enterprise: IEnterprise = {
     id: -1,
-    createdDate: '',
-    enterpriseName: '',
+    createddate: '',
+    enterprisename: '',
     email: '',
     phone: 0,
     cellphone: 0,
     location: '',
-    enterpriseRules: '',
-    firstMessage: '',
-    secondMessage: '',
-    urlLogo: '',
-    lastUpdate: '',
+    enterpriserules: '',
+    firstmessage: '',
+    secondmessage: '',
+    urllogo: '',
+    lastupdate: '',
     username: ''
   };
   private analitycs: IAnalitycs = {
@@ -97,8 +114,8 @@ export default class IndentificationView extends vue {
   private clientFields: Record<string, any> = {
     objectName: 'newOrder',
     fields: [
-      ['clientName', 'string'],
-      ['clientPhone', 'number']
+      ['clientname', 'string'],
+      ['clientphone', 'number']
     ]
   };
   private articleFields: Record<string, any> = {
@@ -130,10 +147,10 @@ export default class IndentificationView extends vue {
 
   private headerOrder = [
     { text: 'Nro', value: 'id' },
-    { text: 'Cliente', value: 'clientName' },
+    { text: 'Cliente', value: 'clientname' },
     { text: 'Ingreso', value: 'admissionDateFront' },
     { text: 'Articulo', value: 'article' },
-    { text: 'Status', value: 'status' },
+    { text: 'Status', value: 'status' }
   ];
 
   private status = [
@@ -163,12 +180,12 @@ export default class IndentificationView extends vue {
   }
 
   private searchFilters: any = {
-    nombre: 'clientName',
-    articulo: 'article',
-    status: 'status'
+    Nombre: 'clientname',
+    Articulo: 'article',
+    Status: 'status'
   };
   private search: any = {
-    filter: 'nombre',
+    filter: 'Nombre',
     value: ''
   };
 
@@ -193,13 +210,13 @@ export default class IndentificationView extends vue {
       text: 'Empresa',
       icon: 'home',
       disabled: false,
-      visible: (this.$store.getters.getCharge === USER_ADMIN)
+      visible: this.$store.getters.getCharge === USER_ADMIN
     },
     {
       text: 'Arqueo',
       icon: 'trending_up',
       disabled: false,
-      visible: (this.$store.getters.getCharge === USER_ADMIN)
+      visible: this.$store.getters.getCharge === USER_ADMIN
     }
   ];
 
@@ -212,7 +229,11 @@ export default class IndentificationView extends vue {
         );
         break;
       case 3:
-        new OutputPdf().generateDoc(this.enterprise, this.orders[this.selectedOrder], this.repair)
+        new OutputPdf().generateDoc(
+          this.enterprise,
+          this.orders[this.selectedOrder],
+          this.repair
+        );
         break;
       default:
         this.wizard = index;
@@ -303,9 +324,8 @@ export default class IndentificationView extends vue {
         let pSelected: IOrder = this.orders[this.selectedOrder];
 
         Object.assign(pSelected, responseSaveOrder);
-        console.log(this.orders[this.selectedOrder]);
         this.orders[this.selectedOrder] = pSelected;
-        console.log(this.orders[this.selectedOrder]);
+        //console.log(this.orders[this.selectedOrder]);
 
         Object.assign(this.newOrder, this.cleanFields);
         this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
@@ -369,16 +389,20 @@ export default class IndentificationView extends vue {
     }
   }
 
-  async deleteOrder(selectedOrder: IOrder) {
-    this.disabledButtons = true;
-    let responseDelete: boolean = await this.orderActions.delete(selectedOrder);
-    if (responseDelete) {
-      this.orders.splice(this.selectedOrder, 1);
-      Object.assign(this.newOrder, this.cleanFields);
-      this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
-      this.interactionsMode.order = 0;
-      this.selectedOrder = -1;
-      this.showNotificationSuccess('Orden eliminada exitosamente!');
+  async deleteOrder(selectedOrder: IOrder, action: boolean) {
+    if (action) {
+      this.disabledButtons = true;
+      let responseDelete: boolean | null = await this.orderActions.delete(
+        selectedOrder
+      );
+      if (responseDelete) {
+        this.orders.splice(this.selectedOrder, 1);
+        Object.assign(this.newOrder, this.cleanFields);
+        this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
+        this.interactionsMode.order = 0;
+        this.selectedOrder = -1;
+        this.showNotificationSuccess('Orden eliminada exitosamente!');
+      }
     }
     this.disabledButtons = false;
   }
@@ -388,17 +412,17 @@ export default class IndentificationView extends vue {
     Object.assign(this.newOrder, this.cleanFields);
     Object.assign(this.newOrder, {
       id: order.id,
-      admissionDate: order.admissionDate,
+      admissionDate: order.admissiondate,
       admissionDateFront: order.admissionDateFront,
-      deliverDate: order.deliverDate,
-      clientName: order.clientName,
-      clientPhone: order.clientPhone,
+      deliveryDate: order.deliverydate,
+      clientname: order.clientname,
+      clientphone: order.clientphone,
       article: order.article,
       model: order.model,
       brand: order.brand,
-      reportedFailure: order.reportedFailure,
+      reportedfailure: order.reportedfailure,
       observations: order.observations,
-      isCanceled: order.isCanceled,
+      iscanceled: order.iscanceled,
       status: order.status
     });
     this.loadRepair(order);
@@ -409,30 +433,28 @@ export default class IndentificationView extends vue {
   loadRepair(order: IOrder) {
     this.repair = {
       id: order.id || -1,
-      repairDate: order.repairDate || '',
-      deliverDate: order.deliverDate || '',
-      clientName: this.newOrder.clientName,
+      repairdate: order.repairdate || '',
+      deliverydate: order.deliverydate || '',
+      clientname: this.newOrder.clientname,
       article: this.newOrder.article,
       reparation: order.reparation || '',
       warranty: order.warranty,
       technical: this.userInfo.username,
       status: this.newOrder.status || ORDER_RECIVED.text,
       price: order.price || 0,
-      replacementPrice: order.replacementPrice || 0
+      replacementprice: order.replacementprice || 0
     };
   }
 
   private cancelSaveOrder() {
-    if (confirm('Seguro que desea descartar los cambios?')) {
-      let updatedOrder: IOrder = this.orders[this.selectedOrder];
-      updatedOrder.status = this.newOrder.status;
-      this.orders[this.selectedOrder] = updatedOrder;
-      Object.assign(this.newOrder, this.cleanFields);
-      this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
-      this.selectedOrder = -1;
-      this.v.clearFails();
-      this.interactionsMode.order = 0; // mode new
-    }
+    let updatedOrder: IOrder = this.orders[this.selectedOrder];
+    updatedOrder.status = this.newOrder.status;
+    this.orders[this.selectedOrder] = updatedOrder;
+    Object.assign(this.newOrder, this.cleanFields);
+    this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
+    this.selectedOrder = -1;
+    this.v.clearFails();
+    this.interactionsMode.order = 0; // mode new
   }
 
   private async beginAnalitycs() {
@@ -445,11 +467,31 @@ export default class IndentificationView extends vue {
         let responseArqueo: any = await this.analyticsActions.doArqueo(
           this.analitycs
         );
-        let result: any = responseArqueo[0];
-        this.analitycs.result = `Articulos: ${result.cantArticles}, 
-                                 Precio Total: $${result.totalPrice}, 
-                                 Precio total de reparacion: $${result.totalReplacementPrice}, 
-                                 Precio Neto: $${result.netoPrice}`;
+        let result: any = responseArqueo;
+        this.analitycs.result = `Articulos: ${
+          result.cantarticles === null ? 0 : result.cantarticles
+        }, 
+          }, 
+        }, 
+                                 Precio Total: $${
+                                   result.totalprice === null
+                                     ? 0
+                                     : result.totalprice
+                                 }, 
+          }, 
+                                 }, 
+                                 Precio total de reparacion: $${
+                                   result.totalreplacementprice === null
+                                     ? 0
+                                     : result.totalreplacementprice
+                                 }, 
+          }, 
+                                 }, 
+                                 Precio Neto: $${
+                                   result.netoprice === null
+                                     ? 0
+                                     : result.netoprice
+                                 }`;
         this.disabledButtons = false;
       } else {
         this.showNotificationFail(
@@ -464,8 +506,8 @@ export default class IndentificationView extends vue {
   }
 
   private resetAnalitycs() {
-    this.analitycs.startDate = this.newOrder.admissionDate || '';
-    this.analitycs.endDate = this.newOrder.admissionDate || '';
+    this.analitycs.startDate = '';
+    this.analitycs.endDate = '';
     this.analitycs.result = '';
   }
 
@@ -490,28 +532,28 @@ export default class IndentificationView extends vue {
     reader.readAsDataURL(image);
     reader.onload = e => {
       let data: any = e.target;
-      this.enterprise.urlLogo = data['result'].toString();
+      this.enterprise.urllogo = data['result'].toString();
     };
   }
 
   //Clear fields object UI-CLEAN-order
   private cleanFields: IOrder = {
     id: 0,
-    admissionDate: moment().format('L h:mm:ss'),
+    admissiondate: moment().format('L h:mm:ss'),
     admissionDateFront: moment().format('L h:mm:ss'),
-    clientName: '',
-    clientPhone: '',
+    clientname: '',
+    clientphone: '',
     article: '',
     model: '',
     brand: '',
-    reportedFailure: '',
+    reportedfailure: '',
     observations: '',
-    isCanceled: false,
-    repairDate: '',
-    deliverDate: '',
+    iscanceled: false,
+    repairdate: '',
+    deliverydate: '',
     reparation: '',
     price: 0,
-    replacementPrice: 0,
+    replacementprice: 0,
     status: ''
   };
 }

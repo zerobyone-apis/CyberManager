@@ -16,6 +16,7 @@
   height: 100%;
   width: 100%;
   text-align: center;
+  background-color: black !important;
   // background-image: radial-gradient(circle, rgb(7, 7, 7) 0%, rgb(0, 0, 0) 49%, rgb(0, 0, 0) 100%);
 
   .img-back {
@@ -24,20 +25,15 @@
     height: 100%;
     top: 0px;
     left: 0px;
-    opacity: 0.5;
-    
+    opacity: 0.2;
   }
 
   .stepper {
     position: relative;
     width: 100%;
     height: 100%;
-   
-    background: linear-gradient(
-      90deg,
-      rgb(244, 252, 255) 0%,
-      rgb(0, 137, 190) 96%
-    );
+
+    background: linear-gradient(90deg, rgb(244, 252, 255) 0%, rgb(0, 137, 190) 96%);
     background-size: 140%;
 
     .v-stepper__items {
@@ -77,5 +73,14 @@
       height: 60px;
       margin-top: 40px;
     }
+  }
+
+  .progress-linear {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    bottom: 0px !important;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
   }
 }

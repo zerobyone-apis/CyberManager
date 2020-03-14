@@ -1,14 +1,14 @@
 export interface IRepair {
   idOrder: number;
-  clientName: string;
+  clientname: string;
   article: string;
   warranty: string;
   technical: string;
-  deliverDate: string;
-  repairDate: string;
+  deliverydate: string;
+  repairdate: string;
   reparation: string;
   price: number;
   status: string;
-  isCanceled: boolean;
-  replacementPrice: number;
+  iscanceled: boolean;
+  replacementprice: number;
 }

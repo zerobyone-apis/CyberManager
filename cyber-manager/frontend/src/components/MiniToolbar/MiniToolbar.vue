@@ -1,46 +1,52 @@
 <template>
-  <div>
-    <v-toolbar flat class="mini-toolbar" fixed outlined :height="height" dark>
-      <v-toolbar-title v-if="title" class="mini-toolbar_title ml-4">{{ title }}</v-toolbar-title>
+  <div class="mini-toolbar">
+    <div class="toolbar-items">
+      <v-btn
+        v-for="(btn,index) in filtredButtons()"
+        :key="index"
+        :disabled="disabled ? true : btn.disabled"
+        @click.native.stop="$emit('buttonClicked', index)"
+        :color="colorButtons"
+        text
+        small
+        class="toolbar-button"
+      >
+        <v-icon>{{ btn.icon }}</v-icon>
+        <span>{{ btn.text }}</span>
+      </v-btn>
+    </div>
 
-      <v-toolbar-items class="toolbar-items hidden-xs-only">
-        <v-btn
-          v-for="(btn,index) in filtredButtons()"
-          :key="index"
-          :disabled="disabled ? true : btn.disabled"
-          @click.native.stop="$emit('buttonClicked', index)"
-          :color="colorButtons"
-          text
-          small
-          class="toolbar-button"
-        >
-          <v-icon>{{ btn.icon }}</v-icon>
-          <span>{{ btn.text }}</span>
-        </v-btn>
+    <div class="right-box">
+      <v-icon v-if="false" @click="changeVisualMode()">{{ visualModes[currentMode] }}</v-icon>
 
-        <div class="right-box">
-          <v-icon v-if="false" @click="changeVisualMode()">{{ visualModes[currentMode] }}</v-icon>
-
-          <v-menu offset-y>
-            <template v-slot:activator="{ on }">
-              <v-btn v-on="on" class="user-btn" small color="rgb(29, 211, 29)" text>
-                <v-icon>people</v-icon>
-                {{ $store.getters.getUsername }}
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item @click="closeSesion()">
+      <v-menu offset-y dark>
+        <template v-slot:activator="{ on }">
+          <v-btn v-on="on" class="user-btn" small color="rgb(29, 211, 29)" text>
+            <v-icon>people</v-icon>
+            {{ $store.getters.getUsername }}
+          </v-btn>
+        </template>
+        <v-list>
+          <confirm-dialog
+            dark
+            v-model="showDialogExit"
+            @onSelectAction="(action)=>{ action ? closeSesion() : false }"
+            :info-values="confirmDialogExit"
+          >
+            <template v-slot:button="{ on }">
+              <v-list-item v-on="on">
                 <v-list-item-title>Cerrar sesion</v-list-item-title>
               </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
-      </v-toolbar-items>
-      <v-snackbar
-        v-model="notification.visible"
-        :color="notification.color"
-      >{{ notification.message }}</v-snackbar>
-    </v-toolbar>
+            </template>
+          </confirm-dialog>
+        </v-list>
+      </v-menu>
+    </div>
+
+    <v-snackbar
+      v-model="notification.visible"
+      :color="notification.color"
+    >{{ notification.message }}</v-snackbar>
   </div>
 </template>
 
@@ -49,6 +55,7 @@ import "./MiniToolbar.scss";
 import { Component, Prop } from "vue-property-decorator";
 import MiniToolbarView from "./MiniToolbar.view";
 import "../../styles/CyberManager.scss";
+import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog.vue";
 
 interface IButton {
   text: "default-text";
@@ -57,7 +64,11 @@ interface IButton {
   disabled: false;
 }
 
-@Component({})
+@Component({
+  components: {
+    ConfirmDialog
+  }
+})
 export default class MiniToolbar extends MiniToolbarView {
   @Prop({ default: [] }) buttons!: IButton[];
   @Prop({ default: false }) disabled!: boolean;

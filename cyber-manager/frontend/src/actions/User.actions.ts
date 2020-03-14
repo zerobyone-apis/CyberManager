@@ -12,16 +12,13 @@ export default class UserActions {
 
   public async signUp(userData: IUserStore) {
     try {
-      const response: Record<string, any> = await this.backend.send(
-        POST_ENDPOIT,
-        userData,
-        USER_ROUTE
-      );
+      await this.backend.send(POST_ENDPOIT, userData, USER_ROUTE);
       let responseSignIn: any = await this.backend.send(
         POST_ENDPOIT,
         userData,
         USER_SIGN_IN_ROUTE
       );
+      console.log('Result user to save on dataStorage: ');
       let user: IUserStore = {
         id: responseSignIn.idUser,
         username: userData.username,

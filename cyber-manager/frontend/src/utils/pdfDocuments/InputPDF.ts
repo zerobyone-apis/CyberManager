@@ -20,7 +20,7 @@ export default class InputPdf extends Styles {
       // size of all fonts in this document
       let fontSize = 8;
 
-      if (enterprise.urlLogo) {
+      if (enterprise.urllogo) {
         try {
           let base64 = this.getBase64Image(document.getElementById('imageid'));
           this.insertImage(base64, 40, 40, doc);
@@ -41,7 +41,7 @@ export default class InputPdf extends Styles {
         doc
       );
       this.writeText(
-        enterprise.enterpriseName,
+        enterprise.enterprisename,
         fontSize + 2,
         'right',
         doc,
@@ -50,7 +50,7 @@ export default class InputPdf extends Styles {
       this.writeText('Ordern N°: ' + order.id, fontSize + 2, 'left', doc);
       this.writeText(enterprise.location, fontSize, 'right', doc, true);
       this.writeText(
-        'Nombre del cliente: ' + order.clientName,
+        'Nombre del cliente: ' + order.clientname,
         fontSize + 2,
         'left',
         doc
@@ -85,7 +85,7 @@ export default class InputPdf extends Styles {
       this.drawLine(0.1, doc);
       this.writeText(' Falla Reportada: ', fontSize + 2, 'left', doc);
       this.drawLine(0.1, doc);
-      this.writeText(' - ' + order.reportedFailure, fontSize, 'left', doc);
+      this.writeText(' - ' + order.reportedfailure, fontSize, 'left', doc);
       this.writeText('', 20, 'left', doc);
       this.drawLine(0.1, doc);
       //Observations
@@ -110,9 +110,9 @@ export default class InputPdf extends Styles {
       );
       this.writeText('', 10, 'left', doc);
       this.writeText(
-        enterprise.firstMessage == undefined
+        enterprise.firstmessage == undefined
           ? ''
-          : enterprise.secondMessage + '',
+          : enterprise.secondmessage + '',
         7,
         'center',
         doc
@@ -121,6 +121,6 @@ export default class InputPdf extends Styles {
       this.drawLine(0.1, doc);
       this.writeText('', 5, 'left', doc);
     }
-    doc.save(order.admissionDate + '-' + order.id + '.pdf');
+    doc.save(order.admissiondate + '-' + order.id + '.pdf');
   }
 }

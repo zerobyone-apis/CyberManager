@@ -15,15 +15,15 @@ export default class EnterpriseActions {
   public async save(enterprise: IEnterprise) {
     try {
       let data: IEnterprise = {
-        enterpriseName: enterprise.enterpriseName,
+        enterprisename: enterprise.enterprisename,
         location: enterprise.location,
         cellphone: enterprise.cellphone,
-        enterpriseRules: enterprise.enterpriseRules,
-        urlLogo: enterprise.urlLogo || '',
+        enterpriserules: enterprise.enterpriserules,
+        urllogo: enterprise.urllogo || '',
         phone: enterprise.phone,
-        firstMessage: enterprise.firstMessage,
-        secondMessage: enterprise.secondMessage,
-        lastUpdate: moment().format('YYYY-MM-DD HH:mm:ss'),
+        firstmessage: enterprise.firstmessage,
+        secondmessage: enterprise.secondmessage,
+        lastupdate: moment().format('YYYY-MM-DD HH:mm:ss'),
         email: enterprise.email || '',
         id: enterprise.id
       };
@@ -32,10 +32,11 @@ export default class EnterpriseActions {
         data,
         `${ENTERPRISE_ROUTE}/${enterprise.id}`
       );
+      //console.log('Response Empresa creada -> ', response);
       return new ResultObject(200, 'success');
     } catch (error) {
-      return new ResultObject(403, 'success');
       console.error(`Error actualizando la empresa.. -> ${error.message}`);
+      return new ResultObject(403, 'success');
     }
   }
 
@@ -46,6 +47,7 @@ export default class EnterpriseActions {
         undefined,
         `${ENTERPRISE_ROUTE}/${userInfo.id}`
       );
+      //console.log('Response Empresa encontrada -> ', response);
       return response;
     } catch (error) {
       console.error(

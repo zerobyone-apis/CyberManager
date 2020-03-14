@@ -2,12 +2,13 @@ import Express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import http from 'http';
-import MysqlConnection from '../sql/connection/MysqlConnection';
+import MysqlConnection from '../sql/connection/Connections';
 import Enterprise from './routes/Enterprise.routes';
 import Order from './routes/Order.routes';
 import User from './routes/User.routes';
 import { ENTERPRISE_ROUTE, USER_ROUTE, ORDER_ROUTE } from './types/Routes.type';
-
+export const dbConnectTypeMysql: string = 'Mysql';
+export const dbConnectTypePostgres: string = 'postgres';
 export class App {
   private app: Application;
 
@@ -17,7 +18,7 @@ export class App {
     const server = http.createServer(this.app);
     server.listen(port);
 
-    MysqlConnection.connect();
+    this.connect(dbConnectTypePostgres);
 
     this.settings();
     this.middlewares();
@@ -54,5 +55,11 @@ export class App {
     console.log('');
     console.log('══════════════════════════');
     console.log('');
+  }
+
+  connect(dbConnectType: string) {
+    dbConnectType && dbConnectType === 'Mysql'
+      ? MysqlConnection.connect()
+      : MysqlConnection.connectPostgres();
   }
 }

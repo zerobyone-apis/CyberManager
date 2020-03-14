@@ -1,25 +1,23 @@
 import { IRepair } from '../types/Repair.type';
 import IntegrationBackend from '../utils/IntegrationBackend';
-import { REPARIR_ROUTE, PUT_ENDPOIT } from '../types/Routes.type'; 
+import { REPARIR_ROUTE, PUT_ENDPOIT } from '../types/Routes.type';
 
 export default class ReparirActions {
   private backend: IntegrationBackend = new IntegrationBackend();
 
   public async saveRepair(repair: IRepair) {
     try {
-      console.log(repair.deliverDate, repair.repairDate);
-
       // formatting
       // ..........
-      let deliverDateFormat: string | null = repair.deliverDate || null;
-      let repairDateFormat: string | null = repair.repairDate || null;
+      let deliverydateFormat: string | null = repair.deliverydate || null;
+      let repairDateFormat: string | null = repair.repairdate || null;
+      //console.log('Se envio la request Update Raparation.');
 
-      if (deliverDateFormat != null) {
-        if (deliverDateFormat.indexOf('T') != -1) {
-          console.log('tipo T');
-          deliverDateFormat = deliverDateFormat.split('T')[0] + ' 00:00:00';
+      if (deliverydateFormat != null) {
+        if (deliverydateFormat.indexOf('T') != -1) {
+          deliverydateFormat = deliverydateFormat.split('T')[0] + ' 00:00:00';
         } else {
-          deliverDateFormat = `${deliverDateFormat} 00:00:00`;
+          deliverydateFormat = `${deliverydateFormat} 00:00:00`;
         }
       }
 
@@ -35,28 +33,28 @@ export default class ReparirActions {
 
       let data: IRepair = {
         id: repair.id || -1,
-        clientName: repair.clientName,
+        clientname: repair.clientname,
         article: repair.article,
-        isCanceled: false, //
+        iscanceled: false, //
 
-        deliverDate: deliverDateFormat,
-        repairDate: repairDateFormat,
+        deliverydate: deliverydateFormat,
+        repairdate: repairDateFormat,
 
         reparation: repair.reparation,
         warranty: repair.warranty,
         price: repair.price,
-        replacementPrice: repair.replacementPrice,
+        replacementprice: repair.replacementprice,
         status: repair.status
       };
-      const response: any = await this.backend.send(
+      await this.backend.send(
         PUT_ENDPOIT,
         data,
         `${REPARIR_ROUTE}/${repair.id}`
       );
       return repair;
     } catch (error) {
-      return null;
       console.error('Error guardar reparacion ->' + error);
+      return null;
     }
   }
 }

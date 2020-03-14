@@ -13,7 +13,7 @@ export default class OutputPdf extends Styles {
       // size of all fonts in this document
       let fontSize = 8;
 
-      if (enterprise.urlLogo) {
+      if (enterprise.urllogo) {
         try {
           let base64 = this.getBase64Image(document.getElementById('imageid'));
           this.insertImage(base64, 40, 40, doc);
@@ -34,7 +34,7 @@ export default class OutputPdf extends Styles {
         doc
       );
       this.writeText(
-        enterprise.enterpriseName,
+        enterprise.enterprisename,
         fontSize + 2,
         'right',
         doc,
@@ -43,7 +43,7 @@ export default class OutputPdf extends Styles {
       this.writeText('Ordern N°: ' + order.id, fontSize + 2, 'left', doc);
       this.writeText(enterprise.location, fontSize, 'right', doc, true);
       this.writeText(
-        'Nombre del cliente: ' + order.clientName,
+        'Nombre del cliente: ' + order.clientname,
         fontSize + 2,
         'left',
         doc
@@ -80,7 +80,7 @@ export default class OutputPdf extends Styles {
       this.writeText('  Falla Reportada: ', fontSize + 2, 'left', doc);
       this.drawLine(0.1, doc);
       this.writeText(
-        ' - ' + order.reportedFailure || '',
+        ' - ' + order.reportedfailure || '',
         fontSize,
         'left',
         doc
@@ -125,10 +125,10 @@ export default class OutputPdf extends Styles {
       );
 
       this.writeText('', 5, 'center', doc); // space
-      this.writeText(enterprise.secondMessage || '', 8, 'center', doc);
+      this.writeText(enterprise.secondmessage || '', 8, 'center', doc);
       this.drawLine(0.1, doc);
       this.writeText('', 5, 'center', doc); // space
     }
-    doc.save(order.deliverDate + '-' + order.id + '.pdf');
+    doc.save(order.deliverydate + '-' + order.id + '.pdf');
   }
 }
