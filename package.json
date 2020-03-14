@@ -1,7 +1,7 @@
 {
   "name": "cyber.manager",
-  "version": "1.0.0",
-  "description": "First Version of CyberManager - By ZeroByOne.",
+  "version": "3.0.0",
+  "description": "The best App to Organisize your work - By ZeroByOne.",
   "author": "ZeroByOne <smtp.test.zero@gmail.com>",
   "homepage": "./",
   "repository": {
@@ -26,7 +26,7 @@
   },
   "license": "MIT",
   "build": {
-    "appId": "CyberManager_v1",
+    "appId": "CyberManager_v3",
     "asar": true,
     "files": [
       "electron/**/*",

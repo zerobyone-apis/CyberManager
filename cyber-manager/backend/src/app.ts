@@ -2,7 +2,7 @@ import Express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import http from 'http';
-import MysqlConnection from '../sql/connection/MysqlConnection';
+import MysqlConnection from '../sql/connection/Connections';
 import Enterprise from './routes/Enterprise.routes';
 import Order from './routes/Order.routes';
 import User from './routes/User.routes';

@@ -60,8 +60,8 @@ function loadHomePage() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
-  baseUrl = `https://cyber-manager-frontend.now.sh/#/`;
-  const iconName = './build/system.ico';
+  baseUrl = `https://cyber-manager-pg-v3-0-1.now.sh/#/`;
+  const iconName = './system.ico';
   const iconPath = path.join(__dirname, iconName);
   console.log('');
   console.log('══════════════════════════');

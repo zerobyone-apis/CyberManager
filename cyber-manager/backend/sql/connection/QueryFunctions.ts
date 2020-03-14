@@ -1,4 +1,4 @@
-import MysqlConnection from '../connection/MysqlConnection';
+import MysqlConnection from './Connections';
 import ResultObject from '../../src/utils/ResultObject';
 import { FieldPacket, QueryError } from 'mysql';
 import { QueryResult } from 'pg';
