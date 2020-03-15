@@ -1,5 +1,11 @@
 import vue from 'vue';
 import { IConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog.view';
+
+export interface ITheme {
+  theme: string,
+  icon: string
+}
+
 export default class MiniToolbarView extends vue {
 
   private showDialogExit: boolean = false;
@@ -11,15 +17,24 @@ export default class MiniToolbarView extends vue {
     disagreeText: 'Volver'
   }
 
-  /////////
-  private visualModes = ['wb_sunny', 'nights_stay'];
-  private currentMode: number = 1;
+  private themes: ITheme[] = [
+    {
+      theme: 'dark',
+      icon: 'nights_stay'
+    },
+    {
+      theme: 'light',
+      icon: 'wb_sunny'
+    }
+  ]
+
+  private currentMode: number = 0;
 
   private changeVisualMode() {
     this.currentMode = this.currentMode == 1 ? 0 : 1;
+    this.$store.commit('setTheme', this.themes[this.currentMode].theme);
   }
-  /////////
-
+  
   private closeSesion() {
     this.$store.commit('clearUserInfo')
     this.$store.commit('page', 'Home');
