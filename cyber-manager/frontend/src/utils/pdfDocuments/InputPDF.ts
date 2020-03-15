@@ -35,7 +35,7 @@ export default class InputPdf extends Styles {
       // END DRAW LINES
 
       this.writeText(
-        'Fecha: ' + order.admissionDateFront,
+        'Fecha: ' + order.admissiondateFront,
         fontSize + 2,
         'left',
         doc
@@ -121,6 +121,8 @@ export default class InputPdf extends Styles {
       this.drawLine(0.1, doc);
       this.writeText('', 5, 'left', doc);
     }
-    doc.save(order.admissiondate + '-' + order.id + '.pdf');
+    doc.autoPrint();
+    //This is a key for printing
+    doc.output('dataurlnewwindow');
   }
 }

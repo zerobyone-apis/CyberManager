@@ -17,12 +17,13 @@
     </div>
 
     <div class="right-box">
-      <v-icon v-if="false" @click="changeVisualMode()">{{ visualModes[currentMode] }}</v-icon>
+
+      <v-icon text v-if="true" @click="changeVisualMode()">{{ themes[currentMode].icon }}</v-icon>
 
       <v-menu offset-y dark>
         <template v-slot:activator="{ on }">
           <v-btn v-on="on" class="user-btn" small color="rgb(29, 211, 29)" text>
-            <v-icon>people</v-icon>
+            <v-icon>account_circle</v-icon>
             {{ $store.getters.getUsername }}
           </v-btn>
         </template>

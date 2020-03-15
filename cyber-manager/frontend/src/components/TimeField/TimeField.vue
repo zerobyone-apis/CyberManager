@@ -16,7 +16,7 @@
             :error-messages="errorMessage"
             :label="label"
             readonly
-            dark
+            :dark="dark"
             v-on="on"
             :outlined="outlined"
           ></v-text-field>
@@ -63,7 +63,7 @@
             :error-messages="errorMessage"
             :label="label"
             readonly
-            dark
+            :dark="dark"
             v-on="on"
             :outlined="outlined"
           >

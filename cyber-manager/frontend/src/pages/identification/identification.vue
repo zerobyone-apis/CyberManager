@@ -1,7 +1,7 @@
 <template transition="slide-x-transition">
-  <div id="identification-page" :class="`cyber_manager-window_${theme}`">
+  <div id="identification-page" :class="`cyber_manager-window_${$store.getters.theme}`">
     <MiniToolbar
-      :class="`cyber_manager-background_${theme} mini-toolbar`"
+      :class="`cyber_manager-background_${$store.getters.theme} mini-toolbar`"
       :buttons="miniToolbar"
       @buttonClicked="execMiniToolbarAction($event)"
       :disabled="disabledButtons"
@@ -20,17 +20,17 @@
                   <v-text-field
                     v-model="newOrder.id"
                     class="cyber_manager-text_field"
-                    dark
+                    :dark="$store.getters.theme == 'dark'"
                     readonly
                     label="Orden nº"
                   ></v-text-field>
                 </div>
                 <div class="reception-date">
                   <v-text-field
-                    dark
+                    :dark="$store.getters.theme == 'dark'"
                     class="cyber_manager-text_field"
                     readonly
-                    v-model="newOrder.admissionDateFront"
+                    v-model="newOrder.admissiondateFront"
                     label="fecha de recepcion"
                   ></v-text-field>
                 </div>
@@ -38,7 +38,7 @@
 
               <div class="fields">
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   :error="v.get('newOrder.clientname') != ''"
                   :error-messages="v.get('newOrder.clientname')"
                   dense
@@ -47,7 +47,7 @@
                   class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   :error="v.get('newOrder.clientphone') != ''"
                   :error-messages="v.get('newOrder.clientphone')"
                   dense
@@ -57,7 +57,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   :error="v.get('newOrder.article') != ''"
                   :error-messages="v.get('newOrder.article')"
                   dense
@@ -67,7 +67,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   :error="v.get('newOrder.brand') != ''"
                   :error-messages="v.get('newOrder.brand')"
                   dense
@@ -77,7 +77,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   :error="v.get('newOrder.model') != ''"
                   :error-messages="v.get('newOrder.model')"
                   dense
@@ -87,7 +87,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="newOrder.reportedfailure"
                   dense
                   label="Daño reportado"
@@ -95,7 +95,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="newOrder.observations"
                   dense
                   label="Notas"
@@ -115,11 +115,7 @@
                     dark
                     v-if="saveMode"
                     v-model="showDialogCancelOrder"
-                    @onSelectAction="
-                      action => {
-                        action ? cancelSaveOrder() : false;
-                      }
-                    "
+                    @onSelectAction="(action)=>{ action ? cancelSaveOrder() : false }"
                     :info-values="confirmDialogCancelOrder"
                   >
                     <template v-slot:button="{ on }">
@@ -129,8 +125,7 @@
                         small
                         depressed
                         v-on="on"
-                        >Cancelar</v-btn
-                      >
+                      >Cancelar</v-btn>
                     </template>
                   </confirm-dialog>
                 </template>
@@ -139,23 +134,23 @@
 
             <!-- TABLE OF orders -->
             <div class="right_content-box">
-              <div class="orders-box">
-                <p class="cyber_manager-title">Lista de Ordenes</p>
+              <p class="cyber_manager-title">Lista de Ordenes</p>
 
+              <div class="orders-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="search-box" v-if="orders.length">
                   <div class="select">
                     <v-select
-                      class="select-list"
-                      dark
                       v-model="search.filter"
-                      label="Buscar por"
+                      :dark="$store.getters.theme === 'dark'"
                       :items="Object.keys(searchFilters)"
+                      class="select-list"
+                      label="Buscar por"
                       item-value="text"
                     ></v-select>
                   </div>
                   <div class="field">
                     <v-text-field
-                      dark
+                      :dark="$store.getters.theme == 'dark'"
                       v-model="search.value"
                       append-icon="search"
                       label="Buscar"
@@ -169,33 +164,24 @@
                 <div class="table-header">
                   <div class="headers">
                     <v-layout row wrap>
-                      <v-flex
-                        xs2
-                        xl2
-                        sm2
-                        v-for="(header, index) in headerOrder"
-                        :key="index"
-                      >
-                        <p class="header_table-text">{{ header.text }}</p>
+                      <v-flex xs2 xl2 sm2 v-for="(header, index) in headerOrder" :key="index">
+                        <p
+                          class="header_table-text"
+                          :class="$store.getters.theme === 'light' ? 'header_light' : 'header_dark'"
+                        >{{ header.text }}</p>
                       </v-flex>
                     </v-layout>
                   </div>
                 </div>
 
                 <!-- table  -->
-                <div class="table-box">
-                  <div
-                    v-if="orders.length == 0 && search.value === ''"
-                    class="no-orders"
-                  >
+                <div class="table-box" :class="`cyber_manager-box_${$store.getters.theme}`">
+                  <div v-if="orders.length == 0 && search.value === ''" class="no-orders">
                     <p>No tiene ordenes creadas</p>
                     <v-icon>search</v-icon>
                   </div>
 
-                  <div
-                    class="no-orders"
-                    v-if="filterItems() == 0 && search.value"
-                  >
+                  <div class="no-orders" v-if="filterItems() == 0 && search.value">
                     <p>No se encontraron coincidencias</p>
                     <v-icon>search</v-icon>
                   </div>
@@ -205,6 +191,7 @@
                     class="order"
                     v-for="(item, index) in filterItems()"
                     :key="index"
+                    :class="$store.getters.theme === 'light' ? 'order_light' : 'order_dark'"
                   >
                     <div class="left-box">
                       <v-btn
@@ -212,9 +199,9 @@
                         @click="showSelectedOrder(item)"
                         :color="changeColorToEdit(item)"
                         :disabled="
-                          interactionsMode.order == 1 &&
-                            selectedOrder != orders.indexOf(item)
-                        "
+                        interactionsMode.order == 1 &&
+                          selectedOrder != orders.indexOf(item)
+                      "
                         small
                         fab
                         text
@@ -225,25 +212,16 @@
 
                     <div class="content-box">
                       <v-layout row wrap>
-                        <v-flex
-                          xs2
-                          xl2
-                          sm2
-                          v-for="(header, index) in headerOrder"
-                          :key="index"
-                        >
+                        <v-flex xs2 xl2 sm2 v-for="(header, index) in headerOrder" :key="index">
                           <p
                             v-if="header.value != 'status'"
                             class="item_table-text"
-                          >
-                            {{ item[header.value] }}
-                          </p>
+                          >{{ item[header.value] }}</p>
                           <v-chip
                             v-if="header.value == 'status'"
                             :color="getColorByStatus(item[header.value])"
                             outlined
-                            >{{ item[header.value] }}</v-chip
-                          >
+                          >{{ item[header.value] }}</v-chip>
                         </v-flex>
                       </v-layout>
                     </div>
@@ -252,11 +230,7 @@
                       <confirm-dialog
                         dark
                         v-model="showDialogDelete"
-                        @onSelectAction="
-                          action => {
-                            deleteOrder(item, action);
-                          }
-                        "
+                        @onSelectAction="(action)=>{deleteOrder(item, action)}"
                         :info-values="confirmDialogDelete"
                       >
                         <template v-slot:button="{ on }">
@@ -264,15 +238,10 @@
                             class="icon"
                             v-on="on"
                             :disabled="
-                              (interactionsMode.order == 1 &&
-                                selectedOrder != orders.indexOf(item)) ||
-                                changeColorToEdit(item) === 'grey'
-                            "
-                            :color="
-                              changeColorToEdit(item) == 'green'
-                                ? 'red lighten-2'
-                                : 'grey'
-                            "
+                        (interactionsMode.order == 1 &&
+                          selectedOrder != orders.indexOf(item)) ||
+                          changeColorToEdit(item) === 'grey'"
+                            :color="changeColorToEdit(item) == 'green' ? 'red lighten-2' : 'grey'"
                             small
                             fab
                             text
@@ -297,7 +266,7 @@
 
               <div class="identify">
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   readonly
                   :value="`${newOrder.clientname}`"
                   label="Nombre del cliente"
@@ -305,7 +274,7 @@
                 ></v-text-field>
                 <div class="reception-date">
                   <v-text-field
-                    dark
+                    :dark="$store.getters.theme == 'dark'"
                     readonly
                     :value="`${newOrder.article}`"
                     label="Articulo"
@@ -320,7 +289,7 @@
                   class="select-status"
                   :items="status"
                   item-value="text"
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   label="Status"
                 >
                   <template v-slot:selection="{ item }">
@@ -331,7 +300,7 @@
                 </v-select>
 
                 <time-field
-                  dark="true"
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="repair.repairdate"
                   type="date"
                   :error="v.get('repair.repairdate') != ''"
@@ -343,6 +312,7 @@
 
                 <time-field
                   v-model="repair.deliverydate"
+                  :dark="$store.getters.theme == 'dark'"
                   type="date"
                   :error="v.get('repair.deliverydate') != ''"
                   :errorMessage="v.get('repair.deliverydate')"
@@ -352,20 +322,21 @@
                 ></time-field>
 
                 <v-text-field
-                  dark
-                  disabled
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="repair.technical"
                   class="cyber_manager-text_field"
                   label="Tecnico"
                 ></v-text-field>
+
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="repair.price"
                   class="cyber_manager-text_field"
                   label="Costo total: "
                 ></v-text-field>
+
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="repair.replacementprice"
                   class="cyber_manager-text_field"
                   label="Costo de repuesto: "
@@ -383,13 +354,13 @@
             </div>
             <div class="right_content-box">
               <p class="cyber_manager-title">Reparacion y Garantia</p>
-              <div class="repair-box">
+              <div class="repair-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="content-box">
                   <div class="diagnosis-box">
                     <v-textarea
-                      dark
+                      :dark="$store.getters.theme == 'dark'"
                       v-model="repair.reparation"
-                      outlined
+                      class="cyber_manager-text_field"
                       dense
                       name="input-7-1"
                       label="Reparacion"
@@ -397,9 +368,9 @@
                     ></v-textarea>
                     <v-text-field
                       v-model="repair.warranty"
-                      outlined
+                      class="cyber_manager-text_field"
                       dense
-                      dark
+                      :dark="$store.getters.theme == 'dark'"
                       label="Garantia"
                     ></v-text-field>
                   </div>
@@ -412,36 +383,34 @@
         <v-stepper-content step="4">
           <div class="step-content">
             <div class="left_content-box">
-              <p class="cyber_manager-title pl-2">
-                Datos generales de la empresa
-              </p>
+              <p class="cyber_manager-title pl-2">Datos generales de la empresa</p>
               <div class="fields">
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="enterprise.enterprisename"
                   label="Nombre de la empresa"
                   class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="enterprise.location"
                   label="Direccion"
                   class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="enterprise.phone"
                   label="Telefono"
                   class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="enterprise.cellphone"
                   label="Celular"
                   class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="enterprise.email"
                   label="Email"
                   class="cyber_manager-text_field"
@@ -457,18 +426,13 @@
                     :src="enterprise.urllogo"
                     alt
                   />
-                  <v-btn
-                    disabled
-                    depressed
-                    v-if="!enterprise.urllogo"
-                    class="btn-camera"
-                  >
+                  <v-btn disabled depressed v-if="!enterprise.urllogo" class="btn-camera">
                     <v-icon>camera_enhance</v-icon>
                     <!-- <span class="text-btn">Pulse AQUI para buscar</span> -->
                   </v-btn>
                 </div>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   class="cyber_manager-text_field"
                   v-model="enterprise.urllogo"
                   label="Pegue el url de la imagen"
@@ -484,23 +448,23 @@
               />
             </div>
             <div class="right_content-box">
-              <div class="enterprise-box">
+              <div class="enterprise-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="content">
                   <div class="pdf-fields">
                     <v-text-field
-                      dark
+                      :dark="$store.getters.theme == 'dark'"
                       v-model="enterprise.enterpriserules"
                       label="Reglas de la empresa"
                       class="cyber_manager-text_field"
                     ></v-text-field>
                     <v-text-field
-                      dark
+                      :dark="$store.getters.theme == 'dark'"
                       v-model="enterprise.firstmessage"
                       label="Anotacion en el pie del reporte de entrada"
                       class="cyber_manager-text_field"
                     ></v-text-field>
                     <v-text-field
-                      dark
+                      :dark="$store.getters.theme == 'dark'"
                       v-model="enterprise.secondmessage"
                       label="Anotacion en el pie del reporte de salida"
                       class="cyber_manager-text_field"
@@ -519,6 +483,7 @@
               <div class="fields">
                 <time-field
                   v-model="analitycs.startDate"
+                  :dark="$store.getters.theme == 'dark'"
                   type="date"
                   :error="v.get('analitycs.startDate') != ''"
                   :errorMessage="v.get('analitycs.startDate')"
@@ -528,6 +493,7 @@
                 ></time-field>
                 <time-field
                   v-model="analitycs.endDate"
+                  :dark="$store.getters.theme == 'dark'"
                   type="date"
                   :error="v.get('analitycs.endDate') != ''"
                   :errorMessage="v.get('analitycs.endDate')"
@@ -550,24 +516,14 @@
             </div>
 
             <div class="right_content-box">
-              <div class="box-analytics">
+              <div class="box-analytics" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="content-analytics">
                   <div class="result-box">
-                    <p class="result-text">
-                      {{ analitycs.result.split(',')[0] }}
-                    </p>
-                    <p class="result-text">
-                      {{ analitycs.result.split(',')[1] }}
-                    </p>
-                    <p class="result-text">
-                      {{ analitycs.result.split(',')[2] }}
-                    </p>
-                    <p class="result-text">
-                      {{ analitycs.result.split(',')[3] }}
-                    </p>
-                    <p class="result">
-                      {{ !analitycs.result ? 'Resultado' : '' }}
-                    </p>
+                    <p class="result-text">{{ analitycs.result.split(',')[0] }}</p>
+                    <p class="result-text">{{ analitycs.result.split(',')[1] }}</p>
+                    <p class="result-text">{{ analitycs.result.split(',')[2] }}</p>
+                    <p class="result-text">{{ analitycs.result.split(',')[3] }}</p>
+                    <p class="result">{{ !analitycs.result ? 'Resultado' : '' }}</p>
                     <v-icon class="icon">trending_up</v-icon>
                   </div>
                 </div>
@@ -588,20 +544,22 @@
     </v-stepper>
 
     <v-snackbar v-model="notification.visible" :color="notification.color">
-      {{ notification.message }}
+      {{
+      notification.message
+      }}
     </v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-import IdentificationView from './identification.view';
-import './identification.scss';
-import '../../styles/CyberManager.scss';
-import { Component } from 'vue-property-decorator';
-import TimeField from '../../components/TimeField/TimeField.vue';
-import Footer from '../../components/Footer/Footer.vue';
-import MiniToolbar from '../../components/MiniToolbar/MiniToolbar.vue';
-import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog.vue';
+import IdentificationView from "./identification.view";
+import "./identification.scss";
+import "../../styles/CyberManager.scss";
+import { Component } from "vue-property-decorator";
+import TimeField from "../../components/TimeField/TimeField.vue";
+import Footer from "../../components/Footer/Footer.vue";
+import MiniToolbar from "../../components/MiniToolbar/MiniToolbar.vue";
+import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog.vue";
 
 @Component({
   components: {

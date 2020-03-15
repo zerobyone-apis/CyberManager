@@ -1,23 +1,21 @@
 <template>
-  <div id="login-box" class="cyber_manager-dark_background">
+  <div id="login-box" :class="`cyber_manager-background_${$store.getters.theme} cyber_manager-window_${$store.getters.theme}`">
     <h1 class="mb-6 cyber_manager-title">Login</h1>
     <v-form :ref="ON_SIGNIN">
       <v-text-field
         v-model="userSignIn.username"
+        :dark="$store.getters.theme == 'dark'"
         :rules="fieldRules"
         class="cyber_manager-text_field"
         label="Usuario"
-        dense
-        dark
       />
       <v-text-field
         v-model="userSignIn.password"
         :rules="fieldRules"
+        :dark="$store.getters.theme == 'dark'"
         class="cyber_manager-text_field"
         label="Constraseña"
         type="password"
-        dense
-        dark
       ></v-text-field>
 
       <v-btn
@@ -38,39 +36,35 @@
         v-if="charges"
         v-model="userSignUp.charge"
         :items="charges"
+        :dark="$store.getters.theme == 'dark'"
         :rules="fieldRules"
         class="organize__select-field"
         label="Cargo"
-        dense
-        dark
       ></v-select>
 
       <v-text-field
         v-model="userSignUp.username"
+        :dark="$store.getters.theme == 'dark'"
         :rules="fieldRules"
         class="cyber_manager-text_field"
         label="Nombre de usuario"
-        dense
-        dark
       />
 
       <v-text-field
         v-model="userSignUp.password"
         :rules="fieldRules"
+        :dark="$store.getters.theme == 'dark'"
         class="cyber_manager-text_field"
         label="Contraseña"
         type="password"
-        dense
-        dark
       />
       <v-text-field
         v-model="userSignUp.repeatPassword"
         :rules="passwordRules"
+        :dark="$store.getters.theme == 'dark'"
         class="cyber_manager-text_field"
         label="Repita contraseña"
         type="password"
-        dense
-        dark
       />
       <v-btn
         @click="signUp()"
