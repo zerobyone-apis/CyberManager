@@ -220,7 +220,6 @@
             display: flex;
 
             .header_table-text {
-              
               font-size: 14px;
               margin-top: 10px;
               text-align: center;
@@ -236,14 +235,6 @@
           }
         }
 
-        // TODO: La tabla va a ser un componente, con propiedades de tema
-        .table-box_light {
-          background-color: rgba(102, 102, 102, 0.13);
-        }
-        .table-box_dark {
-          background-color: rgba(255, 255, 255, 0.027);
-        }
-
         .table-box {
           position: relative;
           top: 62px;
@@ -257,12 +248,12 @@
 
           // TABLE
           .order:hover {
-            box-shadow: 0px 4px 4px rgb(48, 48, 48);
+            // box-shadow: 0px 4px 4px rgb(122, 122, 122);
           }
 
           // TODO: La tabla va a ser un componente, con propiedades de tema
           .order_light {
-            background-color: #8f8f8f;
+            background-color: #ffffff8c;
             .item_table-text {
               color: rgb(0, 0, 0);
             }
@@ -382,7 +373,6 @@
         width: 100% !important;
         height: 270px !important;
         text-align: center;
-        background-color: rgba(255, 255, 255, 0.027);
         padding: 10px;
         border-radius: 15px;
       }
@@ -393,7 +383,6 @@
         width: 100% !important;
         height: 270px !important;
         text-align: center;
-        background-color: rgba(255, 255, 255, 0.027);
         padding: 10px;
         border-radius: 15px;
       }
@@ -405,7 +394,6 @@
         width: 100% !important;
         height: 100% !important;
         text-align: center;
-        background-color: rgba(255, 255, 255, 0.027);
         padding: 10px;
         border-radius: 15px;
 

@@ -140,11 +140,11 @@
                 <div class="search-box" v-if="orders.length">
                   <div class="select">
                     <v-select
-                      class="select-list"
-                      :dark="$store.getters.theme == 'dark'"
                       v-model="search.filter"
-                      label="Buscar por"
+                      :dark="$store.getters.theme === 'dark'"
                       :items="Object.keys(searchFilters)"
+                      class="select-list"
+                      label="Buscar por"
                       item-value="text"
                     ></v-select>
                   </div>
@@ -175,7 +175,7 @@
                 </div>
 
                 <!-- table  -->
-                <div class="table-box" :class="$store.getters.theme === 'light' ? 'table-box_light' : 'table-box_dark'">
+                <div class="table-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                   <div v-if="orders.length == 0 && search.value === ''" class="no-orders">
                     <p>No tiene ordenes creadas</p>
                     <v-icon>search</v-icon>
@@ -261,7 +261,7 @@
 
               <div class="identify">
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   readonly
                   :value="`${newOrder.clientname}`"
                   label="Nombre del cliente"
@@ -269,7 +269,7 @@
                 ></v-text-field>
                 <div class="reception-date">
                   <v-text-field
-                    dark
+                    :dark="$store.getters.theme == 'dark'"
                     readonly
                     :value="`${newOrder.article}`"
                     label="Articulo"
@@ -284,7 +284,7 @@
                   class="select-status"
                   :items="status"
                   item-value="text"
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   label="Status"
                 >
                   <template v-slot:selection="{ item }">
@@ -295,7 +295,7 @@
                 </v-select>
 
                 <time-field
-                  dark="true"
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="repair.repairdate"
                   type="date"
                   :error="v.get('repair.repairdate') != ''"
@@ -307,6 +307,7 @@
 
                 <time-field
                   v-model="repair.deliverydate"
+                  :dark="$store.getters.theme == 'dark'"
                   type="date"
                   :error="v.get('repair.deliverydate') != ''"
                   :errorMessage="v.get('repair.deliverydate')"
@@ -316,19 +317,19 @@
                 ></time-field>
 
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="repair.technical"
                   class="cyber_manager-text_field"
                   label="Tecnico"
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="repair.price"
                   class="cyber_manager-text_field"
                   label="Costo total: "
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="repair.replacementprice"
                   class="cyber_manager-text_field"
                   label="Costo de repuesto: "
@@ -346,11 +347,11 @@
             </div>
             <div class="right_content-box">
               <p class="cyber_manager-title">Reparacion y Garantia</p>
-              <div class="repair-box">
+              <div class="repair-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="content-box">
                   <div class="diagnosis-box">
                     <v-textarea
-                      dark
+                      :dark="$store.getters.theme == 'dark'"
                       v-model="repair.reparation"
                       outlined
                       dense
@@ -358,7 +359,7 @@
                       label="Reparacion"
                       value
                     ></v-textarea>
-                    <v-text-field v-model="repair.warranty" outlined dense dark label="Garantia"></v-text-field>
+                    <v-text-field v-model="repair.warranty" outlined dense :dark="$store.getters.theme == 'dark'" label="Garantia"></v-text-field>
                   </div>
                 </div>
               </div>
@@ -372,31 +373,31 @@
               <p class="cyber_manager-title pl-2">Datos generales de la empresa</p>
               <div class="fields">
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="enterprise.enterprisename"
                   label="Nombre de la empresa"
                   class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="enterprise.location"
                   label="Direccion"
                   class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="enterprise.phone"
                   label="Telefono"
                   class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="enterprise.cellphone"
                   label="Celular"
                   class="cyber_manager-text_field"
                 ></v-text-field>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   v-model="enterprise.email"
                   label="Email"
                   class="cyber_manager-text_field"
@@ -418,7 +419,7 @@
                   </v-btn>
                 </div>
                 <v-text-field
-                  dark
+                  :dark="$store.getters.theme == 'dark'"
                   class="cyber_manager-text_field"
                   v-model="enterprise.urllogo"
                   label="Pegue el url de la imagen"
@@ -434,23 +435,23 @@
               />
             </div>
             <div class="right_content-box">
-              <div class="enterprise-box">
+              <div class="enterprise-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="content">
                   <div class="pdf-fields">
                     <v-text-field
-                      dark
+                      :dark="$store.getters.theme == 'dark'"
                       v-model="enterprise.enterpriserules"
                       label="Reglas de la empresa"
                       class="cyber_manager-text_field"
                     ></v-text-field>
                     <v-text-field
-                      dark
+                      :dark="$store.getters.theme == 'dark'"
                       v-model="enterprise.firstmessage"
                       label="Anotacion en el pie del reporte de entrada"
                       class="cyber_manager-text_field"
                     ></v-text-field>
                     <v-text-field
-                      dark
+                      :dark="$store.getters.theme == 'dark'"
                       v-model="enterprise.secondmessage"
                       label="Anotacion en el pie del reporte de salida"
                       class="cyber_manager-text_field"
@@ -469,6 +470,7 @@
               <div class="fields">
                 <time-field
                   v-model="analitycs.startDate"
+                  :dark="$store.getters.theme == 'dark'"
                   type="date"
                   :error="v.get('analitycs.startDate') != ''"
                   :errorMessage="v.get('analitycs.startDate')"
@@ -478,6 +480,7 @@
                 ></time-field>
                 <time-field
                   v-model="analitycs.endDate"
+                  :dark="$store.getters.theme == 'dark'"
                   type="date"
                   :error="v.get('analitycs.endDate') != ''"
                   :errorMessage="v.get('analitycs.endDate')"
@@ -500,7 +503,7 @@
             </div>
 
             <div class="right_content-box">
-              <div class="box-analytics">
+              <div class="box-analytics" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="content-analytics">
                   <div class="result-box">
                     <p class="result-text">{{ analitycs.result.split(',')[0] }}</p>
