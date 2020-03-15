@@ -1,7 +1,7 @@
 <template transition="slide-x-transition">
   <div id="identification-page" :class="`cyber_manager-window_${$store.getters.theme}`">
     <MiniToolbar
-      :class="`cyber_manager-background_${theme} mini-toolbar`"
+      :class="`cyber_manager-background_${$store.getters.theme} mini-toolbar`"
       :buttons="miniToolbar"
       @buttonClicked="execMiniToolbarAction($event)"
       :disabled="disabledButtons"
@@ -134,9 +134,9 @@
 
             <!-- TABLE OF orders -->
             <div class="right_content-box">
-              <div class="orders-box">
-                <p class="cyber_manager-title">Lista de Ordenes</p>
+              <p class="cyber_manager-title">Lista de Ordenes</p>
 
+              <div class="orders-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="search-box" v-if="orders.length">
                   <div class="select">
                     <v-select
@@ -187,7 +187,12 @@
                   </div>
 
                   <!-- TABLE  -->
-                  <div class="order" v-for="(item, index) in filterItems()" :key="index" :class="$store.getters.theme === 'light' ? 'order_light' : 'order_dark'">
+                  <div
+                    class="order"
+                    v-for="(item, index) in filterItems()"
+                    :key="index"
+                    :class="$store.getters.theme === 'light' ? 'order_light' : 'order_dark'"
+                  >
                     <div class="left-box">
                       <v-btn
                         class="icon"
@@ -322,12 +327,14 @@
                   class="cyber_manager-text_field"
                   label="Tecnico"
                 ></v-text-field>
+
                 <v-text-field
                   :dark="$store.getters.theme == 'dark'"
                   v-model="repair.price"
                   class="cyber_manager-text_field"
                   label="Costo total: "
                 ></v-text-field>
+
                 <v-text-field
                   :dark="$store.getters.theme == 'dark'"
                   v-model="repair.replacementprice"
@@ -353,13 +360,19 @@
                     <v-textarea
                       :dark="$store.getters.theme == 'dark'"
                       v-model="repair.reparation"
-                      outlined
+                      class="cyber_manager-text_field"
                       dense
                       name="input-7-1"
                       label="Reparacion"
                       value
                     ></v-textarea>
-                    <v-text-field v-model="repair.warranty" outlined dense :dark="$store.getters.theme == 'dark'" label="Garantia"></v-text-field>
+                    <v-text-field
+                      v-model="repair.warranty"
+                      class="cyber_manager-text_field"
+                      dense
+                      :dark="$store.getters.theme == 'dark'"
+                      label="Garantia"
+                    ></v-text-field>
                   </div>
                 </div>
               </div>
