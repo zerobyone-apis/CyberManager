@@ -28,7 +28,7 @@ export default class OutputPdf extends Styles {
       // END DRAW LINES
 
       this.writeText(
-        'Fecha: ' + order.admissionDateFront,
+        'Fecha: ' + order.admissiondateFront,
         fontSize + 2,
         'left',
         doc
