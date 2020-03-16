@@ -14,17 +14,19 @@ function stopServer() {
 
 // The server url and process
 let baseUrl;
+const IMG_URL = './build/';
 
 function createWindow(callback) {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 950,
     show: false, // hide until ready-to-show
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: true
-    },
-    iconPath: './build/system.ico'
+    icon: path.join(__dirname, IMG_URL, 'system.ico'),
+    autoHideMenuBar: true
+    //webPreferences: {
+    //preload: path.join(__dirname, 'preload.js'),
+    //nodeIntegration: true
+    //}
   });
 
   loadHomePage();
@@ -61,8 +63,6 @@ function loadHomePage() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
   baseUrl = `https://cyber-manager-pg-v3-0-1.now.sh/#/`;
-  const iconName = './system.ico';
-  const iconPath = path.join(__dirname, iconName);
   console.log('');
   console.log('══════════════════════════');
   console.log('');

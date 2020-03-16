@@ -13,8 +13,8 @@
   "main": "electron/index.js",
   "scripts": {
     "start": "electron .",
-    "build-lin": "electron-builder --linux deb tar.xz",
-    "build-win": "electron-builder --win --ia32",
+    "build-lin": "electron-builder --linux deb --icon=build/system.ico",
+    "build-win": "electron-builder --win --ia32 icon=./build/system.ico",
     "clean": "rimraf dist",
     "dist": "npm-run-all start-servers clean build",
     "serverback": "nohup  ./serverback.sh > back.out < /dev/null &",
