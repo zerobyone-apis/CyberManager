@@ -39,7 +39,7 @@ export default class IndentificationView extends vue {
     buttonActivator: '',
     agreeText: 'Eliminar',
     disagreeText: 'Cancelar'
-  }
+  };
   private showDialogCancelOrder: boolean = false;
   private confirmDialogCancelOrder: IConfirmDialog = {
     title: 'Cancelar cambios',
@@ -47,7 +47,7 @@ export default class IndentificationView extends vue {
     buttonActivator: 'cancelar',
     agreeText: 'Cancelar Cambios',
     disagreeText: 'Volver'
-  }
+  };
 
   private enterpriseActions: EnterpriseAction = new EnterpriseAction();
   public orderActions: OrderAction = new OrderAction();
@@ -57,7 +57,7 @@ export default class IndentificationView extends vue {
   public newOrder: IOrder = {
     id: 0,
     admissiondate: '',
-    admissiondateFront: moment().format('L h:mm:ss'),
+    admissionDateFront: moment().format('L h:mm:ss'),
     clientname: '',
     clientphone: '',
     article: '',
@@ -148,7 +148,7 @@ export default class IndentificationView extends vue {
   private headerOrder = [
     { text: 'Nro', value: 'id' },
     { text: 'Cliente', value: 'clientname' },
-    { text: 'Ingreso', value: 'admissiondateFront' },
+    { text: 'Ingreso', value: 'admissionDateFront' },
     { text: 'Articulo', value: 'article' },
     { text: 'Status', value: 'status' }
   ];
@@ -296,7 +296,7 @@ export default class IndentificationView extends vue {
         this.newOrder
       );
       if (responseAddOrder.statusCode === 200) {
-        responseAddOrder.value.admissionDateFront = this.newOrder.admissiondateFront;
+        responseAddOrder.value.admissionDateFront = this.newOrder.admissionDateFront;
         this.orders.unshift(responseAddOrder.value);
 
         Object.assign(this.newOrder, this.cleanFields);
@@ -392,7 +392,9 @@ export default class IndentificationView extends vue {
   async deleteOrder(selectedOrder: IOrder, action: boolean) {
     if (action) {
       this.disabledButtons = true;
-      let responseDelete: boolean | null = await this.orderActions.delete(selectedOrder);
+      let responseDelete: boolean | null = await this.orderActions.delete(
+        selectedOrder
+      );
       if (responseDelete) {
         this.orders.splice(this.selectedOrder, 1);
         Object.assign(this.newOrder, this.cleanFields);
@@ -411,7 +413,7 @@ export default class IndentificationView extends vue {
     Object.assign(this.newOrder, {
       id: order.id,
       admissionDate: order.admissiondate,
-      admissionDateFront: order.admissiondateFront,
+      admissionDateFront: order.admissionDateFront,
       deliveryDate: order.deliverydate,
       clientname: order.clientname,
       clientphone: order.clientphone,
@@ -468,22 +470,22 @@ export default class IndentificationView extends vue {
         let result: any = responseArqueo;
         this.analitycs.result = `Articulos: ${
           result.cantarticles === null ? 0 : result.cantarticles
-          }, 
+        }, 
                                  Precio Total: $${
-          result.totalprice === null
-            ? 0
-            : result.totalprice
-          }, 
+                                   result.totalprice === null
+                                     ? 0
+                                     : result.totalprice
+                                 }, 
                                  Precio total de reparacion: $${
-          result.totalreplacementprice === null
-            ? 0
-            : result.totalreplacementprice
-          }, 
+                                   result.totalreplacementprice === null
+                                     ? 0
+                                     : result.totalreplacementprice
+                                 }, 
                                  Precio Neto: $${
-          result.netoprice === null
-            ? 0
-            : result.netoprice
-          }`;
+                                   result.netoprice === null
+                                     ? 0
+                                     : result.netoprice
+                                 }`;
         this.disabledButtons = false;
       } else {
         this.showNotificationFail(
@@ -532,7 +534,7 @@ export default class IndentificationView extends vue {
   private cleanFields: IOrder = {
     id: 0,
     admissiondate: moment().format('L h:mm:ss'),
-    admissiondateFront: moment().format('L h:mm:ss'),
+    admissionDateFront: moment().format('L h:mm:ss'),
     clientname: '',
     clientphone: '',
     article: '',

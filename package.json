@@ -13,7 +13,7 @@
   "main": "electron/index.js",
   "scripts": {
     "start": "electron .",
-    "build-lin": "electron-builder --linux deb tar.xz",
+    "build-lin": "electron-builder --linux deb",
     "build-win": "electron-builder --win --ia32",
     "clean": "rimraf dist",
     "dist": "npm-run-all start-servers clean build",

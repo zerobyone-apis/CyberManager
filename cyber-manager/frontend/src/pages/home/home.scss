@@ -1,6 +1,7 @@
 .xs-format {
   width: 100% !important;
   margin-left: 0 !important;
+  margin: 0% !important;
 }
 
 .sm-format,
@@ -33,7 +34,11 @@
     width: 100%;
     height: 100%;
 
-    background: linear-gradient(90deg, rgb(244, 252, 255) 0%, rgb(0, 137, 190) 96%);
+    background: linear-gradient(
+      90deg,
+      rgb(244, 252, 255) 0%,
+      rgb(0, 137, 190) 96%
+    );
     background-size: 140%;
 
     .v-stepper__items {
