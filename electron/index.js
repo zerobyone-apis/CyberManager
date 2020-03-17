@@ -1,6 +1,7 @@
 const electron = require('electron');
 const logger = require('./logger');
-const { app, BrowserWindow, ipcMain } = electron;
+const url = require('url');
+const { app, BrowserWindow } = electron;
 const path = require('path');
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -14,20 +15,23 @@ function stopServer() {
 
 // The server url and process
 let baseUrl;
-const IMG_URL = './build/';
+const IMG_URL = __dirname + '/assets/icons/128x128.png';
 
 function createWindow(callback) {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 950,
     show: false, // hide until ready-to-show
-    icon: path.join(__dirname, IMG_URL + 'system.ico'),
+    darkTheme: true,
     autoHideMenuBar: true,
+    icon: IMG_URL,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: true
+      //preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true,
+      zoomFactor: 5.0 // this by default is 1.0 = 100% but idk why is taking this size. is like 80% on webpage
     }
   });
+  console.log('this is the icon route \n', IMG_URL, '\n\n');
 
   loadHomePage();
 
