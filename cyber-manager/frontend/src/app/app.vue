@@ -1,11 +1,6 @@
 <template>
   <v-app id="app">
-    <v-content class="content">
-      <v-container fluid class="container">
-        <router-view></router-view>
-      </v-container>
-    </v-content>
-    <v-footer app></v-footer>
+    <router-view></router-view>
   </v-app>
 </template>
 

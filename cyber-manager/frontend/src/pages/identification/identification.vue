@@ -417,7 +417,7 @@
                     <v-textarea
                       :dark="$store.getters.theme == 'dark'"
                       v-model="repair.reparation"
-                      class="cyber_manager-text_field"
+                      class="cyber_manager-text_field text-area"
                       dense
                       name="input-7-1"
                       label="Reparacion"

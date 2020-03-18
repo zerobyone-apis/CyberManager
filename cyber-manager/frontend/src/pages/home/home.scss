@@ -18,8 +18,7 @@
   width: 100%;
   text-align: center;
   background-color: black !important;
-  // background-image: radial-gradient(circle, rgb(7, 7, 7) 0%, rgb(0, 0, 0) 49%, rgb(0, 0, 0) 100%);
-
+ 
   .img-back {
     position: absolute;
     width: 100%;
@@ -85,7 +84,7 @@
     width: 100%;
     left: 0px;
     bottom: 0px !important;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
+    // border-bottom-left-radius: 15px;
+    // border-bottom-right-radius: 15px;
   }
 }
