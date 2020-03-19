@@ -121,8 +121,9 @@ export default class InputPdf extends Styles {
       this.drawLine(0.1, doc);
       this.writeText('', 5, 'left', doc);
     }
-    doc.autoPrint();
+    doc.save('Ingreso');
+    //doc.autoPrint();
     //This is a key for printing
-    doc.output('dataurlnewwindow');
+    //doc.output('dataurlnewwindow');
   }
 }
