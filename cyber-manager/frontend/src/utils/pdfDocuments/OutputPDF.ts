@@ -130,8 +130,9 @@ export default class OutputPdf extends Styles {
       this.writeText('', 5, 'center', doc); // space
     }
 
-    doc.autoPrint();
+    doc.save('Salida');
+    //doc.autoPrint();
     //This is a key for printing
-    doc.output('dataurlnewwindow');
+    //doc.output('dataurlnewwindow');
   }
 }
