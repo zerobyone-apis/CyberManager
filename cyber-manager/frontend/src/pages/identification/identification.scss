@@ -46,8 +46,14 @@
     padding-right: 40px;
     box-shadow: 0px 2px 2px rgb(48, 48, 48);
 
-    .v-stepper__content {
-      height: max-content !important;
+    .v-stepper__items {
+      height: 100% !important;
+      .v-stepper__content {
+        height: 100% !important;
+        .v-stepper__wrapper {
+          height: 100% !important;
+        }
+      }
     }
 
     .progress-linear {
@@ -171,16 +177,16 @@
 
     .right_content-box {
       position: relative;
-      width: 100% !important;
-      min-width: 300px;
+      width: 100%;
       height: 100%;
+      min-width: 300px;
 
       // STEP 1 RIGHT STYLE
       .orders-box {
         position: relative;
-        top: 35px;
+        height: 80%;
         width: 100% !important;
-        height: 600px;
+        top: 35px;
         text-align: center;
         padding: 20px;
         border-radius: 15px;
@@ -237,14 +243,15 @@
         }
 
         .table-box {
-          position: relative;
-          top: 62px;
-          width: 100% !important;
-          text-align: center;
-          overflow-y: scroll;
-          overflow-x: hidden;
           padding: 10px;
-          border-radius: 15px;
+          overflow-x: hidden;
+          position: absolute;
+          left: 0;
+          top: 130px;
+          width: 100%;
+          height: 80%;
+          overflow-y: scroll;
+          text-align: center;
 
           // TODO: La tabla va a ser un componente, con propiedades de tema
           .order_light {
@@ -393,7 +400,7 @@
         position: relative;
         top: 64px;
         width: 100% !important;
-        height: 100% !important;
+        height: 500px !important;
         text-align: center;
         padding: 20px;
         border-radius: 15px;

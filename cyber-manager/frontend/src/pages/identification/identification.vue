@@ -172,7 +172,7 @@
                 </div>
 
                 <!-- custom header of table -->
-                <div class="table-header">
+                <div class="table-header" v-if="orders.length">
                   <div class="headers">
                     <v-layout row wrap>
                       <v-flex
@@ -200,7 +200,7 @@
                 <!-- table  -->
                 <div
                   class="table-box"
-                  :class="`cyber_manager-box_${$store.getters.theme}`"
+                  
                 >
                   <div
                     v-if="orders.length == 0 && search.value === ''"
