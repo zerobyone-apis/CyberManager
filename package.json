@@ -20,14 +20,14 @@
     "serverback": "nohup  ./serverback.sh > back.out < /dev/null &",
     "serverfront": "nohup ./serverfront.sh > front.out < /dev/null &",
     "start-servers": "npm run serverback && npm run serverfront",
-    "package-mac": "electron-builder . --overwrite --platform=darwin --arch=x64 --icon=build/system.ico --prune=true --out=release-builds",
-    "package-win": "electron-builder . --overwrite --platform=win32 --arch=ia32 --icon=build/system.ico --prune=true --out=release-builds",
+    "package-mac": "electron-builder . --overwrite --platform=darwin --arch=x64 --icon=./electron/build/system.ico --prune=true --out=release-builds",
+    "package-win": "electron-builder . --overwrite --platform=win32 --arch=ia32 --icon=./electron/build/system.ico  --prune=true --out=release-builds",
     "package-linux": "electron-builder . --overwrite --platform=linux --arch=x64 --icon=./build/system.ico --prune=true --out=release-builds"
   },
   "license": "MIT",
   "build": {
     "appId": "CyberManager_v3",
-    "asar": true,
+    "asar": false,
     "files": [
       "electron/**/*",
       "node_modules/**/*",
@@ -42,13 +42,30 @@
       "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
       "!**/{appveyor.yml,.travis.yml,circle.yml}",
       "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
-    ]
+    ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "./build/icon.icns",
+      "category": "your.app.category.type"
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "./electron/build/divices_256x256.ico"
+    },
+    "linux": {
+      "target": "deb",
+      "category": "Development",
+      "icon": "./electron/build/icon.icns"
+    }
   },
   "devDependencies": {
     "@types/morgan": "^1.7.37",
     "@types/mysql2": "github:types/mysql2",
     "electron": "^6.1.9",
-    "electron-builder": "^22.3.2",
+    "electron-builder": "^20.28.4",
     "express": "^4.17.1",
     "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.1",

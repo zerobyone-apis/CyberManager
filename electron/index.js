@@ -66,7 +66,9 @@ function loadHomePage() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
-  baseUrl = `https://cyber-manager-pg-v3-0-2.now.sh`;
+  baseUrl = `https://cyber-manager-latest.now.sh/`;
+  //baseUrl = `https://cyber-manager-pg-v3-0-3.now.sh`;
+  //baseUrl = `https://cyber-manager-pg-v3-0-2.now.sh`;
   //baseUrl = `https://cyber-manager-pg-v3-0-1.now.sh/#/`;
   //baseUrl = `http://localhost:9000/ `;
   console.log('');
