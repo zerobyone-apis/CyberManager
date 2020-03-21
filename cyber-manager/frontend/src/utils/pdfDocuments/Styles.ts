@@ -163,7 +163,7 @@ export default class Styles {
       // properties position
       switch (pos) {
         case 'left':
-          coo.x = this.marginsText.width;
+          coo.x = this.marginsText.width+2;
           break;
         case 'center':
           let widthText = doc.getTextWidth(text);
@@ -193,19 +193,19 @@ export default class Styles {
           let words = line.split(' ');
           words.forEach(word => {
             let lengthW = doc.getTextWidth(word + ' ');
-            if (lengthW + coo.x < this.pageSize.width - 220) { // 200
-              doc.text(word + ' ', coo.x+2, coo.y);
+            if (lengthW + coo.x+2 < this.pageSize.width - 230) { // 200
+              doc.text(word + ' ', coo.x, coo.y);
               coo.x += lengthW;
             } else {
-              coo.x = this.marginsText.width +2;
+              coo.x = this.marginsText.width+3;
               coo.y += 10;
               doc.text(word + ' ', coo.x, coo.y);
               coo.x += lengthW;
             }
           });
-          //save position
+          // save position
           this.positionText.y = coo.y;
-          coo.x = this.marginsText.width;
+          coo.x = this.marginsText.width+3;
           coo.y += 10;
         })
 
