@@ -189,6 +189,29 @@ export default class IndentificationView extends vue {
     value: ''
   };
 
+
+
+
+  // Sort by ID`s of order
+  private modeSortId: number = 0;
+  changeSortId() {
+    this.modeSortId = this.modeSortId ? 0 : 1;
+    switch (this.modeSortId) {
+      case 0:
+        this.orders.sort((a: any,b:any) => {
+          return a.id - b.id;
+        })
+        break;
+      case 1:
+          this.orders.sort((a: any,b:any) => {
+            return a.id - b.id;
+          }).reverse();
+        break;
+    }
+  }
+
+
+
   /**
    * @description Minitoolbar Functions
    * miniToolbar: buttons array
@@ -278,6 +301,7 @@ export default class IndentificationView extends vue {
   async init() {
     this.disabledButtons = true;
     this.orders = await this.orderActions.getAll();
+    this.changeSortId();
     this.enterprise =
       (await this.enterpriseActions.get(this.userInfo)) || this.enterprise;
     this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
@@ -297,8 +321,13 @@ export default class IndentificationView extends vue {
       );
       if (responseAddOrder.statusCode === 200) {
         responseAddOrder.value.admissionDateFront = this.newOrder.admissionDateFront;
-        this.orders.unshift(responseAddOrder.value);
-
+  
+        if(this.modeSortId) {
+          this.orders.unshift(responseAddOrder.value);
+        }else{
+          this.orders.push(responseAddOrder.value);
+        }
+  
         Object.assign(this.newOrder, this.cleanFields);
         this.newOrder.id = this.orderActions.getMaxIdOfOrders(this.orders);
         this.showNotificationSuccess('Orden creada exitosamente!');
@@ -470,22 +499,22 @@ export default class IndentificationView extends vue {
         let result: any = responseArqueo;
         this.analitycs.result = `Articulos: ${
           result.cantarticles === null ? 0 : result.cantarticles
-        }, 
+          }, 
                                  Precio Total: $${
-                                   result.totalprice === null
-                                     ? 0
-                                     : result.totalprice
-                                 }, 
+          result.totalprice === null
+            ? 0
+            : result.totalprice
+          }, 
                                  Precio total de reparacion: $${
-                                   result.totalreplacementprice === null
-                                     ? 0
-                                     : result.totalreplacementprice
-                                 }, 
+          result.totalreplacementprice === null
+            ? 0
+            : result.totalreplacementprice
+          }, 
                                  Precio Neto: $${
-                                   result.netoprice === null
-                                     ? 0
-                                     : result.netoprice
-                                 }`;
+          result.netoprice === null
+            ? 0
+            : result.netoprice
+          }`;
         this.disabledButtons = false;
       } else {
         this.showNotificationFail(

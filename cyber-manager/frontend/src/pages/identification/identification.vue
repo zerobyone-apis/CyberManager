@@ -1,8 +1,5 @@
 <template transition="slide-x-transition">
-  <div
-    id="identification-page"
-    :class="`cyber_manager-window_${$store.getters.theme}`"
-  >
+  <div id="identification-page" :class="`cyber_manager-window_${$store.getters.theme}`">
     <MiniToolbar
       :class="`cyber_manager-background_${$store.getters.theme} mini-toolbar`"
       :buttons="miniToolbar"
@@ -132,8 +129,7 @@
                         small
                         depressed
                         v-on="on"
-                        >Cancelar</v-btn
-                      >
+                      >Cancelar</v-btn>
                     </template>
                   </confirm-dialog>
                 </template>
@@ -144,10 +140,7 @@
             <div class="right_content-box">
               <p class="cyber_manager-title">Lista de Ordenes</p>
 
-              <div
-                class="orders-box"
-                :class="`cyber_manager-box_${$store.getters.theme}`"
-              >
+              <div class="orders-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="search-box" v-if="orders.length">
                   <div class="select">
                     <v-select
@@ -173,15 +166,16 @@
 
                 <!-- custom header of table -->
                 <div class="table-header" v-if="orders.length">
+                  <div class="sort-box">
+                    <v-btn @click="changeSortId()" dark text fab small color="green">
+                      <v-icon v-if="modeSortId">keyboard_arrow_up</v-icon>
+                      <v-icon v-else>keyboard_arrow_down</v-icon>
+                    </v-btn>
+                  </div>
+
                   <div class="headers">
                     <v-layout row wrap>
-                      <v-flex
-                        xs2
-                        xl2
-                        sm2
-                        v-for="(header, index) in headerOrder"
-                        :key="index"
-                      >
+                      <v-flex xs2 xl2 sm2 v-for="(header, index) in headerOrder" :key="index">
                         <p
                           class="header_table-text"
                           :class="
@@ -189,31 +183,20 @@
                               ? 'header_light'
                               : 'header_dark'
                           "
-                        >
-                          {{ header.text }}
-                        </p>
+                        >{{ header.text }}</p>
                       </v-flex>
                     </v-layout>
                   </div>
                 </div>
 
                 <!-- table  -->
-                <div
-                  class="table-box"
-                  
-                >
-                  <div
-                    v-if="orders.length == 0 && search.value === ''"
-                    class="no-orders"
-                  >
+                <div class="table-box">
+                  <div v-if="orders.length == 0 && search.value === ''" class="no-orders">
                     <p>No tiene ordenes creadas</p>
                     <v-icon>search</v-icon>
                   </div>
 
-                  <div
-                    class="no-orders"
-                    v-if="filterItems() == 0 && search.value"
-                  >
+                  <div class="no-orders" v-if="filterItems() == 0 && search.value">
                     <p>No se encontraron coincidencias</p>
                     <v-icon>search</v-icon>
                   </div>
@@ -248,25 +231,16 @@
 
                     <div class="content-box">
                       <v-layout row wrap>
-                        <v-flex
-                          xs2
-                          xl2
-                          sm2
-                          v-for="(header, index) in headerOrder"
-                          :key="index"
-                        >
+                        <v-flex xs2 xl2 sm2 v-for="(header, index) in headerOrder" :key="index">
                           <p
                             v-if="header.value != 'status'"
                             class="item_table-text"
-                          >
-                            {{ item[header.value] }}
-                          </p>
+                          >{{ item[header.value] }}</p>
                           <v-chip
                             v-if="header.value == 'status'"
                             :color="getColorByStatus(item[header.value])"
                             outlined
-                            >{{ item[header.value] }}</v-chip
-                          >
+                          >{{ item[header.value] }}</v-chip>
                         </v-flex>
                       </v-layout>
                     </div>
@@ -408,10 +382,7 @@
             </div>
             <div class="right_content-box">
               <p class="cyber_manager-title">Reparacion y Garantia</p>
-              <div
-                class="repair-box"
-                :class="`cyber_manager-box_${$store.getters.theme}`"
-              >
+              <div class="repair-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="content-box">
                   <div class="diagnosis-box">
                     <v-textarea
@@ -440,9 +411,7 @@
         <v-stepper-content step="4">
           <div class="step-content">
             <div class="left_content-box">
-              <p class="cyber_manager-title pl-2">
-                Datos generales de la empresa
-              </p>
+              <p class="cyber_manager-title pl-2">Datos generales de la empresa</p>
               <div class="fields">
                 <v-text-field
                   :dark="$store.getters.theme == 'dark'"
@@ -485,12 +454,7 @@
                     :src="enterprise.urllogo"
                     alt
                   />
-                  <v-btn
-                    disabled
-                    depressed
-                    v-if="!enterprise.urllogo"
-                    class="btn-camera"
-                  >
+                  <v-btn disabled depressed v-if="!enterprise.urllogo" class="btn-camera">
                     <v-icon>camera_enhance</v-icon>
                     <!-- <span class="text-btn">Pulse AQUI para buscar</span> -->
                   </v-btn>
@@ -512,10 +476,7 @@
               />
             </div>
             <div class="right_content-box">
-              <div
-                class="enterprise-box"
-                :class="`cyber_manager-box_${$store.getters.theme}`"
-              >
+              <div class="enterprise-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="content">
                   <div class="pdf-fields">
                     <v-text-field
@@ -583,27 +544,14 @@
             </div>
 
             <div class="right_content-box">
-              <div
-                class="box-analytics"
-                :class="`cyber_manager-box_${$store.getters.theme}`"
-              >
+              <div class="box-analytics" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="content-analytics">
                   <div class="result-box">
-                    <p class="result-text">
-                      {{ analitycs.result.split(',')[0] }}
-                    </p>
-                    <p class="result-text">
-                      {{ analitycs.result.split(',')[1] }}
-                    </p>
-                    <p class="result-text">
-                      {{ analitycs.result.split(',')[2] }}
-                    </p>
-                    <p class="result-text">
-                      {{ analitycs.result.split(',')[3] }}
-                    </p>
-                    <p class="result">
-                      {{ !analitycs.result ? 'Resultado' : '' }}
-                    </p>
+                    <p class="result-text">{{ analitycs.result.split(',')[0] }}</p>
+                    <p class="result-text">{{ analitycs.result.split(',')[1] }}</p>
+                    <p class="result-text">{{ analitycs.result.split(',')[2] }}</p>
+                    <p class="result-text">{{ analitycs.result.split(',')[3] }}</p>
+                    <p class="result">{{ !analitycs.result ? 'Resultado' : '' }}</p>
                     <v-icon class="icon">trending_up</v-icon>
                   </div>
                 </div>
@@ -623,21 +571,22 @@
       ></v-progress-linear>
     </v-stepper>
 
-    <v-snackbar v-model="notification.visible" :color="notification.color">
-      {{ notification.message }}
-    </v-snackbar>
+    <v-snackbar
+      v-model="notification.visible"
+      :color="notification.color"
+    >{{ notification.message }}</v-snackbar>
   </div>
 </template>
 
 <script lang="ts">
-import IdentificationView from './identification.view';
-import './identification.scss';
-import '../../styles/CyberManager.scss';
-import { Component } from 'vue-property-decorator';
-import TimeField from '../../components/TimeField/TimeField.vue';
-import Footer from '../../components/Footer/Footer.vue';
-import MiniToolbar from '../../components/MiniToolbar/MiniToolbar.vue';
-import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog.vue';
+import IdentificationView from "./identification.view";
+import "./identification.scss";
+import "../../styles/CyberManager.scss";
+import { Component } from "vue-property-decorator";
+import TimeField from "../../components/TimeField/TimeField.vue";
+import Footer from "../../components/Footer/Footer.vue";
+import MiniToolbar from "../../components/MiniToolbar/MiniToolbar.vue";
+import ConfirmDialog from "../../components/ConfirmDialog/ConfirmDialog.vue";
 
 @Component({
   components: {

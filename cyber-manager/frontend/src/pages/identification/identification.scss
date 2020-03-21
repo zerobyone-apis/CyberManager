@@ -221,6 +221,11 @@
           padding-left: calc(20px + 5%);
           padding-right: calc(32px + 5%);
 
+          .sort-box {
+            position: absolute;
+            left: 20px;
+          }
+
           .headers {
             position: relative;
             width: 100%;
