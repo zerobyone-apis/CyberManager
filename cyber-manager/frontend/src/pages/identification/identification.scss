@@ -123,6 +123,7 @@
       // STEP 2 LEFT STYE
       .select-status {
         z-index: 2;
+        text-align: center;
 
         .v-input__icon {
           position: absolute;
@@ -137,6 +138,15 @@
           width: 100%;
           margin: auto;
           margin-top: 5px;
+
+          .v-chip__content {
+            margin: auto !important;
+
+            span {
+              font-size: large;
+              font-style: italic;
+            }
+          }
         }
       }
       // STEP 3 LEFT STYE - ENTERPRISE
