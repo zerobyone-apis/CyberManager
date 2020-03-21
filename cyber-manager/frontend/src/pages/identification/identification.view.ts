@@ -300,6 +300,9 @@ export default class IndentificationView extends vue {
   async init() {
     this.disabledButtons = true;
     this.orders = await this.orderActions.getAll();
+    this.orders.forEach(order =>
+      !order.price ? (order.price = 0) : (order.price = order.price)
+    );
     this.changeSortId();
     this.enterprise =
       (await this.enterpriseActions.get(this.userInfo)) || this.enterprise;
