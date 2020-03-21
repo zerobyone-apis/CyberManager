@@ -9,7 +9,7 @@ export default class OutputPdf extends Styles {
   generateDoc(enterprise: IEnterprise, order: IOrder, repair: IRepair) {
     this.init(80, 40);
     let doc = new jsPDF('p', 'px', [this.pageSize.width, this.pageSize.heigth]);
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       // size of all fonts in this document
       let fontSize = 8;
 
@@ -100,7 +100,7 @@ export default class OutputPdf extends Styles {
 
       this.drawLine(0.1, doc);
       this.writeText(
-        '  Total a pagar: ' + order.price,
+        '  Total a pagar: $ ' + order.price,
         fontSize + 3,
         'left',
         doc
@@ -126,7 +126,7 @@ export default class OutputPdf extends Styles {
 
       this.writeText('', 5, 'center', doc); // space
       this.writeText(enterprise.secondmessage || '', 8, 'center', doc);
-      this.drawLine(0.1, doc);
+      //this.drawLine(0.1, doc);
       this.writeText('', 5, 'center', doc); // space
     }
 
