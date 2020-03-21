@@ -6,128 +6,117 @@ import { IOrder } from '../../types/Order.type';
 import { IRepair } from '@/types/Repair.type';
 
 export default class OutputPdf extends Styles {
+
+  private colors = {
+    header: [171, 224, 233]
+  }
+
   generateDoc(enterprise: IEnterprise, order: IOrder, repair: IRepair) {
-    this.init(80, 40);
-    let doc = new jsPDF('p', 'px', [this.pageSize.width, this.pageSize.heigth]);
+
+    let doc: any = new jsPDF('p', 'px', [this.pageSize.width, this.pageSize.heigth]);
+
     for (let i = 0; i < 1; i++) {
-      // size of all fonts in this document
-      let fontSize = 8;
+      doc.autoTable({
+        didDrawCell: (data: any) => {
+          if (data.section === 'head' && data.column.index === 1) {
 
-      if (enterprise.urllogo) {
-        try {
-          let base64 = this.getBase64Image(document.getElementById('imageid'));
-          this.insertImage(base64, 40, 40, doc);
-        } catch (error) {
-          console.log('error cargando imagen - cancelando inclusion');
-        }
-      }
+            if (enterprise.urllogo) {
+              try {
+                let base64 = this.getBase64Image(document.getElementById('imageid'));
+                doc.addImage(base64, 'JPEG', data.cell.x + 130, data.cell.y - 20, 40, 40)
+              } catch (error) {
+                console.log('error cargando imagen - cancelando inclusion');
+              }
+            }
+          }
+        },
+        theme: 'plain',
+        columnStyles: { 1: { halign: 'right' } },
+        headStyles: { halign: 'center', textColor: 255, fillColor: 255 },
+        head: [['Datos de la orden', 'Empresa info']],
+        body: [
+          [`Fecha: ${order.admissionDateFront}`, `${enterprise.enterprisename}`],
+          [`Orden Nro: ${order.id}`, `${enterprise.location}`],
+          [`Cliente: ${order.clientname}`, `Cel: ${enterprise.cellphone}`],
+          ['', `Tel: ${enterprise.phone}`],
+        ],
+      })
 
-      // DRAW LINES ON THE PDF CONTENT
-      this.drawVerticalLinePrincipal(doc);
-      this.drawVerticalLinesItemsOutput(doc);
-      // END DRAW LINES
+      doc.autoTable({
+        theme: 'grid',
+        headStyles: { halign: 'center', textColor: 100, fillColor: this.colors.header },
+        bodyStyles: { halign: 'center' },
+        head: [['Articulo', 'Marca', 'Modelo']],
+        body: [
+          [order.article, order.brand, order.model],
+        ],
+      })
 
-      this.writeText(
-        'Fecha: ' + order.admissionDateFront,
-        fontSize + 2,
-        'left',
-        doc
-      );
-      this.writeText(
-        enterprise.enterprisename,
-        fontSize + 2,
-        'right',
-        doc,
-        true
-      );
-      this.writeText('Ordern N°: ' + order.id, fontSize + 2, 'left', doc);
-      this.writeText(enterprise.location, fontSize, 'right', doc, true);
-      this.writeText(
-        'Nombre del cliente: ' + order.clientname,
-        fontSize + 2,
-        'left',
-        doc
-      );
-      this.writeText(
-        'Cel: ' + enterprise.cellphone + '',
-        fontSize,
-        'right',
-        doc,
-        true
-      );
-      this.writeText('Tel: ' + enterprise.phone + '', fontSize, 'right', doc);
-      this.writeText('', 2, 'center', doc);
-      this.drawLine(0.1, doc);
+      doc.autoTable({
+        theme: 'grid',
+        headStyles: { halign: 'center', textColor: 100, fillColor: this.colors.header },
+        bodyStyles: { halign: 'center' },
+        head: [['Falla Reportada']],
+        body: [
+          [order.reportedfailure],
+        ],
+      })
 
-      this.writeText('  Articulo: ' + order.article, fontSize, 'left', doc);
-      this.writeText(
-        'Modelo: ' + order.model + '  ',
-        fontSize,
-        'right',
-        doc,
-        true
-      );
-      this.writeText(
-        ' Marca: ' + order.brand + '  ',
-        fontSize,
-        'center',
-        doc,
-        true
-      );
+      doc.autoTable({
+        theme: 'grid',
+        headStyles: { halign: 'center', textColor: 100, fillColor: this.colors.header },
+        bodyStyles: { halign: 'left' },
+        head: [['Reparacion']],
+        body: [
+          [order.reparation],
+        ],
+      })
 
-      this.drawLine(0.1, doc);
+      doc.autoTable({
+        theme: 'grid',
+        headStyles: { halign: 'center', textColor: 100, fillColor: this.colors.header },
+        bodyStyles: { halign: 'center' },
+        head: [['Garantia']],
+        body: [
+          [order.warranty],
+        ],
+      })
 
-      this.writeText('  Falla Reportada: ', fontSize + 2, 'left', doc);
-      this.drawLine(0.1, doc);
-      this.writeText(
-        ' - ' + order.reportedfailure || '',
-        fontSize,
-        'left',
-        doc
-      );
-      this.writeText('', 5, 'center', doc);
 
-      this.drawLine(0.2, doc);
-      this.writeText('  Reparacion: ', fontSize + 2, 'left', doc);
-      this.drawLine(0.1, doc);
-      this.writeText(' - ' + order.reparation || '', fontSize, 'left', doc);
-      this.writeText('', 5, 'center', doc);
+      doc.autoTable({
+        theme: 'plain',
+        columnStyles: { 1: { halign: 'right' } },
+        bodyStyles: { halign: 'right', textColor: 100, fillColor: 255 },
+        body: [
+          [{
+            content: `Total: $${order.price}`, styles: { fontSize: 18, halign: 'left', fillColor: 255, textColor: 100, lineColor: 255 }
+          }, ''],
+          ['', ''],
+          [
+            {
+              content: `Firma del cliente:__________________________`, styles: { halign: 'left' }
+            },
+            {
+              content: `Firma del Tecnico:__________________________`, styles: { halign: 'right' }
+            }
+          ]
+        ]
+      })
 
-      this.drawLine(0.2, doc);
-      this.writeText(' Garantia: ', fontSize + 2, 'center', doc);
-      this.drawLine(0.1, doc);
-      this.writeText(repair.warranty || '', fontSize, 'center', doc);
+      doc.autoTable({
+        theme: 'plain',
+        columnStyles: { 1: { halign: 'right' } },
+        bodyStyles: { halign: 'right', textColor: 100, fillColor: 255 },
+        body: [
+          [{
+            content: enterprise.firstmessage == undefined
+              ? ''
+              : enterprise.secondmessage + '', styles: { halign: 'center', textColor: 100, fillColor: 255 }
+          }],
+        ]
+      })
 
-      this.drawLine(0.1, doc);
-      this.writeText(
-        '  Total a pagar: $ ' + order.price,
-        fontSize + 3,
-        'left',
-        doc
-      );
-      this.drawLine(0.1, doc);
 
-      this.writeText('', 5, 'center', doc); // space
-
-      this.writeText(
-        'Firma de Cliente:________________',
-        fontSize,
-        'left',
-        doc
-      );
-
-      this.writeText(
-        'Firma de Tecnico:________________ ',
-        fontSize,
-        'right',
-        doc,
-        true
-      );
-
-      this.writeText('', 5, 'center', doc); // space
-      this.writeText(enterprise.secondmessage || '', 8, 'center', doc);
-      //this.drawLine(0.1, doc);
-      this.writeText('', 5, 'center', doc); // space
     }
 
     doc.save('Salida');
