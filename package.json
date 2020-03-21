@@ -27,7 +27,7 @@
   "license": "MIT",
   "build": {
     "appId": "CyberManager_v3",
-    "asar": false,
+    "asar": true,
     "files": [
       "electron/**/*",
       "node_modules/**/*",

@@ -90,8 +90,8 @@ export default class Styles {
       this.marginsText.width,
       this.positionText.y,
       this.pageSize.width -
-      this.pageSize.exededWidth -
-      this.marginsText.width * 2,
+        this.pageSize.exededWidth -
+        this.marginsText.width * 2,
       0.5
     ); //Fill and Border
   }
@@ -101,7 +101,7 @@ export default class Styles {
     doc.setLineWidth(1);
     doc.setDrawColor(160, 200, 160);
     doc.line(70, 75, 70, 310); // vertical line
-    doc.line(70, 360, 70, 585); // vertical line
+    //doc.line(70, 360, 70, 585); // vertical line
   }
 
   drawVerticalLinesItemsInput(doc: jsPDF) {
@@ -109,17 +109,17 @@ export default class Styles {
     doc.setDrawColor(160, 200, 160);
     /*    DRAW LINES FIRST MENU           **/
     doc.line(80, 143, 80, 157);
-    doc.line(158, 143, 158, 157);
-    doc.line(280, 143, 280, 157);
+    doc.line(182, 143, 182, 157);
+    doc.line(265, 143, 265, 157);
     doc.line(360, 143, 360, 157);
-    3; /*   DRAW LINES 3ORDER FIRST MENU            **/
+    /*   DRAW LINES 3ORDER FIRST MENU            **/
     doc.line(80, 143, 80, 263);
     doc.line(360, 143, 360, 263);
 
     /*    DRAW LINES SECOND MENU           **/
     doc.line(80, 423, 80, 437);
-    doc.line(158, 423, 158, 437);
-    doc.line(280, 423, 280, 437);
+    doc.line(182, 423, 182, 437);
+    doc.line(265, 423, 265, 437);
     doc.line(360, 423, 360, 437);
     4; /*   DRAW LINES 4ORDER SECOND MENU            **/
     doc.line(80, 423, 80, 543);
@@ -131,8 +131,8 @@ export default class Styles {
     doc.setDrawColor(160, 200, 160);
     /*    DRAW LINES FIRST MENU           **/
     doc.line(80, 141, 80, 153);
-    doc.line(158, 141, 158, 153);
-    doc.line(280, 141, 280, 153);
+    doc.line(182, 141, 182, 153);
+    doc.line(265, 141, 265, 153);
     doc.line(360, 141, 360, 153);
 
     /*   DRAW LINES BORDER FIRST MENU            **/
@@ -140,13 +140,13 @@ export default class Styles {
     doc.line(360, 141, 360, 283);
 
     /*    DRAW LINES SECOND MENU           **/
-    doc.line(80, 429, 80, 441);
-    doc.line(158, 429, 158, 441);
-    doc.line(280, 429, 280, 441);
-    doc.line(360, 429, 360, 441);
+    //doc.line(80, 429, 80, 441);
+    //doc.line(158, 429, 158, 441);
+    //doc.line(280, 429, 280, 441);
+    //doc.line(360, 429, 360, 441);
     /*   DRAW LINES SECOND MENU            **/
-    doc.line(80, 429, 80, 572);
-    doc.line(360, 429, 360, 572);
+    //doc.line(80, 429, 80, 572);
+    //doc.line(360, 429, 360, 572);
   }
 
   write(
@@ -163,7 +163,7 @@ export default class Styles {
       // properties position
       switch (pos) {
         case 'left':
-          coo.x = this.marginsText.width+2;
+          coo.x = this.marginsText.width + 2;
           break;
         case 'center':
           let widthText = doc.getTextWidth(text);
@@ -193,11 +193,12 @@ export default class Styles {
           let words = line.split(' ');
           words.forEach(word => {
             let lengthW = doc.getTextWidth(word + ' ');
-            if (lengthW + coo.x+2 < this.pageSize.width - 230) { // 200
+            if (lengthW + coo.x + 2 < this.pageSize.width - 230) {
+              // 200
               doc.text(word + ' ', coo.x, coo.y);
               coo.x += lengthW;
             } else {
-              coo.x = this.marginsText.width+3;
+              coo.x = this.marginsText.width + 3;
               coo.y += 10;
               doc.text(word + ' ', coo.x, coo.y);
               coo.x += lengthW;
@@ -205,12 +206,9 @@ export default class Styles {
           });
           // save position
           this.positionText.y = coo.y;
-          coo.x = this.marginsText.width+3;
+          coo.x = this.marginsText.width + 3;
           coo.y += 10;
-        })
-
-
-
+        });
       }
       this.positionText.y = coo.y;
     }
