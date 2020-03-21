@@ -13,117 +13,78 @@ export interface IInputPdf {
 }
 
 export default class InputPdf extends Styles {
+
   generateDoc(enterprise: IEnterprise, order: IOrder) {
-    this.init(80, 40);
     let doc = new jsPDF('p', 'px', [this.pageSize.width, this.pageSize.heigth]);
+
     for (let i = 0; i < 2; i++) {
-      // size of all fonts in this document
-      let fontSize = 8;
 
-      if (enterprise.urllogo) {
-        try {
-          let base64 = this.getBase64Image(document.getElementById('imageid'));
-          this.insertImage(base64, 40, 40, doc);
-        } catch (error) {
-          console.log('error cargando imagen - cancelando inclusion');
-        }
-      }
+      doc.autoTable({
+        didDrawCell: (data: any) => {
+          if (data.section === 'head' && data.column.index === 1) {
 
-      // DRAW LINES ON THE PDF CONTENT
-      this.drawVerticalLinePrincipal(doc);
-      this.drawVerticalLinesItemsInput(doc);
-      // END DRAW LINES
+            if (enterprise.urllogo) {
+              try {
+                let base64 = this.getBase64Image(document.getElementById('imageid'));
+                doc.addImage(base64, 'JPEG', data.cell.x + 130, data.cell.y - 20, 40, 40)
+              } catch (error) {
+                console.log('error cargando imagen - cancelando inclusion');
+              }
+            }
 
-      this.writeText(
-        'Fecha: ' + order.admissionDateFront,
-        fontSize + 2,
-        'left',
-        doc
-      );
-      this.writeText(
-        enterprise.enterprisename,
-        fontSize + 2,
-        'right',
-        doc,
-        true
-      );
-      this.writeText('Ordern N°: ' + order.id, fontSize + 2, 'left', doc);
-      this.writeText(enterprise.location, fontSize, 'right', doc, true);
-      this.writeText(
-        'Nombre del cliente: ' + order.clientname,
-        fontSize + 2,
-        'left',
-        doc
-      );
-      this.writeText(
-        'Cel: ' + enterprise.cellphone + '',
-        fontSize,
-        'right',
-        doc,
-        true
-      );
-      this.writeText('Tel: ' + enterprise.phone + '', fontSize, 'right', doc);
-      this.writeText('', 5, 'center', doc);
+          }
+        },
 
-      this.drawLine(0.1, doc);
-      this.writeText(' Articulo: ' + order.article, fontSize + 2, 'left', doc);
-      this.writeText(
-        'Modelo: ' + order.model + '  ',
-        fontSize + 2,
-        'right',
-        doc,
-        true
-      );
-      this.writeText(
-        ' Marca: ' + order.brand,
-        fontSize + 2,
-        'center',
-        doc,
-        true
-      );
+        theme: 'plain',
+        columnStyles: { 1: { halign: 'right' } },
+        headStyles: { halign: 'center', textColor: 255, fillColor: 255 },
+        head: [['Datos de la orden', 'Empresa info']],
+        body: [
+          [`Fecha: ${order.admissionDateFront}`, `${enterprise.enterprisename}`],
+          [`Orden Nro: ${order.id}`, `${enterprise.location}`],
+          [`Cliente: ${order.clientname}`, `Cel: ${enterprise.cellphone}`],
+          ['', `Tel: ${enterprise.phone}`],
+        ],
+      })
 
-      this.drawLine(0.1, doc);
-      this.writeText(' Falla Reportada: ', fontSize + 2, 'left', doc);
-      this.drawLine(0.1, doc);
-      this.writeText(' - ' + order.reportedfailure, fontSize, 'left', doc);
-      this.writeText('', 20, 'left', doc);
-      this.drawLine(0.1, doc);
-      //Observations
-      this.writeText(' Observaciones: ', fontSize + 2, 'left', doc);
-      this.drawLine(0.1, doc);
-      this.writeText(
-        typeof order.observations == 'undefined'
-          ? ''
-          : ' - ' + order.observations,
-        fontSize,
-        'left',
-        doc
-      );
-      this.writeText('', 15, 'left', doc); // space
-      this.drawLine(0.1, doc);
-      this.writeText('', 5, 'left', doc); // space
-      this.writeText(
-        'Firma del cliente:________________________________ ',
-        fontSize,
-        'right',
-        doc
-      );
-      this.writeText('', 10, 'left', doc);
-      this.writeText(
-        enterprise.firstmessage == undefined
-          ? ''
-          : enterprise.secondmessage + '',
-        7,
-        'center',
-        doc
-      );
-      this.writeText('', 5, 'left', doc);
-      this.drawLine(0.1, doc);
-      this.writeText('', 5, 'left', doc);
+      doc.autoTable({
+        theme: 'grid',
+        headStyles: { halign: 'center', textColor: 100, fillColor: 200 },
+        bodyStyles: { halign: 'center' },
+        head: [['Articulo', 'Marca', 'Modelo']],
+        body: [
+          [order.article, order.brand, order.model],
+        ],
+      })
+
+      doc.autoTable({
+        theme: 'grid',
+        headStyles: { halign: 'center', textColor: 100, fillColor: 200 },
+        bodyStyles: { halign: 'center' },
+        head: [['Falla Reportada']],
+        body: [
+          [order.reportedfailure],
+        ],
+      })
+
+      doc.autoTable({
+        theme: 'plain',
+        columnStyles: { 1: { halign: 'right' } },
+        bodyStyles: { halign: 'right', textColor: 100, fillColor: 255 },
+        body: [
+          ['Firma del cliente:________________________________ '],
+          [''],
+          [{
+            content: enterprise.firstmessage == undefined
+              ? ''
+              : enterprise.secondmessage + '', styles: { halign: 'center', fillColor: 200, textColor: 100 }
+          }],
+          [''], 
+          ['']
+        ]
+      })
     }
+
     doc.save('Ingreso');
-    //doc.autoPrint();
-    //This is a key for printing
-    //doc.output('dataurlnewwindow');
   }
 }
