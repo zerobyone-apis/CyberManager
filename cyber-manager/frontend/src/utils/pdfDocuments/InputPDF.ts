@@ -15,7 +15,7 @@ export interface IInputPdf {
 export default class InputPdf extends Styles {
 
   generateDoc(enterprise: IEnterprise, order: IOrder) {
-    let doc = new jsPDF('p', 'px', [this.pageSize.width, this.pageSize.heigth]);
+    let doc: any  = new jsPDF('p', 'px', [this.pageSize.width, this.pageSize.heigth]);
 
     for (let i = 0; i < 2; i++) {
 

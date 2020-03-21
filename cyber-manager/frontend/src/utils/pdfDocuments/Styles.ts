@@ -1,4 +1,5 @@
 import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 export default class Styles {
   // dimensions of a page a4 = 595 x 842
@@ -48,7 +49,7 @@ export default class Styles {
     let cooX =
       this.pageSize.width -
       this.pageSize.exededWidth -
-      (width + this.marginsText.width);
+      (width + this.marginsText.width + 20);
     doc.addImage(img, 'jpg', cooX, this.positionText.y, width, height);
     this.positionText.y += height + 5;
   }
