@@ -90,8 +90,8 @@ export default class Styles {
       this.marginsText.width,
       this.positionText.y,
       this.pageSize.width -
-        this.pageSize.exededWidth -
-        this.marginsText.width * 2,
+      this.pageSize.exededWidth -
+      this.marginsText.width * 2,
       0.5
     ); //Fill and Border
   }
@@ -188,21 +188,29 @@ export default class Styles {
         doc.text(text, coo.x, coo.y);
       } else if (pos == 'left') {
         // word to word
-        let words = text.split(' ');
-        words.forEach(word => {
-          let lengthW = doc.getTextWidth(word + ' ');
-          if (lengthW + coo.x < this.pageSize.width - 200) {
-            doc.text(word + ' ', coo.x, coo.y);
-            coo.x += lengthW;
-          } else {
-            coo.x = this.marginsText.width;
-            coo.y += 10;
-            doc.text(word + ' ', coo.x, coo.y);
-            coo.x += lengthW;
-          }
-        });
-        //save position
-        this.positionText.y = coo.y;
+        let lines = text.split('\n');
+        lines.forEach(line => {
+          let words = line.split(' ');
+          words.forEach(word => {
+            let lengthW = doc.getTextWidth(word + ' ');
+            if (lengthW + coo.x < this.pageSize.width - 220) { // 200
+              doc.text(word + ' ', coo.x+2, coo.y);
+              coo.x += lengthW;
+            } else {
+              coo.x = this.marginsText.width +2;
+              coo.y += 10;
+              doc.text(word + ' ', coo.x, coo.y);
+              coo.x += lengthW;
+            }
+          });
+          //save position
+          this.positionText.y = coo.y;
+          coo.x = this.marginsText.width;
+          coo.y += 10;
+        })
+
+
+
       }
       this.positionText.y = coo.y;
     }
