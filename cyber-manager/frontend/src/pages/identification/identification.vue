@@ -86,21 +86,23 @@
                   class="cyber_manager-text_field"
                 ></v-text-field>
 
-                <v-text-field
+                <v-textarea
                   :dark="$store.getters.theme == 'dark'"
                   v-model="newOrder.reportedfailure"
                   dense
+                  class="cyber_manager-text_field text-area"
+                  name="input-7-1"
                   label="Daño reportado"
-                  class="cyber_manager-text_field"
-                ></v-text-field>
+                ></v-textarea>
 
-                <v-text-field
+                <v-textarea
                   :dark="$store.getters.theme == 'dark'"
                   v-model="newOrder.observations"
                   dense
                   label="Notas"
-                  class="cyber_manager-text_field"
-                ></v-text-field>
+                  class="cyber_manager-text_field text-area"
+                  name="input-7-1"
+                ></v-textarea>
               </div>
 
               <Footer
