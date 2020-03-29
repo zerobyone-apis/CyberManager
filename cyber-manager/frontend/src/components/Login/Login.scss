@@ -8,6 +8,34 @@
   background-color: rgba(97, 97, 97, 0.781);
 }
 
+.stepper {
+  height: 500px;
+  // overflow-y: scroll;
+  background-color: rgba(255, 255, 255, 0) !important;
+  // height: 90%;
+  border-radius: 15px;
+  // padding-left: 40px;
+  // padding-right: 40px;
+  box-shadow: none;
+
+  .v-stepper__items {
+    height: 100% !important;
+    .v-stepper__content {
+      height: 100% !important;
+      .v-stepper__wrapper {
+        height: 100% !important;
+      }
+    }
+  }
+}
+
+// DEFAULT STEP STRUCTURE
+.step-content {
+  // display: flex;
+  height: 100%;
+  // min-height: 600px;
+}
+
 .organize__select-field {
   margin-bottom: 15px;
 
