@@ -239,7 +239,7 @@
                           <v-chip
                             v-if="header.value == 'status'"
                             :color="getColorByStatus(item[header.value])"
-                            outlined
+                            :outlined="$store.getters.theme  === 'dark' ? true : false"
                           >{{ item[header.value] }}</v-chip>
                         </v-flex>
                       </v-layout>
