@@ -1,7 +1,7 @@
 export default class IntegrationBackend {
-  private baseUrl = 'https://cyber-manager-backend-pg.herokuapp.com';
-  // private baseUrl = 'https://cyber-manager-backend-pg.herokuapp.com/'; -> Postgres = Latest v3
-  // private baseUrl = 'https://cyber-manager-back-v2.herokuapp.com'; -> Mysql = v2
+  private baseUrl = 'https://cyber-manager-back-v2.herokuapp.com'; //-> Postgres = Latest v4
+  //private baseUrl = 'https://cyber-manager-backend-pg.herokuapp.com';
+  // private baseUrl = 'https://cyber-manager-backend-pg.herokuapp.com/'; //-> Postgres = Latest v3
   //private baseUrl = 'http://localhost:3000';
   private axios = require('axios');
 
