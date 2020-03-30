@@ -20,6 +20,7 @@ export default class InputPdf extends Styles {
     ]);
     const COLORS_HEADERS = [171, 224, 233];
 
+    let marginTop: number = -15;
     for (let i = 0; i < 2; i++) {
       doc.autoTable({
         didDrawCell: (data: any) => {
@@ -43,7 +44,6 @@ export default class InputPdf extends Styles {
             }
           }
         },
-
         theme: 'plain',
         columnStyles: { 1: { halign: 'right' } },
         headStyles: {
@@ -64,18 +64,23 @@ export default class InputPdf extends Styles {
       });
 
       doc.autoTable({
+        headStyles: { halign: 'center' },
+        showHead: 'never',
+        showFoot: 'never',
         theme: 'grid',
-        headStyles: {
-          halign: 'center',
-          textColor: 100,
-          fillColor: COLORS_HEADERS
-        },
-        bodyStyles: { halign: 'center' },
-        head: [['Articulo', 'Marca', 'Modelo']],
-        body: [[order.article, order.brand, order.model]]
+        head: [['', '']],
+        body: [
+          [
+            `Nombre del cliente: ${order.clientname}`,
+            `Telefono: ${order.clientphone}`
+          ],
+          [`Articulo: ${order.article}`, `Modelo: ${order.model}`],
+          [`Marca: ${order.brand}`, `Serie: No tiene`]
+        ]
       });
 
       doc.autoTable({
+        showHead: 'never',
         theme: 'grid',
         headStyles: {
           halign: 'center',
@@ -101,6 +106,7 @@ export default class InputPdf extends Styles {
 
       doc.autoTable({
         theme: 'plain',
+        margin: { top: -15, bottom: -30 },
         columnStyles: { 1: { halign: 'right' } },
         bodyStyles: { halign: 'right', textColor: 50, fillColor: 255 },
         body: [

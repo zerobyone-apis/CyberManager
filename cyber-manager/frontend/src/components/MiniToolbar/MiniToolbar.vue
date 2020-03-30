@@ -16,8 +16,9 @@
       </v-btn>
     </div>
 
-    <div class="right-box">
+    <!-- right box - user system options -->
 
+    <div class="right-box">
       <v-icon text v-if="true" @click="changeVisualMode()">{{ themes[currentMode].icon }}</v-icon>
 
       <v-menu offset-y dark>
@@ -37,6 +38,19 @@
             <template v-slot:button="{ on }">
               <v-list-item v-on="on">
                 <v-list-item-title>Cerrar sesion</v-list-item-title>
+              </v-list-item>
+            </template>
+          </confirm-dialog>
+
+          <confirm-dialog
+            dark
+            v-model="showDialogDeleteAccount"
+            @onSelectAction="(action)=>{ action ? deleteAccount() : false }"
+            :info-values="confirmDialogDeleteAccount"
+          >
+            <template v-slot:button="{ on }">
+              <v-list-item v-on="on" style="background-color: rgba(148, 32, 32, 0.651);">
+                <v-list-item-title>Eliminar esta cuenta</v-list-item-title>
               </v-list-item>
             </template>
           </confirm-dialog>

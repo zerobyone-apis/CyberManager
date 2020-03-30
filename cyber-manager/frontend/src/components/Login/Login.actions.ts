@@ -20,6 +20,8 @@ export default class LoginActions extends vue {
 
   private disabledButtons: boolean = false;
 
+  private wizard: number = 0;
+
   private fieldRules: any = [
     (v: string) =>
       (!!v && this.disabledButtons == false) || 'Este campo es requerido!'
