@@ -372,10 +372,7 @@ export default class OutputPdf extends Styles {
           ],
           [
             {
-              content:
-                enterprise.firstmessage && enterprise.firstmessage != undefined
-                  ? enterprise.firstmessage
-                  : '',
+              content: enterprise.enterpriserules,
               colSpan: 4,
               styles: {
                 halign: 'center',

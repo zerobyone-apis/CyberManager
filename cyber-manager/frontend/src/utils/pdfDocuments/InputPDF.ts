@@ -306,10 +306,7 @@ export default class InputPdf extends Styles {
           ],
           [
             {
-              content:
-                enterprise.firstmessage && enterprise.firstmessage != undefined
-                  ? enterprise.firstmessage
-                  : '',
+              content: enterprise.enterpriserules,
               styles: {
                 halign: 'center',
                 fillColor: 255,

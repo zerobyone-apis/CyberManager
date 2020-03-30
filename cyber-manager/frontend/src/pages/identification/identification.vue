@@ -481,7 +481,17 @@
               <div class="enterprise-box" :class="`cyber_manager-box_${$store.getters.theme}`">
                 <div class="content">
                   <div class="pdf-fields">
-                    <v-text-field
+                    
+                    <v-textarea
+                      :dark="$store.getters.theme == 'dark'"
+                      v-model="enterprise.enterpriserules"
+                      label="Pie de factura"
+                      class="cyber_manager-text_field text-area"
+                      name="input-7-1"
+                      dense
+                    ></v-textarea>
+
+                    <!-- <v-text-field
                       :dark="$store.getters.theme == 'dark'"
                       v-model="enterprise.enterpriserules"
                       label="Reglas de la empresa"
@@ -498,7 +508,7 @@
                       v-model="enterprise.secondmessage"
                       label="Anotacion en el pie del reporte de salida"
                       class="cyber_manager-text_field"
-                    ></v-text-field>
+                    ></v-text-field>-->
                   </div>
                 </div>
               </div>
