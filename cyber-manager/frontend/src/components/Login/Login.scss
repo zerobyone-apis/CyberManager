@@ -29,6 +29,16 @@
   }
 }
 
+.button-register {
+  position: relative;
+  top: 50px;
+  // background-color: green;
+
+  p {
+    color: rgba(255, 255, 255, 0.65);
+  }
+}
+
 // DEFAULT STEP STRUCTURE
 .step-content {
   // display: flex;

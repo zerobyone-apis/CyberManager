@@ -37,14 +37,19 @@
                 depressed
               >Acceder</v-btn>
 
-              <v-btn
-                @click="wizard = 1"
-                :dark="!disabledButtons"
-                class="mt-4 mb-4 organize__button"
-                color="green darken-3"
-                small
-                depressed
-              >Registrarse Aqui</v-btn>
+              <div class="button-register">
+                <p>Si no tiene una cuenta</p>
+                <v-btn
+                  @click="wizard = 1"
+                  :dark="!disabledButtons"
+                  class="organize__button"
+                  color="green darken-3"
+                  small
+                  depressed
+                  outlined
+                >Registrarse Aqui</v-btn>
+              </div>
+
             </v-form>
           </div>
         </v-stepper-content>
