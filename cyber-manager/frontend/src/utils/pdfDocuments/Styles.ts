@@ -224,7 +224,6 @@ export default class Styles {
       ); //Fill and Border
     }
   }
-
   getBase64Image(img: any) {
     var canvas = document.createElement('canvas');
     canvas.width = img.width;

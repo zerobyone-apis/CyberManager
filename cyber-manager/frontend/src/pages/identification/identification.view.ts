@@ -247,14 +247,16 @@ export default class IndentificationView extends vue {
       case 2:
         new InputPdf().generateDoc(
           this.enterprise,
-          this.orders[this.selectedOrder]
+          this.orders[this.selectedOrder],
+          this.userInfo
         );
         break;
       case 3:
         new OutputPdf().generateDoc(
           this.enterprise,
           this.orders[this.selectedOrder],
-          this.repair
+          this.repair,
+          this.userInfo
         );
         break;
       default:
@@ -502,17 +504,17 @@ export default class IndentificationView extends vue {
         this.analitycs.result = `Articulos: ${
           result.cantarticles === null ? 0 : result.cantarticles
         }, 
-                                 Precio Total: $${
+                                 Total: $${
                                    result.totalprice === null
                                      ? 0
                                      : result.totalprice
                                  }, 
-                                 Precio total de reparacion: $${
+                                 Costo de reparacion: $${
                                    result.totalreplacementprice === null
                                      ? 0
                                      : result.totalreplacementprice
                                  }, 
-                                 Precio Neto: $${
+                                 Ganancia: $${
                                    result.netoprice === null
                                      ? 0
                                      : result.netoprice
