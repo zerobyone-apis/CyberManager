@@ -90,7 +90,7 @@
                   :dark="$store.getters.theme == 'dark'"
                   v-model="newOrder.reportedfailure"
                   dense
-                  class="cyber_manager-text_field text-area"
+                  class="cyber_manager-text_field text-area text-area_small"
                   name="input-7-1"
                   label="Daño reportado"
                 ></v-textarea>
@@ -100,7 +100,7 @@
                   v-model="newOrder.observations"
                   dense
                   label="Notas"
-                  class="cyber_manager-text_field text-area"
+                  class="cyber_manager-text_field text-area text-area_small"
                   name="input-7-1"
                 ></v-textarea>
               </div>

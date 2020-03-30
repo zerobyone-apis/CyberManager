@@ -78,6 +78,14 @@ select:-webkit-autofill:focus {
       padding: 5px 20px 5px 20px;
     }
   }
+
+  .text-area_small {
+    textarea {
+      height: 75px;
+    }
+
+  }
+
 }
 
 // LIGHT MODE
