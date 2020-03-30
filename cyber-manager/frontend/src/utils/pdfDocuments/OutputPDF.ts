@@ -389,7 +389,7 @@ export default class OutputPdf extends Styles {
       });
     }
 
-    doc.save('Salida');
+    doc.save(`${order.clientname}_${order.article}_Salida`);
     //doc.autoPrint();
     //This is a key for printing
     //doc.output('dataurlnewwindow');

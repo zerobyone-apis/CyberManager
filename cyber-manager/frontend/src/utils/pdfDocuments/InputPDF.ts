@@ -322,6 +322,6 @@ export default class InputPdf extends Styles {
       marginTop = -40;
     }
 
-    doc.save('Ingreso');
+    doc.save(`${order.clientname}_${order.article}_Ingreso`);
   }
 }
