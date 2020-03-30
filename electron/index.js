@@ -67,6 +67,9 @@ function loadHomePage() {
 // Some APIs can only be used after this event occurs.
 app.on('ready', function() {
   baseUrl = `https://cyber-manager-latest.now.sh/`;
+  //baseUrl = `https://cyber-manager-pg-v3-0-6.now.sh`;
+  //baseUrl = `https://cyber-manager-pg-v3-0-5.now.sh`;
+  //baseUrl = `https://cyber-manager-pg-v3-0-4.now.sh`;
   //baseUrl = `https://cyber-manager-pg-v3-0-3.now.sh`;
   //baseUrl = `https://cyber-manager-pg-v3-0-2.now.sh`;
   //baseUrl = `https://cyber-manager-pg-v3-0-1.now.sh/#/`;

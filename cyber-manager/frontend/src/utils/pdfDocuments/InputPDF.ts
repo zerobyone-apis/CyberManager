@@ -68,7 +68,7 @@ export default class InputPdf extends Styles {
               }
             },
             {
-              content: enterprise.enterprisename + ' informaticas', //Testing the long of name printer.
+              content: enterprise.enterprisename,
               styles: {
                 cellWidth: 180,
                 halign: 'center',
