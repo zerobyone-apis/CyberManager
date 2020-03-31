@@ -290,7 +290,15 @@ export default class InputPdf extends Styles {
                 lineWidth: 1
               }
             },
-            order.reportedfailure
+            {
+              content: order.reportedfailure,
+              styles: {
+                lineColor: 200,
+                cellWidth: 'auto',
+                fontStyle: 'bolditalic',
+                lineWidth: 1
+              }
+            }
           ],
           [
             {
@@ -303,7 +311,16 @@ export default class InputPdf extends Styles {
                 fontStyle: 'bolditalic'
               }
             },
-            order.observations
+            {
+              content: order.observations,
+              styles: {
+                lineColor: 200,
+                lineWidth: 1,
+                cellWidth: 'auto',
+                textColor: 100,
+                fontStyle: 'bolditalic'
+              }
+            }
           ]
         ]
       });
