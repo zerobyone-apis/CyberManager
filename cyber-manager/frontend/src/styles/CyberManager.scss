@@ -12,6 +12,18 @@ select:-webkit-autofill:focus {
   box-shadow: 0 0 0px 1000px #222222 inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
+// Text area Ambos temas!
+.text-area {
+  textarea {
+    padding: 7px 20px 5px 20px;
+  }
+}
+
+.text-area_small {
+  textarea {
+    height: 75px;
+  }
+}
 
 // All MENU - SELECT
 .v-list {
@@ -72,20 +84,6 @@ select:-webkit-autofill:focus {
       color: rgb(209, 209, 209);
     }
   }
-
-  .text-area {
-    textarea {
-      padding: 5px 20px 5px 20px;
-    }
-  }
-
-  .text-area_small {
-    textarea {
-      height: 75px;
-    }
-
-  }
-
 }
 
 // LIGHT MODE
@@ -134,14 +132,14 @@ select:-webkit-autofill:focus {
 }
 
 .font-text {
-  font-family: "Inter beta", sans-serif;
+  font-family: 'Inter beta', sans-serif;
   font-weight: 300;
   text-transform: none;
   box-shadow: 1px, 3px #ffffff4f;
 }
 
 .font-error {
-  font-family: "Inter beta", sans-serif;
+  font-family: 'Inter beta', sans-serif;
   color: #ff7a7ad5;
   font-weight: 300;
   text-transform: none;

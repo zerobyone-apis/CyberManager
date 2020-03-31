@@ -119,6 +119,7 @@ export default class OutputPdf extends Styles {
               styles: {
                 cellWidth: 100,
                 textColor: 100,
+                lineColor: 200,
                 lineWidth: 1,
                 fontStyle: 'bolditalic'
               }
@@ -137,7 +138,7 @@ export default class OutputPdf extends Styles {
           [
             {
               content: `Fecha: ${order.admissionDateFront}`,
-              styles: { textColor: 100, lineWidth: 1 }
+              styles: { textColor: 100, lineColor: 200, lineWidth: 1 }
             },
             {
               content: '',
@@ -162,12 +163,16 @@ export default class OutputPdf extends Styles {
               content: 'Nombre del cliente ',
               styles: {
                 cellWidth: 80,
+                lineColor: 200,
+                lineWidth: 1,
                 fontStyle: 'bolditalic'
               }
             },
             {
-              content: order.clientname,
+              content: order.clientname ? order.clientname : '',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 150,
                 fontStyle: 'normal'
               }
@@ -175,13 +180,17 @@ export default class OutputPdf extends Styles {
             {
               content: 'Telefono ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 'auto',
                 fontStyle: 'bolditalic'
               }
             },
             {
-              content: order.clientphone,
+              content: order.clientphone ? order.clientphone : '',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -191,13 +200,17 @@ export default class OutputPdf extends Styles {
             {
               content: 'Articulo ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 'auto',
                 fontStyle: 'bolditalic'
               }
             },
             {
-              content: order.article,
+              content: order.article ? order.article : '',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -205,13 +218,17 @@ export default class OutputPdf extends Styles {
             {
               content: 'Modelo: ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 'auto',
                 fontStyle: 'bolditalic'
               }
             },
             {
-              content: order.model,
+              content: order.model ? order.model : '',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -221,13 +238,17 @@ export default class OutputPdf extends Styles {
             {
               content: 'Marca ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 'auto',
                 fontStyle: 'bolditalic'
               }
             },
             {
-              content: order.brand,
+              content: order.brand ? order.brand : '',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -235,6 +256,8 @@ export default class OutputPdf extends Styles {
             {
               content: 'Serie: ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 'auto',
                 fontStyle: 'bolditalic'
               }
@@ -242,6 +265,8 @@ export default class OutputPdf extends Styles {
             {
               content: 'No tiene',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -251,14 +276,18 @@ export default class OutputPdf extends Styles {
             {
               content: 'Diagnostico: ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 52,
                 fontStyle: 'bolditalic'
               }
             },
             {
-              content: order.reportedfailure,
+              content: order.reportedfailure ? order.reportedfailure : '',
               colSpan: 3,
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -268,14 +297,18 @@ export default class OutputPdf extends Styles {
             {
               content: 'Reparacion: ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 52,
                 fontStyle: 'bolditalic'
               }
             },
             {
-              content: order.reparation,
+              content: order.reparation ? order.reparation : '',
               colSpan: 3,
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -285,6 +318,8 @@ export default class OutputPdf extends Styles {
             {
               content: 'Garantia: ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 50,
                 textColor: 100,
                 fontStyle: 'bolditalic'
@@ -294,6 +329,8 @@ export default class OutputPdf extends Styles {
               content: order.warranty ? order.warranty : '',
               colSpan: 3,
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -323,6 +360,7 @@ export default class OutputPdf extends Styles {
                 fontStyle: 'bolditalic',
                 fillColor: 255,
                 textColor: 100,
+                lineColor: 200,
                 lineWidth: 1
               }
             },
@@ -365,6 +403,7 @@ export default class OutputPdf extends Styles {
               styles: {
                 halign: 'center',
                 cellPadding: { top: 25, left: 0, right: 0, bottom: 5 },
+                lineColor: 200,
                 lineWidth: 1
               }
             },
@@ -372,13 +411,13 @@ export default class OutputPdf extends Styles {
           ],
           [
             {
-              content:
-                enterprise.enterpriserules || '',
+              content: enterprise.enterpriserules || '',
               colSpan: 4,
               styles: {
                 halign: 'center',
                 fillColor: 255,
                 textColor: 100,
+                lineColor: 200,
                 lineWidth: 1
               }
             }
