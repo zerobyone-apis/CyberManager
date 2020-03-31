@@ -548,7 +548,7 @@
                       :dark="$store.getters.theme == 'dark'"
                       v-model="enterprise.enterpriserules"
                       label="Pie de factura"
-                      class="cyber_manager-text_field text-area"
+                      class="cyber_manager-text_field text-area-x"
                       name="input-7-1"
                       dense
                     ></v-textarea>
