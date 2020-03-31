@@ -31,7 +31,7 @@
 
       <slot name="cancelButton" :saveMode="saveMode" :disabled="disabled">
         <v-btn
-          v-if="saveMode"
+          v-if="saveMode && hideCancel==false"
           @click="$emit('cancel')"
           :disabled="disabled"
           class="button-footer"
@@ -63,5 +63,7 @@ export default class Footer extends FooterView {
   @Prop({ default: "save" }) saveIcon!: string;
   @Prop({ default: "cancel" }) cancelIcon!: string;
   @Prop({ default: false }) disabled!: boolean;
+
+  @Prop({ default: false }) hideCancel!: boolean;
 }
 </script>
