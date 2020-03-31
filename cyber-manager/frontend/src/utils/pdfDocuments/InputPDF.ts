@@ -20,9 +20,8 @@ export default class InputPdf extends Styles {
       this.pageSize.width,
       this.pageSize.heigth
     ]);
-    const COLORS_HEADERS = [171, 224, 233];
 
-    let marginTop: number = 10;
+    let marginTop: number = -20;
     for (let i = 0; i < 2; i++) {
       doc.autoTable({
         // We draw the Image here but we just put it on X and Y position
@@ -51,7 +50,7 @@ export default class InputPdf extends Styles {
 
         theme: 'grid',
         showFoot: 'never',
-        margin: { top: marginTop },
+        margin: { top: -5 },
         headStyles: {
           halign: 'center',
           textColor: 255,
@@ -64,7 +63,8 @@ export default class InputPdf extends Styles {
               content: '',
               styles: {
                 cellWidth: 100,
-                lineWidth: 0
+                lineWidth: 0,
+                textColor: 100
               }
             },
             {
@@ -122,6 +122,7 @@ export default class InputPdf extends Styles {
                 cellWidth: 100,
                 textColor: 100,
                 lineWidth: 1,
+                lineColor: 200,
                 fontStyle: 'bolditalic'
               }
             },
@@ -139,7 +140,7 @@ export default class InputPdf extends Styles {
           [
             {
               content: `Fecha: ${order.admissionDateFront}`,
-              styles: { textColor: 100, lineWidth: 1 }
+              styles: { textColor: 100, lineWidth: 1, lineColor: 200 }
             },
             {
               content: '',
@@ -163,6 +164,8 @@ export default class InputPdf extends Styles {
             {
               content: 'Nombre del cliente ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 'auto',
                 fontStyle: 'bolditalic'
               }
@@ -171,6 +174,7 @@ export default class InputPdf extends Styles {
               content: order.clientname,
               styles: {
                 cellWidth: 150,
+                lineWidth: 1,
                 fontStyle: 'normal'
               }
             },
@@ -178,12 +182,15 @@ export default class InputPdf extends Styles {
               content: 'Telefono ',
               styles: {
                 cellWidth: 'auto',
+                lineWidth: 1,
                 fontStyle: 'bolditalic'
               }
             },
             {
               content: order.clientphone,
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -193,6 +200,8 @@ export default class InputPdf extends Styles {
             {
               content: 'Articulo ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 'auto',
                 fontStyle: 'bolditalic'
               }
@@ -200,6 +209,7 @@ export default class InputPdf extends Styles {
             {
               content: order.article,
               styles: {
+                lineColor: 200,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -207,6 +217,8 @@ export default class InputPdf extends Styles {
             {
               content: 'Modelo: ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 'auto',
                 fontStyle: 'bolditalic'
               }
@@ -214,6 +226,8 @@ export default class InputPdf extends Styles {
             {
               content: order.model,
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -223,6 +237,8 @@ export default class InputPdf extends Styles {
             {
               content: 'Marca ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 'auto',
                 fontStyle: 'bolditalic'
               }
@@ -230,6 +246,8 @@ export default class InputPdf extends Styles {
             {
               content: order.brand,
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -237,6 +255,8 @@ export default class InputPdf extends Styles {
             {
               content: 'Serie: ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 'auto',
                 fontStyle: 'bolditalic'
               }
@@ -244,6 +264,8 @@ export default class InputPdf extends Styles {
             {
               content: 'No tiene',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 100,
                 fontStyle: 'normal'
               }
@@ -262,22 +284,43 @@ export default class InputPdf extends Styles {
             {
               content: 'Diagnostico: ',
               styles: {
+                lineColor: 200,
                 cellWidth: 52,
-                fontStyle: 'bolditalic'
+                fontStyle: 'bolditalic',
+                lineWidth: 1
               }
             },
-            order.reportedfailure
+            {
+              content: order.reportedfailure,
+              styles: {
+                lineColor: 200,
+                cellWidth: 'auto',
+                fontStyle: 'bolditalic',
+                lineWidth: 1
+              }
+            }
           ],
           [
             {
               content: 'Notas: ',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 cellWidth: 50,
                 textColor: 100,
                 fontStyle: 'bolditalic'
               }
             },
-            order.observations
+            {
+              content: order.observations,
+              styles: {
+                lineColor: 200,
+                lineWidth: 1,
+                cellWidth: 'auto',
+                textColor: 100,
+                fontStyle: 'bolditalic'
+              }
+            }
           ]
         ]
       });
@@ -289,6 +332,7 @@ export default class InputPdf extends Styles {
           2: { halign: 'right' }
         },
         bodyStyles: {
+          lineColor: 200,
           halign: 'center',
           textColor: 50,
           fillColor: 255
@@ -296,28 +340,30 @@ export default class InputPdf extends Styles {
         body: [
           [
             {
-              content: `Tecnico Responsable: ${userInfo.username}                                           Firma del cliente:__________________________`,
-              Margin: { top: -40 },
+              content: `Tecnico Responsable: ${userInfo.username}                                                  Firma: __________________________`,
+              Margin: { top: -30 },
               styles: {
                 cellPadding: { top: 25, left: 0, right: 0, bottom: 5 },
-                lineWidth: 1
+                lineWidth: 1,
+                lineColor: 200
               }
             }
           ],
           [
             {
-              content:
-                enterprise.enterpriserules || '',
+              content: enterprise.enterpriserules || '',
               styles: {
+                lineColor: 200,
+                lineWidth: 1,
                 halign: 'center',
                 fillColor: 255,
-                textColor: 100
+                textColor: 100,
+                fontSize: 8
               }
             }
           ]
         ]
       });
-      marginTop = -40;
     }
 
     doc.save(`${order.clientname}_${order.article}_Ingreso`);
