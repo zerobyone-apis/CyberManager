@@ -1,86 +1,39 @@
 {
-  "name": "cyber.manager",
-  "version": "3.0.0",
-  "description": "The best App to Organisize your work - By ZeroByOne.",
-  "author": "ZeroByOne <smtp.test.zero@gmail.com>",
-  "homepage": "./",
-  "repository": {
-    "name": "ZeroByOne",
-    "email": "smtp.test.zero@gmail.com",
-    "type": "git",
-    "url": "https://github.com/"
-  },
-  "main": "electron/index.js",
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "dist/src/app",
   "scripts": {
-    "start": "electron .",
-    "build-lin": "electron-builder --linux deb",
-    "build-win": "electron-builder --win --ia32",
-    "clean": "rimraf dist",
-    "dist": "npm-run-all start-servers clean build",
-    "serverback": "nohup  ./serverback.sh > back.out < /dev/null &",
-    "serverfront": "nohup ./serverfront.sh > front.out < /dev/null &",
-    "start-servers": "npm run serverback && npm run serverfront",
-    "package-mac": "electron-builder . --overwrite --platform=darwin --arch=x64 --icon=./electron/build/system.ico --prune=true --out=release-builds",
-    "package-win": "electron-builder . --overwrite --platform=win32 --arch=ia32 --icon=./electron/build/system.ico  --prune=true --out=release-builds",
-    "package-linux": "electron-builder . --overwrite --platform=linux --arch=x64 --icon=./build/system.ico --prune=true --out=release-builds"
+    "dev": "nodemon src/index.ts --exec ts-node",
+    "build": "tsc",
+    "serve": "concurrently \"tsc -w\" \"nodemon ./dist/src/app.js\""
   },
+  "repository": "",
   "license": "MIT",
-  "build": {
-    "appId": "CyberManager_v3",
-    "asar": true,
-    "files": [
-      "electron/**/*",
-      "node_modules/**/*",
-      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
-      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
-      "!**/node_modules/*.d.ts",
-      "!**/node_modules/.bin",
-      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
-      "!.editorconfig",
-      "!**/._*",
-      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
-      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
-      "!**/{appveyor.yml,.travis.yml,circle.yml}",
-      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
-    ],
-    "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ],
-      "icon": "./build/icon.icns",
-      "category": "your.app.category.type"
-    },
-    "win": {
-      "target": "NSIS",
-      "icon": "./electron/build/divices_256x256.ico"
-    },
-    "linux": {
-      "target": "deb",
-      "category": "Development",
-      "icon": "./electron/build/icon.icns"
-    }
+  "dependencies": {
+    "@types/express": "^4.17.3",
+    "@types/mysql2": "github:types/mysql2",
+    "@types/node": "^12.12.32",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "moment": "^2.24.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^1.7.0",
+    "mysql2-promise": "^0.1.4",
+    "node": "^12.16.1",
+    "pg": "^7.18.2"
   },
   "devDependencies": {
-    "@types/morgan": "^1.7.37",
-    "@types/mysql2": "github:types/mysql2",
-    "electron": "^6.1.9",
-    "electron-builder": "^20.28.4",
-    "express": "^4.17.1",
-    "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.1",
-    "shelljs": "^0.8.3"
-  },
-  "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.6",
-    "@types/express": "^4.17.2",
-    "axios": "^0.19.2",
+    "@types/dotenv": "^8.2.0",
+    "@types/morgan": "^1.9.0",
+    "@types/pg": "^7.14.3",
     "concurrently": "^5.1.0",
-    "dotenv": "^8.2.0",
-    "electron-log": "^3.0.9",
-    "find-free-port": "^2.0.0",
-    "morgan": "^1.9.1",
-    "path": "^0.12.7",
-    "tree-kill": "^1.2.2"
+    "express": "^4.17.1",
+    "nodemon": "^1.19.4",
+    "ts-node": "^8.8.1",
+    "typescript": "^3.8.3"
   }
 }
