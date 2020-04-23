@@ -504,22 +504,22 @@ export default class IndentificationView extends vue {
         let result: any = responseArqueo;
         this.analitycs.result = `Articulos: ${
           result.cantarticles === null ? 0 : result.cantarticles
-        }, 
+          }, 
                                  Total: $${
-                                   result.totalprice === null
-                                     ? 0
-                                     : result.totalprice
-                                 }, 
+          result.totalprice === null
+            ? 0
+            : result.totalprice
+          }, 
                                  Costo de reparacion: $${
-                                   result.totalreplacementprice === null
-                                     ? 0
-                                     : result.totalreplacementprice
-                                 }, 
+          result.totalreplacementprice === null
+            ? 0
+            : result.totalreplacementprice
+          }, 
                                  Ganancia: $${
-                                   result.netoprice === null
-                                     ? 0
-                                     : result.netoprice
-                                 }`;
+          result.netoprice === null
+            ? 0
+            : result.netoprice
+          }`;
         this.disabledButtons = false;
       } else {
         this.showNotificationFail(
@@ -567,8 +567,8 @@ export default class IndentificationView extends vue {
   //Clear fields object UI-CLEAN-order
   private cleanFields: IOrder = {
     id: 0,
-    admissiondate: moment().format('L h:mm:ss'),
-    admissionDateFront: moment().format('L h:mm:ss'),
+    admissiondate: '',
+    admissionDateFront: moment().format('DD/MM/YYYY hh:mm:ss'),
     clientname: '',
     clientphone: '',
     article: '',
