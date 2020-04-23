@@ -28,8 +28,8 @@ function createWindow(callback) {
     webPreferences: {
       //preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: true,
-      zoomFactor: 5.0 // this by default is 1.0 = 100% but idk why is taking this size. is like 80% on webpage
-    }
+      zoomFactor: 5.0, // this by default is 1.0 = 100% but idk why is taking this size. is like 80% on webpage
+    },
   });
   console.log('this is the icon route \n', IMG_URL, '\n\n');
 
@@ -41,7 +41,7 @@ function createWindow(callback) {
   });
 
   // Emitted when the window is closed.
-  mainWindow.on('closed', function() {
+  mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
@@ -65,8 +65,12 @@ function loadHomePage() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', function() {
+app.on('ready', function () {
+  //This is on [ PRODUCTION ] The latest version pg-v3-0-n is deployed on Production ENV
+  //PRD = 'https://cyber-manager-latest.now.sh/'
   baseUrl = `https://cyber-manager-latest.now.sh/`;
+
+  //baseUrl = `https://cyber-manager-pg-v3-0-7.now.sh`;
   //baseUrl = `https://cyber-manager-pg-v3-0-6.now.sh`;
   //baseUrl = `https://cyber-manager-pg-v3-0-5.now.sh`;
   //baseUrl = `https://cyber-manager-pg-v3-0-4.now.sh`;
@@ -91,14 +95,14 @@ app.on('ready', function() {
 });
 
 //Solo MacOS
-app.on('activate', function() {
+app.on('activate', function () {
   if (mainWindow === null) {
     createWindow();
   }
 });
 
 // Quit when all windows are closed.
-app.on('window-all-closed', function() {
+app.on('window-all-closed', function () {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
@@ -106,7 +110,7 @@ app.on('window-all-closed', function() {
   }
 });
 
-app.on('activate', function() {
+app.on('activate', function () {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
@@ -114,7 +118,7 @@ app.on('activate', function() {
   }
 });
 
-app.on('will-quit', e => {
+app.on('will-quit', (e) => {
   if (!isDev && baseUrl != null) {
     stopServer();
     e.preventDefault(); // will quite later after stopped the server
