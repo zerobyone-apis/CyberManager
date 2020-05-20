@@ -96,12 +96,13 @@
 </template>
 
 <script lang="ts">
-import { Prop, Watch, Component } from "vue-property-decorator";
+import { Prop, Watch, Component, Vue } from "vue-property-decorator";
 import TimeFieldCode from "./TimeFieldCode";
 import "./TimeFieldStyle.scss";
+import moment from "moment";
 
 @Component({})
-export default class TimeField extends TimeFieldCode {
+export default class TimeField extends Vue {
   @Prop({ default: "" }) value!: string;
   @Prop({ default: "date" }) type!: string;
   @Prop({ default: "es" }) lang!: string;
@@ -112,13 +113,23 @@ export default class TimeField extends TimeFieldCode {
   @Prop({ default: false }) dark!: boolean;
   @Prop({ default: "" }) errorMessage!: string;
 
+  // date
+  private menu = false;
+  private date = "";
+  // time
+  private time = "";
+  private simpleDate = "";
+  private menu2 = false;
+  private modal2 = false;
+
+  created() {
+    this.time = this.value;
+  }
+
   @Watch("time")
   updateTime() {
+    console.log(`change time ${this.time}`);
     if (this.time.indexOf(":") == -1) {
-      /*
-        // this.simpleDate = this.getDate(this.time);
-        fix: if time is '', simple date was current date, this is incorrect in case of reset value of field 
-      */
       this.simpleDate = "";
     }
     this.$emit("input", this.time);
@@ -131,20 +142,41 @@ export default class TimeField extends TimeFieldCode {
         this.simpleDate = "";
         this.time = "";
       } else {
-        this.simpleDate = this.getDate(this.time);
+        this.simpleDate = this.getDate(this.value);
       }
     }
   }
 
-  created() {
-    this.time = this.value;
+  setTodayDate() {
+    this.simpleDate = this.getDate();
+    this.time = moment(this.simpleDate).format();
+  }
+
+  getDate(datetime?: string) {
+    console.log(`llega a getDate ${datetime}`);
+    if (datetime) {
+      return moment(datetime).format("DD/MM/YYYY");
+    } else {
+      return moment().format("DD/MM/YYYY");
+    }
+  }
+
+  setTodayHour() {
+    let hParts = new Date()
+      .toLocaleTimeString()
+      .split(" ")[0]
+      .split(":");
+    console.log(hParts);
+    if (hParts[0].length == 1) {
+      hParts[0] = "0" + hParts[0];
+    }
+    this.time = `${hParts[0]}:${hParts[1]}`;
   }
 }
 </script>
 <style lang="scss">
 .field-date__box {
   display: flex;
-
   .btn-date {
     position: relative;
     margin-top: 20px;
