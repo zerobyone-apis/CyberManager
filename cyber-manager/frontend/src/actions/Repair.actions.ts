@@ -30,7 +30,7 @@ export default class ReparirActions {
         id: repair.id || -1,
         clientname: repair.clientname,
         article: repair.article,
-        iscanceled: false, //
+        iscanceled: false,
         deliverydate: deliverydateFormat,
         repairdate: repairDateFormat,
         reparation: repair.reparation,

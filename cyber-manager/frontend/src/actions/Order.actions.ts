@@ -30,12 +30,9 @@ export default class OrderActions {
         ORDER_ROUTE
       );
       responseOrders.forEach((order: IOrder) => {
-
         let addmissionDateCopy: string[] = (order.admissiondate || '').split('T')
-        
         order.admissionDateFront = `${moment(addmissionDateCopy[0]).format('DD/MM/YYYY')} ${addmissionDateCopy[1].split('.')[0]}`,
-        
-        orders.unshift(order);
+          orders.unshift(order);
       });
       return orders;
     } catch (error) {
@@ -45,13 +42,11 @@ export default class OrderActions {
   }
 
   public async add(order: IOrder) {
-
     let customMoment = moment;
     customMoment.locale();
-
     console.log(order.admissionDateFront)
     let addmissionDateFrontCopy: string[] = moment(order.admissionDateFront, 'DD/MM/YYYY hh:mm:ss')
-    .format().split('T');
+      .format().split('T');
     console.log(addmissionDateFrontCopy)
 
     try {
