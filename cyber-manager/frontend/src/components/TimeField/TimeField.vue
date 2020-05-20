@@ -97,7 +97,6 @@
 
 <script lang="ts">
 import { Prop, Watch, Component, Vue } from "vue-property-decorator";
-import TimeFieldCode from "./TimeFieldCode";
 import "./TimeFieldStyle.scss";
 import moment from "moment";
 
@@ -149,11 +148,13 @@ export default class TimeField extends Vue {
 
   setTodayDate() {
     this.simpleDate = this.getDate();
-    this.time = moment(this.simpleDate).format();
+    console.log(`simpleDate  ${this.simpleDate}`);
+    const parts = this.simpleDate.split("/");
+    this.time = moment(`${parts[2]}-${parts[1]}-${parts[0]} 00:00:00`).format();
+    console.log(`${parts[2]}-${parts[1]}-${parts[0]} 00:00:00`);
   }
 
   getDate(datetime?: string) {
-    console.log(`llega a getDate ${datetime}`);
     if (datetime) {
       return moment(datetime).format("DD/MM/YYYY");
     } else {
