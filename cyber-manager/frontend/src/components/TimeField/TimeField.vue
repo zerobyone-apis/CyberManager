@@ -86,7 +86,7 @@
           </v-text-field>
         </div>
       </template>
-      <v-date-picker v-model="time" scrollable :min="min" :locale="lang">
+      <v-date-picker v-model="time" :min="min" scrollable :locale="lang">
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="modal2 = false">Cancel</v-btn>
         <v-btn text color="primary" @click="$refs.dialogDate.save(time)">OK</v-btn>
@@ -146,12 +146,14 @@ export default class TimeField extends Vue {
     }
   }
 
+  /**
+   @TODO 
+    Refactor method
+  */
   setTodayDate() {
     this.simpleDate = this.getDate();
-    console.log(`simpleDate  ${this.simpleDate}`);
     const parts = this.simpleDate.split("/");
-    this.time = moment(`${parts[2]}-${parts[1]}-${parts[0]} 00:00:00`).format();
-    console.log(`${parts[2]}-${parts[1]}-${parts[0]} 00:00:00`);
+    this.time = `${parts[2]}-${parts[1]}-${parts[0]} 00:00:00`;
   }
 
   getDate(datetime?: string) {
@@ -162,6 +164,10 @@ export default class TimeField extends Vue {
     }
   }
 
+  /**
+   @TODO 
+    Refactor method
+  */
   setTodayHour() {
     let hParts = new Date()
       .toLocaleTimeString()
