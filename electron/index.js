@@ -31,6 +31,7 @@ function createWindow(callback) {
       zoomFactor: 5.0, // this by default is 1.0 = 100% but idk why is taking this size. is like 80% on webpage
     },
   });
+
   console.log('this is the icon route \n', IMG_URL, '\n\n');
 
   loadHomePage();

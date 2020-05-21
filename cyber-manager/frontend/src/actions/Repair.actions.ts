@@ -4,15 +4,11 @@ import { REPARIR_ROUTE, PUT_ENDPOIT } from '../types/Routes.type';
 
 export default class ReparirActions {
   private backend: IntegrationBackend = new IntegrationBackend();
-
   public async saveRepair(repair: IRepair) {
     try {
       // formatting
-      // ..........
       let deliverydateFormat: string | null = repair.deliverydate || null;
       let repairDateFormat: string | null = repair.repairdate || null;
-      //console.log('Se envio la request Update Raparation.');
-
       if (deliverydateFormat != null) {
         if (deliverydateFormat.indexOf('T') != -1) {
           deliverydateFormat = deliverydateFormat.split('T')[0] + ' 00:00:00';
@@ -20,7 +16,6 @@ export default class ReparirActions {
           deliverydateFormat = `${deliverydateFormat} 00:00:00`;
         }
       }
-
       if (repairDateFormat != null) {
         if (repairDateFormat.indexOf('T') != -1) {
           console.log('tipo T');
@@ -29,17 +24,15 @@ export default class ReparirActions {
           repairDateFormat = `${repairDateFormat} 00:00:00`;
         }
       }
-      //..........
+      // end formatting
 
       let data: IRepair = {
         id: repair.id || -1,
         clientname: repair.clientname,
         article: repair.article,
-        iscanceled: false, //
-
+        iscanceled: false,
         deliverydate: deliverydateFormat,
         repairdate: repairDateFormat,
-
         reparation: repair.reparation,
         warranty: repair.warranty,
         price: repair.price,
