@@ -20,7 +20,6 @@ export default class HomeView extends vue {
   private charges: string[] = [USER_ADMIN, USER_EMPLOYEE];
 
   private successAccess(user: IUserStore) {
-    //console.log('User Identificated -> ', user);
     this.$store.commit('userInfo', user);
     this.$store.commit('page', 'Identification');
     this.$router.push('/Identification');
@@ -32,6 +31,7 @@ export default class HomeView extends vue {
     visible: false
   };
 
+  // Used on UI method.
   private showNotificationSuccess(message: string) {
     this.notification.color = 'green';
     this.notification.message = message;
