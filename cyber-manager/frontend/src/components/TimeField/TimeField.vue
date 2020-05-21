@@ -153,7 +153,7 @@ export default class TimeField extends Vue {
   setTodayDate() {
     this.simpleDate = this.getDate();
     const parts = this.simpleDate.split("/");
-    this.time = `${parts[2]}-${parts[1]}-${parts[0]} 00:00:00`;
+    this.time = `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
 
   getDate(datetime?: string) {
